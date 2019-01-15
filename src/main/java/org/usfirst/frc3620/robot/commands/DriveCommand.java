@@ -28,16 +28,8 @@ public class DriveCommand extends Command {
         //gets values from X-axis of Left stick on gamepad, Y-axis goes unused
         double horizontal = Robot.oi.getLeftHorizontalJoystickSquared();
         //displays current values on gamepad
-        //System.out.println("Vertical Right " + vertical + ": Horizontal Left" + horizontal);
-
-        //Checks if proximity sensor sees an object within one foot. if it does, driving stops.
-        if(Robot.driveSubsystem.isOneFootAway()) {
-            //System.out.println("Object within one foot of robot");
-            Robot.driveSubsystem.arcadeDrive(0, 0);
-        } else{
-        //Calls method to drive motors, declared in subsystem, sends real values to motors
-        Robot.driveSubsystem.arcadeDrive(-vertical, horizontal);
-        }
+            //Calls method to drive motors, declared in subsystem, sends real values to motors
+            Robot.driveSubsystem.arcadeDrive(-vertical, horizontal);
     }
 
     // Make this return true when this Command no longer needs to run execute()

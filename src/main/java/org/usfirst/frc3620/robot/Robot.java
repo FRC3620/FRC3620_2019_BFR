@@ -30,12 +30,9 @@ public class Robot extends TimedRobot {
 	static Logger logger;
 	static RobotMode currentRobotMode = RobotMode.INIT, previousRobotMode;
 
-    // Subsystems here
+    // declare Subsystems here
     public static DriveSubsystem driveSubsystem;
-	public static ButtonSubsystem buttonSubstyem;
-    public static ServoSubsystem servoSubsystem;
-    public static WingSubsystem wingSubsystem;
-    public static FlagSpinnerSubsystem flagSpinnerSubsystem;
+
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
@@ -49,12 +46,9 @@ public class Robot extends TimedRobot {
         RobotMap.init();
 
         // set up subsystems
-        //initalized drive subsystem, which control motors to move robot
+        // initalized drive subsystem, which control motors to move robot
         driveSubsystem = new DriveSubsystem();
-		buttonSubstyem = new ButtonSubsystem();
-        servoSubsystem = new ServoSubsystem();
-        wingSubsystem = new WingSubsystem();
-        flagSpinnerSubsystem = new FlagSpinnerSubsystem();
+
         // OI must be constructed after subsystems. If the OI creates Commands
         //(which it very likely will), subsystems are not guaranteed to be
         // constructed yet. Thus, their requires() statements may grab null

@@ -45,24 +45,8 @@ public class OI {
     public OI() {
         //to interface with joysticks, no special initiallization nessessary
         driverJoystick = new Joystick(0);
-        Button moveFingerUp = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_A);
-        Button moveFingerDown = new JoystickButton(driverJoystick , XBoxConstants.BUTTON_B);
-        moveFingerUp.whenPressed(new MoveFingerUp());
-        moveFingerDown.whenPressed(new MoveFingerDown());
-        
-        Button flapInputUp = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_X);
-        Button flapInputDown = new JoystickButton(driverJoystick , XBoxConstants.BUTTON_Y);
-        flapInputUp.whenPressed(new FlapUp());
-        flapInputDown.whenPressed(new FlapStop());
 
-
-        // SmartDashboard Buttons
-        SmartDashboard.putData("Autonomous Command", new AutonomousCommand());
-        Button pushButton = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_RIGHT_BUMPER);
-        pushButton.whileHeld(new PushButtonCommand());
-        Button spinflagButton = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_LEFT_BUMPER);
-        spinflagButton.toggleWhenPressed(new SpinFlagCommand());
-
+        // map buttons to Joystick buttons here
     }
 
     public Joystick getDriverJoystick() {

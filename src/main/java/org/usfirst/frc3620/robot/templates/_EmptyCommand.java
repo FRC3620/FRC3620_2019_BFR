@@ -1,18 +1,17 @@
-package org.usfirst.frc3620.robot.commands;
+package org.usfirst.frc3620.robot.templates;
 import edu.wpi.first.wpilibj.command.Command;
 
 import org.slf4j.Logger;
 import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
-import org.usfirst.frc3620.robot.Robot;
 
 /**
  *
  */
-public class SpinFlagCommand extends Command {
+public class _EmptyCommand extends Command {
 	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 	
-    public SpinFlagCommand() {
+    public _EmptyCommand() {
         // requires(Robot.laserCannonSubsystem);
     }
 
@@ -25,7 +24,6 @@ public class SpinFlagCommand extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        Robot.flagSpinnerSubsystem.spinFlag(0.5);
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -37,15 +35,13 @@ public class SpinFlagCommand extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
-        EventLogging.commandMessage(logger);
-        Robot.flagSpinnerSubsystem.spinFlag(0);
+    	EventLogging.commandMessage(logger);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run or when cancelled by whileHeld
     @Override
     protected void interrupted() {
-        EventLogging.commandMessage(logger);
-        Robot.flagSpinnerSubsystem.spinFlag(0);
+    	EventLogging.commandMessage(logger);
     }
 }
