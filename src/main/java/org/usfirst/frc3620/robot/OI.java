@@ -45,7 +45,7 @@ public class OI {
     public OI() {
         //to interface with joysticks, no special initiallization nessessary
         driverJoystick = new Joystick(0);
-
+        
         // map buttons to Joystick buttons here
     }
 
@@ -53,6 +53,7 @@ public class OI {
         return driverJoystick;
     }
 
+    
     public double computeSquareWithDeadband (double position, double deadband) {
         if (Math.abs(position) < deadband) {
             return 0;
@@ -75,4 +76,5 @@ public class OI {
         return computeSquareWithDeadband(driverJoystick.getRawAxis(XBoxConstants.AXIS_RIGHT_Y), 0.2);
     }
 
+    
 }

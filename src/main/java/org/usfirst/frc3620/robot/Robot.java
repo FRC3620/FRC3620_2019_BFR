@@ -32,6 +32,7 @@ public class Robot extends TimedRobot {
 
     // declare Subsystems here
     public static DriveSubsystem driveSubsystem;
+    public static IntakeSubsystem intakeSubsystem;
 
     /**
      * This function is run when the robot is first started up and should be
@@ -48,7 +49,7 @@ public class Robot extends TimedRobot {
         // set up subsystems
         // initalized drive subsystem, which control motors to move robot
         driveSubsystem = new DriveSubsystem();
-
+        intakeSubsystem = new IntakeSubsystem();
         // OI must be constructed after subsystems. If the OI creates Commands
         //(which it very likely will), subsystems are not guaranteed to be
         // constructed yet. Thus, their requires() statements may grab null

@@ -8,6 +8,7 @@ import org.usfirst.frc3620.misc.CANDeviceFinder;
 import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -20,8 +21,10 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
  */
 public class RobotMap {
     public static DifferentialDrive driveSubsystemDifferentialDrive;
-
+    public static Victor intakeSubsystemUpperIntakeMotor;
+    public static Victor intakeSubsystemLowerIntakeMotor;
     static Logger logger = EventLogging.getLogger(RobotMap.class, Level.INFO);
+
 
     @SuppressWarnings("deprecation")
 	public static void init() {
@@ -43,12 +46,15 @@ public class RobotMap {
 
         SpeedControllerGroup groupLeft = new SpeedControllerGroup(driveSubsystemLeftSpeedControllerA, driveSubsystemLeftSpeedControllerB);
         SpeedControllerGroup groupRight = new SpeedControllerGroup(driveSubsystemRightSpeedControllerA, driveSubsystemRightSpeedControllerB);
-       
+
         driveSubsystemDifferentialDrive = new DifferentialDrive(groupLeft, groupRight);
         driveSubsystemDifferentialDrive.setName("DriveSubsystem", "Drive");
         driveSubsystemDifferentialDrive.setSafetyEnabled(true);
         driveSubsystemDifferentialDrive.setExpiration(0.1);
         driveSubsystemDifferentialDrive.setMaxOutput(1.0);
+
+        intakeSubsystemUpperIntakeMotor = new Victor(4);
+        intakeSubsystemLowerIntakeMotor = new Victor(5);
 
         //new code
 
