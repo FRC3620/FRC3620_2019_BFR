@@ -1,3 +1,5 @@
+package org.usfirst.frc3620.robot.subsystems;
+
 import org.slf4j.Logger;
 import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
@@ -31,7 +33,7 @@ public class IntakeSubsystem extends Subsystem {
     public void periodic() {
         // Put code here to be run every loop
     }
- 
+    
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
     public void intakeIn(){
@@ -48,6 +50,7 @@ public class IntakeSubsystem extends Subsystem {
         intakeRollerTop.set(0);
         intakeRollerBottom.set(0);
     }
+        
     public double readEncoder(){
         ultraSonicZoom.getRangeInches();
     }
