@@ -20,7 +20,7 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
  */
 public class RobotMap {
     public static DifferentialDrive driveSubsystemDifferentialDrive;
-
+    public static Solenoid hatchSolenoid;
     static Logger logger = EventLogging.getLogger(RobotMap.class, Level.INFO);
 
     @SuppressWarnings("deprecation")
@@ -49,6 +49,11 @@ public class RobotMap {
         driveSubsystemDifferentialDrive.setSafetyEnabled(true);
         driveSubsystemDifferentialDrive.setExpiration(0.1);
         driveSubsystemDifferentialDrive.setMaxOutput(1.0);
+
+        hatchSolenoid = new Solenoid(1);
+
+
+
 
         //new code
 
