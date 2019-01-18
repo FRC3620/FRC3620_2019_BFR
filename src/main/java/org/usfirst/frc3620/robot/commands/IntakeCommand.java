@@ -25,15 +25,15 @@ public class IntakeCommand extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        Robot.intakeSubsystem.intakeIn();
+        Robot.intakeSubsystem.intakeIn(Robot.intakeSubsystem.getSpeedFromDashboard());
     }
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        if (Robot.intakeSubsystem.readEncoder()< 5 ){
+     /*   if (Robot.intakeSubsystem.readEncoder()< 5 ){
             return true;
-        }
+        } */
         return false;
     }
 

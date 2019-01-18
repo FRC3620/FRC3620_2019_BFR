@@ -5,10 +5,12 @@ import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
 import org.usfirst.frc3620.robot.RobotMap;
 
+import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Ultrasonic;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.*;
 
 /**
  *
@@ -18,6 +20,7 @@ public class IntakeSubsystem extends Subsystem {
     private final Victor intakeRollerTop = RobotMap.intakeSubsystemUpperIntakeMotor;
     private final Victor intakeRollerBottom = RobotMap.intakeSubsystemLowerIntakeMotor;
     private final Ultrasonic ultraSonicZoom = new Ultrasonic(0,1);
+    Preferences speedPreferences = Preferences.getInstance();
     Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
     
     @Override
@@ -36,14 +39,14 @@ public class IntakeSubsystem extends Subsystem {
     
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
-    public void intakeIn(){
-        intakeRollerTop.set(-1);
-        intakeRollerBottom.set(1);
+    public void intakeIn(double speed){
+        intakeRollerTop.set(-speed);
+        intakeRollerBottom.set(speed);
     }
 
-    public void intakeOut(){
-        intakeRollerTop.set(1);
-        intakeRollerBottom.set(-1);
+    public void intakeOut(double speed){
+        intakeRollerTop.set(speed);
+        intakeRollerBottom.set(-speed);
     } 
 
     public void intakeOff(){
@@ -52,8 +55,11 @@ public class IntakeSubsystem extends Subsystem {
     }
         
     public double readEncoder(){
-        ultraSonicZoom.getRangeInches();
+       return ultraSonicZoom.getRangeInches();
     }
     
+    public double getSpeedFromDashboard(){
+        return speedPreferences.getDouble("IntakeSpeed", 0.5);
+    }
     
 }
