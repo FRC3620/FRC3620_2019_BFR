@@ -39,13 +39,15 @@ public class OutTakeCommand extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
-    	EventLogging.commandMessage(logger);
+        EventLogging.commandMessage(logger);
+        Robot.intakeSubsystem.intakeOff();
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run or when cancelled by whileHeld
     @Override
     protected void interrupted() {
-    	EventLogging.commandMessage(logger);
+        EventLogging.commandMessage(logger);
+        Robot.intakeSubsystem.intakeOff();
     }
 }

@@ -1,5 +1,7 @@
 package org.usfirst.frc3620.robot;
 
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+
 import org.slf4j.Logger;
 import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
@@ -10,6 +12,7 @@ import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
+import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
@@ -21,10 +24,9 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
  */
 public class RobotMap {
     public static DifferentialDrive driveSubsystemDifferentialDrive;
-    public static Victor intakeSubsystemUpperIntakeMotor;
-    public static Victor intakeSubsystemLowerIntakeMotor;
+    public static WPI_TalonSRX intakeSubsystemUpperIntakeMotor;
+    public static WPI_TalonSRX intakeSubsystemLowerIntakeMotor;
     static Logger logger = EventLogging.getLogger(RobotMap.class, Level.INFO);
-
 
     @SuppressWarnings("deprecation")
 	public static void init() {
@@ -53,8 +55,8 @@ public class RobotMap {
         driveSubsystemDifferentialDrive.setExpiration(0.1);
         driveSubsystemDifferentialDrive.setMaxOutput(1.0);
 
-        intakeSubsystemUpperIntakeMotor = new Victor(4);
-        intakeSubsystemLowerIntakeMotor = new Victor(5);
+        intakeSubsystemUpperIntakeMotor = new WPI_TalonSRX(13);
+        intakeSubsystemLowerIntakeMotor = new WPI_TalonSRX(14);
 
         //new code
 
