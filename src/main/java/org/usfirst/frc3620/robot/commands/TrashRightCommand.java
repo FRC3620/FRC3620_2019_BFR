@@ -45,7 +45,7 @@ public class TrashRightCommand extends Command {
     // subsystems is scheduled to run or when cancelled by whileHeld
     @Override
     protected void interrupted() {
-        EventLogging.commandMessage(logger);
         Robot.trashSubsystem.conveyorBeltOff();
+    	EventLogging.commandMessage(logger);
     }
 }

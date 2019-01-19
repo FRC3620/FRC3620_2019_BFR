@@ -2,7 +2,6 @@ package org.usfirst.frc3620.robot.subsystems;
 
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import org.usfirst.frc3620.robot.RobotMap;
 import org.usfirst.frc3620.robot.commands.DriveCommand;
@@ -16,10 +15,9 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class TrashSubsystem extends Subsystem {
 
     Preferences speedPreferences = Preferences.getInstance();
-    private final WPI_TalonSRX conveyorMotor1 = RobotMap.conveyorBeltMotor1;
-    private final WPI_TalonSRX conveyorMotor2 = RobotMap.conveyorBeltMotor2;
-    private final WPI_VictorSPX conveyorFollower1 = RobotMap.conveyorBeltFollower1;
-    private final WPI_VictorSPX conveyorFollower2 = RobotMap.conveyorBeltFollower2;
+    private final WPI_TalonSRX conveyorL = RobotMap.conveyorBeltMotorL;
+    private final WPI_TalonSRX conveyorR = RobotMap.conveyorBeltMotorR;
+    private final WPI_TalonSRX conveyorC = RobotMap.conveyorBeltMotorC;
 
     public void initDefaultCommand() {
         // Set the default command for a subsystem here. Drive command runs in background at all times
@@ -33,23 +31,23 @@ public class TrashSubsystem extends Subsystem {
     }
 
     public void conveyorBeltLeft(double speed){
-        conveyorMotor1.set(speed);
-        conveyorFollower1.set(speed);
+        conveyorL.set(speed);
+        conveyorC.set(speed);
     }
 
     public void conveyorBeltRight(double speed){
-        conveyorMotor2.set(speed);
-        conveyorFollower2.set(speed);
+        conveyorR.set(speed);
+        conveyorC.set(-speed);
     }
 
     public void conveyorBeltOff(){
-        conveyorMotor1.set(0);
-        conveyorMotor2.set(0);
-        conveyorFollower1.set(0);
-        conveyorFollower2.set(0);
+        conveyorL.set(0);
+        conveyorR.set(0);
+        conveyorC.set(0);
     }
 
     public double getSpeedFromDashboard(){
         return speedPreferences.getDouble("IntakeSpeed", 0.5);
     }
+    
 }

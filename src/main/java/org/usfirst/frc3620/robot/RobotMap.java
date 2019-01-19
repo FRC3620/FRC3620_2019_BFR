@@ -23,10 +23,9 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
  */
 public class RobotMap {
     public static DifferentialDrive driveSubsystemDifferentialDrive;
-    public static WPI_TalonSRX conveyorBeltMotor1;
-    public static WPI_TalonSRX conveyorBeltMotor2;
-    public static WPI_VictorSPX conveyorBeltFollower1;
-    public static WPI_VictorSPX conveyorBeltFollower2;
+    public static WPI_TalonSRX conveyorBeltMotorL;
+    public static WPI_TalonSRX conveyorBeltMotorR;
+    public static WPI_TalonSRX conveyorBeltMotorC;
 
     static Logger logger = EventLogging.getLogger(RobotMap.class, Level.INFO);
 
@@ -58,10 +57,10 @@ public class RobotMap {
         driveSubsystemDifferentialDrive.setExpiration(0.1);
         driveSubsystemDifferentialDrive.setMaxOutput(1.0);
         
-        conveyorBeltMotor1 = new WPI_TalonSRX(1);
-        conveyorBeltMotor2 = new WPI_TalonSRX(2);
-        conveyorBeltFollower1 = new WPI_VictorSPX(3);
-        conveyorBeltFollower2 = new WPI_VictorSPX(4);
+        conveyorBeltMotorL = new WPI_TalonSRX(1);
+        conveyorBeltMotorR = new WPI_TalonSRX(2);
+        conveyorBeltMotorC = new WPI_TalonSRX(3);
+
         
         //new code
 
