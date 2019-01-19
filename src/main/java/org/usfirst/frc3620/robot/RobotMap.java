@@ -4,11 +4,14 @@ import org.slf4j.Logger;
 import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
 import org.usfirst.frc3620.misc.CANDeviceFinder;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
+import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
@@ -20,6 +23,10 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
  */
 public class RobotMap {
     public static DifferentialDrive driveSubsystemDifferentialDrive;
+    public static WPI_TalonSRX conveyorBeltMotor1;
+    public static WPI_TalonSRX conveyorBeltMotor2;
+    public static WPI_VictorSPX conveyorBeltFollower1;
+    public static WPI_VictorSPX conveyorBeltFollower2;
 
     static Logger logger = EventLogging.getLogger(RobotMap.class, Level.INFO);
 
@@ -44,12 +51,18 @@ public class RobotMap {
         SpeedControllerGroup groupLeft = new SpeedControllerGroup(driveSubsystemLeftSpeedControllerA, driveSubsystemLeftSpeedControllerB);
         SpeedControllerGroup groupRight = new SpeedControllerGroup(driveSubsystemRightSpeedControllerA, driveSubsystemRightSpeedControllerB);
        
+
         driveSubsystemDifferentialDrive = new DifferentialDrive(groupLeft, groupRight);
         driveSubsystemDifferentialDrive.setName("DriveSubsystem", "Drive");
         driveSubsystemDifferentialDrive.setSafetyEnabled(true);
         driveSubsystemDifferentialDrive.setExpiration(0.1);
         driveSubsystemDifferentialDrive.setMaxOutput(1.0);
-
+        
+        conveyorBeltMotor1 = new WPI_TalonSRX(1);
+        conveyorBeltMotor2 = new WPI_TalonSRX(2);
+        conveyorBeltFollower1 = new WPI_VictorSPX(3);
+        conveyorBeltFollower2 = new WPI_VictorSPX(4);
+        
         //new code
 
         CANDeviceFinder canDeviceFinder = new CANDeviceFinder();
