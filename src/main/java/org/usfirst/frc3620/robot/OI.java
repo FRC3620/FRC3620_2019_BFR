@@ -47,7 +47,11 @@ public class OI {
         driverJoystick = new Joystick(0);
 
         // map buttons to Joystick buttons here
-        
+        Button conveyorL = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_X);
+        Button conveyorR = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_Y);
+
+        conveyorL.whileHeld(new TrashLeftCommand());
+        conveyorR.whileHeld(new TrashRightCommand());
     }
 
     public Joystick getDriverJoystick() {
