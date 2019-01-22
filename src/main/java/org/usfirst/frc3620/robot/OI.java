@@ -50,11 +50,12 @@ public class OI {
             //Declare buttons
             Button inTakeIn = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_RIGHT_BUMPER);
             Button inTakeOut = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_LEFT_BUMPER);
+            Button trashIn = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_LEFT_STICK);
 
             //buttons run commands
             inTakeIn.toggleWhenPressed(new IntakeCommand());
             inTakeOut.toggleWhenPressed(new OutTakeCommand());
-
+            trashIn.toggleWhenPressed(new TrashInCommand());
         }
 
     public Joystick getDriverJoystick() {

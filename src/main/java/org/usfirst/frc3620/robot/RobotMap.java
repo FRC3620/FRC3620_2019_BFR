@@ -21,8 +21,9 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
  */
 public class RobotMap {
     public static DifferentialDrive driveSubsystemDifferentialDrive;
-    public static Victor intakeSubsystemUpperIntakeMotor;
-    public static Victor intakeSubsystemLowerIntakeMotor;
+    public static Victor intakeSubsystemUpperMotor;
+    public static Victor intakeSubsystemLowerMotor;
+    public static Victor intakeSubsystemMiddleMotor;
     static Logger logger = EventLogging.getLogger(RobotMap.class, Level.INFO);
 
 
@@ -53,8 +54,9 @@ public class RobotMap {
         driveSubsystemDifferentialDrive.setExpiration(0.1);
         driveSubsystemDifferentialDrive.setMaxOutput(1.0);
 
-        intakeSubsystemUpperIntakeMotor = new Victor(4);
-        intakeSubsystemLowerIntakeMotor = new Victor(5);
+        intakeSubsystemUpperMotor = new Victor(4);
+        intakeSubsystemLowerMotor = new Victor(5);
+        intakeSubsystemMiddleMotor = new Victor(6);
 
         //new code
 

@@ -15,8 +15,9 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class IntakeSubsystem extends Subsystem {
 
-    private final Victor intakeRollerTop = RobotMap.intakeSubsystemUpperIntakeMotor;
-    private final Victor intakeRollerBottom = RobotMap.intakeSubsystemLowerIntakeMotor;
+    private final Victor intakeRollerTop = RobotMap.intakeSubsystemUpperMotor;
+    private final Victor intakeRollerBottom = RobotMap.intakeSubsystemLowerMotor;
+    private final Victor intakeRollerMiddle = RobotMap.intakeSubsystemMiddleMotor;
     private final Ultrasonic ultraSonicZoom = new Ultrasonic(0,1);
     Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
     
@@ -26,8 +27,6 @@ public class IntakeSubsystem extends Subsystem {
         // setDefaultCommand(...);
         ultraSonicZoom.setAutomaticMode(true);
     }
-
-
 
     @Override
     public void periodic() {
@@ -55,5 +54,14 @@ public class IntakeSubsystem extends Subsystem {
         ultraSonicZoom.getRangeInches();
     }
     
-    
+    public void TrashIn(){
+        intakeRollerTop.set(-1);
+        intakeRollerMiddle.set(1);
+    }
+
+    public void TrashOff(){
+        intakeRollerTop.set(0);
+        intakeRollerMiddle.set(0);
+    }
+
 }
