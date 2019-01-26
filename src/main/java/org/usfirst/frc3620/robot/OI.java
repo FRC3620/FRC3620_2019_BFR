@@ -47,6 +47,7 @@ public class OI {
         driverJoystick = new Joystick(0);
         
         // map buttons to Joystick buttons here
+
             //Declare buttons
             Button inTakeIn = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_RIGHT_BUMPER);
             Button inTakeOut = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_LEFT_BUMPER);
@@ -57,6 +58,12 @@ public class OI {
             inTakeOut.toggleWhenPressed(new OutTakeCommand());
             trashIn.toggleWhenPressed(new TrashInCommand());
         }
+        Button conveyorL = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_X);
+        Button conveyorR = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_Y);
+
+        conveyorL.whileHeld(new TrashLeftCommand());
+        conveyorR.whileHeld(new TrashRightCommand());
+    }
 
     public Joystick getDriverJoystick() {
         return driverJoystick;
