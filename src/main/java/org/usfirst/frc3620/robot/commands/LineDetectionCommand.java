@@ -6,11 +6,14 @@ import org.slf4j.Logger;
 import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 /**
  *
  */
 public class LineDetectionCommand extends Command {
-	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
+    Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
+    boolean isThereALine;
 	
     public LineDetectionCommand() {
         // requires(Robot.laserCannonSubsystem);
@@ -19,23 +22,28 @@ public class LineDetectionCommand extends Command {
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-    	EventLogging.commandMessage(logger);
+        EventLogging.commandMessage(logger);
+        isThereALine = false;
     }
 
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
         if(Robot.intakeSubsystem.readLineSensor()){
+            isThereALine = true;    
             //add command for rumble 
         }
+
+        if(Robot.intakeSubsystem.readLineSensorDirectly()){
+            isThereALine = false;
+            Robot.intakeSubsystem.resetLineSensor();
+        }
+        SmartDashboard.putBoolean("Line?", isThereALine);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        if(Robot.intakeSubsystem.readLineSensorDirectly()){
-            return true;
-        }
         return false;
     }
 
