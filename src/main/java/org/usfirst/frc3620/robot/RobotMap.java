@@ -72,11 +72,8 @@ public class RobotMap {
 
     static void resetControllerToKnownState(CANSparkMax x) {
 		x.setInverted(false);
-        //x.setIdleMode(IdleMode.kCoast);
-        //x.setMotorType(MotorType.kBrushless);
-		//x.setRampRate(1);
-		//x.setParameter(ConfigParameter.kOutputMin_0, 0);
-        //x.setParameter(ConfigParameter.kOutputMax_0, 1);
+        x.setIdleMode(IdleMode.kCoast);
+		x.setRampRate(1);
         x.setSmartCurrentLimit(50);
     }
 }
