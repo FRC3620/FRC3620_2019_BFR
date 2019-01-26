@@ -1,5 +1,6 @@
 package org.usfirst.frc3620.robot;
 
+import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -25,22 +26,23 @@ public class RobotMap {
     public static DifferentialDrive driveSubsystemDifferentialDrive;
 
     static Logger logger = EventLogging.getLogger(RobotMap.class, Level.INFO);
+    public static CANEncoder leftsideEncoder, rightsideEncoder;
 
-    public static CANSparkMax driveSubsystemMaxLeftA;
-    public static CANSparkMax driveSubsystemMaxLeftB;
-    public static CANSparkMax driveSubsystemMaxRightA;
-    public static CANSparkMax driveSubsystemMaxRightB;
-
+    
     @SuppressWarnings("deprecation")
 	public static void init() {
         CANSparkMax driveSubsystemMaxLeftA = new CANSparkMax(1, MotorType.kBrushless);
         driveSubsystemMaxLeftA.setInverted(false);
+
+        leftsideEncoder= driveSubsystemMaxLeftA.getEncoder();
 
         CANSparkMax driveSubsystemMaxLeftB = new CANSparkMax(2, MotorType.kBrushless);
         driveSubsystemMaxLeftB.setInverted(false);
 
         CANSparkMax driveSubsystemMaxRightA = new CANSparkMax(3, MotorType.kBrushless);
         driveSubsystemMaxRightA.setInverted(false);
+
+        rightsideEncoder= driveSubsystemMaxRightA.getEncoder();
 
         CANSparkMax driveSubsystemMaxRightB = new CANSparkMax(4, MotorType.kBrushless);
         driveSubsystemMaxRightB.setInverted(false);
