@@ -25,6 +25,7 @@ public class RobotMap {
     public static Victor intakeSubsystemUpperMotor;
     public static Victor intakeSubsystemLowerMotor;
     public static Victor intakeSubsystemMiddleMotor;
+    public static DigitalInput lineSensor;
     static Logger logger = EventLogging.getLogger(RobotMap.class, Level.INFO);
 
 
@@ -60,7 +61,7 @@ public class RobotMap {
         intakeSubsystemMiddleMotor = new Victor(6);
 
         //initiating line sensor
-        DigitalInput lineSensor = new DigitalInput(0);
+        lineSensor = new DigitalInput(0);
 
         CANDeviceFinder canDeviceFinder = new CANDeviceFinder();
         logger.info ("CANDEVICEfinder found {}", canDeviceFinder.getDeviceList());
