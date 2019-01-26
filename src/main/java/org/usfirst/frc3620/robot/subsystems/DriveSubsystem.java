@@ -3,6 +3,7 @@ package org.usfirst.frc3620.robot.subsystems;
 import org.usfirst.frc3620.robot.RobotMap;
 import org.usfirst.frc3620.robot.commands.DriveCommand;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -14,6 +15,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class DriveSubsystem extends Subsystem {
 
     private final DifferentialDrive differentialDrive = RobotMap.driveSubsystemDifferentialDrive;
+
     @Override
     public void initDefaultCommand() {
         // Set the default command for a subsystem here. Drive command runs in background at all times

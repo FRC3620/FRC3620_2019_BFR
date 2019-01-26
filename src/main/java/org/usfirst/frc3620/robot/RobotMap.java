@@ -5,6 +5,7 @@ import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
 import org.usfirst.frc3620.misc.CANDeviceFinder;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.Solenoid;
@@ -58,7 +59,8 @@ public class RobotMap {
         intakeSubsystemLowerMotor = new Victor(5);
         intakeSubsystemMiddleMotor = new Victor(6);
 
-        //new code
+        //initiating line sensor
+        DigitalInput lineSensor = new DigitalInput(0);
 
         CANDeviceFinder canDeviceFinder = new CANDeviceFinder();
         logger.info ("CANDEVICEfinder found {}", canDeviceFinder.getDeviceList());
