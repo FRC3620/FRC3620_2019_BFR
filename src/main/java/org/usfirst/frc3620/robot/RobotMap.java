@@ -5,6 +5,7 @@ import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
 import org.usfirst.frc3620.misc.CANDeviceFinder;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.Solenoid;
@@ -22,6 +23,8 @@ public class RobotMap {
     public static DifferentialDrive driveSubsystemDifferentialDrive;
 
     static Logger logger = EventLogging.getLogger(RobotMap.class, Level.INFO);
+
+    public static DigitalInput lineSensor;
 
     @SuppressWarnings("deprecation")
 	public static void init() {
@@ -51,6 +54,8 @@ public class RobotMap {
         driveSubsystemDifferentialDrive.setMaxOutput(1.0);
 
         //new code
+
+        lineSensor = new DigitalInput(0);
 
         CANDeviceFinder canDeviceFinder = new CANDeviceFinder();
         logger.info ("CANDEVICEfinder found {}", canDeviceFinder.getDeviceList());
