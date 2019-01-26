@@ -37,7 +37,7 @@ public class IntakeSubsystem extends Subsystem {
         // Put code here to be run every loop
         SmartDashboard.putNumber("Counter", counter.get());
         SmartDashboard.putBoolean("Did we see a line?", readLineSensor());
-        SmartDashboard.putBoolean("Direct Line Sensor input", readLineSensorDirectly());
+        //SmartDashboard.putBoolean("Direct Line Sensor input", readLineSensorDirectly());
         if(readLineSensorDirectly()){
             resetLineSensor();
         }
