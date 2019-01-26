@@ -1,6 +1,9 @@
 package org.usfirst.frc3620.robot;
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
+import com.revrobotics.CANSparkMax.InputMode;
+import com.revrobotics.CANSparkMaxLowLevel.ConfigParameter;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import org.slf4j.Logger;
@@ -34,16 +37,16 @@ public class RobotMap {
     @SuppressWarnings("deprecation")
 	public static void init() {
         CANSparkMax driveSubsystemMaxLeftA = new CANSparkMax(1, MotorType.kBrushless);
-        driveSubsystemMaxLeftA.setInverted(false);
+        resetControllerToKnownState(driveSubsystemMaxLeftA);
 
         CANSparkMax driveSubsystemMaxLeftB = new CANSparkMax(2, MotorType.kBrushless);
-        driveSubsystemMaxLeftB.setInverted(false);
+        resetControllerToKnownState(driveSubsystemMaxLeftB);
 
         CANSparkMax driveSubsystemMaxRightA = new CANSparkMax(3, MotorType.kBrushless);
-        driveSubsystemMaxRightA.setInverted(false);
+        resetControllerToKnownState(driveSubsystemMaxRightA);
 
         CANSparkMax driveSubsystemMaxRightB = new CANSparkMax(4, MotorType.kBrushless);
-        driveSubsystemMaxRightB.setInverted(false);
+        resetControllerToKnownState(driveSubsystemMaxRightB);
 
         SpeedControllerGroup groupLeft = new SpeedControllerGroup(driveSubsystemMaxLeftA, driveSubsystemMaxLeftB);
         SpeedControllerGroup groupRight = new SpeedControllerGroup(driveSubsystemMaxRightA, driveSubsystemMaxRightB);
@@ -64,7 +67,16 @@ public class RobotMap {
             // instantiate Pneumatics here
         }
 
+        
     }
 
-
+    static void resetControllerToKnownState(CANSparkMax x) {
+		x.setInverted(false);
+        //x.setIdleMode(IdleMode.kCoast);
+        //x.setMotorType(MotorType.kBrushless);
+		//x.setRampRate(1);
+		//x.setParameter(ConfigParameter.kOutputMin_0, 0);
+        //x.setParameter(ConfigParameter.kOutputMax_0, 1);
+        x.setSmartCurrentLimit(50);
+    }
 }
