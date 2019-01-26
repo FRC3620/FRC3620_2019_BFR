@@ -50,8 +50,9 @@ public class IntakeSubsystem extends Subsystem {
         intakeRollerBottom.set(0);
     }
         
-    public double readEncoder(){
-        ultraSonicZoom.getRangeInches();
+    public double readUltrasonicEncoder(){
+        double rv = ultraSonicZoom.getRangeInches();
+        return rv;
     }
     
     public void TrashIn(){
