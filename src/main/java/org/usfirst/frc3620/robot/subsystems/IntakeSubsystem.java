@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.Counter;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /**
  *
  */
@@ -21,7 +22,7 @@ public class IntakeSubsystem extends Subsystem {
     private final Victor intakeRollerBottom = RobotMap.intakeSubsystemLowerMotor;
     private final Victor intakeRollerMiddle = RobotMap.intakeSubsystemMiddleMotor;
     private final DigitalInput lineSensor = RobotMap.lineSensor;
-    private final Counter counter = new Counter(RobotMap.lineSensor);
+    private final Counter counter = RobotMap.counter;
     Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
     
     @Override
@@ -33,6 +34,12 @@ public class IntakeSubsystem extends Subsystem {
     @Override
     public void periodic() {
         // Put code here to be run every loop
+        SmartDashboard.putNumber("Counter", counter.get());
+        SmartDashboard.putBoolean("Did we see a line?", readLineSensor());
+        SmartDashboard.putBoolean("Direct Line Sensor input", readLineSensorDirectly());
+        if(readLineSensorDirectly()){
+            resetLineSensor();
+        }
     }
     
     // Put methods for controlling this subsystem
@@ -73,5 +80,9 @@ public class IntakeSubsystem extends Subsystem {
 
     public void resetLineSensor(){
         counter.reset();
+    }
+
+    public boolean readLineSensorDirectly(){ //if we see a line, this outputs FALSE
+        return lineSensor.get();
     }
 }

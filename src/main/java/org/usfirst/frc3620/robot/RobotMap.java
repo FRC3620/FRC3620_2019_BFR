@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.Counter;
 
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
@@ -26,6 +27,7 @@ public class RobotMap {
     public static Victor intakeSubsystemLowerMotor;
     public static Victor intakeSubsystemMiddleMotor;
     public static DigitalInput lineSensor;
+    public static Counter counter; 
     static Logger logger = EventLogging.getLogger(RobotMap.class, Level.INFO);
 
 
@@ -62,6 +64,8 @@ public class RobotMap {
 
         //initiating line sensor
         lineSensor = new DigitalInput(0);
+        counter = new Counter(lineSensor);
+        counter.setUpSourceEdge(false, true);
 
         CANDeviceFinder canDeviceFinder = new CANDeviceFinder();
         logger.info ("CANDEVICEfinder found {}", canDeviceFinder.getDeviceList());
