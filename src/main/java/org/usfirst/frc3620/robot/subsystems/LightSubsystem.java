@@ -33,9 +33,9 @@ public class LightSubsystem extends Subsystem {
 
     /**
      * @author Nick Zimanski (SlippStream)
-     * @version 1/25/19
+     * @version 1/26/19
      * 
-     * Created subsystem and populated it with basic functionalities
+     * Added autonomous and teleop functions
      */
     
     HashMap<Integer, Double> lightsPriority = new HashMap<Integer, Double>();
@@ -60,6 +60,15 @@ public class LightSubsystem extends Subsystem {
             //checks alliance color and strobes it
             if (teamColor == Alliance.Red) {lightsPriority.put(0, Color.STROBE_TEAMCOLOR2.value);}
             else if (teamColor == Alliance.Blue) {lightsPriority.put(0, Color.STROBE_TEAMCOLOR1.value);}
+
+            if (newMode == RobotMode.AUTONOMOUS) {
+                //fires if the robot initialized into auto from disabled
+                lightsPriority.put(1, Color.LARSONSCANNER_GRAY.value);
+            }
+            else if (newMode == RobotMode.TELEOP) {
+                //fires if the robot initialized into teleop from disabled
+                lightsPriority.remove(1, Color.LARSONSCANNER_GRAY.value);
+            }
         }
     }
 
