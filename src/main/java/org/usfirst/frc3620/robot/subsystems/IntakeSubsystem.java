@@ -18,14 +18,12 @@ public class IntakeSubsystem extends Subsystem {
     private final Victor intakeRollerTop = RobotMap.intakeSubsystemUpperMotor;
     private final Victor intakeRollerBottom = RobotMap.intakeSubsystemLowerMotor;
     private final Victor intakeRollerMiddle = RobotMap.intakeSubsystemMiddleMotor;
-    private final Ultrasonic ultraSonicZoom = new Ultrasonic(0,1);
     Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
     
     @Override
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
         // setDefaultCommand(...);
-        ultraSonicZoom.setAutomaticMode(true);
     }
 
     @Override
@@ -49,11 +47,7 @@ public class IntakeSubsystem extends Subsystem {
         intakeRollerTop.set(0);
         intakeRollerBottom.set(0);
     }
-        
-    public double readUltrasonicEncoder(){
-        double rv = ultraSonicZoom.getRangeInches();
-        return rv;
-    }
+    
     
     public void TrashIn(){
         intakeRollerTop.set(-1);
