@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 import org.usfirst.frc3620.misc.XBoxConstants;
+import org.usfirst.frc3620.misc.Hand;
 import org.usfirst.frc3620.robot.commands.*;
 
 /**
@@ -41,16 +42,30 @@ public class OI {
     // button.whenReleased(new ExampleCommand());
 
     private Joystick driverJoystick;
+    private Joystick operatorJoystick;
+    private JoystickButton button_a;
 
     public OI() {
         //to interface with joysticks, no special initiallization nessessary
         driverJoystick = new Joystick(0);
+        operatorJoystick = new Joystick(1);
+        button_a = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_A);
+
+        Robot.rumbleSubsystemDriver.setController(driverJoystick);
+        Robot.rumbleSubsystemOperator.setController(operatorJoystick);
 
         // map buttons to Joystick buttons here
     }
 
     public Joystick getDriverJoystick() {
         return driverJoystick;
+    }
+    public Joystick getOperatorJoystick() {
+        return operatorJoystick;
+    }
+    
+    static {
+         SmartDashboard.putData("Rumble Command", new RumbleCommand(Robot.rumbleSubsystemDriver, Hand.BOTH, 1f, 3.0));
     }
 
     public double computeSquareWithDeadband (double position, double deadband) {
