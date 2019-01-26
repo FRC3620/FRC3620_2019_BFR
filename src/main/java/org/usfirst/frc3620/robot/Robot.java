@@ -32,6 +32,7 @@ public class Robot extends TimedRobot {
 
     // declare Subsystems here
     public static DriveSubsystem driveSubsystem;
+    public static LightSubsystem lightSubsystem;
 
     /**
      * This function is run when the robot is first started up and should be
@@ -48,6 +49,7 @@ public class Robot extends TimedRobot {
         // set up subsystems
         // initalized drive subsystem, which control motors to move robot
         driveSubsystem = new DriveSubsystem();
+        lightSubsystem = new LightSubsystem();
 
         // OI must be constructed after subsystems. If the OI creates Commands
         //(which it very likely will), subsystems are not guaranteed to be
@@ -145,7 +147,9 @@ public class Robot extends TimedRobot {
 		if (currentRobotMode == RobotMode.INIT) {
 			// RobotMap.checkTheCANBus();
 		}
-		
+        
+        lightSubsystem.modeChange(newMode, currentRobotMode);
+        
 		previousRobotMode = currentRobotMode;
 		currentRobotMode = newMode;
 

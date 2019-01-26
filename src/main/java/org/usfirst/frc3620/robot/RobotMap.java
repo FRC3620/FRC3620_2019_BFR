@@ -9,8 +9,13 @@ import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
+import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.Spark;
+
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
@@ -18,8 +23,17 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
  * the wiring easier and significantly reduces the number of magic numbers
  * floating around.
  */
+
+ /**
+  * @author Nick Zimanski (SlippStream)
+  * @version 1/25/19
+  *
+  * Added light subsystem functionality, initialized to PWM 9
+  */
 public class RobotMap {
     public static DifferentialDrive driveSubsystemDifferentialDrive;
+    public static SpeedController lightSubsystemLightPWM;
+
 
     static Logger logger = EventLogging.getLogger(RobotMap.class, Level.INFO);
 
@@ -52,6 +66,10 @@ public class RobotMap {
 
         //new code
 
+        lightSubsystemLightPWM = new Spark(5);
+		LiveWindow.addActuator("LightSubsystem", "LightPWM", (Spark) lightSubsystemLightPWM);
+        lightSubsystemLightPWM.setInverted(false);
+        
         CANDeviceFinder canDeviceFinder = new CANDeviceFinder();
         logger.info ("CANDEVICEfinder found {}", canDeviceFinder.getDeviceList());
 
