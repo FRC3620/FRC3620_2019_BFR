@@ -35,7 +35,7 @@ public class DriveSubsystem extends Subsystem {
     public void arcadeDrive (double y, double x) {
         //sends values to motor
         //!!! Make sure robot is in open area, drive carefully
-        differentialDrive.arcadeDrive(y, x);//arcade drive squares inputs by itself
+        differentialDrive.arcadeDrive(y, x);
     }
     
     /**

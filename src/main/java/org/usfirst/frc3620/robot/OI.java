@@ -53,31 +53,23 @@ public class OI {
         return driverJoystick;
     }
 
-    public double computeSquareWithDeadband (double position, double deadband) {
+    public double computeDeadband (double position, double deadband) {
         if (Math.abs(position) < deadband) {
             return 0;
         }
 
-    	// double rv = position * position; //SQUARE
-    	// if(position < 0) {
-    	// 	rv = -rv;
-    	// }
-        // return rv;
         //values eventually passed to arcadeDrive, which squares the values itself
-    	if(position < 0) {
-    		position = -position;
-    	}
     	return position;
     }
 
     public double getLeftHorizontalJoystickSquared() {
         //gets value from x or y axis on joysticks on gamepad. In this istance, Left X
-    	return computeSquareWithDeadband(driverJoystick.getRawAxis(XBoxConstants.AXIS_LEFT_X), 0.2);
+    	return computeDeadband(driverJoystick.getRawAxis(XBoxConstants.AXIS_LEFT_X), 0.2);
     }
 
     public double getRightVerticalJoystickSquared() {
         //gets value from x or y axis on joysticks on gamepad. In this istance, Right Y
-        return computeSquareWithDeadband(driverJoystick.getRawAxis(XBoxConstants.AXIS_RIGHT_Y), 0.2);
+        return computeDeadband(driverJoystick.getRawAxis(XBoxConstants.AXIS_RIGHT_Y), 0.2);
     }
 
 }
