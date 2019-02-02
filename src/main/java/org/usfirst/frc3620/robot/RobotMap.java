@@ -64,7 +64,7 @@ public class RobotMap {
     public static CANSparkMax driveSubsystemMaxLeftB;
     public static CANSparkMax driveSubsystemMaxRightA;
     public static CANSparkMax driveSubsystemMaxRightB;
-    public static CANDeviceFinder CANFinder;
+    public static CANDeviceFinder canDeviceFinder;
 
     static Logger logger = EventLogging.getLogger(RobotMap.class, Level.INFO);
     
@@ -75,7 +75,7 @@ public class RobotMap {
 
         SpeedControllerGroup groupLeft;
         SpeedControllerGroup groupRight;
-        if(CANFinder.isMAXPresent(1)) {
+        if(canDeviceFinder.isMAXPresent(1)) {
             CANSparkMax driveSubsystemMaxLeftA = new CANSparkMax(1, MotorType.kBrushless);
             resetMaxToKnownState(driveSubsystemMaxLeftA);
 
