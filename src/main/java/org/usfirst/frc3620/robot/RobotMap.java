@@ -4,6 +4,8 @@ import com.revrobotics.CANEncoder;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMax.InputMode;
@@ -14,8 +16,6 @@ import org.slf4j.Logger;
 import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
 import org.usfirst.frc3620.misc.CANDeviceFinder;
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Relay;
@@ -23,7 +23,6 @@ import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
-import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.Counter;
@@ -46,11 +45,16 @@ public class RobotMap {
     
     public static DigitalInput lineSensor;
     public static Counter counter; 
+
+    public static CANEncoder leftsideEncoder, rightsideEncoder;
+    public static CANSparkMax driveSubsystemMaxLeftA;
+    public static CANSparkMax driveSubsystemMaxLeftB;
+    public static CANSparkMax driveSubsystemMaxRightA;
+    public static CANSparkMax driveSubsystemMaxRightB;
     public static CANDeviceFinder CANFinder;
 
     static Logger logger = EventLogging.getLogger(RobotMap.class, Level.INFO);
-    public static CANEncoder leftsideEncoder, rightsideEncoder;
-
+    
     @SuppressWarnings("deprecation")
 	public static void init() {
         CANDeviceFinder canDeviceFinder = new CANDeviceFinder();
@@ -77,7 +81,9 @@ public class RobotMap {
 
             groupLeft = new SpeedControllerGroup(driveSubsystemMaxLeftA, driveSubsystemMaxLeftB);
             groupRight = new SpeedControllerGroup(driveSubsystemMaxRightA, driveSubsystemMaxRightB);
+
         } else {
+
             WPI_TalonSRX driveSubsystemLeftSpeedControllerA = new WPI_TalonSRX(1);
             resetTalonToKnownState(driveSubsystemLeftSpeedControllerA);
 
@@ -99,6 +105,7 @@ public class RobotMap {
             groupLeft = new SpeedControllerGroup(driveSubsystemLeftSpeedControllerA, driveSubsystemLeftSpeedControllerB, driveSubsystemLeftSpeedControllerC);
             groupRight = new SpeedControllerGroup(driveSubsystemRightSpeedControllerA, driveSubsystemRightSpeedControllerB, driveSubsystemRightSpeedControllerC);
         }
+        
         driveSubsystemDifferentialDrive = new DifferentialDrive(groupLeft, groupRight);
         driveSubsystemDifferentialDrive.setName("DriveSubsystem", "Drive");
         driveSubsystemDifferentialDrive.setSafetyEnabled(true);
@@ -122,7 +129,6 @@ public class RobotMap {
             // instantiate Pneumatics here
         }
 
-        
     }
 
     static void resetMaxToKnownState (CANSparkMax x) {

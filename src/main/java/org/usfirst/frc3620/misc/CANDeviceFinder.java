@@ -57,7 +57,7 @@ public class CANDeviceFinder {
      * meant to be used once initially (and not periodically) since this steals
      * cached messages from the robot API.
      */
-    void find() {
+    public void find() {
         deviceList.clear();
         pdpIsPresent = false;
         maxs.clear();

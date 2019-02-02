@@ -55,6 +55,8 @@ public class DriveSubsystem extends Subsystem {
         //sends values to motor
         //!!! Make sure robot is in open area, drive carefully
         differentialDrive.arcadeDrive(y, x);
+        SmartDashboard.putNumber("Y diff. drive", y);
+        SmartDashboard.putNumber("X diff. drive", x);
     }
     
 
