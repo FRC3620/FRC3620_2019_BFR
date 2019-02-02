@@ -6,7 +6,6 @@ import org.slf4j.Logger;
 import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
 import org.usfirst.frc3620.robot.RobotMap;
-import org.usfirst.frc3620.misc.BlinkinDict;
 import org.usfirst.frc3620.misc.BlinkinDict.Color;
 import org.usfirst.frc3620.misc.RobotMode;
 
@@ -33,7 +32,7 @@ public class LightSubsystem extends Subsystem {
 
     /**
      * @author Nick Zimanski (SlippStream)
-     * @version 1/26/19
+     * @version 2/02/19
      * 
      * Added autonomous and teleop functions
      */
@@ -72,6 +71,15 @@ public class LightSubsystem extends Subsystem {
         }
     }
 
+    public void setEffect(Integer priority, Color color, Float duration) {
+        lightsPriority.put(priority, color.value);
+        //WIP DO NOT USE
+    }
+
+    public void setEffect(Integer priority, Color color) {
+        //WIP DO NOT USE
+    }
+
     @Override
     public void initDefaultCommand() {
         //Unused
@@ -89,11 +97,17 @@ public class LightSubsystem extends Subsystem {
         //constantly updates team color
         teamColor = DriverStation.getInstance().getAlliance();
     	
-        //Checks priority ladder
+        /**
+         * Checks priority ladder.
+         * Goes through all current light effects, displaying the one 
+         * with the highest priority (0 is highest)
+         */ 
     	if (lightsPriority.get(0) != null) {lightPWM.set(lightsPriority.get(0));}
     	else if (lightsPriority.get(1) != null) {lightPWM.set(lightsPriority.get(1));}
     	else if (lightsPriority.get(2) != null) {lightPWM.set(lightsPriority.get(2));}
-    	else if (lightsPriority.get(3) != null) {lightPWM.set(lightsPriority.get(3));}
+        else if (lightsPriority.get(3) != null) {lightPWM.set(lightsPriority.get(3));}
+        else if (lightsPriority.get(4) != null) {lightPWM.set(lightsPriority.get(4));}
+        else if (lightsPriority.get(5) != null) {lightPWM.set(lightsPriority.get(5));}
     }
 
     // Put methods for controlling this subsystem
