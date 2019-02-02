@@ -75,11 +75,16 @@ public class OI {
             return 0;
         }
 
-    	double rv = position * position;
+    	// double rv = position * position; //SQUARE
+    	// if(position < 0) {
+    	// 	rv = -rv;
+    	// }
+        // return rv;
+        //values eventually passed to arcadeDrive, which squares the values itself
     	if(position < 0) {
-    		rv = -rv;
+    		position = -position;
     	}
-    	return rv;
+    	return position;
     }
 
     public double getLeftHorizontalJoystickSquared() {
