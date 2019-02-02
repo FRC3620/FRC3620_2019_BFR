@@ -65,8 +65,8 @@ public class OI {
     }
     
     static {
-        SmartDashboard.putData("Rumble both", new RumbleCommand(Robot.rumbleSubsystemDriver, Hand.BOTH, 1f, 60f));
-        SmartDashboard.putData("Rumble left", new RumbleCommand(Robot.rumbleSubsystemDriver, Hand.LEFT, 0.5f, 3.0f));
+        SmartDashboard.putData("Rumble both", new RumbleCommand(Robot.rumbleSubsystemDriver, Hand.BOTH, 0.2f, 60f));
+        SmartDashboard.putData("Rumble left", new RumbleCommand(Robot.rumbleSubsystemDriver, Hand.LEFT, 0.2f, 3.0f));
     }
 
     public double computeSquareWithDeadband (double position, double deadband) {

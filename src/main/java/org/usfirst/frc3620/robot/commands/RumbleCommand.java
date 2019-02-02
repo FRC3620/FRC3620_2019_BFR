@@ -19,13 +19,14 @@ public class RumbleCommand extends Command {
     public Float rumbleIntensity; // 0.1f to 1f
     public Float rumbleDuration; // In seconds
 
+    private Hand rumbleHandDefault = Hand.BOTH;
+    private Float rumbleIntensityDefault = 1f;
+    private Float rumbleDurationDefault = 3f;
+
     private Timer timer = new Timer();
 	
     public RumbleCommand(RumbleSubsystem subsystem, Hand hand, Float intensity, Float duration) {
         requires(subsystem); //requires the subsystem provided by caller
-        if (hand == null) {hand = Hand.BOTH;} //defaults to both hands
-        if (intensity == null) {intensity = 1f;} //defaults to full intensity
-        if (duration == null) {duration = 3.0f;} // defaults to 3 seconds of rumble
 
         rumbleSubsystem = subsystem;
         rumbleDuration = duration;
@@ -59,8 +60,15 @@ public class RumbleCommand extends Command {
     protected void initialize() {
         EventLogging.commandMessage(logger);
 
+        //sets the defaults
+        if (rumbleDuration == null) {rumbleDuration = rumbleDurationDefault;}
+        if (rumbleHand == null) {rumbleHand = rumbleHandDefault;}
+        if (rumbleIntensity == null) {rumbleIntensity = rumbleIntensityDefault;}
+
         //Clears the rumble
         rumbleSubsystem.clearRumble();
+
+        //Sets the rumble and starts the timer
         rumbleSubsystem.setRumble(rumbleHand, rumbleIntensity);
         timer.reset();
         timer.start();

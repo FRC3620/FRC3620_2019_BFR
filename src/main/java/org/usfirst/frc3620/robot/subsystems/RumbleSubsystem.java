@@ -20,6 +20,20 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  * @author Nick Zimanski (SlippStream)
  * @version 2/01/19
  * 
+ * READ ME:
+ * 
+ * To make the controller run from another file,
+ * invoke it by instantiating one of the following:
+ * 
+ * new RumbleCommand([SUBSYSTEM], [HAND], [INTENSITY], [DURATION])
+ * new RumbleCommand([SUBSYSTEM], [INTENSITY], [DURATION])
+ * new RumbleCommand([SUBSYSTEM])
+ * 
+ * where
+ * SUBSYSTEM is Robot.rumbleSubsystemDriver OR Robot.rumbleSubsystemOperator (decides which controller to rumble)
+ * HAND is Hand.RIGHT OR Hand.LEFT OR Hand.BOTH (decides which side of the controller to rumble (default is BOTH))
+ * INTENSITY is a float between 0.1f and 1f (decides how hard to rumble the controller -- greater is harder (default is 1f))
+ * DURATION is a positive float in seconds (decides how long to rumble the controller (default is 3f))
  * 
  */
 public class RumbleSubsystem extends Subsystem {
