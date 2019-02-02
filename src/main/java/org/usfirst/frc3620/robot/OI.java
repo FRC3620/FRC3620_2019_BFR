@@ -55,7 +55,21 @@ public class OI {
         Robot.rumbleSubsystemOperator.setController(operatorJoystick);
 
         // map buttons to Joystick buttons here
-    }
+
+            //Declare buttons
+            Button inTakeIn = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_RIGHT_BUMPER);
+            Button inTakeOut = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_LEFT_BUMPER);
+            Button trashIn = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_LEFT_STICK);
+            Button conveyorL = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_X);
+            Button conveyorR = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_Y);
+
+            //buttons run commands
+            inTakeIn.toggleWhenPressed(new IntakeCommand());
+            inTakeOut.toggleWhenPressed(new OutTakeCommand());
+            trashIn.toggleWhenPressed(new TrashInCommand());
+            conveyorL.whileHeld(new TrashLeftCommand());
+            conveyorR.whileHeld(new TrashRightCommand());
+        }
 
     public Joystick getDriverJoystick() {
         return driverJoystick;
@@ -69,26 +83,23 @@ public class OI {
         SmartDashboard.putData("Rumble left", new RumbleCommand(Robot.rumbleSubsystemDriver, Hand.LEFT, 0.2f, 3.0f));
     }
 
-    public double computeSquareWithDeadband (double position, double deadband) {
+    public double computeDeadband (double position, double deadband) {
         if (Math.abs(position) < deadband) {
             return 0;
         }
 
-    	double rv = position * position;
-    	if(position < 0) {
-    		rv = -rv;
-    	}
-    	return rv;
+        //values eventually passed to arcadeDrive, which squares the values itself
+    	return position;
     }
 
     public double getLeftHorizontalJoystickSquared() {
         //gets value from x or y axis on joysticks on gamepad. In this istance, Left X
-    	return computeSquareWithDeadband(driverJoystick.getRawAxis(XBoxConstants.AXIS_LEFT_X), 0.2);
+    	return computeDeadband(driverJoystick.getRawAxis(XBoxConstants.AXIS_LEFT_X), 0.2);
     }
 
     public double getRightVerticalJoystickSquared() {
         //gets value from x or y axis on joysticks on gamepad. In this istance, Right Y
-        return computeSquareWithDeadband(driverJoystick.getRawAxis(XBoxConstants.AXIS_RIGHT_Y), 0.2);
+        return computeDeadband(driverJoystick.getRawAxis(XBoxConstants.AXIS_RIGHT_Y), 0.2);
     }
-
+     
 }
