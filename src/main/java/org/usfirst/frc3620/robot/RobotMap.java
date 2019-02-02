@@ -55,15 +55,19 @@ public class RobotMap {
     public static WPI_TalonSRX conveyorBeltMotorL;
     public static WPI_TalonSRX conveyorBeltMotorR;
     public static WPI_TalonSRX conveyorBeltMotorC;
-    
-    public static DigitalInput lineSensor;
-    public static Counter counter; 
 
-    public static CANEncoder leftsideEncoder, rightsideEncoder;
+    public static DigitalInput lineSensor;
+    public static DigitalInput liftLimitSwitchTop;
+    public static DigitalInput liftLimitSwitchBottom;
+    public static Counter counter; 
+    public static Solenoid liftSubsystemBrake;
+
+    public static CANEncoder leftsideEncoder, rightsideEncoder, liftEncoder;
     public static CANSparkMax driveSubsystemMaxLeftA;
     public static CANSparkMax driveSubsystemMaxLeftB;
     public static CANSparkMax driveSubsystemMaxRightA;
     public static CANSparkMax driveSubsystemMaxRightB;
+    public static CANSparkMax liftSubsystemMax;
     public static CANDeviceFinder canDeviceFinder;
 
     static Logger logger = EventLogging.getLogger(RobotMap.class, Level.INFO);
@@ -73,12 +77,17 @@ public class RobotMap {
         CANDeviceFinder canDeviceFinder = new CANDeviceFinder();
         logger.info ("CANDEVICEfinder found {}", canDeviceFinder.getDeviceList());
 
+        CANSparkMax liftSubsystemMax = new CANSparkMax(5, MotorType.kBrushless);
+        resetMaxToKnownState(liftSubsystemMax);
+        liftEncoder = liftSubsystemMax.getEncoder();
+        liftLimitSwitchTop = new DigitalInput(1);
+        liftLimitSwitchBottom = new DigitalInput(2);
+
         SpeedControllerGroup groupLeft;
         SpeedControllerGroup groupRight;
         if(canDeviceFinder.isMAXPresent(1)) {
             CANSparkMax driveSubsystemMaxLeftA = new CANSparkMax(1, MotorType.kBrushless);
             resetMaxToKnownState(driveSubsystemMaxLeftA);
-
             leftsideEncoder = driveSubsystemMaxLeftA.getEncoder();
 
             CANSparkMax driveSubsystemMaxLeftB = new CANSparkMax(2, MotorType.kBrushless);
@@ -86,7 +95,6 @@ public class RobotMap {
 
             CANSparkMax driveSubsystemMaxRightA = new CANSparkMax(3, MotorType.kBrushless);
             resetMaxToKnownState(driveSubsystemMaxRightA);
-
             rightsideEncoder = driveSubsystemMaxRightA.getEncoder();
 
             CANSparkMax driveSubsystemMaxRightB = new CANSparkMax(4, MotorType.kBrushless);
@@ -128,9 +136,9 @@ public class RobotMap {
         driveSubsystemDifferentialDrive.setExpiration(0.1);
         driveSubsystemDifferentialDrive.setMaxOutput(1.0);
 
-        conveyorBeltMotorL = new WPI_TalonSRX(1);
-        conveyorBeltMotorR = new WPI_TalonSRX(2);
-        conveyorBeltMotorC = new WPI_TalonSRX(3);
+        conveyorBeltMotorL = new WPI_TalonSRX(7);
+        conveyorBeltMotorR = new WPI_TalonSRX(8);
+        conveyorBeltMotorC = new WPI_TalonSRX(9);
 
         intakeSubsystemUpperMotor = new Victor(4);
         intakeSubsystemLowerMotor = new Victor(5);
@@ -147,6 +155,7 @@ public class RobotMap {
 
         if (canDeviceFinder.isPCMPresent(0)) {
             // instantiate Pneumatics here
+            liftSubsystemBrake = new Solenoid(1);
         }
 
     }

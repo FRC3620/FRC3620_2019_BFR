@@ -33,12 +33,11 @@ public class Robot extends TimedRobot {
     // declare Subsystems here
     public static DriveSubsystem driveSubsystem;
     public static LightSubsystem lightSubsystem;
+    public static LiftSubsystem liftSubsystem;
+    public static IntakeSubsystem intakeSubsystem;
+    public static TrashSubsystem trashSubsystem;
     public static RumbleSubsystem rumbleSubsystemDriver;
     public static RumbleSubsystem rumbleSubsystemOperator;
-
-    public static IntakeSubsystem intakeSubsystem;
-
-    public static TrashSubsystem trashSubsystem;
 
     /**
      * This function is run when the robot is first started up and should be
@@ -58,6 +57,7 @@ public class Robot extends TimedRobot {
         lightSubsystem = new LightSubsystem();
         intakeSubsystem = new IntakeSubsystem();
         trashSubsystem = new TrashSubsystem();
+        liftSubsystem = new LiftSubsystem();
         rumbleSubsystemDriver = new RumbleSubsystem();
         rumbleSubsystemOperator = new RumbleSubsystem();
         
