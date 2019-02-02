@@ -36,9 +36,9 @@ public class RobotMap {
         CANFinder = new CANDeviceFinder();
         logger.info("CAN Device Finder Instantitated: {}",CANFinder.getDeviceList());
         
-        SpeedControllerGroup groupLeft
-        SpeedControllerGroup groupRight
-        if(CANFinder.isMAXPresent()) {
+        SpeedControllerGroup groupLeft;
+        SpeedControllerGroup groupRight;
+        if(CANFinder.isMAXPresent(1)) {
             CANSparkMax driveSubsystemMaxLeftA = new CANSparkMax(1, MotorType.kBrushless);
             driveSubsystemMaxLeftA.setInverted(false);
 
@@ -54,24 +54,32 @@ public class RobotMap {
             groupLeft = new SpeedControllerGroup(driveSubsystemMaxLeftA, driveSubsystemMaxLeftB);
             groupRight = new SpeedControllerGroup(driveSubsystemMaxRightA, driveSubsystemMaxRightB);
         } else {
-            Victor driveSubsystemLeftSpeedControllerA = new Victor(0);
+            Victor driveSubsystemLeftSpeedControllerA = new Victor(1);
             driveSubsystemLeftSpeedControllerA.setName("DriveSubsystem", "LeftA");
             driveSubsystemLeftSpeedControllerA.setInverted(false);
 
-            Victor driveSubsystemLeftSpeedControllerB = new Victor(1);
+            Victor driveSubsystemLeftSpeedControllerB = new Victor(2);
             driveSubsystemLeftSpeedControllerB.setName("DriveSubsystem", "LeftB");
             driveSubsystemLeftSpeedControllerB.setInverted(false);
 
-            Victor driveSubsystemRightSpeedControllerA = new Victor(2);
+            Victor driveSubsystemLeftSpeedControllerC = new Victor(3);
+            driveSubsystemLeftSpeedControllerC.setName("DriveSubsystem", "LeftC");
+            driveSubsystemLeftSpeedControllerC.setInverted(false);
+
+            Victor driveSubsystemRightSpeedControllerA = new Victor(4);
             driveSubsystemRightSpeedControllerA.setName("DriveSubsystem", "RightA");
             driveSubsystemRightSpeedControllerA.setInverted(false);
-
-            Victor driveSubsystemRightSpeedControllerB = new Victor(3);
+            
+            Victor driveSubsystemRightSpeedControllerB = new Victor(5);
             driveSubsystemRightSpeedControllerB.setName("DriveSubsystem", "RightB");
             driveSubsystemRightSpeedControllerB.setInverted(false);
 
-            groupLeft = new SpeedControllerGroup(driveSubsystemLeftSpeedControllerA, driveSubsystemLeftSpeedControllerB);
-            groupRight = new SpeedControllerGroup(driveSubsystemRightSpeedControllerA, driveSubsystemRightSpeedControllerB);
+            Victor driveSubsystemRightSpeedControllerC = new Victor(6);
+            driveSubsystemRightSpeedControllerC.setName("DriveSubsystem", "RightC");
+            driveSubsystemRightSpeedControllerC.setInverted(false);
+
+            groupLeft = new SpeedControllerGroup(driveSubsystemLeftSpeedControllerA, driveSubsystemLeftSpeedControllerB, driveSubsystemLeftSpeedControllerC);
+            groupRight = new SpeedControllerGroup(driveSubsystemRightSpeedControllerA, driveSubsystemRightSpeedControllerB, driveSubsystemRightSpeedControllerC);
         }
         driveSubsystemDifferentialDrive = new DifferentialDrive(groupLeft, groupRight);
         driveSubsystemDifferentialDrive.setName("DriveSubsystem", "Drive");
