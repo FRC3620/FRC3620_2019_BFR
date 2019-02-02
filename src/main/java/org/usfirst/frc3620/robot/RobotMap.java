@@ -1,5 +1,7 @@
 package org.usfirst.frc3620.robot;
 
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
@@ -31,6 +33,7 @@ public class RobotMap {
     public static CANSparkMax driveSubsystemMaxRightA;
     public static CANSparkMax driveSubsystemMaxRightB;
     public static CANDeviceFinder CANFinder;
+
     @SuppressWarnings("deprecation")
 	public static void init() {
         CANFinder = new CANDeviceFinder();
@@ -54,29 +57,29 @@ public class RobotMap {
             groupLeft = new SpeedControllerGroup(driveSubsystemMaxLeftA, driveSubsystemMaxLeftB);
             groupRight = new SpeedControllerGroup(driveSubsystemMaxRightA, driveSubsystemMaxRightB);
         } else {
-            Victor driveSubsystemLeftSpeedControllerA = new Victor(1);
+            WPI_TalonSRX driveSubsystemLeftSpeedControllerA = new WPI_TalonSRX(1);
             driveSubsystemLeftSpeedControllerA.setName("DriveSubsystem", "LeftA");
             driveSubsystemLeftSpeedControllerA.setInverted(false);
 
-            Victor driveSubsystemLeftSpeedControllerB = new Victor(2);
+            WPI_VictorSPX driveSubsystemLeftSpeedControllerB = new WPI_VictorSPX(2);
             driveSubsystemLeftSpeedControllerB.setName("DriveSubsystem", "LeftB");
             driveSubsystemLeftSpeedControllerB.setInverted(false);
 
-            Victor driveSubsystemLeftSpeedControllerC = new Victor(3);
+            WPI_VictorSPX  driveSubsystemLeftSpeedControllerC = new WPI_VictorSPX (3);
             driveSubsystemLeftSpeedControllerC.setName("DriveSubsystem", "LeftC");
             driveSubsystemLeftSpeedControllerC.setInverted(false);
 
-            Victor driveSubsystemRightSpeedControllerA = new Victor(4);
+            WPI_TalonSRX  driveSubsystemRightSpeedControllerA = new WPI_TalonSRX (4);
             driveSubsystemRightSpeedControllerA.setName("DriveSubsystem", "RightA");
-            driveSubsystemRightSpeedControllerA.setInverted(false);
+            driveSubsystemRightSpeedControllerA.setInverted(true);
             
-            Victor driveSubsystemRightSpeedControllerB = new Victor(5);
+            WPI_VictorSPX  driveSubsystemRightSpeedControllerB = new WPI_VictorSPX (5);
             driveSubsystemRightSpeedControllerB.setName("DriveSubsystem", "RightB");
-            driveSubsystemRightSpeedControllerB.setInverted(false);
+            driveSubsystemRightSpeedControllerB.setInverted(true);
 
-            Victor driveSubsystemRightSpeedControllerC = new Victor(6);
+            WPI_VictorSPX  driveSubsystemRightSpeedControllerC = new WPI_VictorSPX (6);
             driveSubsystemRightSpeedControllerC.setName("DriveSubsystem", "RightC");
-            driveSubsystemRightSpeedControllerC.setInverted(false);
+            driveSubsystemRightSpeedControllerC.setInverted(true);
 
             groupLeft = new SpeedControllerGroup(driveSubsystemLeftSpeedControllerA, driveSubsystemLeftSpeedControllerB, driveSubsystemLeftSpeedControllerC);
             groupRight = new SpeedControllerGroup(driveSubsystemRightSpeedControllerA, driveSubsystemRightSpeedControllerB, driveSubsystemRightSpeedControllerC);
@@ -89,11 +92,7 @@ public class RobotMap {
 
         //new code
 
-        CANDeviceFinder canDeviceFinder = new CANDeviceFinder();
-        logger.info ("CANDEVICEfinder found {}", canDeviceFinder.getDeviceList());
-
-
-        if (canDeviceFinder.isPCMPresent(0)) {
+        if (CANFinder.isPCMPresent(0)) {
             // instantiate Pneumatics here
         }
 
