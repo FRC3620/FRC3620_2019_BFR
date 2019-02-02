@@ -1,6 +1,11 @@
 package org.usfirst.frc3620.misc;
 
 public class BlinkinDict {
+	/**
+	 * @author Nick Zimanski (SlippStream)
+	 * @version 1/25/19
+	 * On the Blinkin, color1 should be blue and color2 should be red
+	 */
 	public enum Color {
 		BLACK(0.99),
 		DARK_GRAY(0.97),

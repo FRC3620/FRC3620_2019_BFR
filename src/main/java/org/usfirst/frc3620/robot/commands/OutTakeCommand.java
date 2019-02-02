@@ -1,18 +1,19 @@
-package org.usfirst.frc3620.robot.commands;
-import edu.wpi.first.wpilibj.command.Command;
 
+package org.usfirst.frc3620.robot.commands;
+import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.command.Command;
+import org.usfirst.frc3620.robot.Robot;
 import org.slf4j.Logger;
 import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
 
-
 /**
  *
  */
-public class AutonomousCommand extends Command {
+public class OutTakeCommand extends Command {
 	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 	
-    public AutonomousCommand() {
+    public OutTakeCommand() {
         // requires(Robot.laserCannonSubsystem);
     }
 
@@ -25,7 +26,9 @@ public class AutonomousCommand extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
+        Robot.intakeSubsystem.intakeOut();
     }
+
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
@@ -36,13 +39,15 @@ public class AutonomousCommand extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
-    	EventLogging.commandMessage(logger);
+        EventLogging.commandMessage(logger);
+        Robot.intakeSubsystem.intakeOff();
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run or when cancelled by whileHeld
     @Override
     protected void interrupted() {
-    	EventLogging.commandMessage(logger);
+        EventLogging.commandMessage(logger);
+        Robot.intakeSubsystem.intakeOff();
     }
 }

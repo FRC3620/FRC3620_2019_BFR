@@ -32,6 +32,13 @@ public class Robot extends TimedRobot {
 
     // declare Subsystems here
     public static DriveSubsystem driveSubsystem;
+    public static LightSubsystem lightSubsystem;
+    public static RumbleSubsystem rumbleSubsystemDriver;
+    public static RumbleSubsystem rumbleSubsystemOperator;
+
+    public static IntakeSubsystem intakeSubsystem;
+
+    public static TrashSubsystem trashSubsystem;
 
     /**
      * This function is run when the robot is first started up and should be
@@ -48,7 +55,12 @@ public class Robot extends TimedRobot {
         // set up subsystems
         // initalized drive subsystem, which control motors to move robot
         driveSubsystem = new DriveSubsystem();
-
+        lightSubsystem = new LightSubsystem();
+        intakeSubsystem = new IntakeSubsystem();
+        trashSubsystem = new TrashSubsystem();
+        rumbleSubsystemDriver = new RumbleSubsystem();
+        rumbleSubsystemOperator = new RumbleSubsystem();
+        
         // OI must be constructed after subsystems. If the OI creates Commands
         //(which it very likely will), subsystems are not guaranteed to be
         // constructed yet. Thus, their requires() statements may grab null
@@ -97,6 +109,8 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopInit() {
+        RobotMap.CANFinder.find();
+        logger.info ("CAN bus = {}", RobotMap.CANFinder.getDeviceList());
         // This makes sure that the autonomous stops running when
         // teleop starts running. If you want the autonomous to
         // continue until interrupted by another command, remove
@@ -145,7 +159,9 @@ public class Robot extends TimedRobot {
 		if (currentRobotMode == RobotMode.INIT) {
 			// RobotMap.checkTheCANBus();
 		}
-		
+        
+        lightSubsystem.modeChange(newMode, currentRobotMode);
+        
 		previousRobotMode = currentRobotMode;
 		currentRobotMode = newMode;
 
