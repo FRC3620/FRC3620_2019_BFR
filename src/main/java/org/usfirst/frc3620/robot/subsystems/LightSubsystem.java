@@ -32,7 +32,7 @@ public class LightSubsystem extends Subsystem {
 
     /**
      * @author Nick Zimanski (SlippStream)
-     * @version 1/26/19
+     * @version 2/01/19
      * 
      * Added autonomous and teleop functions
      */
@@ -88,7 +88,11 @@ public class LightSubsystem extends Subsystem {
         //constantly updates team color
         teamColor = DriverStation.getInstance().getAlliance();
     	
-        //Checks priority ladder
+        /**
+         * Checks priority ladder.
+         * Goes through all current light effects, displaying the one 
+         * with the highest priority (0 is highest)
+         */ 
     	if (lightsPriority.get(0) != null) {lightPWM.set(lightsPriority.get(0));}
     	else if (lightsPriority.get(1) != null) {lightPWM.set(lightsPriority.get(1));}
     	else if (lightsPriority.get(2) != null) {lightPWM.set(lightsPriority.get(2));}

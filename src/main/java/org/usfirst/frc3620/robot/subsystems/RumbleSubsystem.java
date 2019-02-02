@@ -18,7 +18,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
  * @author Nick Zimanski (SlippStream)
- * @version 1/26/19
+ * @version 2/01/19
  * 
  * 
  */
@@ -29,10 +29,12 @@ public class RumbleSubsystem extends Subsystem {
 
     private Joystick controller;
 
+    //sets the controller for this instance of the subsystem
+    public void setController(Joystick newController) {controller = newController;} 
 
-    public void setController(Joystick newController) {controller = newController;} //
-
+    //Called from RumbleSubsystem. Directly sets controller rumble
     public void setRumble (Hand hand, Float intensity) {
+        //Switch/case for rumbling different sides of the controller
         switch (hand) {
             case LEFT:
                 controller.setRumble(RumbleType.kLeftRumble, intensity);
@@ -46,18 +48,11 @@ public class RumbleSubsystem extends Subsystem {
         }
     }
 
-    public void clearRumble (Hand hand) {
-        switch (hand) {
-            case LEFT:
-                controller.setRumble(RumbleType.kLeftRumble, 0);
-                break;
-            case RIGHT:
-                controller.setRumble(RumbleType.kRightRumble, 0);
-                break;
-            default:
-                controller.setRumble(RumbleType.kRightRumble, 0);
-                controller.setRumble(RumbleType.kLeftRumble, 0);
-        }
+    //Called from RumbleSubsystem. Clears the rumble of part or all of the controller.
+    public void clearRumble () {
+        //clears the rumble
+            controller.setRumble(RumbleType.kRightRumble, 0);
+            controller.setRumble(RumbleType.kLeftRumble, 0);
     }
 
 
