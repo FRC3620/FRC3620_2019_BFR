@@ -22,6 +22,7 @@ public class RumbleCommand extends Command {
     private Hand rumbleHandDefault = Hand.BOTH;
     private Float rumbleIntensityDefault = 1f;
     private Float rumbleDurationDefault = 3f;
+    private boolean continuous;
 
     private Timer timer = new Timer();
 	
@@ -32,17 +33,19 @@ public class RumbleCommand extends Command {
         rumbleDuration = duration;
         rumbleHand = hand;
         rumbleIntensity = intensity;
+
+        continuous = false;
     }
 
     public RumbleCommand(RumbleSubsystem subsystem, Float intensity, Float duration) {
         requires(subsystem); //requires the subsystem provided by caller
-        if (intensity == null) {intensity = 1f;} //defaults to full intensity
-        if (duration == null) {duration = 3.0f;} // defaults to 3 seconds of rumble
 
         rumbleSubsystem = subsystem;
         rumbleDuration = duration;
         rumbleHand = null;
         rumbleIntensity = intensity;
+
+        continuous = false;
     }
 
     public RumbleCommand(RumbleSubsystem subsystem) {
@@ -52,6 +55,19 @@ public class RumbleCommand extends Command {
         rumbleDuration = null;
         rumbleHand = null;
         rumbleIntensity = null;
+
+        continuous = false;
+    }
+
+    public RumbleCommand(RumbleSubsystem subsystem, Hand hand, Float intensity) {
+        requires(subsystem); //requires the subsystem provided by caller
+
+        rumbleSubsystem = subsystem;
+        rumbleDuration = 0.05f;
+        rumbleHand = hand;
+        rumbleIntensity = intensity;
+
+        continuous = true;
     }
 
 
@@ -70,19 +86,28 @@ public class RumbleCommand extends Command {
 
         //Sets the rumble and starts the timer
         rumbleSubsystem.setRumble(rumbleHand, rumbleIntensity);
-        timer.reset();
-        timer.start();
+        if (!continuous) {
+            timer.reset();
+            timer.start();
+        }
     }
 
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        if (timer.get() >= rumbleDuration) {rumbleSubsystem.clearRumble();}
+        if (!continuous) {
+            if (timer.get() >= rumbleDuration) {rumbleSubsystem.clearRumble();}
+        }
     }
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
+        //Finishes when either the command is continuous, or the timer is up
+        if (continuous) {return true;}
+        else {
+            if (timer.get() >= rumbleDuration) {return true;}
+        }
         return false;
     }
 
