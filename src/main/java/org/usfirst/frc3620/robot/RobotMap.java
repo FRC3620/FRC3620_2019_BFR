@@ -13,6 +13,8 @@ import org.slf4j.Logger;
 import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
 import org.usfirst.frc3620.misc.CANDeviceFinder;
+import com.kauailabs.navx.frc.AHRS;
+
 
 import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.Servo;
@@ -20,6 +22,11 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.DigitalInput;
+
+// -- 
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+
 
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
@@ -31,11 +38,16 @@ public class RobotMap {
     public static DifferentialDrive driveSubsystemDifferentialDrive;
 
     static Logger logger = EventLogging.getLogger(RobotMap.class, Level.INFO);
-
+    
+    public static DigitalInput exampleSubsystemDigitalInput0;
     public static CANSparkMax driveSubsystemMaxLeftA;
     public static CANSparkMax driveSubsystemMaxLeftB;
     public static CANSparkMax driveSubsystemMaxRightA;
     public static CANSparkMax driveSubsystemMaxRightB;
+    public static AHRS driveSubsystemAHRS;
+    public static DigitalInput practiceBotJumper;   //Added from 2018 code
+    public static DifferentialDrive driveSubsystemCANDifferentialDrive;
+
 
     @SuppressWarnings("deprecation")
 	public static void init() {
@@ -60,6 +72,8 @@ public class RobotMap {
         driveSubsystemDifferentialDrive.setExpiration(0.1);
         driveSubsystemDifferentialDrive.setMaxOutput(1.0);
 
+        LiveWindow.addActuator("DriveSubsystem", "CANDifferentialDrive", driveSubsystemCANDifferentialDrive);
+
         //new code
 
         CANDeviceFinder canDeviceFinder = new CANDeviceFinder();
@@ -70,7 +84,12 @@ public class RobotMap {
             // instantiate Pneumatics here
         }
 
-        
+        driveSubsystemAHRS = new AHRS(edu.wpi.first.wpilibj.SPI.Port.kMXP);
+		LiveWindow.addSensor("Drivetrain", "AHRS", driveSubsystemAHRS);
+
+        LiveWindow.addSensor("ExampleSubsystem", "Digital Input 0", exampleSubsystemDigitalInput0);
+
+
     }
 
     static void resetMaxToKnownState (CANSparkMax x) {

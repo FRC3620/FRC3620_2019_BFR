@@ -7,18 +7,36 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import com.kauailabs.navx.frc.AHRS;
 
 /**
  *
  */
 public class DriveSubsystem extends Subsystem {
 
+    public AHRS ahrs = null;
+    private boolean gotCompBot;
+    
+
     private final DifferentialDrive differentialDrive = RobotMap.driveSubsystemDifferentialDrive;
+
+    public DriveSubsystem(){
+        super();               
+		ahrs = new AHRS(edu.wpi.first.wpilibj.SPI.Port.kMXP);
+		ahrs.enableLogging(false);
+		
+		gotCompBot = RobotMap.practiceBotJumper.get();
+    }
+
     @Override
     public void initDefaultCommand() {
         // Set the default command for a subsystem here. Drive command runs in background at all times
         setDefaultCommand(new DriveCommand());
     }
+
+    public boolean gotCompBot() {
+		return gotCompBot;
+	}
 
     @Override
     public void periodic() {
