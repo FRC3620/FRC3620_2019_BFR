@@ -30,9 +30,12 @@ public class RobotMap {
     public static CANSparkMax driveSubsystemMaxLeftB;
     public static CANSparkMax driveSubsystemMaxRightA;
     public static CANSparkMax driveSubsystemMaxRightB;
-
+    public static CANDeviceFinder CANFinder;
     @SuppressWarnings("deprecation")
 	public static void init() {
+        CANFinder = new CANDeviceFinder();
+        logger.info("CAN Device Finder Instantitated: {}",CANFinder.getDeviceList());
+        
         CANSparkMax driveSubsystemMaxLeftA = new CANSparkMax(1, MotorType.kBrushless);
         driveSubsystemMaxLeftA.setInverted(false);
 
