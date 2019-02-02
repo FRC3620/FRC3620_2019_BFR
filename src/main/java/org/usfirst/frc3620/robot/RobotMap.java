@@ -1,5 +1,8 @@
 package org.usfirst.frc3620.robot;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMax.InputMode;
@@ -37,16 +40,16 @@ public class RobotMap {
     @SuppressWarnings("deprecation")
 	public static void init() {
         CANSparkMax driveSubsystemMaxLeftA = new CANSparkMax(1, MotorType.kBrushless);
-        resetControllerToKnownState(driveSubsystemMaxLeftA);
+        resetMaxToKnownState(driveSubsystemMaxLeftA);
 
         CANSparkMax driveSubsystemMaxLeftB = new CANSparkMax(2, MotorType.kBrushless);
-        resetControllerToKnownState(driveSubsystemMaxLeftB);
+        resetMaxToKnownState(driveSubsystemMaxLeftB);
 
         CANSparkMax driveSubsystemMaxRightA = new CANSparkMax(3, MotorType.kBrushless);
-        resetControllerToKnownState(driveSubsystemMaxRightA);
+        resetMaxToKnownState(driveSubsystemMaxRightA);
 
         CANSparkMax driveSubsystemMaxRightB = new CANSparkMax(4, MotorType.kBrushless);
-        resetControllerToKnownState(driveSubsystemMaxRightB);
+        resetMaxToKnownState(driveSubsystemMaxRightB);
 
         SpeedControllerGroup groupLeft = new SpeedControllerGroup(driveSubsystemMaxLeftA, driveSubsystemMaxLeftB);
         SpeedControllerGroup groupRight = new SpeedControllerGroup(driveSubsystemMaxRightA, driveSubsystemMaxRightB);
@@ -70,10 +73,21 @@ public class RobotMap {
         
     }
 
-    static void resetControllerToKnownState(CANSparkMax x) {
+    static void resetMaxToKnownState (CANSparkMax x) {
 		x.setInverted(false);
         x.setIdleMode(IdleMode.kCoast);
 		x.setRampRate(1);
         x.setSmartCurrentLimit(50);
     }
+
+    static void resetTalonToKnownState (BaseMotorController x) {
+		x.setInverted(false);
+		x.setNeutralMode(NeutralMode.Coast);
+		x.set(ControlMode.PercentOutput, 0);
+		x.configNominalOutputForward(0, 0);
+		x.configNominalOutputReverse(0, 0);
+		x.configPeakOutputForward(1, 0);
+		x.configPeakOutputReverse(-1, 0);
+		x.configNeutralDeadband(0.04, 0);
+	}
 }
