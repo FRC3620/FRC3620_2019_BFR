@@ -108,12 +108,15 @@ public class RobotMap {
 
             WPI_TalonSRX  driveSubsystemRightSpeedControllerA = new WPI_TalonSRX(4);
             resetTalonToKnownState(driveSubsystemRightSpeedControllerA);
+            driveSubsystemRightSpeedControllerA.setInverted(true);
 
             WPI_VictorSPX  driveSubsystemRightSpeedControllerB = new WPI_VictorSPX(5);
             resetTalonToKnownState(driveSubsystemRightSpeedControllerB);
+            driveSubsystemRightSpeedControllerB.setInverted(true);
 
             WPI_VictorSPX  driveSubsystemRightSpeedControllerC = new WPI_VictorSPX(6);
             resetTalonToKnownState(driveSubsystemRightSpeedControllerC);
+            driveSubsystemRightSpeedControllerC.setInverted(true);
 
             groupLeft = new SpeedControllerGroup(driveSubsystemLeftSpeedControllerA, driveSubsystemLeftSpeedControllerB, driveSubsystemLeftSpeedControllerC);
             groupRight = new SpeedControllerGroup(driveSubsystemRightSpeedControllerA, driveSubsystemRightSpeedControllerB, driveSubsystemRightSpeedControllerC);
