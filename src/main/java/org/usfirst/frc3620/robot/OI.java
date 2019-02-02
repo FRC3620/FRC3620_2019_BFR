@@ -45,9 +45,23 @@ public class OI {
     public OI() {
         //to interface with joysticks, no special initiallization nessessary
         driverJoystick = new Joystick(0);
-
+        
         // map buttons to Joystick buttons here
-    }
+
+            //Declare buttons
+            Button inTakeIn = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_RIGHT_BUMPER);
+            Button inTakeOut = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_LEFT_BUMPER);
+            Button trashIn = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_LEFT_STICK);
+            Button conveyorL = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_X);
+            Button conveyorR = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_Y);
+
+            //buttons run commands
+            inTakeIn.toggleWhenPressed(new IntakeCommand());
+            inTakeOut.toggleWhenPressed(new OutTakeCommand());
+            trashIn.toggleWhenPressed(new TrashInCommand());
+            conveyorL.whileHeld(new TrashLeftCommand());
+            conveyorR.whileHeld(new TrashRightCommand());
+        }
 
     public Joystick getDriverJoystick() {
         return driverJoystick;
@@ -71,5 +85,6 @@ public class OI {
         //gets value from x or y axis on joysticks on gamepad. In this istance, Right Y
         return computeDeadband(driverJoystick.getRawAxis(XBoxConstants.AXIS_RIGHT_Y), 0.2);
     }
-
+    
+    
 }

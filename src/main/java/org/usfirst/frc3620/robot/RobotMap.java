@@ -1,19 +1,32 @@
 package org.usfirst.frc3620.robot;
 
+import com.revrobotics.CANEncoder;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
+import com.revrobotics.CANSparkMax.InputMode;
+import com.revrobotics.CANSparkMaxLowLevel.ConfigParameter;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import org.slf4j.Logger;
 import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
 import org.usfirst.frc3620.misc.CANDeviceFinder;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
+import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.Counter;
 
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
@@ -23,60 +36,65 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
  */
 public class RobotMap {
     public static DifferentialDrive driveSubsystemDifferentialDrive;
+    public static Victor intakeSubsystemUpperMotor;
+    public static Victor intakeSubsystemLowerMotor;
+    public static Victor intakeSubsystemMiddleMotor;
+
+    public static WPI_TalonSRX conveyorBeltMotorL;
+    public static WPI_TalonSRX conveyorBeltMotorR;
+    public static WPI_TalonSRX conveyorBeltMotorC;
+    
+    public static DigitalInput lineSensor;
+    public static Counter counter; 
+    public static CANDeviceFinder CANFinder;
 
     static Logger logger = EventLogging.getLogger(RobotMap.class, Level.INFO);
+    public static CANEncoder leftsideEncoder, rightsideEncoder;
 
-    public static CANSparkMax driveSubsystemMaxLeftA;
-    public static CANSparkMax driveSubsystemMaxLeftB;
-    public static CANSparkMax driveSubsystemMaxRightA;
-    public static CANSparkMax driveSubsystemMaxRightB;
-    public static CANDeviceFinder CANFinder;
     @SuppressWarnings("deprecation")
 	public static void init() {
-        CANFinder = new CANDeviceFinder();
-        logger.info("CAN Device Finder Instantitated: {}",CANFinder.getDeviceList());
-        
+        CANDeviceFinder canDeviceFinder = new CANDeviceFinder();
+        logger.info ("CANDEVICEfinder found {}", canDeviceFinder.getDeviceList());
+
         SpeedControllerGroup groupLeft;
         SpeedControllerGroup groupRight;
         if(CANFinder.isMAXPresent(1)) {
             CANSparkMax driveSubsystemMaxLeftA = new CANSparkMax(1, MotorType.kBrushless);
-            driveSubsystemMaxLeftA.setInverted(false);
+            resetMaxToKnownState(driveSubsystemMaxLeftA);
+
+            leftsideEncoder = driveSubsystemMaxLeftA.getEncoder();
 
             CANSparkMax driveSubsystemMaxLeftB = new CANSparkMax(2, MotorType.kBrushless);
-            driveSubsystemMaxLeftB.setInverted(false);
+            resetMaxToKnownState(driveSubsystemMaxLeftB);
 
             CANSparkMax driveSubsystemMaxRightA = new CANSparkMax(3, MotorType.kBrushless);
-            driveSubsystemMaxRightA.setInverted(false);
+            resetMaxToKnownState(driveSubsystemMaxRightA);
+
+            rightsideEncoder = driveSubsystemMaxRightA.getEncoder();
 
             CANSparkMax driveSubsystemMaxRightB = new CANSparkMax(4, MotorType.kBrushless);
-            driveSubsystemMaxRightB.setInverted(false);
+            resetMaxToKnownState(driveSubsystemMaxRightB);
 
             groupLeft = new SpeedControllerGroup(driveSubsystemMaxLeftA, driveSubsystemMaxLeftB);
             groupRight = new SpeedControllerGroup(driveSubsystemMaxRightA, driveSubsystemMaxRightB);
         } else {
-            Victor driveSubsystemLeftSpeedControllerA = new Victor(1);
-            driveSubsystemLeftSpeedControllerA.setName("DriveSubsystem", "LeftA");
-            driveSubsystemLeftSpeedControllerA.setInverted(false);
+            WPI_TalonSRX driveSubsystemLeftSpeedControllerA = new WPI_TalonSRX(1);
+            resetTalonToKnownState(driveSubsystemLeftSpeedControllerA);
 
-            Victor driveSubsystemLeftSpeedControllerB = new Victor(2);
-            driveSubsystemLeftSpeedControllerB.setName("DriveSubsystem", "LeftB");
-            driveSubsystemLeftSpeedControllerB.setInverted(false);
+            WPI_VictorSPX driveSubsystemLeftSpeedControllerB = new WPI_VictorSPX(2);
+            resetTalonToKnownState(driveSubsystemLeftSpeedControllerB);
 
-            Victor driveSubsystemLeftSpeedControllerC = new Victor(3);
-            driveSubsystemLeftSpeedControllerC.setName("DriveSubsystem", "LeftC");
-            driveSubsystemLeftSpeedControllerC.setInverted(false);
+            WPI_VictorSPX  driveSubsystemLeftSpeedControllerC = new WPI_VictorSPX(3);
+            resetTalonToKnownState(driveSubsystemLeftSpeedControllerC);
 
-            Victor driveSubsystemRightSpeedControllerA = new Victor(4);
-            driveSubsystemRightSpeedControllerA.setName("DriveSubsystem", "RightA");
-            driveSubsystemRightSpeedControllerA.setInverted(false);
-            
-            Victor driveSubsystemRightSpeedControllerB = new Victor(5);
-            driveSubsystemRightSpeedControllerB.setName("DriveSubsystem", "RightB");
-            driveSubsystemRightSpeedControllerB.setInverted(false);
+            WPI_TalonSRX  driveSubsystemRightSpeedControllerA = new WPI_TalonSRX(4);
+            resetTalonToKnownState(driveSubsystemRightSpeedControllerA);
 
-            Victor driveSubsystemRightSpeedControllerC = new Victor(6);
-            driveSubsystemRightSpeedControllerC.setName("DriveSubsystem", "RightC");
-            driveSubsystemRightSpeedControllerC.setInverted(false);
+            WPI_VictorSPX  driveSubsystemRightSpeedControllerB = new WPI_VictorSPX(5);
+            resetTalonToKnownState(driveSubsystemRightSpeedControllerB);
+
+            WPI_VictorSPX  driveSubsystemRightSpeedControllerC = new WPI_VictorSPX(6);
+            resetTalonToKnownState(driveSubsystemRightSpeedControllerC);
 
             groupLeft = new SpeedControllerGroup(driveSubsystemLeftSpeedControllerA, driveSubsystemLeftSpeedControllerB, driveSubsystemLeftSpeedControllerC);
             groupRight = new SpeedControllerGroup(driveSubsystemRightSpeedControllerA, driveSubsystemRightSpeedControllerB, driveSubsystemRightSpeedControllerC);
@@ -87,17 +105,41 @@ public class RobotMap {
         driveSubsystemDifferentialDrive.setExpiration(0.1);
         driveSubsystemDifferentialDrive.setMaxOutput(1.0);
 
-        //new code
+        conveyorBeltMotorL = new WPI_TalonSRX(1);
+        conveyorBeltMotorR = new WPI_TalonSRX(2);
+        conveyorBeltMotorC = new WPI_TalonSRX(3);
 
-        CANDeviceFinder canDeviceFinder = new CANDeviceFinder();
-        logger.info ("CANDEVICEfinder found {}", canDeviceFinder.getDeviceList());
+        intakeSubsystemUpperMotor = new Victor(4);
+        intakeSubsystemLowerMotor = new Victor(5);
+        intakeSubsystemMiddleMotor = new Victor(6);
 
+        //initiating line sensor
+        lineSensor = new DigitalInput(0);
+        counter = new Counter(lineSensor);
+        counter.setUpSourceEdge(false, true);
 
         if (canDeviceFinder.isPCMPresent(0)) {
             // instantiate Pneumatics here
         }
 
+        
     }
 
+    static void resetMaxToKnownState (CANSparkMax x) {
+		x.setInverted(false);
+        x.setIdleMode(IdleMode.kCoast);
+		x.setRampRate(1);
+        x.setSmartCurrentLimit(50);
+    }
 
+    static void resetTalonToKnownState (BaseMotorController x) {
+		x.setInverted(false);
+		x.setNeutralMode(NeutralMode.Coast);
+		x.set(ControlMode.PercentOutput, 0);
+		x.configNominalOutputForward(0, 0);
+		x.configNominalOutputReverse(0, 0);
+		x.configPeakOutputForward(1, 0);
+		x.configPeakOutputReverse(-1, 0);
+		x.configNeutralDeadband(0.04, 0);
+	}
 }

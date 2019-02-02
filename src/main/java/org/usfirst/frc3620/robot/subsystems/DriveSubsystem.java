@@ -3,6 +3,7 @@ package org.usfirst.frc3620.robot.subsystems;
 import org.usfirst.frc3620.robot.RobotMap;
 import org.usfirst.frc3620.robot.commands.DriveCommand;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -14,6 +15,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class DriveSubsystem extends Subsystem {
 
     private final DifferentialDrive differentialDrive = RobotMap.driveSubsystemDifferentialDrive;
+
+    public DriveSubsystem() {
+        // this code gets run when the DriveSubsystem is created 
+        // (when the robot is rebooted.)
+        resetencoder();
+    }
+    
     @Override
     public void initDefaultCommand() {
         // Set the default command for a subsystem here. Drive command runs in background at all times
@@ -23,7 +31,18 @@ public class DriveSubsystem extends Subsystem {
     @Override
     public void periodic() {
         // Put code here to be run every loop
+        SmartDashboard.putNumber("leftsideEncoder", RobotMap.leftsideEncoder.getPosition());
+        SmartDashboard.putNumber("rightsideEncoder", RobotMap.rightsideEncoder.getPosition());
+        SmartDashboard.putNumber("rightsideEncoderInFeet", getRightSideDistance());
+        SmartDashboard.putNumber("leftsideEncoderInFeet", getLeftSideDistance());
 
+    }
+
+    double ticstofeet(double tics) { 
+            // turning the encoder readings from tics to feet
+            double inches = tics / 0.583;
+            double feet = inches / 12;
+            return feet;
     }
 
     // Put methods for controlling this subsystem
@@ -38,6 +57,8 @@ public class DriveSubsystem extends Subsystem {
         differentialDrive.arcadeDrive(y, x);
     }
     
+
+
     /**
      * shut down the robot.
      */
@@ -46,4 +67,24 @@ public class DriveSubsystem extends Subsystem {
         differentialDrive.stopMotor();
     }
 
+    public double getLeftSideDistance() {
+        double tics = RobotMap.leftsideEncoder.getPosition();
+        double howfarwehavemoved = tics - leftEncoderZeroValue;
+        double feet = ticstofeet(howfarwehavemoved);
+        return feet;
+    
+    }
+    public double getRightSideDistance() {
+        double tics = RobotMap.rightsideEncoder.getPosition();
+        double howfarwehavemoved = tics - rightEncoderZeroValue;
+        double feet = ticstofeet(-howfarwehavemoved);
+        return feet;
+    }
+
+    double leftEncoderZeroValue, rightEncoderZeroValue;
+
+    public void resetencoder(){
+        leftEncoderZeroValue = RobotMap.leftsideEncoder.getPosition();
+        rightEncoderZeroValue = RobotMap.rightsideEncoder.getPosition();
+    }
 }
