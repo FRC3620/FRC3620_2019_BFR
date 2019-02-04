@@ -57,6 +57,9 @@ public class OI {
         // map buttons to Joystick buttons here
     }
 
+    public JoystickButton getButtonA() {
+        return button_a;
+    }
     public Joystick getDriverJoystick() {
         return driverJoystick;
     }
