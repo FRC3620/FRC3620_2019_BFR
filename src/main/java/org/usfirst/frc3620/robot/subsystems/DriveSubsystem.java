@@ -50,10 +50,11 @@ public class DriveSubsystem extends Subsystem {
         SmartDashboard.putNumber("rightsideEncoder", RobotMap.rightsideEncoder.getPosition());
         SmartDashboard.putNumber("rightsideEncoderInFeet", getRightSideDistance());
         SmartDashboard.putNumber("leftsideEncoderInFeet", getLeftSideDistance());
+      
 
     }
 
-    double ticstofeet(double tics) { 
+    double ticsToFeet(double tics) { 
             // turning the encoder readings from tics to feet
             double inches = tics / 0.583;
             double feet = inches / 12;
@@ -179,14 +180,14 @@ public class DriveSubsystem extends Subsystem {
     public double getLeftSideDistance() {
         double tics = RobotMap.leftsideEncoder.getPosition();
         double howfarwehavemoved = tics - leftEncoderZeroValue;
-        double feet = ticstofeet(howfarwehavemoved);
+        double feet = ticsToFeet(howfarwehavemoved);
         return feet;
     
     }
     public double getRightSideDistance() {
         double tics = RobotMap.rightsideEncoder.getPosition();
         double howfarwehavemoved = tics - rightEncoderZeroValue;
-        double feet = ticstofeet(-howfarwehavemoved);
+        double feet = ticsToFeet(-howfarwehavemoved);
         return feet;
     }
 

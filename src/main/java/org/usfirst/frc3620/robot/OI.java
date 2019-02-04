@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-
+import org.usfirst.frc3620.robot.paths.TrainingPath;
 import org.usfirst.frc3620.misc.XBoxConstants;
 import org.usfirst.frc3620.misc.Hand;
 import org.usfirst.frc3620.robot.commands.*;
@@ -69,6 +69,8 @@ public class OI {
             trashIn.toggleWhenPressed(new TrashInCommand());
             conveyorL.whileHeld(new TrashLeftCommand());
             conveyorR.whileHeld(new TrashRightCommand());
+
+            SmartDashboard.putData("TrainingPath", new TrainingPath());
         }
 
     public Joystick getDriverJoystick() {
