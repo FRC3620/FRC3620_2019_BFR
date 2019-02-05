@@ -144,7 +144,8 @@ public class RobotMap {
         intakeSubsystemLowerMotor = new Victor(5);
         intakeSubsystemMiddleMotor = new Victor(6);
 
-        lightSubsystemLightPWM = new Spark(5);
+        lightSubsystemLightPWM = new Spark(7);
+        // lightSubsystemLightPWM = new Spark(5);
 		LiveWindow.addActuator("LightSubsystem", "LightPWM", (Spark) lightSubsystemLightPWM);
         lightSubsystemLightPWM.setInverted(false);
         
