@@ -70,7 +70,7 @@ public class RobotMap {
     
     @SuppressWarnings("deprecation")
 	public static void init() {
-        CANDeviceFinder canDeviceFinder = new CANDeviceFinder();
+        canDeviceFinder = new CANDeviceFinder();
         logger.info ("CANDEVICEfinder found {}", canDeviceFinder.getDeviceList());
 
         SpeedControllerGroup groupLeft;

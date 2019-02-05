@@ -1,5 +1,7 @@
 package org.usfirst.frc3620.robot.subsystems;
 
+import java.awt.Robot;
+
 import org.usfirst.frc3620.robot.RobotMap;
 import org.usfirst.frc3620.robot.commands.DriveCommand;
 
@@ -31,8 +33,10 @@ public class DriveSubsystem extends Subsystem {
     @Override
     public void periodic() {
         // Put code here to be run every loop
-        SmartDashboard.putNumber("leftsideEncoder", RobotMap.leftsideEncoder.getPosition());
-        SmartDashboard.putNumber("rightsideEncoder", RobotMap.rightsideEncoder.getPosition());
+        if(checkForDriveEncoders()) {
+            SmartDashboard.putNumber("leftsideEncoder", RobotMap.leftsideEncoder.getPosition());
+            SmartDashboard.putNumber("rightsideEncoder", RobotMap.rightsideEncoder.getPosition());
+        }
         SmartDashboard.putNumber("rightsideEncoderInFeet", getRightSideDistance());
         SmartDashboard.putNumber("leftsideEncoderInFeet", getLeftSideDistance());
 
@@ -70,23 +74,35 @@ public class DriveSubsystem extends Subsystem {
     }
 
     public double getLeftSideDistance() {
-        double tics = RobotMap.leftsideEncoder.getPosition();
-        double howfarwehavemoved = tics - leftEncoderZeroValue;
-        double feet = ticstofeet(howfarwehavemoved);
-        return feet;
+        if(checkForDriveEncoders()) {
+            double tics = RobotMap.leftsideEncoder.getPosition();
+            double howfarwehavemoved = tics - leftEncoderZeroValue;
+            double feet = ticstofeet(howfarwehavemoved);
+            return feet;
+        } else {
+            return(0);
+        }
     
     }
     public double getRightSideDistance() {
-        double tics = RobotMap.rightsideEncoder.getPosition();
-        double howfarwehavemoved = tics - rightEncoderZeroValue;
-        double feet = ticstofeet(-howfarwehavemoved);
-        return feet;
+        if(checkForDriveEncoders()) {
+            double tics = RobotMap.rightsideEncoder.getPosition();
+            double howfarwehavemoved = tics - rightEncoderZeroValue;
+            double feet = ticstofeet(-howfarwehavemoved);
+            return feet;
+        } else {
+            return(0);
+        }
     }
 
     double leftEncoderZeroValue, rightEncoderZeroValue;
-
+    public boolean checkForDriveEncoders() {
+        return(!(RobotMap.leftsideEncoder==null));
+    }
     public void resetencoder(){
-        leftEncoderZeroValue = RobotMap.leftsideEncoder.getPosition();
-        rightEncoderZeroValue = RobotMap.rightsideEncoder.getPosition();
+        if(checkForDriveEncoders()) {
+            leftEncoderZeroValue = RobotMap.leftsideEncoder.getPosition();
+            rightEncoderZeroValue = RobotMap.rightsideEncoder.getPosition();
+        }
     }
 }
