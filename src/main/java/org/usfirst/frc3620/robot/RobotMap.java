@@ -77,7 +77,7 @@ public class RobotMap {
         canDeviceFinder = new CANDeviceFinder();
         logger.info ("CANDEVICEfinder found {}", canDeviceFinder.getDeviceList());
 
-        CANSparkMax liftSubsystemMax = new CANSparkMax(5, MotorType.kBrushless);
+        liftSubsystemMax = new CANSparkMax(5, MotorType.kBrushless);
         resetMaxToKnownState(liftSubsystemMax);
         liftEncoder = liftSubsystemMax.getEncoder();
         liftLimitSwitchTop = new DigitalInput(1);

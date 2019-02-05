@@ -43,13 +43,11 @@ public class OI {
 
     private Joystick driverJoystick;
     private Joystick operatorJoystick;
-    private JoystickButton button_a;
 
     public OI() {
         //to interface with joysticks, no special initiallization nessessary
         driverJoystick = new Joystick(0);
         operatorJoystick = new Joystick(1);
-        button_a = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_A);
 
         Robot.rumbleSubsystemDriver.setController(driverJoystick);
         Robot.rumbleSubsystemOperator.setController(operatorJoystick);
@@ -62,6 +60,7 @@ public class OI {
             Button trashIn = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_LEFT_STICK);
             Button conveyorL = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_X);
             Button conveyorR = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_Y);
+            Button liftMove = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_A);
 
             //buttons run commands
             inTakeIn.toggleWhenPressed(new IntakeCommand());
@@ -69,6 +68,7 @@ public class OI {
             trashIn.toggleWhenPressed(new TrashInCommand());
             conveyorL.whileHeld(new TrashLeftCommand());
             conveyorR.whileHeld(new TrashRightCommand());
+            liftMove.whileHeld(new MoveLiftCommand());
         }
 
     public Joystick getDriverJoystick() {
