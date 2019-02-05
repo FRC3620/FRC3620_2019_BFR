@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import com.kauailabs.navx.frc.AHRS;
 
 /**
  *
@@ -43,6 +44,7 @@ public class DriveSubsystem extends Subsystem {
         setDefaultCommand(new DriveCommand());
     }
 
+   
     @Override
     public void periodic() {
         // Put code here to be run every loop

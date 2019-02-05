@@ -16,6 +16,8 @@ import org.slf4j.Logger;
 import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
 import org.usfirst.frc3620.misc.CANDeviceFinder;
+import com.kauailabs.navx.frc.AHRS;
+
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Relay;
@@ -57,6 +59,7 @@ public class RobotMap {
     public static WPI_TalonSRX conveyorBeltMotorC;
     
     public static DigitalInput lineSensor;
+    public static DigitalInput exampleSubsystemDigitalInput0;
     public static Counter counter; 
 
     public static CANEncoder leftsideEncoder, rightsideEncoder;
@@ -65,6 +68,10 @@ public class RobotMap {
     public static CANSparkMax driveSubsystemMaxRightA;
     public static CANSparkMax driveSubsystemMaxRightB;
     public static CANDeviceFinder CANFinder;
+    public static AHRS driveSubsystemAHRS;
+    public static DigitalInput practiceBotJumper;   //Added from 2018 code
+    public static DifferentialDrive driveSubsystemCANDifferentialDrive;
+
 
     static Logger logger = EventLogging.getLogger(RobotMap.class, Level.INFO);
     
@@ -145,6 +152,12 @@ public class RobotMap {
         if (canDeviceFinder.isPCMPresent(0)) {
             // instantiate Pneumatics here
         }
+
+        driveSubsystemAHRS = new AHRS(edu.wpi.first.wpilibj.SPI.Port.kMXP);
+		LiveWindow.addSensor("Drivetrain", "AHRS", driveSubsystemAHRS);
+
+        LiveWindow.addSensor("ExampleSubsystem", "Digital Input 0", exampleSubsystemDigitalInput0);
+
 
     }
 
