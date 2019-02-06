@@ -14,60 +14,62 @@ import org.usfirst.frc3620.misc.Hand;
  */
 public class RumbleCommand extends Command {
     Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
-    public RumbleSubsystem rumbleSubsystem;
-    public Hand rumbleHand;
-    public Float rumbleIntensity; // 0.1f to 1f
-    public Float rumbleDuration; // In seconds
+    public RumbleSubsystem subsystem;
+    public Hand hand;
+    public Double intensity; // 0.1f to 1f
+    public Double duration; // In seconds
 
-    private Hand rumbleHandDefault = Hand.BOTH;
-    private Float rumbleIntensityDefault = 1f;
-    private Float rumbleDurationDefault = 3f;
+    private Hand handDefault = Hand.BOTH;
+    private Double intensityDefault = 1.0;
+    private Double durationDefault = 3.0;
     private boolean continuous;
 
     private Timer timer = new Timer();
+
+    public RumbleCommand() {}
 	
-    public RumbleCommand(RumbleSubsystem subsystem, Hand hand, Float intensity, Float duration) {
+    public void setRumble(RumbleSubsystem subsystem, Hand hand, Double intensity, Double duration) {
         requires(subsystem); //requires the subsystem provided by caller
 
-        rumbleSubsystem = subsystem;
-        rumbleDuration = duration;
-        rumbleHand = hand;
-        rumbleIntensity = intensity;
+        this.subsystem = subsystem;
+        this.duration = duration;
+        this.hand = hand;
+        this.intensity = intensity;
 
-        continuous = false;
+        this.continuous = false;
     }
 
-    public RumbleCommand(RumbleSubsystem subsystem, Float intensity, Float duration) {
+    public void setRumble(RumbleSubsystem subsystem, Double intensity, Double duration) {
         requires(subsystem); //requires the subsystem provided by caller
 
-        rumbleSubsystem = subsystem;
-        rumbleDuration = duration;
-        rumbleHand = null;
-        rumbleIntensity = intensity;
+        this.subsystem = subsystem;
+        this.duration = duration;
+        this.hand = null;
+        this.intensity = intensity;
 
-        continuous = false;
+        this.continuous = false;
     }
 
-    public RumbleCommand(RumbleSubsystem subsystem) {
+    public void setRumble(RumbleSubsystem subsystem) {
         requires(subsystem); //requires the provided subsystem by caller
 
-        rumbleSubsystem = subsystem;
-        rumbleDuration = null;
-        rumbleHand = null;
-        rumbleIntensity = null;
+        this.subsystem = subsystem;
+        this.duration = null;
+        this.hand = null;
+        this.intensity = null;
 
-        continuous = false;
+        this.continuous = false;
     }
 
-    public RumbleCommand(RumbleSubsystem subsystem, Hand hand, Float intensity) {
+    public void setRumble(RumbleSubsystem subsystem, Hand hand, Double intensity) {
         requires(subsystem); //requires the subsystem provided by caller
 
-        rumbleSubsystem = subsystem;
-        rumbleDuration = 0.05f;
-        rumbleHand = hand;
-        rumbleIntensity = intensity;
+        this.subsystem = subsystem;
+        this.duration = 0.05;
+        this.hand = hand;
+        this.intensity = intensity;
 
-        continuous = true;
+        this.continuous = true;
     }
 
 
@@ -77,15 +79,15 @@ public class RumbleCommand extends Command {
         EventLogging.commandMessage(logger);
 
         //sets the defaults
-        if (rumbleDuration == null) {rumbleDuration = rumbleDurationDefault;}
-        if (rumbleHand == null) {rumbleHand = rumbleHandDefault;}
-        if (rumbleIntensity == null) {rumbleIntensity = rumbleIntensityDefault;}
+        if (duration == null) {duration = durationDefault;}
+        if (hand == null) {hand = handDefault;}
+        if (intensity == null) {intensity = intensityDefault;}
 
         //Clears the rumble
-        rumbleSubsystem.clearRumble();
+        subsystem.clearRumble();
 
         //Sets the rumble and starts the timer
-        rumbleSubsystem.setRumble(rumbleHand, rumbleIntensity);
+        subsystem.setRumble(hand, intensity);
         if (!continuous) {
             timer.reset();
             timer.start();

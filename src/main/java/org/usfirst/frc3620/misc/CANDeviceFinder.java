@@ -13,6 +13,7 @@ public class CANDeviceFinder {
     private Set<Integer> srxs = new TreeSet<>();
     private Set<Integer> spxs = new TreeSet<>();
     private Set<Integer> pcms = new TreeSet<>();
+    private Set<Integer> maxs = new TreeSet<>();
 
     public CANDeviceFinder() {
         super();
@@ -34,6 +35,10 @@ public class CANDeviceFinder {
     public boolean isPCMPresent(int i) {
         return pcms.contains(i);
     }
+
+    public boolean isMAXPresent(int i) {
+        return maxs.contains(i);
+    }
     
     public boolean isDevicePresent(String s) {
     	return deviceList.contains(s);
@@ -52,9 +57,11 @@ public class CANDeviceFinder {
      * meant to be used once initially (and not periodically) since this steals
      * cached messages from the robot API.
      */
-    void find() {
+    public void find() {
         deviceList.clear();
         pdpIsPresent = false;
+        maxs.clear();
+        spxs.clear();
         srxs.clear();
         pcms.clear();
 
@@ -63,12 +70,14 @@ public class CANDeviceFinder {
         long[] pcm_timeStamp0 = new long[63];
         long[] srx_timeStamp0 = new long[63];
         long[] spx_timeStamp0 = new long[63];
+        long[] max_timeStamp0 = new long[63];
 
         pdp0_timeStamp0 = checkMessage(0x08041400, 0);
         for (int i = 0; i < 63; ++i) {
             pcm_timeStamp0[i] = checkMessage(0x09041400, i);
             srx_timeStamp0[i] = checkMessage(0x02041400, i);
             spx_timeStamp0[i] = checkMessage(0x01041400, i);
+            max_timeStamp0[i] = checkMessage(0x02051800, i);
         }
 
         /* wait 200ms */
@@ -83,12 +92,14 @@ public class CANDeviceFinder {
         long[] pcm_timeStamp1 = new long[63];
         long[] srx_timeStamp1 = new long[63];
         long[] spx_timeStamp1 = new long[63];
+        long[] max_timeStamp1 = new long[63];
 
         pdp0_timeStamp1 = checkMessage(0x08041400, 0);
         for (int i = 0; i < 63; ++i) {
             pcm_timeStamp1[i] = checkMessage(0x09041400, i);
             srx_timeStamp1[i] = checkMessage(0x02041400, i);
             spx_timeStamp1[i] = checkMessage(0x01041400, i);
+            max_timeStamp1[i] = checkMessage(0x02051800, i);
         }
 
         /*
@@ -120,6 +131,13 @@ public class CANDeviceFinder {
                     && spx_timeStamp0[i] != spx_timeStamp1[i]) {
                 deviceList.add("SPX " + i);
                 spxs.add(i);
+            }
+        }
+        for (int i = 0; i < 63; ++i) {
+            if (max_timeStamp0[i] >= 0 && max_timeStamp1[i] >= 0
+                    && max_timeStamp0[i] != max_timeStamp1[i]) {
+                deviceList.add("MAX " + i);
+                maxs.add(i);
             }
         }
     }
