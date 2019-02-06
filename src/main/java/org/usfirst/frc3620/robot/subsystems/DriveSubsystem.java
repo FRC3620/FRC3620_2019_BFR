@@ -21,7 +21,7 @@ public class DriveSubsystem extends Subsystem {
     public DriveSubsystem() {
         // this code gets run when the DriveSubsystem is created 
         // (when the robot is rebooted.)
-        resetencoder();
+        resetEncoder();
     }
     
     @Override
@@ -96,10 +96,12 @@ public class DriveSubsystem extends Subsystem {
     }
 
     double leftEncoderZeroValue, rightEncoderZeroValue;
+
     public boolean checkForDriveEncoders() {
         return(!(RobotMap.leftsideEncoder==null));
     }
-    public void resetencoder(){
+
+    public void resetEncoder(){
         if(checkForDriveEncoders()) {
             leftEncoderZeroValue = RobotMap.leftsideEncoder.getPosition();
             rightEncoderZeroValue = RobotMap.rightsideEncoder.getPosition();

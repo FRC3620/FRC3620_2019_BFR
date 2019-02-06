@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import org.usfirst.frc3620.misc.XBoxConstants;
 import org.usfirst.frc3620.misc.Hand;
 import org.usfirst.frc3620.robot.commands.*;
+import org.usfirst.frc3620.robot.subsystems.LiftSubsystem;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -60,7 +61,8 @@ public class OI {
             Button trashIn = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_LEFT_STICK);
             Button conveyorL = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_X);
             Button conveyorR = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_Y);
-            Button liftMove = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_A);
+            Button positionOne = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_A);
+            Button positionTwo = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_B);
 
             //buttons run commands
             inTakeIn.toggleWhenPressed(new IntakeCommand());
@@ -68,7 +70,8 @@ public class OI {
             trashIn.toggleWhenPressed(new TrashInCommand());
             conveyorL.whileHeld(new TrashLeftCommand());
             conveyorR.whileHeld(new TrashRightCommand());
-            liftMove.whileHeld(new MoveLiftCommand());
+            positionOne.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_BOTTOM));
+            positionTwo.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_TOP));
         }
 
     public Joystick getDriverJoystick() {
@@ -101,5 +104,6 @@ public class OI {
         //gets value from x or y axis on joysticks on gamepad. In this istance, Right Y
         return computeDeadband(driverJoystick.getRawAxis(XBoxConstants.AXIS_RIGHT_Y), 0.2);
     }
-     
+    
+    
 }

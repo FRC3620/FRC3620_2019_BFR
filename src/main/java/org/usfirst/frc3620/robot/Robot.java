@@ -193,6 +193,10 @@ public class Robot extends TimedRobot {
 	void updateDashboard() {
 		//SmartDashboard.putNumber("driver y joystick", -Robot.m_oi.driveJoystick.getRawAxis(1));
 		//SmartDashboard.putNumber("driver x joystick", Robot.m_oi.driveJoystick.getRawAxis(4));
-	}
-	
+    }
+    
+    public static RobotMode getCurrentRobotMode(){
+        return currentRobotMode;
+    }
+    
 }

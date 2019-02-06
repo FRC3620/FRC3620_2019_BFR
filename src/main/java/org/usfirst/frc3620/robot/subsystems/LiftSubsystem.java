@@ -8,6 +8,7 @@ import com.revrobotics.CANSparkMax;
 import org.slf4j.Logger;
 import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
+import org.usfirst.frc3620.misc.RobotMode;
 import org.usfirst.frc3620.robot.Robot;
 import org.usfirst.frc3620.robot.RobotMap;
 
@@ -23,11 +24,24 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class LiftSubsystem extends Subsystem {
     Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 
+    public static final double SETPOINT_BOTTOM = 3;
+    public static final double SETPOINT_TOP = 9;
+
     private final CANSparkMax liftMax = RobotMap.liftSubsystemMax;
     private final Solenoid liftBrake = RobotMap.liftSubsystemBrake;
     private final DigitalInput topLimit = RobotMap.liftLimitSwitchTop;
     private final DigitalInput bottomLimit = RobotMap.liftLimitSwitchBottom;
     private final CANEncoder liftEncoder = RobotMap.liftEncoder;
+
+    private boolean encoderisvalid = false;
+    private double desiredHeight = 0;
+
+    public LiftSubsystem(){
+        // this code gets run when the LiftSubsystem is created 
+        // (when the robot is rebooted.)
+        resetEncoder();
+    }
+
 
     @Override
     public void initDefaultCommand() {
@@ -40,9 +54,44 @@ public class LiftSubsystem extends Subsystem {
         // Put code here to be run every loop
         SmartDashboard.putBoolean("Top limit switch", isTopLimitDepressed());
         SmartDashboard.putBoolean("Bottom limit switch", isBottomLimitDepressed());
-        SmartDashboard.putNumber("Lift encoder position", liftEncoder.getPosition());
-    }
+        
+        if(checkForLiftEncoder()) {
+            SmartDashboard.putNumber("LiftEncoderPosition", liftEncoder.getPosition());
+        }
+        SmartDashboard.putNumber("liftEncoderInInches", getLiftHeight());
 
+        if(Robot.getCurrentRobotMode() == RobotMode.TELEOP || Robot.getCurrentRobotMode() == RobotMode.AUTONOMOUS){
+            if(isBottomLimitDepressed()){
+                resetEncoder();
+                encoderisvalid = true;
+            }
+
+            if(encoderisvalid){
+                double currentheight = getLiftHeight();
+                double error = currentheight - desiredHeight;
+                if(Math.abs(error) > 1){
+                    turnBrakeOff();
+                    if(error > 0){
+                        liftMove(-0.2);
+                    }
+
+                    if(error < 0){
+                        liftMove(0.2);
+                    }
+                }else{
+                    liftStop();
+                    turnBrakeOn();
+                }
+
+            }else{
+                liftMove(-0.2);
+                turnBrakeOff();
+            }
+
+        }
+
+    }
+    
     public boolean isBottomLimitDepressed(){
        if(bottomLimit.get() == true){
            return false; 
@@ -78,4 +127,44 @@ public class LiftSubsystem extends Subsystem {
         liftMax.set(0);
     }
 
+    double ticstoinches(double tics) { 
+        // turning the encoder readings from tics to feet
+        double inches = tics * 0.321;
+        return inches;
+    }
+
+    public double getLiftHeight() {
+        if(checkForLiftEncoder()) {
+            double tics = liftEncoder.getPosition();
+            double howfarwehavemoved = tics - liftEncoderZeroValue;
+            double feet = ticstoinches(howfarwehavemoved);
+            return feet;
+        } else {
+            return(0);
+        }
+    }
+
+    double liftEncoderZeroValue;
+    
+    public boolean checkForLiftEncoder() {
+        return(!(liftEncoder == null));
+    }
+
+    public void resetEncoder(){
+        if(checkForLiftEncoder()) {
+            liftEncoderZeroValue = liftEncoder.getPosition();
+        }
+    }
+
+    public void setDesiredHeight(double h) {
+        desiredHeight = h;
+    }
+
+    private void turnBrakeOn(){
+        
+    }
+
+    private void turnBrakeOff(){
+
+    }
 }
