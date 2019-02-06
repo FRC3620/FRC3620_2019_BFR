@@ -25,9 +25,9 @@ import edu.wpi.first.wpilibj.SpeedController;
 
 /**
  * @author Nick Zimanski (SlippStream)
- * @version 2/02/19
+ * @version 2/06/19
  * 
- * Added autonomous and teleop functions
+ * Full external light control integration
  */
 public class LightSubsystem extends Subsystem {
 
@@ -106,6 +106,7 @@ public class LightSubsystem extends Subsystem {
      */
     public void setEffect(Integer priority, Color color) {
         lightsPriority.putIfAbsent(priority, color.value);
+        logger.info("Effect Set!");
     }
 
     /**

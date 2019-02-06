@@ -2,6 +2,12 @@ package org.usfirst.frc3620.misc;
 
 import org.usfirst.frc3620.misc.BlinkinDict.Color;
 
+/**
+ * @author Nick Zimanski (SlippStream)
+ * @version 2/06/19
+ * 
+ * New object for dealing with light effects and their durations
+ */
 public class ColorTimers {
     private Integer priority;
     private Color color;
