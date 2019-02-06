@@ -1,6 +1,7 @@
 package org.usfirst.frc3620.robot.subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
+import com.revrobotics.CANEncoder;
 
 import org.slf4j.Logger;
 import org.usfirst.frc3620.logger.EventLogging;
@@ -25,8 +26,8 @@ public class DriveSubsystem extends Subsystem {
     public AHRS ahrs = null /* will set in the constructor */;
 
     private final DifferentialDrive differentialDrive = RobotMap.driveSubsystemDifferentialDrive;
-    private Encoder driveEncoderLeft;
-    private Encoder driveEncoderRight;
+    private Encoder driveEncoderLeft = RobotMap.leftSideEncoder;
+    private Encoder driveEncoderRight = RobotMap.rightSideEncoder;
 
     public double automaticHeading;
     public boolean complainedAboutMissingAhrs;
@@ -35,8 +36,9 @@ public class DriveSubsystem extends Subsystem {
         // this code gets run when the DriveSubsystem is created 
         // (when the robot is rebooted.)
         ahrs = new AHRS(edu.wpi.first.wpilibj.SPI.Port.kMXP);
-		ahrs.enableLogging(false);
-        resetencoder();
+        ahrs.enableLogging(false);
+        resetEncoders();
+    //    resetencoder();
     }
     
     @Override
@@ -49,12 +51,10 @@ public class DriveSubsystem extends Subsystem {
     @Override
     public void periodic() {
         // Put code here to be run every loop
-        if(checkForDriveEncoders()) {
-            SmartDashboard.putNumber("leftsideEncoder", RobotMap.leftsideEncoder.getPosition());
-            SmartDashboard.putNumber("rightsideEncoder", RobotMap.rightsideEncoder.getPosition());
-        }
-        SmartDashboard.putNumber("rightsideEncoderInFeet", getRightSideDistance());
-        SmartDashboard.putNumber("leftsideEncoderInFeet", getLeftSideDistance());
+  //      SmartDashboard.putNumber("leftsideEncoder", RobotMap.leftsideEncoder.getPosition());
+  //      SmartDashboard.putNumber("rightsideEncoder", RobotMap.rightsideEncoder.getPosition());
+   //     SmartDashboard.putNumber("rightsideEncoderInFeet", getRightSideDistance());
+    //    SmartDashboard.putNumber("leftsideEncoderInFeet", getLeftSideDistance());
       
 
     }
@@ -182,7 +182,7 @@ public class DriveSubsystem extends Subsystem {
         differentialDrive.stopMotor();
     }
 
-    public double getLeftSideDistance() {
+ /* public double getLeftSideDistance() {
         if(checkForDriveEncoders()) {
             double tics = RobotMap.leftsideEncoder.getPosition();
             double howfarwehavemoved = tics - leftEncoderZeroValue;
@@ -208,10 +208,10 @@ public class DriveSubsystem extends Subsystem {
     public boolean checkForDriveEncoders() {
         return(!(RobotMap.leftsideEncoder==null));
     }
-    public void resetencoder(){
+   public void resetencoder(){
         if(checkForDriveEncoders()) {
             leftEncoderZeroValue = RobotMap.leftsideEncoder.getPosition();
             rightEncoderZeroValue = RobotMap.rightsideEncoder.getPosition();
         }
-    }
+    } */
 }

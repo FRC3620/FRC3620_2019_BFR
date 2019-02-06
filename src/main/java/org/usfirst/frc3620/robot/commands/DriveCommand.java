@@ -29,7 +29,7 @@ public class DriveCommand extends Command {
         double horizontal = Robot.oi.getLeftHorizontalJoystickSquared();
         //displays current values on gamepad
             //Calls method to drive motors, declared in subsystem, sends real values to motors
-            Robot.driveSubsystem.arcadeDrive(-vertical, horizontal);
+            Robot.driveSubsystem.arcadeDrive(horizontal, -vertical);
     }
 
     // Make this return true when this Command no longer needs to run execute()
