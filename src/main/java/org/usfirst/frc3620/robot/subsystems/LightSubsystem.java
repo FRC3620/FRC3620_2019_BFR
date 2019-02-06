@@ -38,6 +38,12 @@ public class LightSubsystem extends Subsystem {
 
     ArrayList<ColorTimers> colorTimers = new ArrayList<ColorTimers>();
     DriverStation.Alliance teamColor = DriverStation.getInstance().getAlliance();
+    /**
+     * @author Nick Zimanski (SlippStream)
+     * @version 2/01/19
+     * 
+     * Added autonomous and teleop functions
+     */
     
     /**
      * @see Hashmap stores the priority of lighting effects as an integer tied to the PWM power as a double
