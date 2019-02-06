@@ -120,4 +120,27 @@ public class DriveSubsystem extends Subsystem {
             rightEncoderZeroValue = RobotMap.rightsideEncoder.getPosition();
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public double getAngle() {
+		if (ahrsIsConnected()) {
+			return ahrs.getAngle(); //Angle direction was opposite of 2017 testing (raw is clockwise-positive, corrected is clockwise-negative)
+		} else {
+			complainAboutMissingAhrs();
+			return 0;
+		}
+    }
 }
