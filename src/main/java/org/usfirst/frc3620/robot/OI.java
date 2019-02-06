@@ -74,11 +74,6 @@ public class OI {
             positionTwo.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_TOP));
         }
 
-    public JoystickButton getButtonA() {
-            return button_a;
-            //FIX THIS
-    }
-
     public Joystick getDriverJoystick() {
         return driverJoystick;
     }

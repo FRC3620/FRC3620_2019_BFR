@@ -128,12 +128,6 @@ public class Robot extends TimedRobot {
     public void teleopPeriodic() {
     	beginPeriodic();
         Scheduler.getInstance().run();
-        if (oi.getButtonA().get()) {
-            lightSubsystem.setEffect(1, Color.HOT_PINK);
-        }
-        if (!oi.getButtonA().get()) {
-            lightSubsystem.clearEffect(1, Color.HOT_PINK);
-        }
         endPeriodic();
     }
     
