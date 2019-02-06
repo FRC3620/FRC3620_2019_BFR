@@ -67,22 +67,23 @@ public class RobotMap {
     public static CANSparkMax driveSubsystemMaxLeftB;
     public static CANSparkMax driveSubsystemMaxRightA;
     public static CANSparkMax driveSubsystemMaxRightB;
-    public static CANDeviceFinder CANFinder;
+
     public static AHRS driveSubsystemAHRS;
     public static DigitalInput practiceBotJumper;   //Added from 2018 code
     public static DifferentialDrive driveSubsystemCANDifferentialDrive;
 
+    public static CANDeviceFinder canDeviceFinder;
 
     static Logger logger = EventLogging.getLogger(RobotMap.class, Level.INFO);
     
     @SuppressWarnings("deprecation")
 	public static void init() {
-        CANDeviceFinder canDeviceFinder = new CANDeviceFinder();
+        canDeviceFinder = new CANDeviceFinder();
         logger.info ("CANDEVICEfinder found {}", canDeviceFinder.getDeviceList());
 
         SpeedControllerGroup groupLeft;
         SpeedControllerGroup groupRight;
-        if(CANFinder.isMAXPresent(1)) {
+        if(canDeviceFinder.isMAXPresent(1)) {
             CANSparkMax driveSubsystemMaxLeftA = new CANSparkMax(1, MotorType.kBrushless);
             resetMaxToKnownState(driveSubsystemMaxLeftA);
 
@@ -115,12 +116,15 @@ public class RobotMap {
 
             WPI_TalonSRX  driveSubsystemRightSpeedControllerA = new WPI_TalonSRX(4);
             resetTalonToKnownState(driveSubsystemRightSpeedControllerA);
+            driveSubsystemRightSpeedControllerA.setInverted(true);
 
             WPI_VictorSPX  driveSubsystemRightSpeedControllerB = new WPI_VictorSPX(5);
             resetTalonToKnownState(driveSubsystemRightSpeedControllerB);
+            driveSubsystemRightSpeedControllerB.setInverted(true);
 
             WPI_VictorSPX  driveSubsystemRightSpeedControllerC = new WPI_VictorSPX(6);
             resetTalonToKnownState(driveSubsystemRightSpeedControllerC);
+            driveSubsystemRightSpeedControllerC.setInverted(true);
 
             groupLeft = new SpeedControllerGroup(driveSubsystemLeftSpeedControllerA, driveSubsystemLeftSpeedControllerB, driveSubsystemLeftSpeedControllerC);
             groupRight = new SpeedControllerGroup(driveSubsystemRightSpeedControllerA, driveSubsystemRightSpeedControllerB, driveSubsystemRightSpeedControllerC);
@@ -140,7 +144,8 @@ public class RobotMap {
         intakeSubsystemLowerMotor = new Victor(5);
         intakeSubsystemMiddleMotor = new Victor(6);
 
-        lightSubsystemLightPWM = new Spark(5);
+        lightSubsystemLightPWM = new Spark(7);
+        // lightSubsystemLightPWM = new Spark(5);
 		LiveWindow.addActuator("LightSubsystem", "LightPWM", (Spark) lightSubsystemLightPWM);
         lightSubsystemLightPWM.setInverted(false);
         
