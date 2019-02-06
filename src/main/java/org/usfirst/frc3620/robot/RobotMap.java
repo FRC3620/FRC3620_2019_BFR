@@ -81,7 +81,7 @@ public class RobotMap {
     
     @SuppressWarnings("deprecation")
 	public static void init() {
-
+        canDeviceFinder = new CANDeviceFinder();
 
         SpeedControllerGroup groupLeft;
         SpeedControllerGroup groupRight;
@@ -160,7 +160,7 @@ public class RobotMap {
         counter.setUpSourceEdge(false, true);
 
             // instantiate Pneumatics here
-        }
+        
 
         driveSubsystemAHRS = new AHRS(edu.wpi.first.wpilibj.SPI.Port.kMXP);
 		LiveWindow.addSensor("Drivetrain", "AHRS", driveSubsystemAHRS);
