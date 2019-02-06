@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
 import org.usfirst.frc3620.misc.RobotMode;
+import org.usfirst.frc3620.misc.BlinkinDict.Color;
 import org.usfirst.frc3620.robot.commands.*;
 import org.usfirst.frc3620.robot.subsystems.*;
 
@@ -115,6 +116,12 @@ public class Robot extends TimedRobot {
     public void teleopPeriodic() {
     	beginPeriodic();
         Scheduler.getInstance().run();
+        if (oi.getButtonA().get()) {
+            lightSubsystem.setEffect(1, Color.HOT_PINK);
+        }
+        if (!oi.getButtonA().get()) {
+            lightSubsystem.clearEffect(1, Color.HOT_PINK);
+        }
         endPeriodic();
     }
     

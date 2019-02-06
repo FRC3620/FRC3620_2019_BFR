@@ -41,14 +41,19 @@ public class OI {
     // button.whenReleased(new ExampleCommand());
 
     private Joystick driverJoystick;
+    private JoystickButton button_a;
 
     public OI() {
         //to interface with joysticks, no special initiallization nessessary
         driverJoystick = new Joystick(0);
+        button_a = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_A);
 
         // map buttons to Joystick buttons here
     }
 
+    public JoystickButton getButtonA() {
+        return button_a;
+    }
     public Joystick getDriverJoystick() {
         return driverJoystick;
     }

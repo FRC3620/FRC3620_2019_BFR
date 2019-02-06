@@ -66,7 +66,7 @@ public class RobotMap {
 
         //new code
 
-        lightSubsystemLightPWM = new Spark(7);
+        lightSubsystemLightPWM = new Spark(9);
 		LiveWindow.addActuator("LightSubsystem", "LightPWM", (Spark) lightSubsystemLightPWM);
         lightSubsystemLightPWM.setInverted(false);
         
