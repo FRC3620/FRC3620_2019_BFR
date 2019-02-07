@@ -6,11 +6,14 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.slf4j.Logger;
+import org.usfirst.frc3620.logger.DataLogger;
 import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
 import org.usfirst.frc3620.misc.RobotMode;
 import org.usfirst.frc3620.robot.commands.*;
 import org.usfirst.frc3620.robot.subsystems.*;
+import org.usfirst.frc3620.misc.CANDeviceFinder;
+
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -39,6 +42,9 @@ public class Robot extends TimedRobot {
     public static RumbleSubsystem rumbleSubsystemDriver;
     public static RumbleSubsystem rumbleSubsystemOperator;
 
+    // data logging
+    public static DataLogger robotDataLogger;
+
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
@@ -46,8 +52,8 @@ public class Robot extends TimedRobot {
     @Override
     public void robotInit() {
 		// set up logging
-		logger = EventLogging.getLogger(Robot.class, Level.INFO);
-
+        logger = EventLogging.getLogger(Robot.class, Level.INFO);
+        
         // set up hardware
         RobotMap.init();
 
@@ -70,6 +76,12 @@ public class Robot extends TimedRobot {
         // Add commands to Autonomous Sendable Chooser
         chooser.addDefault("Autonomous Command", new AutonomousCommand());
         SmartDashboard.putData("Auto mode", chooser);
+
+        // get data logging going
+        robotDataLogger = new DataLogger();
+        new RobotDataLogger(robotDataLogger, RobotMap.canDeviceFinder);
+        robotDataLogger.setInterval(1.000);
+        robotDataLogger.start();
     }
 
     /**
