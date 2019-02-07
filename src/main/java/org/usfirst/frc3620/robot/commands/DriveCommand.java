@@ -12,6 +12,10 @@ public class DriveCommand extends Command {
     Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
     double xInFeet;
     double yInFeet;
+    double leftEncoderCurrent;
+    double leftEncoderLast;
+    double rightEncoderCurrent;
+    double rightEncoderLast;
     
     public DriveCommand() {
         requires(Robot.driveSubsystem);
@@ -20,7 +24,8 @@ public class DriveCommand extends Command {
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-
+        leftEncoderLast = Robot.driveSubsystem.ticsToFeet(Robot.driveSubsystem.readLeftEncRaw());
+        rightEncoderLast = Robot.driveSubsystem.ticsToFeet(Robot.driveSubsystem.readRightEncRaw());
     	EventLogging.commandMessage(logger);
     }
 
@@ -48,14 +53,18 @@ public class DriveCommand extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        leftSideEncoderCurrent = Robot.driveSubsystem.ticstofeet(Robot.driveSubsystem.)
+        leftEncoderCurrent = Robot.driveSubsystem.ticsToFeet(Robot.driveSubsystem.readLeftEncRaw());
+        rightEncoderCurrent = Robot.driveSubsystem.ticsToFeet(Robot.driveSubsystem.readRightEncRaw());
+        calculateX(leftEncoderLast, leftEncoderCurrent, rightEncoderLast, rightEncoderCurrent);
+        leftEncoderLast = leftEncoderCurrent;
+        rightEncoderLast = rightEncoderCurrent;
         //gets values from Y-axis of Right stick on gamepad, X-axis goes unused
         double vertical = Robot.oi.getRightVerticalJoystickSquared();
         //gets values from X-axis of Left stick on gamepad, Y-axis goes unused
         double horizontal = Robot.oi.getLeftHorizontalJoystickSquared();
         //displays current values on gamepad
             //Calls method to drive motors, declared in subsystem, sends real values to motors
-            Robot.driveSubsystem.arcadeDrive(-vertical, horizontal);
+            Robot.driveSubsystem.arcadeDrive(horizontal, -vertical);
     }
 
     // Make this return true when this Command no longer needs to run execute()

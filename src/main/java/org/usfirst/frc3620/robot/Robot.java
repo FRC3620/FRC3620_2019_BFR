@@ -32,8 +32,15 @@ public class Robot extends TimedRobot {
 
     // declare Subsystems here
     public static DriveSubsystem driveSubsystem;
+<<<<<<< HEAD
     public static LightSubsystem lightSubsystem;
     public static LiftSubsystem liftSubsystem;
+=======
+
+    public static RumbleSubsystem rumbleSubsystemDriver;
+    public static RumbleSubsystem rumbleSubsystemOperator;
+
+>>>>>>> 32b017556b4929dde7aaf26d09ee0c30468c9aab
     public static IntakeSubsystem intakeSubsystem;
     public static TrashSubsystem trashSubsystem;
     public static RumbleSubsystem rumbleSubsystemDriver;
@@ -54,7 +61,7 @@ public class Robot extends TimedRobot {
         // set up subsystems
         // initalized drive subsystem, which control motors to move robot
         driveSubsystem = new DriveSubsystem();
-        lightSubsystem = new LightSubsystem();
+      
         intakeSubsystem = new IntakeSubsystem();
         trashSubsystem = new TrashSubsystem();
         liftSubsystem = new LiftSubsystem();
@@ -160,7 +167,7 @@ public class Robot extends TimedRobot {
 			// RobotMap.checkTheCANBus();
 		}
         
-        lightSubsystem.modeChange(newMode, currentRobotMode);
+     
         
 		previousRobotMode = currentRobotMode;
 		currentRobotMode = newMode;
