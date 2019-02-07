@@ -52,7 +52,6 @@ public class OI {
 
         Robot.rumbleSubsystemDriver.setController(driverJoystick);
         Robot.rumbleSubsystemOperator.setController(operatorJoystick);
-
         // map buttons to Joystick buttons here
 
             //Declare buttons
@@ -74,28 +73,6 @@ public class OI {
             positionTwo.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_TOP));
         }
 
-            //Declare buttons
-            Button inTakeIn = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_RIGHT_BUMPER);
-            Button inTakeOut = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_LEFT_BUMPER);
-            Button trashIn = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_LEFT_STICK);
-            Button conveyorL = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_X);
-            Button conveyorR = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_Y);
-            Button positionOne = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_A);
-            Button positionTwo = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_B);
-
-            //buttons run commands
-            inTakeIn.toggleWhenPressed(new IntakeCommand());
-            inTakeOut.toggleWhenPressed(new OutTakeCommand());
-            trashIn.toggleWhenPressed(new TrashInCommand());
-            conveyorL.whileHeld(new TrashLeftCommand());
-            conveyorR.whileHeld(new TrashRightCommand());
-            positionOne.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_BOTTOM));
-            positionTwo.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_TOP));
-        }
-
-    public JoystickButton getButtonA() {
-        return button_a;
-    }
     public Joystick getDriverJoystick() {
         return driverJoystick;
     }
@@ -104,8 +81,6 @@ public class OI {
     }
     
     static {
-        SmartDashboard.putData("Rumble both", new RumbleCommand(Robot.rumbleSubsystemDriver, Hand.BOTH, 0.2f, 60f));
-        SmartDashboard.putData("Rumble left", new RumbleCommand(Robot.rumbleSubsystemDriver, Hand.LEFT, 0.2f, 3.0f));
     }
 
     public double computeDeadband (double position, double deadband) {
