@@ -23,6 +23,7 @@ public class DriveSubsystem extends Subsystem {
 
     private final DifferentialDrive differentialDrive = RobotMap.driveSubsystemDifferentialDrive;
 
+<<<<<<< HEAD
     public DriveSubsystem(){
         super();               
 		ahrs = new AHRS(edu.wpi.first.wpilibj.SPI.Port.kMXP);
@@ -33,6 +34,14 @@ public class DriveSubsystem extends Subsystem {
         resetEncoder();
     }
 
+=======
+    public DriveSubsystem() {
+        // this code gets run when the DriveSubsystem is created 
+        // (when the robot is rebooted.)
+        resetencoder();
+    }
+    
+>>>>>>> 880993be790e3e712e8c1fae1f54f76bf991081b
     @Override
     public void initDefaultCommand() {
         // Set the default command for a subsystem here. Drive command runs in background at all times
@@ -53,6 +62,13 @@ public class DriveSubsystem extends Subsystem {
         SmartDashboard.putNumber("rightsideEncoderInFeet", getRightSideDistance());
         SmartDashboard.putNumber("leftsideEncoderInFeet", getLeftSideDistance());
 
+    }
+
+    double ticstofeet(double tics) { 
+            // turning the encoder readings from tics to feet
+            double inches = tics / 0.583;
+            double feet = inches / 12;
+            return feet;
     }
 
     double ticstofeet(double tics) { 
