@@ -121,6 +121,9 @@ public class DriveSubsystem extends Subsystem {
         }
     }
 
+    public double calculateX(){
+        
+    }
 
 
 
@@ -134,10 +137,17 @@ public class DriveSubsystem extends Subsystem {
 
 
 
-
-    public double getAngle() {
+    public double getInitialAngle() {
 		if (ahrsIsConnected()) {
 			return ahrs.getAngle(); //Angle direction was opposite of 2017 testing (raw is clockwise-positive, corrected is clockwise-negative)
+		} else {
+			complainAboutMissingAhrs();
+			return 0;
+		}
+    }
+    public double getRealAngle() {
+		if (ahrsIsConnected()) {
+			return (ahrs.getAngle() - getInitialAngle()); //Angle direction was opposite of 2017 testing (raw is clockwise-positive, corrected is clockwise-negative)
 		} else {
 			complainAboutMissingAhrs();
 			return 0;

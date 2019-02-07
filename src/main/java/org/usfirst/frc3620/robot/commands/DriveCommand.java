@@ -9,7 +9,10 @@ import org.usfirst.frc3620.robot.Robot;
  *
  */
 public class DriveCommand extends Command {
-	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
+    Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
+    double xInFeet;
+    double yInFeet;
+    
     public DriveCommand() {
         requires(Robot.driveSubsystem);
     }
@@ -17,12 +20,35 @@ public class DriveCommand extends Command {
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
+
     	EventLogging.commandMessage(logger);
+    }
+
+    protected void calculateX(double leftSideEncoderLast, double leftSideEncoderCurrent, double rightSideEncoderLast, double rightSideEncoderCurrent){
+       double leftSideDx = (leftSideEncoderCurrent - leftSideEncoderLast) * Math.cos(Robot.driveSubsystem.getRealAngle());
+       double rightSideDx = (rightSideEncoderCurrent - rightSideEncoderLast) * Math.cos(Robot.driveSubsystem.getRealAngle());
+       double leftSideDy = (leftSideEncoderCurrent - leftSideEncoderLast) * Math.sin(Robot.driveSubsystem.getRealAngle());
+       double rightSideDy = (rightSideEncoderCurrent - rightSideEncoderLast) * Math.sin(Robot.driveSubsystem.getRealAngle());
+
+       double realDx = (leftSideDx + rightSideDx)/2;
+       double realDy = (leftSideDy + rightSideDy)/2;
+
+       xInFeet = xInFeet + realDx;
+       yInFeet = yInFeet + realDy;
+    }
+
+    public double getX(){
+        return xInFeet;
+    }
+
+    public double getY(){
+        return yInFeet;
     }
 
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
+
         //gets values from Y-axis of Right stick on gamepad, X-axis goes unused
         double vertical = Robot.oi.getRightVerticalJoystickSquared();
         //gets values from X-axis of Left stick on gamepad, Y-axis goes unused
