@@ -48,7 +48,7 @@ public class DriveCommand extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-
+        leftSideEncoderCurrent = Robot.driveSubsystem.ticstofeet(Robot.driveSubsystem.)
         //gets values from Y-axis of Right stick on gamepad, X-axis goes unused
         double vertical = Robot.oi.getRightVerticalJoystickSquared();
         //gets values from X-axis of Left stick on gamepad, Y-axis goes unused
