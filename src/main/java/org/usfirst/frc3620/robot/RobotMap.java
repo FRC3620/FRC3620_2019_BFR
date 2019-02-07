@@ -63,16 +63,21 @@ public class RobotMap {
 
     public static DigitalInput lineSensor;
     public static DigitalInput exampleSubsystemDigitalInput0;
+    public static DigitalInput liftLimitSwitchTop;
+    public static DigitalInput liftLimitSwitchBottom;
     public static Counter counter; 
     public static Encoder leftSideEncoder;
     public static Encoder rightSideEncoder;
-    public static CANEncoder leftsideEncoder, rightsideEncoder;
+    public static CANEncoder leftsideEncoder, rightsideEncoder, liftEncoder;
     public static CANSparkMax driveSubsystemMaxLeftA;
     public static CANSparkMax driveSubsystemMaxLeftB;
     public static CANSparkMax driveSubsystemMaxRightA;
     public static CANSparkMax driveSubsystemMaxRightB;
     public static CANSparkMax liftSubsystemMax;
     public static CANDeviceFinder canDeviceFinder;
+  
+    public static Solenoid liftSubsystemBrake;
+
 
     static Logger logger = EventLogging.getLogger(RobotMap.class, Level.INFO);
     
@@ -82,9 +87,9 @@ public class RobotMap {
 
         liftSubsystemMax = new CANSparkMax(5, MotorType.kBrushless);
         resetMaxToKnownState(liftSubsystemMax);
-   /*     liftEncoder = liftSubsystemMax.getEncoder();
+        liftEncoder = liftSubsystemMax.getEncoder();
           liftLimitSwitchTop = new DigitalInput(1);
-          liftLimitSwitchBottom = new DigitalInput(2); */
+          liftLimitSwitchBottom = new DigitalInput(2); 
 
         SpeedControllerGroup groupLeft;
         SpeedControllerGroup groupRight;

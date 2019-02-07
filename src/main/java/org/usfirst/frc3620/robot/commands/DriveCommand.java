@@ -29,7 +29,7 @@ public class DriveCommand extends Command {
     	EventLogging.commandMessage(logger);
     }
 
-    protected void calculateX(double leftSideEncoderLast, double leftSideEncoderCurrent, double rightSideEncoderLast, double rightSideEncoderCurrent){
+    protected void calculateXAndY(double leftSideEncoderLast, double leftSideEncoderCurrent, double rightSideEncoderLast, double rightSideEncoderCurrent){
        double leftSideDx = (leftSideEncoderCurrent - leftSideEncoderLast) * Math.cos(Robot.driveSubsystem.getRealAngle());
        double rightSideDx = (rightSideEncoderCurrent - rightSideEncoderLast) * Math.cos(Robot.driveSubsystem.getRealAngle());
        double leftSideDy = (leftSideEncoderCurrent - leftSideEncoderLast) * Math.sin(Robot.driveSubsystem.getRealAngle());
@@ -55,9 +55,11 @@ public class DriveCommand extends Command {
     protected void execute() {
         leftEncoderCurrent = Robot.driveSubsystem.ticsToFeet(Robot.driveSubsystem.readLeftEncRaw());
         rightEncoderCurrent = Robot.driveSubsystem.ticsToFeet(Robot.driveSubsystem.readRightEncRaw());
-        calculateX(leftEncoderLast, leftEncoderCurrent, rightEncoderLast, rightEncoderCurrent);
+        calculateXAndY(leftEncoderLast, leftEncoderCurrent, rightEncoderLast, rightEncoderCurrent);
         leftEncoderLast = leftEncoderCurrent;
         rightEncoderLast = rightEncoderCurrent;
+        System.out.println("x: " + getX());
+        System.out.println("y: " + getY());
         //gets values from Y-axis of Right stick on gamepad, X-axis goes unused
         double vertical = Robot.oi.getRightVerticalJoystickSquared();
         //gets values from X-axis of Left stick on gamepad, Y-axis goes unused
