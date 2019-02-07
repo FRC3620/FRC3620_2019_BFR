@@ -32,15 +32,9 @@ public class Robot extends TimedRobot {
 
     // declare Subsystems here
     public static DriveSubsystem driveSubsystem;
-<<<<<<< HEAD
-    public static LightSubsystem lightSubsystem;
+
+ 
     public static LiftSubsystem liftSubsystem;
-=======
-
-    public static RumbleSubsystem rumbleSubsystemDriver;
-    public static RumbleSubsystem rumbleSubsystemOperator;
-
->>>>>>> 32b017556b4929dde7aaf26d09ee0c30468c9aab
     public static IntakeSubsystem intakeSubsystem;
     public static TrashSubsystem trashSubsystem;
     public static RumbleSubsystem rumbleSubsystemDriver;

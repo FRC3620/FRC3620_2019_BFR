@@ -23,7 +23,7 @@ import com.kauailabs.navx.frc.AHRS;
 public class DriveSubsystem extends Subsystem {
 
     Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
-    public AHRS ahrs = null /* will set in the constructor */;
+    public AHRS ahrs = RobotMap.driveSubsystemAHRS; /* will set in the constructor */;
 
     private final DifferentialDrive differentialDrive = RobotMap.driveSubsystemDifferentialDrive;
     private Encoder driveEncoderLeft = RobotMap.leftSideEncoder;

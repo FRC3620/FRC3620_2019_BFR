@@ -180,19 +180,19 @@ public abstract class AbstractPath extends Command {
 
 		Robot.driveSubsystem.resetEncoders();
 		//Robot.driveSubsystem.resetNavX();
-		startingAbsoluteHeading = Robot.driveSubsystem.getAngle();
+		startingAbsoluteHeading = Robot.driveSubsystem.getRealAngle();
 		
-		logger.info("Navx initial 1 = {}", Robot.driveSubsystem.getAngle());
+		logger.info("Navx initial 1 = {}", Robot.driveSubsystem.getRealAngle());
 		left.configurePIDVA(getPathfinderP(), getPathfinderI(), getPathfinderD(), 1 / getPathfinderV_MAX(),
 				getPathfinderA_GAIN());
-		logger.info("Navx initial 2 = {}", Robot.driveSubsystem.getAngle());
+		logger.info("Navx initial 2 = {}", Robot.driveSubsystem.getRealAngle());
 		right.configurePIDVA(getPathfinderP(), getPathfinderI(), getPathfinderD(), 1 / getPathfinderV_MAX(),
 				getPathfinderA_GAIN());
 		
 		
 		
 		logger.info("PIDVAs configured.");
-		logger.info("Navx initial 3 = {}", Robot.driveSubsystem.getAngle());
+		logger.info("Navx initial 3 = {}", Robot.driveSubsystem.getRealAngle());
 		lastLeftEncoder = encoderPosLeft = Robot.driveSubsystem.readLeftEncRaw();
 		//lastLeftEncoder = encoderPosLeft = RobotMap.driveSubsystemLeftEncoder.getRaw();
 		lastRightEncoder = encoderPosRight = Robot.driveSubsystem.readRightEncRaw();
@@ -201,7 +201,7 @@ public abstract class AbstractPath extends Command {
 		logger.info("Encoders L,R initial = {}, {}", encoderPosLeft, encoderPosRight);
 
 		logger.info("Reverse mode = {}", getPathfinderReverseMode());
-		logger.info("Navx initial = {}", Robot.driveSubsystem.getAngle());
+		logger.info("Navx initial = {}", Robot.driveSubsystem.getRealAngle());
 		//CHANGED TICK PER REVOLUTION TO 1024 from 512
 	
 		if (getPathfinderReverseMode()) {
@@ -244,7 +244,7 @@ public abstract class AbstractPath extends Command {
 		double outputLeft = left.calculate(encoderPosLeft);
 		double outputRight = right.calculate(encoderPosRight);
 
-		double currentAbsoluteHeading = Robot.driveSubsystem.getAngle();
+		double currentAbsoluteHeading = Robot.driveSubsystem.getRealAngle();
 		double navx_heading = currentAbsoluteHeading - startingAbsoluteHeading;
 
 		// change desired heading to positive right

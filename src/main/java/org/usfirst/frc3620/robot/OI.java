@@ -70,13 +70,8 @@ public class OI {
             trashIn.toggleWhenPressed(new TrashInCommand());
             conveyorL.whileHeld(new TrashLeftCommand());
             conveyorR.whileHeld(new TrashRightCommand());
-<<<<<<< HEAD
-            positionOne.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_BOTTOM));
-            positionTwo.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_TOP));
-=======
 
             SmartDashboard.putData("TrainingPath", new TrainingPath());
->>>>>>> 32b017556b4929dde7aaf26d09ee0c30468c9aab
         }
 
     public Joystick getDriverJoystick() {

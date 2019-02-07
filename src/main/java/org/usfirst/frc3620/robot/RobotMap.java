@@ -29,10 +29,7 @@ import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-<<<<<<< HEAD
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
-=======
->>>>>>> 32b017556b4929dde7aaf26d09ee0c30468c9aab
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Counter;
@@ -65,35 +62,16 @@ public class RobotMap {
     public static WPI_TalonSRX conveyorBeltMotorC;
 
     public static DigitalInput lineSensor;
-<<<<<<< HEAD
-    public static DigitalInput liftLimitSwitchTop;
-    public static DigitalInput liftLimitSwitchBottom;
-    public static DigitalInput practiceBotJumper;   //Added from 2018 code
-    public static DigitalInput exampleSubsystemDigitalInput0;
-    public static Counter counter; 
-    public static Solenoid liftSubsystemBrake;
-
-    public static CANEncoder leftsideEncoder, rightsideEncoder, liftEncoder;
-=======
     public static DigitalInput exampleSubsystemDigitalInput0;
     public static Counter counter; 
     public static Encoder leftSideEncoder;
     public static Encoder rightSideEncoder;
     public static CANEncoder leftsideEncoder, rightsideEncoder;
->>>>>>> 32b017556b4929dde7aaf26d09ee0c30468c9aab
     public static CANSparkMax driveSubsystemMaxLeftA;
     public static CANSparkMax driveSubsystemMaxLeftB;
     public static CANSparkMax driveSubsystemMaxRightA;
     public static CANSparkMax driveSubsystemMaxRightB;
-<<<<<<< HEAD
     public static CANSparkMax liftSubsystemMax;
-=======
-
-    public static AHRS driveSubsystemAHRS;
-    public static DigitalInput practiceBotJumper;   //Added from 2018 code
-    public static DifferentialDrive driveSubsystemCANDifferentialDrive;
-
->>>>>>> 32b017556b4929dde7aaf26d09ee0c30468c9aab
     public static CANDeviceFinder canDeviceFinder;
 
     static Logger logger = EventLogging.getLogger(RobotMap.class, Level.INFO);
@@ -104,9 +82,9 @@ public class RobotMap {
 
         liftSubsystemMax = new CANSparkMax(5, MotorType.kBrushless);
         resetMaxToKnownState(liftSubsystemMax);
-        liftEncoder = liftSubsystemMax.getEncoder();
-        liftLimitSwitchTop = new DigitalInput(1);
-        liftLimitSwitchBottom = new DigitalInput(2);
+   /*     liftEncoder = liftSubsystemMax.getEncoder();
+          liftLimitSwitchTop = new DigitalInput(1);
+          liftLimitSwitchBottom = new DigitalInput(2); */
 
         SpeedControllerGroup groupLeft;
         SpeedControllerGroup groupRight;
@@ -165,18 +143,12 @@ public class RobotMap {
         driveSubsystemDifferentialDrive.setExpiration(0.1);
         driveSubsystemDifferentialDrive.setMaxOutput(1.0);
 
-<<<<<<< HEAD
         LiveWindow.addActuator("DriveSubsystem", "CANDifferentialDrive", driveSubsystemCANDifferentialDrive);
 
         //new code
         conveyorBeltMotorL = new WPI_TalonSRX(7);
         conveyorBeltMotorR = new WPI_TalonSRX(8);
         conveyorBeltMotorC = new WPI_TalonSRX(9);
-=======
-        conveyorBeltMotorL = new WPI_TalonSRX(1);
-        conveyorBeltMotorR = new WPI_TalonSRX(2);
-        conveyorBeltMotorC = new WPI_TalonSRX(3);
->>>>>>> 32b017556b4929dde7aaf26d09ee0c30468c9aab
 
         intakeSubsystemUpperMotor = new Victor(4);
         intakeSubsystemLowerMotor = new Victor(5);
@@ -192,23 +164,15 @@ public class RobotMap {
         counter.setUpSourceEdge(false, true);
 
             // instantiate Pneumatics here
-<<<<<<< HEAD
             liftSubsystemBrake = new Solenoid(1);
-        }
-=======
         
->>>>>>> 32b017556b4929dde7aaf26d09ee0c30468c9aab
 
         driveSubsystemAHRS = new AHRS(edu.wpi.first.wpilibj.SPI.Port.kMXP);
 		LiveWindow.addSensor("Drivetrain", "AHRS", driveSubsystemAHRS);
 
   //      LiveWindow.addSensor("ExampleSubsystem", "Digital Input 0", exampleSubsystemDigitalInput0);
-
-<<<<<<< HEAD
-=======
-
->>>>>>> 32b017556b4929dde7aaf26d09ee0c30468c9aab
     }
+
 
     static void resetMaxToKnownState (CANSparkMax x) {
 		x.setInverted(false);
