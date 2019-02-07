@@ -1,27 +1,24 @@
 package org.usfirst.frc3620.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+
 import org.slf4j.Logger;
 import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
 import org.usfirst.frc3620.robot.RobotMap;
-import org.usfirst.frc3620.robot.commands.LineDetectionCommand;
 
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.Solenoid;
-import edu.wpi.first.wpilibj.Ultrasonic;
-import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.Counter;
 import edu.wpi.first.wpilibj.command.Subsystem;
-
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /**
  *
  */
 public class IntakeSubsystem extends Subsystem {
 
-    private final Victor intakeRollerTop = RobotMap.intakeSubsystemUpperMotor;
-    private final Victor intakeRollerBottom = RobotMap.intakeSubsystemLowerMotor;
-    private final Victor intakeRollerMiddle = RobotMap.intakeSubsystemMiddleMotor;
+    private final WPI_TalonSRX intakeRollerTop = RobotMap.intakeSubsystemUpperMotor;
+    private final WPI_TalonSRX intakeRollerBottom = RobotMap.intakeSubsystemLowerMotor;
+    private final WPI_TalonSRX intakeRollerMiddle = RobotMap.intakeSubsystemMiddleMotor;
     private final DigitalInput lineSensor = RobotMap.lineSensor;
     private final Counter counter = RobotMap.counter;
     Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
@@ -45,14 +42,14 @@ public class IntakeSubsystem extends Subsystem {
     
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
-    public void intakeIn(){
-        intakeRollerTop.set(-1);
-        intakeRollerBottom.set(1);
+    public void intakeIn(double speed){
+        intakeRollerTop.set(-speed);
+        intakeRollerBottom.set(speed);
     }
 
-    public void intakeOut(){
-        intakeRollerTop.set(1);
-        intakeRollerBottom.set(-1);
+    public void intakeOut(double speed){
+        intakeRollerTop.set(speed);
+        intakeRollerBottom.set(-speed);
     } 
 
     public void intakeOff(){
@@ -61,9 +58,9 @@ public class IntakeSubsystem extends Subsystem {
     }
     
     
-    public void TrashIn(){
-        intakeRollerTop.set(-1);
-        intakeRollerMiddle.set(1);
+    public void TrashIn(double speed){
+        intakeRollerTop.set(-speed);
+        intakeRollerMiddle.set(-speed);
     }
 
     public void TrashOff(){

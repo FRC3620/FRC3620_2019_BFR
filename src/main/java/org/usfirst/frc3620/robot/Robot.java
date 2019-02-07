@@ -41,10 +41,6 @@ public class Robot extends TimedRobot {
     public static RumbleSubsystem rumbleSubsystemDriver;
     public static RumbleSubsystem rumbleSubsystemOperator;
 
-    public static IntakeSubsystem intakeSubsystem;
-
-    public static TrashSubsystem trashSubsystem;
-
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.

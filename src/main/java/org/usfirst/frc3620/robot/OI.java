@@ -61,6 +61,8 @@ public class OI {
             Button trashIn = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_LEFT_STICK);
             Button conveyorL = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_X);
             Button conveyorR = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_Y);
+            Button positionOne = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_A);
+            Button positionTwo = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_B);
 
             //buttons run commands
             inTakeIn.toggleWhenPressed(new IntakeCommand());
@@ -68,6 +70,8 @@ public class OI {
             trashIn.toggleWhenPressed(new TrashInCommand());
             conveyorL.whileHeld(new TrashLeftCommand());
             conveyorR.whileHeld(new TrashRightCommand());
+            positionOne.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_BOTTOM));
+            positionTwo.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_TOP));
         }
 
             //Declare buttons
