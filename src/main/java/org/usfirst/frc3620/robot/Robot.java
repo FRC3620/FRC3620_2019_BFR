@@ -38,6 +38,7 @@ public class Robot extends TimedRobot {
     public static TrashSubsystem trashSubsystem;
     public static RumbleSubsystem rumbleSubsystemDriver;
     public static RumbleSubsystem rumbleSubsystemOperator;
+    public static HatchSubsystem hatchSubsystem;
 
     /**
      * This function is run when the robot is first started up and should be
@@ -60,6 +61,7 @@ public class Robot extends TimedRobot {
         liftSubsystem = new LiftSubsystem();
         rumbleSubsystemDriver = new RumbleSubsystem();
         rumbleSubsystemOperator = new RumbleSubsystem();
+        hatchSubsystem = new HatchSubsystem();
         
         // OI must be constructed after subsystems. If the OI creates Commands
         //(which it very likely will), subsystems are not guaranteed to be
