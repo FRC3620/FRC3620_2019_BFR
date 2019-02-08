@@ -9,13 +9,15 @@ public class TrainingPath extends AbstractPath{
     public Waypoint[] getMyWaypoints(){
         return new Waypoint[] {
             new Waypoint(0, 0, Pathfinder.d2r(0)),
-            new Waypoint(10, 10, Pathfinder.d2r(90)),
-        };
-
-
-        
+            new Waypoint(20, 20, Pathfinder.d2r(90)),
+        };   
     }
     
+    @Override
+    public double getPathfinderP(){
+        return 0.0025;
+    }
+
 
 
 }

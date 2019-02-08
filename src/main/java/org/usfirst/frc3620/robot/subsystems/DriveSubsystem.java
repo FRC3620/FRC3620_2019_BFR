@@ -154,6 +154,15 @@ public class DriveSubsystem extends Subsystem {
 		}
     }
 
+    public double getX(){
+        return ahrs.getDisplacementX();
+    }
+
+    public double getY(){
+        return ahrs.getDisplacementY();
+        
+    }
+
     public double getAutomaticHeading() {
 		return automaticHeading;
 	}

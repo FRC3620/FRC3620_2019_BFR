@@ -30,10 +30,10 @@ public class DriveCommand extends Command {
     }
 
     protected void calculateXAndY(double leftSideEncoderLast, double leftSideEncoderCurrent, double rightSideEncoderLast, double rightSideEncoderCurrent){
-       double leftSideDx = (leftSideEncoderCurrent - leftSideEncoderLast) * Math.cos(Robot.driveSubsystem.getRealAngle());
-       double rightSideDx = (rightSideEncoderCurrent - rightSideEncoderLast) * Math.cos(Robot.driveSubsystem.getRealAngle());
-       double leftSideDy = (leftSideEncoderCurrent - leftSideEncoderLast) * Math.sin(Robot.driveSubsystem.getRealAngle());
-       double rightSideDy = (rightSideEncoderCurrent - rightSideEncoderLast) * Math.sin(Robot.driveSubsystem.getRealAngle());
+       double leftSideDx = (leftSideEncoderCurrent - leftSideEncoderLast) * Math.sin(Robot.driveSubsystem.getRealAngle());
+       double rightSideDx = (rightSideEncoderCurrent - rightSideEncoderLast) * Math.sin(Robot.driveSubsystem.getRealAngle());
+       double leftSideDy = (leftSideEncoderCurrent - leftSideEncoderLast) * Math.cos(Robot.driveSubsystem.getRealAngle());
+       double rightSideDy = (rightSideEncoderCurrent - rightSideEncoderLast) * Math.cos(Robot.driveSubsystem.getRealAngle());
 
        double realDx = (leftSideDx + rightSideDx)/2;
        double realDy = (leftSideDy + rightSideDy)/2;
@@ -53,20 +53,22 @@ public class DriveCommand extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        leftEncoderCurrent = Robot.driveSubsystem.ticsToFeet(Robot.driveSubsystem.readLeftEncRaw());
+   /*     leftEncoderCurrent = Robot.driveSubsystem.ticsToFeet(Robot.driveSubsystem.readLeftEncRaw());
         rightEncoderCurrent = Robot.driveSubsystem.ticsToFeet(Robot.driveSubsystem.readRightEncRaw());
         calculateXAndY(leftEncoderLast, leftEncoderCurrent, rightEncoderLast, rightEncoderCurrent);
         leftEncoderLast = leftEncoderCurrent;
-        rightEncoderLast = rightEncoderCurrent;
+        rightEncoderLast = rightEncoderCurrent; 
         System.out.println("x: " + getX());
-        System.out.println("y: " + getY());
+        System.out.println("y: " + getY()); */
+ //       System.out.println("x: " + Robot.driveSubsystem.getX());
+   //     System.out.println("y: " + Robot.driveSubsystem.getY());
         //gets values from Y-axis of Right stick on gamepad, X-axis goes unused
         double vertical = Robot.oi.getRightVerticalJoystickSquared();
         //gets values from X-axis of Left stick on gamepad, Y-axis goes unused
         double horizontal = Robot.oi.getLeftHorizontalJoystickSquared();
         //displays current values on gamepad
             //Calls method to drive motors, declared in subsystem, sends real values to motors
-            Robot.driveSubsystem.arcadeDrive(horizontal, -vertical);
+            Robot.driveSubsystem.arcadeDrive(-horizontal, vertical);
     }
 
     // Make this return true when this Command no longer needs to run execute()

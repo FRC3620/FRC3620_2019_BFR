@@ -148,12 +148,12 @@ public class RobotMap {
         driveSubsystemDifferentialDrive.setExpiration(0.1);
         driveSubsystemDifferentialDrive.setMaxOutput(1.0);
 
-        LiveWindow.addActuator("DriveSubsystem", "CANDifferentialDrive", driveSubsystemCANDifferentialDrive);
+      //  LiveWindow.addActuator("DriveSubsystem", "CANDifferentialDrive", driveSubsystemCANDifferentialDrive);
 
         //new code
-        conveyorBeltMotorL = new WPI_TalonSRX(7);
+/*        conveyorBeltMotorL = new WPI_TalonSRX(7);
         conveyorBeltMotorR = new WPI_TalonSRX(8);
-        conveyorBeltMotorC = new WPI_TalonSRX(9);
+        conveyorBeltMotorC = new WPI_TalonSRX(9); */
 
         intakeSubsystemUpperMotor = new Victor(4);
         intakeSubsystemLowerMotor = new Victor(5);
