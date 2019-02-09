@@ -61,7 +61,7 @@ public class RumbleCommand extends Command {
 
     public RumbleCommand(RumbleSubsystem subsystem, Hand hand, Float intensity) {
         requires(subsystem); //requires the subsystem provided by caller
-
+        System.out.println("RumbleCommand called");
         rumbleSubsystem = subsystem;
         rumbleDuration = 0.05f;
         rumbleHand = hand;
@@ -75,7 +75,7 @@ public class RumbleCommand extends Command {
     @Override
     protected void initialize() {
         EventLogging.commandMessage(logger);
-
+        System.out.println("Rumble Init");
         //sets the defaults
         if (rumbleDuration == null) {rumbleDuration = rumbleDurationDefault;}
         if (rumbleHand == null) {rumbleHand = rumbleHandDefault;}
@@ -96,8 +96,13 @@ public class RumbleCommand extends Command {
     @Override
     protected void execute() {
         if (!continuous) {
-            if (timer.get() >= rumbleDuration) {rumbleSubsystem.clearRumble();}
+            if (timer.get() >= rumbleDuration) 
+            {
+                rumbleSubsystem.clearRumble();
+                System.out.println("clearRumble");
+            }
         }
+        System.out.println("Rumble execute");
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -114,6 +119,7 @@ public class RumbleCommand extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
+        rumbleSubsystem.setRumble(rumbleHand, 0f);
     	EventLogging.commandMessage(logger);
     }
 
@@ -122,6 +128,7 @@ public class RumbleCommand extends Command {
     @Override
     protected void interrupted() {
         EventLogging.commandMessage(logger);
+        rumbleSubsystem.setRumble(rumbleHand, 0f);
         rumbleSubsystem.clearRumble();
     }
 }
