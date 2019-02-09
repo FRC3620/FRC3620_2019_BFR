@@ -15,29 +15,29 @@ public class AutoAlignmentTemplate extends AbstractPath{
     }
 
     public void calculateX(){
-        if(angle != 0){
+        if(angle == 0){
+            x = 0;
+        } else if(angle > -60 && angle < 60 ){
             x = r*(Math.sin(angle))*(Math.sin(1.5*angle))/
             (Math.sin(180-1.5*angle));
-        } else if(angle > 60) {
+        } else if(angle > 60 || angle < -60) {
             angle = 60;
             x = r*(Math.sin(angle))*(Math.sin(1.5*angle))/
             (Math.sin(180-1.5*angle));
-        } else{
-            x = 0;
         }
     }
 
     public void calculateY(){
-        if(angle != 0){
+        if(angle == 0){
+            y = (2 * r)/3;
+        } else if(angle > -60 && angle < 60){
             y = r*(Math.sin(angle))*(Math.cos(1.5*angle))/
             (Math.sin(180-1.5*angle));
-        } else if(angle > 60) {
+        } else if(angle > 60 || angle < -60) {
             angle = 60;
             y = r*(Math.sin(angle))*(Math.cos(1.5*angle))/
             (Math.sin(180-1.5*angle));
-        } else{
-            y = (2*r)/3;
-        }
+        } 
     }
 
     @Override
