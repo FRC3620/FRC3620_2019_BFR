@@ -55,14 +55,7 @@ public class RumbleCommand extends Command {
      * @see Hand defaults to Hand.BOTH
      */
     public RumbleCommand(RumbleSubsystem subsystem, Double intensity, Double duration) {
-        requires(subsystem); //requires the subsystem provided by caller
-
-        this.subsystem = subsystem;
-        this.duration = duration;
-        this.hand = null;
-        this.intensity = intensity;
-
-        continuous = false;
+        this(subsystem, null, intensity, duration);
     }
 
     /**
@@ -73,14 +66,7 @@ public class RumbleCommand extends Command {
      * @see Duration defaults to 1.0
      */
     public RumbleCommand(RumbleSubsystem subsystem) {
-        requires(subsystem); //requires the provided subsystem by caller
-
-        this.subsystem = subsystem;
-        this.duration = null;
-        this.hand = null;
-        this.intensity = null;
-
-        continuous = false;
+        this(subsystem, null, null, null);
     }
 
     /**
@@ -91,12 +77,7 @@ public class RumbleCommand extends Command {
      * @see This command should ONLY be used if you plan on interrupting it with this command again with the intensity at 0.0
      */
     public RumbleCommand(RumbleSubsystem subsystem, Hand hand, Double intensity) {
-        requires(subsystem); //requires the subsystem provided by caller
-
-        this.subsystem = subsystem;
-        this.duration = null;
-        this.hand = hand;
-        this.intensity = intensity;
+        this(subsystem, hand, intensity, null);
 
         continuous = true;
     }
@@ -105,6 +86,7 @@ public class RumbleCommand extends Command {
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
+        EventLogging.commandMessage(logger);
 
         //sets the defaults
         if (duration == null) {duration = durationDefault;}
@@ -128,7 +110,6 @@ public class RumbleCommand extends Command {
             timer.start();
         }
 
-        EventLogging.commandMessage(logger);
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -150,6 +131,7 @@ public class RumbleCommand extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
+        EventLogging.commandMessage(logger);
         if (subsystem == Robot.rumbleSubsystemDriver) {
             logger.info("Driver rumble finished");
         }
@@ -158,13 +140,13 @@ public class RumbleCommand extends Command {
         }
         subsystem.clearRumble();
 
-        EventLogging.commandMessage(logger);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run or when cancelled by whileHeld
     @Override
     protected void interrupted() {
+        EventLogging.commandMessage(logger);
         if (subsystem == Robot.rumbleSubsystemDriver) {
             logger.info("Driver rumble interrupted");
         }
@@ -172,7 +154,5 @@ public class RumbleCommand extends Command {
             logger.info("Operator rumble interrupted");
         }
         subsystem.clearRumble();
-
-        EventLogging.commandMessage(logger);
-    }
+    } 
 }
