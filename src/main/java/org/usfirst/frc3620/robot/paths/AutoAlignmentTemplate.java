@@ -20,8 +20,13 @@ public class AutoAlignmentTemplate extends AbstractPath{
         } else if(angle > -60 && angle < 60 ){
             x = r*(Math.sin(angle))*(Math.sin(1.5*angle))/
             (Math.sin(180-1.5*angle));
-        } else if(angle > 60 || angle < -60) {
+        } else if(angle > 60) {
             angle = 60;
+            x = r*(Math.sin(angle))*(Math.sin(1.5*angle))/
+            (Math.sin(180-1.5*angle));
+        }
+        else if(angle < -60) {
+            angle = -60;
             x = r*(Math.sin(angle))*(Math.sin(1.5*angle))/
             (Math.sin(180-1.5*angle));
         }
@@ -33,8 +38,12 @@ public class AutoAlignmentTemplate extends AbstractPath{
         } else if(angle > -60 && angle < 60){
             y = r*(Math.sin(angle))*(Math.cos(1.5*angle))/
             (Math.sin(180-1.5*angle));
-        } else if(angle > 60 || angle < -60) {
+        } else if(angle > 60) {
             angle = 60;
+            y = r*(Math.sin(angle))*(Math.cos(1.5*angle))/
+            (Math.sin(180-1.5*angle));
+        } else if(angle < -60) {
+            angle = -60;
             y = r*(Math.sin(angle))*(Math.cos(1.5*angle))/
             (Math.sin(180-1.5*angle));
         } 
