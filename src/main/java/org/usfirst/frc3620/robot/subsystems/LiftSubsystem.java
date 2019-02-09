@@ -144,7 +144,7 @@ public class LiftSubsystem extends Subsystem {
         }
     }
 
-    double liftEncoderZeroValue;
+    private double liftEncoderZeroValue;
     
     public boolean checkForLiftEncoder() {
         return(!(liftEncoder == null));

@@ -59,6 +59,7 @@ public class RobotMap {
     public static DigitalInput lineSensor;
     public static DigitalInput liftLimitSwitchTop;
     public static DigitalInput liftLimitSwitchBottom;
+    public static DigitalInput pivotLimitSwitch;
     public static DigitalInput practiceBotJumper;   //Added from 2018 code
     public static Counter counter;
 
@@ -67,12 +68,13 @@ public class RobotMap {
     public static Solenoid hatchSubsystemPusher1;
     public static Solenoid hatchSubsystemPusher2;
 
-    public static CANEncoder leftsideEncoder, rightsideEncoder, liftEncoder;
+    public static CANEncoder leftsideEncoder, rightsideEncoder, liftEncoder, pivotEncoder;
     public static CANSparkMax driveSubsystemMaxLeftA;
     public static CANSparkMax driveSubsystemMaxLeftB;
     public static CANSparkMax driveSubsystemMaxRightA;
     public static CANSparkMax driveSubsystemMaxRightB;
     public static CANSparkMax liftSubsystemMax;
+    public static CANSparkMax pivotSubsystemMax;
     public static CANDeviceFinder canDeviceFinder;
 
     static Logger logger = EventLogging.getLogger(RobotMap.class, Level.INFO);
@@ -83,12 +85,6 @@ public class RobotMap {
         logger.info ("CANDEVICEfinder found {}", canDeviceFinder.getDeviceList());
 
         practiceBotJumper = new DigitalInput(9);
-
-        liftSubsystemMax = new CANSparkMax(5, MotorType.kBrushless);
-        resetMaxToKnownState(liftSubsystemMax);
-        liftEncoder = liftSubsystemMax.getEncoder();
-        liftLimitSwitchTop = new DigitalInput(1);
-        liftLimitSwitchBottom = new DigitalInput(2);
 
         SpeedControllerGroup groupLeft;
         SpeedControllerGroup groupRight;
@@ -158,6 +154,16 @@ public class RobotMap {
         intakeSubsystemLowerMotor = new WPI_TalonSRX(11);
         resetTalonToKnownState(intakeSubsystemLowerMotor);
 
+        liftSubsystemMax = new CANSparkMax(6, MotorType.kBrushless);
+        resetMaxToKnownState(liftSubsystemMax);
+        liftEncoder = liftSubsystemMax.getEncoder();
+        liftLimitSwitchTop = new DigitalInput(1);
+        liftLimitSwitchBottom = new DigitalInput(2);
+
+        pivotSubsystemMax = new CANSparkMax(5, MotorType.kBrushless);
+        resetMaxToKnownState(pivotSubsystemMax);
+        pivotEncoder = pivotSubsystemMax.getEncoder();
+        pivotLimitSwitch = new DigitalInput(5);
 
         lightSubsystemLightPWM = new Spark(7);
         // lightSubsystemLightPWM = new Spark(5);
