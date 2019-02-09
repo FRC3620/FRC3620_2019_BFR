@@ -42,9 +42,9 @@ public class IntakeSubsystem extends Subsystem {
         SmartDashboard.putBoolean("Did we see a line for Right sensor?", readLineSensorR());
         //SmartDashboard.putBoolean("Direct Line Sensor Left input", readLineSensorLDirectly());
         //SmartDashboard.putBoolean("Direct Line Sensor Right input", readLineSensorRDirectly());
-        if(readLineSensorLDirectly()){
-            resetLineSensorL();
-        }
+       // if(readLineSensorLDirectly()){
+      //      resetLineSensorL();
+      //  }
         /*if(readLineSensorRDirectly()){
             resetLineSensorR();
         }*/
