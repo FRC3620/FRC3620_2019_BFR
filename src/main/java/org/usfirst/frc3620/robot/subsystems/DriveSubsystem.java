@@ -24,7 +24,7 @@ public class DriveSubsystem extends Subsystem {
     public DriveSubsystem(){
         super();               
 		ahrs = new AHRS(edu.wpi.first.wpilibj.SPI.Port.kMXP);
-		ahrs.enableLogging(false);
+		//ahrs.enableLogging(false);
 		
         resetEncoder();
     }
