@@ -74,7 +74,7 @@ public class RumbleCommand extends Command {
      * @param hand Which side of the controller to rumble. Either Hand.LEFT, Hand.RIGHT, or Hand.BOTH
      * @param intensity How hard to rumble the controller. Between 0.1 and 1.0
      * 
-     * @see This command should ONLY be used if you plan on interrupting it with this command again with the intensity at 0.0
+     * @see This command should ONLY be used if you plan on interrupting it with .cancel()
      */
     public RumbleCommand(RumbleSubsystem subsystem, Hand hand, Double intensity) {
         this(subsystem, hand, intensity, null);
@@ -120,9 +120,8 @@ public class RumbleCommand extends Command {
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        //Finishes when either the command is continuous, or the timer is up
-        if (continuous) {return true;}
-        else {
+        //Finishes the command when the timer is up
+        if (!continuous) {
             if (timer.get() >= duration) {return true;}
         }
         return false;
