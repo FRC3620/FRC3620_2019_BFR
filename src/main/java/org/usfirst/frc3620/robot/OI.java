@@ -62,6 +62,8 @@ public class OI {
             Button conveyorR = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_Y);
             Button positionOne = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_A);
             Button positionTwo = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_B);
+            Button hatchExtend = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_START);
+            Button hatchCollect = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_RIGHT_STICK);
 
             //buttons run commands
             inTakeIn.toggleWhenPressed(new IntakeCommand());
@@ -71,6 +73,8 @@ public class OI {
             conveyorR.whileHeld(new TrashRightCommand());
             positionOne.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_BOTTOM));
             positionTwo.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_TOP));
+            hatchExtend.toggleWhenPressed(new HatchExtendCommand());
+            hatchCollect.whileHeld(new HatchCollectCommand());
         }
 
     public Joystick getDriverJoystick() {
@@ -101,6 +105,5 @@ public class OI {
         //gets value from x or y axis on joysticks on gamepad. In this istance, Right Y
         return computeDeadband(driverJoystick.getRawAxis(XBoxConstants.AXIS_RIGHT_Y), 0.2);
     }
-    
-    
+     
 }

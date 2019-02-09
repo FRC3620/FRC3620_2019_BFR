@@ -61,8 +61,12 @@ public class RobotMap {
     public static DigitalInput liftLimitSwitchTop;
     public static DigitalInput liftLimitSwitchBottom;
     public static DigitalInput practiceBotJumper;   //Added from 2018 code
-    public static Counter counter; 
+    public static Counter counter;
+
     public static Solenoid liftSubsystemBrake;
+    public static Solenoid hatchSubsystemFinger;
+    public static Solenoid hatchSubsystemPusher1;
+    public static Solenoid hatchSubsystemPusher2;
 
     public static CANEncoder leftsideEncoder, rightsideEncoder, liftEncoder;
     public static CANSparkMax driveSubsystemMaxLeftA;
@@ -168,6 +172,9 @@ public class RobotMap {
         if (canDeviceFinder.isPCMPresent(0)) {
             // instantiate Pneumatics here
             liftSubsystemBrake = new Solenoid(1);
+            hatchSubsystemFinger = new Solenoid(2);
+            hatchSubsystemPusher1 = new Solenoid(3);
+            hatchSubsystemPusher2 = new Solenoid(4);
         }
 
         driveSubsystemAHRS = new AHRS(edu.wpi.first.wpilibj.SPI.Port.kMXP);
