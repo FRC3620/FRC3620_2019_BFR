@@ -32,7 +32,7 @@ public class PivotSubsystem extends Subsystem {
     private final DigitalInput topPivotLimit = RobotMap.pivotLimitSwitch;
  
     private boolean encoderisvalid = false;
-    private double desiredAngle = 0;
+    private double desiredAngle = -10;
 
     public PivotSubsystem(){
 
@@ -47,13 +47,16 @@ public class PivotSubsystem extends Subsystem {
     @Override
     public void periodic() {
         // Put code here to be run every loop
+
+        SmartDashboard.putBoolean("Pivot limit switch", isTopPivotLimitDepressed());
+
         if(checkForLiftEncoder()) {
             SmartDashboard.putNumber("pivotAngleInTics", pivotEncoder.getPosition());
         }
         SmartDashboard.putNumber("pivotAngleInDegrees", getPivotAngle());
 
         if(Robot.getCurrentRobotMode() == RobotMode.TELEOP || Robot.getCurrentRobotMode() == RobotMode.AUTONOMOUS){
-            if(isTopLimitDepressed()){
+            if(isTopPivotLimitDepressed()){
                 resetEncoder();
                 encoderisvalid = true;
             }
@@ -95,7 +98,7 @@ public class PivotSubsystem extends Subsystem {
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 
-    public boolean isTopLimitDepressed(){
+    public boolean isTopPivotLimitDepressed(){
         if(topPivotLimit.get() == true){
             return false;
         }
@@ -109,10 +112,10 @@ public class PivotSubsystem extends Subsystem {
      */
 
     public void pivotMove(double power) {
-        if(isTopLimitDepressed() == true && power < 0){
+        if(isTopPivotLimitDepressed() == true && power < 0){
             power = 0;
         }
-        pivotMax.set(power);
+        pivotMax.set(-power);
     }
 
     public void pivotStop() {
@@ -121,7 +124,7 @@ public class PivotSubsystem extends Subsystem {
 
     double ticstodegrees(double tics) { 
         // turning the encoder readings from tics to feet
-        double angle = tics * -1;
+        double angle = tics * -(90/27.38075);
         return angle;
     }
 

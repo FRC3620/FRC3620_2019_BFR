@@ -156,12 +156,15 @@ public class RobotMap {
 
         liftSubsystemMax = new CANSparkMax(6, MotorType.kBrushless);
         resetMaxToKnownState(liftSubsystemMax);
+        liftSubsystemMax.setIdleMode(IdleMode.kBrake);
         liftEncoder = liftSubsystemMax.getEncoder();
         liftLimitSwitchTop = new DigitalInput(1);
         liftLimitSwitchBottom = new DigitalInput(2);
 
         pivotSubsystemMax = new CANSparkMax(5, MotorType.kBrushless);
         resetMaxToKnownState(pivotSubsystemMax);
+        pivotSubsystemMax.setIdleMode(IdleMode.kBrake);
+        pivotSubsystemMax.setRampRate(0.25);
         pivotEncoder = pivotSubsystemMax.getEncoder();
         pivotLimitSwitch = new DigitalInput(5);
 
