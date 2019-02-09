@@ -5,40 +5,55 @@ import org.usfirst.frc3620.robot.Robot;
 import org.slf4j.Logger;
 import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
-
+import org.usfirst.frc3620.misc.Hand;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
+import org.usfirst.frc3620.robot.commands.RumbleCommand;
 /**
  *
  */
 public class LineDetectionCommand extends Command {
     Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
-    boolean isThereALine;
-	
+    boolean isThereALineL;
+   
+    
     public LineDetectionCommand() {
-        // requires(Robot.laserCannonSubsystem);
+        requires(Robot.intakeSubsystem);
     }
 
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
         EventLogging.commandMessage(logger);
-        isThereALine = false;
+        isThereALineL = false;
+        
     }
 
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        if(Robot.intakeSubsystem.readLineSensor()){
-            isThereALine = true;    
-            //add command for rumble 
+        
+        if(Robot.intakeSubsystem.readLineSensorL()){
+            if(isThereALineL == false)
+            {
+                //add command for rumble 
+                RumbleCommand rumble = new RumbleCommand(Robot.rumbleSubsystemDriver,Hand.LEFT,1f);
+                System.out.println("Detected Left");
+            }
+            isThereALineL = true;    
         }
 
-        if(Robot.intakeSubsystem.readLineSensorDirectly()){
-            isThereALine = false;
-            Robot.intakeSubsystem.resetLineSensor();
+        if(Robot.intakeSubsystem.readLineSensorLDirectly()){
+            if(isThereALineL == true)
+            {
+                RumbleCommand rumble =  new RumbleCommand(Robot.rumbleSubsystemDriver,Hand.LEFT,0f);
+                System.out.println("NOT Detected Left");
+            }
+            isThereALineL = false;
+            Robot.intakeSubsystem.resetLineSensorL();
+            
         }
-        SmartDashboard.putBoolean("Line?", isThereALine);
+        SmartDashboard.putBoolean("Line Left?", isThereALineL);
+        
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -52,7 +67,8 @@ public class LineDetectionCommand extends Command {
     protected void end() {
         EventLogging.commandMessage(logger);
         //turn off Rumble
-        Robot.intakeSubsystem.resetLineSensor();
+        Robot.intakeSubsystem.resetLineSensorL();
+        
     }
 
     // Called when another command which requires one or more of the same
@@ -61,6 +77,7 @@ public class LineDetectionCommand extends Command {
     protected void interrupted() {
         EventLogging.commandMessage(logger);
         //turn off Rumble
-        Robot.intakeSubsystem.resetLineSensor();
+        Robot.intakeSubsystem.resetLineSensorL();
+        
     }
 }

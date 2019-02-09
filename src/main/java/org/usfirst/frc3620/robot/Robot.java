@@ -40,6 +40,7 @@ public class Robot extends TimedRobot {
 
     public static TrashSubsystem trashSubsystem;
 
+    public static LineDetectionCommand lineDetect;
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.

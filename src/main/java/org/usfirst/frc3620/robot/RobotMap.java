@@ -56,8 +56,10 @@ public class RobotMap {
     public static WPI_TalonSRX conveyorBeltMotorR;
     public static WPI_TalonSRX conveyorBeltMotorC;
     
-    public static DigitalInput lineSensor;
-    public static Counter counter; 
+    public static DigitalInput lineSensorL;
+    public static DigitalInput lineSensorR;
+    public static Counter lineSensorCounterL; 
+    public static Counter lineSensorCounterR; 
 
     public static CANEncoder leftsideEncoder, rightsideEncoder;
     public static CANSparkMax driveSubsystemMaxLeftA;
@@ -141,10 +143,15 @@ public class RobotMap {
 		LiveWindow.addActuator("LightSubsystem", "LightPWM", (Spark) lightSubsystemLightPWM);
         lightSubsystemLightPWM.setInverted(false);
         
-        //initiating line sensor
-        lineSensor = new DigitalInput(0);
-        counter = new Counter(lineSensor);
-        counter.setUpSourceEdge(false, true);
+        //initiating line left sensor 
+        lineSensorL = new DigitalInput(0);
+        lineSensorCounterL = new Counter(lineSensorL);
+        lineSensorCounterL.setUpSourceEdge(false, true);
+
+        //initiating line right sensor 
+        lineSensorR = new DigitalInput(1);
+        lineSensorCounterR = new Counter(lineSensorR);
+        lineSensorCounterR.setUpSourceEdge(false, true);
 
         if (canDeviceFinder.isPCMPresent(0)) {
             // instantiate Pneumatics here
