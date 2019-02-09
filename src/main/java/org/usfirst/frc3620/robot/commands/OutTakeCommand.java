@@ -26,7 +26,7 @@ public class OutTakeCommand extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        Robot.intakeSubsystem.intakeOut();
+        Robot.intakeSubsystem.intakeOut(0.5);
     }
 
 

@@ -14,7 +14,7 @@ import org.usfirst.frc3620.robot.commands.RumbleCommand;
 public class LineDetectionCommand extends Command {
     Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
     boolean isThereALineL;
-   
+    RumbleCommand rumbleCommand;
     
     public LineDetectionCommand() {
         requires(Robot.intakeSubsystem);
@@ -25,7 +25,7 @@ public class LineDetectionCommand extends Command {
     protected void initialize() {
         EventLogging.commandMessage(logger);
         isThereALineL = false;
-        
+        rumbleCommand = new RumbleCommand(Robot.rumbleSubsystemDriver,Hand.LEFT,1f);        
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -36,7 +36,7 @@ public class LineDetectionCommand extends Command {
             if(isThereALineL == false)
             {
                 //add command for rumble 
-                RumbleCommand rumble = new RumbleCommand(Robot.rumbleSubsystemDriver,Hand.LEFT,1f);
+                rumbleCommand.start();
                 System.out.println("Detected Left");
             }
             isThereALineL = true;    
@@ -44,8 +44,8 @@ public class LineDetectionCommand extends Command {
 
         if(Robot.intakeSubsystem.readLineSensorLDirectly()){
             if(isThereALineL == true)
-            {
-                RumbleCommand rumble =  new RumbleCommand(Robot.rumbleSubsystemDriver,Hand.LEFT,0f);
+            {                
+                rumbleCommand.cancel();
                 System.out.println("NOT Detected Left");
             }
             isThereALineL = false;

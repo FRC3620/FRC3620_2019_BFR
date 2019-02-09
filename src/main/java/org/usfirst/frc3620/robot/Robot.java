@@ -33,14 +33,15 @@ public class Robot extends TimedRobot {
     // declare Subsystems here
     public static DriveSubsystem driveSubsystem;
     public static LightSubsystem lightSubsystem;
+    public static LiftSubsystem liftSubsystem;
+    public static IntakeSubsystem intakeSubsystem;
+    public static TrashSubsystem trashSubsystem;
     public static RumbleSubsystem rumbleSubsystemDriver;
     public static RumbleSubsystem rumbleSubsystemOperator;
+    public static HatchSubsystem hatchSubsystem;
 
-    public static IntakeSubsystem intakeSubsystem;
-
-    public static TrashSubsystem trashSubsystem;
-
-    public static LineDetectionCommand lineDetect;
+    private static LineDetectionCommand lineDetectionCommand;
+    
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
@@ -59,18 +60,22 @@ public class Robot extends TimedRobot {
         lightSubsystem = new LightSubsystem();
         intakeSubsystem = new IntakeSubsystem();
         trashSubsystem = new TrashSubsystem();
+        liftSubsystem = new LiftSubsystem();
         rumbleSubsystemDriver = new RumbleSubsystem();
         rumbleSubsystemOperator = new RumbleSubsystem();
+        hatchSubsystem = new HatchSubsystem();
         
         // OI must be constructed after subsystems. If the OI creates Commands
         //(which it very likely will), subsystems are not guaranteed to be
         // constructed yet. Thus, their requires() statements may grab null
         // pointers. Bad news. Don't move it.
         oi = new OI();
+        lineDetectionCommand = new LineDetectionCommand();
 
         // Add commands to Autonomous Sendable Chooser
         chooser.addDefault("Autonomous Command", new AutonomousCommand());
         SmartDashboard.putData("Auto mode", chooser);
+
     }
 
     /**
@@ -96,6 +101,7 @@ public class Robot extends TimedRobot {
         autonomousCommand = chooser.getSelected();
         // schedule the autonomous command (example)
         if (autonomousCommand != null) autonomousCommand.start();
+        if (lineDetectionCommand != null) lineDetectionCommand.start();
     }
 
     /**
@@ -117,7 +123,8 @@ public class Robot extends TimedRobot {
         // continue until interrupted by another command, remove
         // this line or comment it out.
         if (autonomousCommand != null) autonomousCommand.cancel();
-        
+        if (lineDetectionCommand != null) lineDetectionCommand.start();
+
 		processRobotModeChange(RobotMode.TELEOP);
     }
 
@@ -194,6 +201,10 @@ public class Robot extends TimedRobot {
 	void updateDashboard() {
 		//SmartDashboard.putNumber("driver y joystick", -Robot.m_oi.driveJoystick.getRawAxis(1));
 		//SmartDashboard.putNumber("driver x joystick", Robot.m_oi.driveJoystick.getRawAxis(4));
-	}
-	
+    }
+    
+    public static RobotMode getCurrentRobotMode(){
+        return currentRobotMode;
+    }
+    
 }

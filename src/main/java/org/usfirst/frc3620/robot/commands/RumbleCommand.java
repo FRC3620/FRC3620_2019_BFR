@@ -119,6 +119,7 @@ public class RumbleCommand extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
+        rumbleSubsystem.setRumble(rumbleHand, 0f);
     	EventLogging.commandMessage(logger);
     }
 
@@ -127,6 +128,7 @@ public class RumbleCommand extends Command {
     @Override
     protected void interrupted() {
         EventLogging.commandMessage(logger);
+        rumbleSubsystem.setRumble(rumbleHand, 0f);
         rumbleSubsystem.clearRumble();
     }
 }
