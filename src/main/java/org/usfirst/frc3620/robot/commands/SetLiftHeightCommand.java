@@ -9,12 +9,14 @@ import org.usfirst.frc3620.robot.Robot;
 /**
  *
  */
-public class MoveLiftCommand extends Command {
+public class SetLiftHeightCommand extends Command {
 	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
-	
-    public MoveLiftCommand() {
+    
+    double desiredHeight;
+    
+    public SetLiftHeightCommand(double _desiredHeight) {
         // requires(Robot.laserCannonSubsystem);
-        requires(Robot.liftSubsystem);
+        desiredHeight = _desiredHeight;
     }
 
     // Called just before this Command runs the first time
@@ -26,20 +28,19 @@ public class MoveLiftCommand extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        Robot.liftSubsystem.liftMove(0.5);
+        Robot.liftSubsystem.setDesiredHeight(desiredHeight);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        return false;
+        return true;
     }
 
     // Called once after isFinished returns true
     @Override
     protected void end() {
         EventLogging.commandMessage(logger);
-        Robot.liftSubsystem.liftStop();
     }
 
     // Called when another command which requires one or more of the same
@@ -47,6 +48,5 @@ public class MoveLiftCommand extends Command {
     @Override
     protected void interrupted() {
         EventLogging.commandMessage(logger);
-        Robot.liftSubsystem.liftStop();
     }
 }

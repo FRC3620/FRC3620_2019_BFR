@@ -10,25 +10,38 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import com.kauailabs.navx.frc.AHRS;
 
 /**
  *
  */
 public class DriveSubsystem extends Subsystem {
 
+    public AHRS ahrs = null;
+    private boolean gotCompBot;
+    
+
     private final DifferentialDrive differentialDrive = RobotMap.driveSubsystemDifferentialDrive;
 
-    public DriveSubsystem() {
-        // this code gets run when the DriveSubsystem is created 
-        // (when the robot is rebooted.)
-        resetencoder();
+    public DriveSubsystem(){
+        super();               
+		ahrs = new AHRS(edu.wpi.first.wpilibj.SPI.Port.kMXP);
+		ahrs.enableLogging(false);
+		
+        gotCompBot = RobotMap.practiceBotJumper.get();
+
+        resetEncoder();
     }
-    
+
     @Override
     public void initDefaultCommand() {
         // Set the default command for a subsystem here. Drive command runs in background at all times
         setDefaultCommand(new DriveCommand());
     }
+
+    public boolean gotCompBot() {
+		return gotCompBot;
+	}
 
     @Override
     public void periodic() {
@@ -96,10 +109,12 @@ public class DriveSubsystem extends Subsystem {
     }
 
     double leftEncoderZeroValue, rightEncoderZeroValue;
+
     public boolean checkForDriveEncoders() {
         return(!(RobotMap.leftsideEncoder==null));
     }
-    public void resetencoder(){
+
+    public void resetEncoder(){
         if(checkForDriveEncoders()) {
             leftEncoderZeroValue = RobotMap.leftsideEncoder.getPosition();
             rightEncoderZeroValue = RobotMap.rightsideEncoder.getPosition();
