@@ -16,28 +16,38 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class IntakeSubsystem extends Subsystem {
 
+    private final DigitalInput lineSensorL = RobotMap.lineSensorL;
+    private final DigitalInput lineSensorR = RobotMap.lineSensorR;
+
+    private final Counter lineSensorCounterL = RobotMap.lineSensorCounterL;
+    private final Counter lineSensorCounterR = RobotMap.lineSensorCounterR;
+
     private final WPI_TalonSRX intakeRollerTop = RobotMap.intakeSubsystemUpperMotor;
     private final WPI_TalonSRX intakeRollerBottom = RobotMap.intakeSubsystemLowerMotor;
     private final WPI_TalonSRX intakeRollerMiddle = RobotMap.intakeSubsystemMiddleMotor;
-    private final DigitalInput lineSensor = RobotMap.lineSensor;
-    private final Counter counter = RobotMap.counter;
+    
     Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
     
     @Override
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
-        // setDefaultCommand(...);
     }
 
     @Override
     public void periodic() {
         // Put code here to be run every loop
-        SmartDashboard.putNumber("Counter", counter.get());
-        SmartDashboard.putBoolean("Did we see a line?", readLineSensor());
-        //SmartDashboard.putBoolean("Direct Line Sensor input", readLineSensorDirectly());
-        if(readLineSensorDirectly()){
-            resetLineSensor();
-        }
+        SmartDashboard.putNumber("Counter Left Sensor", lineSensorCounterL.get());
+        SmartDashboard.putNumber("Counter Right Sensor", lineSensorCounterR.get());
+        SmartDashboard.putBoolean("Did we see a line for Left sensor?", readLineSensorL());
+        SmartDashboard.putBoolean("Did we see a line for Right sensor?", readLineSensorR());
+        //SmartDashboard.putBoolean("Direct Line Sensor Left input", readLineSensorLDirectly());
+        //SmartDashboard.putBoolean("Direct Line Sensor Right input", readLineSensorRDirectly());
+       // if(readLineSensorLDirectly()){
+      //      resetLineSensorL();
+      //  }
+        /*if(readLineSensorRDirectly()){
+            resetLineSensorR();
+        }*/
     }
     
     // Put methods for controlling this subsystem
@@ -69,18 +79,29 @@ public class IntakeSubsystem extends Subsystem {
     }
     //Line sensor code here
 
-    public boolean readLineSensor(){
-        if(counter.get() != 0){
+    public boolean readLineSensorL(){
+        if(lineSensorCounterL.get() != 0){
             return true;
         }
         return false;
     }
-
-    public void resetLineSensor(){
-        counter.reset();
+    public boolean readLineSensorR(){
+        if(lineSensorCounterR.get() != 0){
+            return true;
+        }
+        return false;
+    }
+    public void resetLineSensorL(){
+        lineSensorCounterL.reset();
+    }
+    public void resetLineSensorR(){
+        lineSensorCounterR.reset();
     }
 
-    public boolean readLineSensorDirectly(){ //if we see a line, this outputs FALSE
-        return lineSensor.get();
+    public boolean readLineSensorLDirectly(){ //if we see a line, this outputs FALSE
+        return lineSensorL.get();
+    }
+    public boolean readLineSensorRDirectly(){ //if we see a line, this outputs FALSE
+        return lineSensorR.get();
     }
 }

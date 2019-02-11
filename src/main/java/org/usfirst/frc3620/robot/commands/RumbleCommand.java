@@ -87,7 +87,7 @@ public class RumbleCommand extends Command {
     @Override
     protected void initialize() {
         EventLogging.commandMessage(logger);
-
+        System.out.println("Rumble Init");
         //sets the defaults
         if (duration == null) {duration = durationDefault;}
         if (hand == null) {hand = handDefault;}
@@ -115,6 +115,7 @@ public class RumbleCommand extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
+        
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -131,14 +132,14 @@ public class RumbleCommand extends Command {
     @Override
     protected void end() {
         EventLogging.commandMessage(logger);
+
         if (subsystem == Robot.rumbleSubsystemDriver) {
             logger.info("Driver rumble finished");
-        }
-        else {
+        }else{
             logger.info("Operator rumble finished");
         }
-        subsystem.clearRumble();
 
+        subsystem.clearRumble();
     }
 
     // Called when another command which requires one or more of the same
