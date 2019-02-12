@@ -14,6 +14,7 @@ public class TrashInCommand extends Command {
 	
     public TrashInCommand() {
         // requires(Robot.laserCannonSubsystem);
+        requires(Robot.intakeSubsystem);
     }
 
     // Called just before this Command runs the first time

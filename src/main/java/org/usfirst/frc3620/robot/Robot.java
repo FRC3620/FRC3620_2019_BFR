@@ -44,6 +44,7 @@ public class Robot extends TimedRobot {
     public static RumbleSubsystem rumbleSubsystemDriver;
     public static RumbleSubsystem rumbleSubsystemOperator;
     public static HatchSubsystem hatchSubsystem;
+    public static PivotSubsystem pivotSubsystem;
     public static LineSubsystem lineSubsystem;
 
     // data logging
@@ -73,6 +74,7 @@ public class Robot extends TimedRobot {
         rumbleSubsystemDriver = new RumbleSubsystem();
         rumbleSubsystemOperator = new RumbleSubsystem();
         hatchSubsystem = new HatchSubsystem();
+        pivotSubsystem = new PivotSubsystem();
         lineSubsystem = new LineSubsystem();  
 
         // OI must be constructed after subsystems. If the OI creates Commands

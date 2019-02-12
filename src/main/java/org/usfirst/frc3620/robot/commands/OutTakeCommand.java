@@ -15,6 +15,7 @@ public class OutTakeCommand extends Command {
 	
     public OutTakeCommand() {
         // requires(Robot.laserCannonSubsystem);
+        requires(Robot.intakeSubsystem);
     }
 
     // Called just before this Command runs the first time
