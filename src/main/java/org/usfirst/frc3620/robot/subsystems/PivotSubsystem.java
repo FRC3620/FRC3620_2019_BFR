@@ -24,7 +24,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class PivotSubsystem extends Subsystem {
     Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
     
-    public static final double SETANGLE_BOTTOM = 90;
+    public static final double SETANGLE_BOTTOM = 75;
     public static final double SETANGLE_TOP = 0;
 
     private final CANSparkMax pivotMax = RobotMap.pivotSubsystemMax;
