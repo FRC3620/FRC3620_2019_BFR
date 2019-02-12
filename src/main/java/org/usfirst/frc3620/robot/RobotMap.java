@@ -48,6 +48,7 @@ import edu.wpi.first.wpilibj.Counter;
 public class RobotMap {
     public static AHRS driveSubsystemAHRS;
     public static DifferentialDrive driveSubsystemDifferentialDrive;
+    public static DifferentialDrive driveSubsystemCANDifferentialDrive;
     public static SpeedController lightSubsystemLightPWM;
 
     public static WPI_TalonSRX intakeSubsystemUpperMotor;
@@ -56,11 +57,18 @@ public class RobotMap {
     public static WPI_TalonSRX conveyorBeltMotorTop;
     public static WPI_TalonSRX conveyorBeltMotorBottom;
 
-    public static DigitalInput lineSensor;
+    public static WPI_TalonSRX conveyorBeltMotorL;
+    public static WPI_TalonSRX conveyorBeltMotorR;
+    public static WPI_TalonSRX conveyorBeltMotorC;
+    
+    public static Counter lineSensorCounterL; 
+    public static Counter lineSensorCounterR;
+
+    public static DigitalInput lineSensorL;
+    public static DigitalInput lineSensorR;
     public static DigitalInput liftLimitSwitchTop;
     public static DigitalInput liftLimitSwitchBottom;
     public static DigitalInput practiceBotJumper;   //Added from 2018 code
-    public static Counter counter;
 
     public static Solenoid liftSubsystemBrake;
     public static Solenoid hatchSubsystemFinger;
@@ -158,16 +166,20 @@ public class RobotMap {
         intakeSubsystemLowerMotor = new WPI_TalonSRX(11);
         resetTalonToKnownState(intakeSubsystemLowerMotor);
 
-
         lightSubsystemLightPWM = new Spark(7);
         // lightSubsystemLightPWM = new Spark(5);
 		LiveWindow.addActuator("LightSubsystem", "LightPWM", (Spark) lightSubsystemLightPWM);
         lightSubsystemLightPWM.setInverted(false);
         
-        //initiating line sensor
-        lineSensor = new DigitalInput(0);
-        counter = new Counter(lineSensor);
-        counter.setUpSourceEdge(false, true);
+        //initiating line left sensor 
+        lineSensorL = new DigitalInput(3);
+        lineSensorCounterL = new Counter(lineSensorL);
+        lineSensorCounterL.setUpSourceEdge(false, true);
+
+        //initiating line right sensor 
+        lineSensorR = new DigitalInput(4);
+        lineSensorCounterR = new Counter(lineSensorR);
+        lineSensorCounterR.setUpSourceEdge(false, true);
 
         if (canDeviceFinder.isPCMPresent(0)) {
             // instantiate Pneumatics here

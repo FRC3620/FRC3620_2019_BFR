@@ -18,6 +18,8 @@ import com.kauailabs.navx.frc.AHRS;
 public class DriveSubsystem extends Subsystem {
 
     public AHRS ahrs = null;
+    private boolean gotCompBot;
+    
 
     private final DifferentialDrive differentialDrive = RobotMap.driveSubsystemDifferentialDrive;
 
@@ -26,6 +28,8 @@ public class DriveSubsystem extends Subsystem {
 		ahrs = new AHRS(edu.wpi.first.wpilibj.SPI.Port.kMXP);
 		//ahrs.enableLogging(false);
 		
+        gotCompBot = RobotMap.practiceBotJumper.get();
+
         resetEncoder();
     }
 
@@ -34,6 +38,10 @@ public class DriveSubsystem extends Subsystem {
         // Set the default command for a subsystem here. Drive command runs in background at all times
         setDefaultCommand(new DriveCommand());
     }
+
+    public boolean gotCompBot() {
+		return gotCompBot;
+	}
 
     @Override
     public void periodic() {
