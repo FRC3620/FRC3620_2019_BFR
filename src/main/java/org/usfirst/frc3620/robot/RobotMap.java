@@ -1,6 +1,7 @@
 package org.usfirst.frc3620.robot;
 
 import com.revrobotics.CANEncoder;
+import com.revrobotics.CANPIDController;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
@@ -84,6 +85,7 @@ public class RobotMap {
     public static CANSparkMax liftSubsystemMax;
     public static CANSparkMax pivotSubsystemMax;
     public static CANDeviceFinder canDeviceFinder;
+
 
     static Logger logger = EventLogging.getLogger(RobotMap.class, Level.INFO);
     
@@ -175,7 +177,7 @@ public class RobotMap {
         pivotSubsystemMax.setRampRate(0.25);
         pivotEncoder = pivotSubsystemMax.getEncoder();
         pivotLimitSwitch = new DigitalInput(5);
-
+        
         lightSubsystemLightPWM = new Spark(7);
         // lightSubsystemLightPWM = new Spark(5);
 		LiveWindow.addActuator("LightSubsystem", "LightPWM", (Spark) lightSubsystemLightPWM);

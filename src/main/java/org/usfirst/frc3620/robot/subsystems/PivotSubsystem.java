@@ -1,8 +1,7 @@
 package org.usfirst.frc3620.robot.subsystems;
 
-
-
 import com.revrobotics.CANEncoder;
+import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 
 import org.slf4j.Logger;
@@ -13,6 +12,10 @@ import org.usfirst.frc3620.robot.Robot;
 import org.usfirst.frc3620.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.PIDOutput;
+import edu.wpi.first.wpilibj.PIDSource;
+import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -21,21 +24,26 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /**
  *
  */
-public class PivotSubsystem extends Subsystem {
+public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
     Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
     
     public static final double SETANGLE_BOTTOM = 75;
+    public static final double SETANGLE_MIDDLE = 45;
     public static final double SETANGLE_TOP = 0;
 
     private final CANSparkMax pivotMax = RobotMap.pivotSubsystemMax;
     private final CANEncoder pivotEncoder = RobotMap.pivotEncoder;
     private final DigitalInput topPivotLimit = RobotMap.pivotLimitSwitch;
- 
+    private final PIDController pivotPIDContoller;
+
     private boolean encoderisvalid = false;
     private double desiredAngle = -10;
 
     public PivotSubsystem(){
-
+        pivotPIDContoller = new PIDController(0, 0, 0, 0, this, this);
+        setPIDSourceType(PIDSourceType.kDisplacement);
+        pivotPIDContoller.setInputRange(-100, 100);
+        pivotPIDContoller.setOutputRange(-1, 1);
     }
 
     @Override
@@ -65,22 +73,23 @@ public class PivotSubsystem extends Subsystem {
                 double currentAngle = getPivotAngle();
                 // positive error is we are out too far
                 double error = currentAngle - desiredAngle;
-                if(Math.abs(error) > 10) {
-                    if (desiredAngle > 0) {
+                if (desiredAngle == SETANGLE_TOP) {
+                    if(Math.abs(error) > 10) {
+                            if (error > 0) {
+                            // we want to be in, but we are not there yet
+                            // we need to do some pivotMove with a negative
+                            pivotMove(-0.2);
+                        } else {
+                            pivotStop();
+                        }
+                    }
+                } else if (desiredAngle == SETANGLE_BOTTOM) {
+                    if(Math.abs(error) > 10) {
                         // we want to be out 
                         if (error < 0) {
                             // we want to be out, but we are not there yet
                             // we need to do some pivotMove with a positive
                             pivotMove(0.2);
-                        } else {
-                            pivotStop();
-                        }
-                    } else {
-                        // we want to be in
-                        if (error > 0) {
-                            // we want to be in, but we are not there yet
-                            // we need to do some pivotMove with a negative
-                            pivotMove(-0.2);
                         } else {
                             pivotStop();
                         }
@@ -157,5 +166,55 @@ public class PivotSubsystem extends Subsystem {
 
     public void setDesiredAngle(double v) {
         desiredAngle = v;
+
+        if (desiredAngle == SETANGLE_BOTTOM || desiredAngle == SETANGLE_TOP) {
+            pivotPIDContoller.disable();
+        } else {
+            pivotPIDContoller.setSetpoint(desiredAngle);
+            if (!pivotPIDContoller.isEnabled()) {
+                // set the P, I, D, FF
+                double p = SmartDashboard.getNumber("pivotP", 0);
+                double i = SmartDashboard.getNumber("pivotI", 0);
+                double d = SmartDashboard.getNumber("pivotD", 0);
+                double f = SmartDashboard.getNumber("pivotF", 0);
+
+                logger.info("_pivotP={}", p);
+                logger.info("_pivotI={}", i);
+                logger.info("_pivotD={}", d);
+                logger.info("_pivotF={}", f);
+
+                pivotPIDContoller.setP(p);
+                pivotPIDContoller.setI(i);
+                pivotPIDContoller.setD(d);
+                pivotPIDContoller.setF(f);
+                pivotPIDContoller.reset();
+                pivotPIDContoller.enable();
+            }
+        }
     }
+
+    @Override
+    public void pidWrite(double output) {
+        SmartDashboard.putNumber("intake PID output", output);
+    }
+
+    PIDSourceType pidSourceType;
+
+    @Override
+    public void setPIDSourceType(PIDSourceType pidSource) {
+        pidSourceType = pidSource;
+    }
+
+    @Override
+    public PIDSourceType getPIDSourceType() {
+        return pidSourceType;
+    }
+
+    @Override
+    public double pidGet() {
+        double currentAngle = getPivotAngle();
+        double error = currentAngle - desiredAngle;
+        SmartDashboard.putNumber("intake PID error", error);
+        return error;
+	}
 }
