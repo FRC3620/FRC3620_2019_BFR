@@ -15,7 +15,7 @@ public class CANDeviceFinder {
 
     ArrayList<String> deviceList = new ArrayList<String>();
 
-    private boolean pdpIsPresent = false;
+    private Set<Integer> pdps = new TreeSet<>();
     private Set<Integer> srxs = new TreeSet<>();
     private Set<Integer> spxs = new TreeSet<>();
     private Set<Integer> pcms = new TreeSet<>();
@@ -27,7 +27,7 @@ public class CANDeviceFinder {
     }
 
     public boolean isPDPPresent() {
-        return pdpIsPresent;
+        return pdps.contains(0);
     }
 
     public boolean isSRXPresent(int i) {
@@ -57,6 +57,84 @@ public class CANDeviceFinder {
     public List<String> getDeviceList() {
         return deviceList;
     }
+
+    abstract class CanFinder {
+        int[] ids;
+        long[] ts0;
+        Set<Integer> idsPresent = new TreeSet<>();
+
+        void pass1() {
+            ts0 = new long[ids.length];
+            for (int i = 0; i < ids.length; ++i) {
+                ts0[i] = checkMessage(ids[i]);
+                //logger.info ("pass1 looking for {} got {}", String.format("%08x", ids[i]), ts0[i]);
+            }
+        }
+
+        void pass2() {
+            long[] ts1 = new long[ids.length];
+            for (int i = 0; i < ids.length; ++i) {
+                ts1[i] = checkMessage(ids[i]);
+                //logger.info ("pass2 looking for {} got {}", String.format("%08x", ids[i]), ts1[i]);
+            }
+            for (int i = 0; i < ids.length; ++i) {
+                if (ts0[i] >= 0 && ts1[i] >= 0 && ts0[i] != ts1[i]) {
+                    // logger.info ("found {}", String.format("%08x", ids[i]));
+                    idsPresent.add(ids[i]);
+                }
+            }
+        }
+
+        abstract void report();
+    }
+
+    class DeviceFinder extends CanFinder {
+        Set<Integer> deviceIds;
+        List<String> deviceList;
+        String deviceListPrefix;
+        DeviceFinder(int devType, int mfg, int apiId, int maxDevices, Set<Integer> deviceIdSet, List<String> deviceList, String deviceListPrefix) {
+            super();
+
+            this.deviceIds = deviceIdSet;
+            this.deviceList = deviceList;
+            this.deviceListPrefix = deviceListPrefix;
+
+            ids = new int[maxDevices];
+            for (int i = 0; i < maxDevices; i++) {
+                ids[i] = canBusId(devType, mfg, apiId, i);
+            }
+        }
+
+        @Override
+        void report() {
+            for (int id: idsPresent) {
+                int deviceId = extractDeviceId(id);
+                deviceIds.add(deviceId);
+                deviceList.add(deviceListPrefix + " " + Integer.toString(deviceId));
+            }
+        }
+    }
+
+    class APIFinder extends CanFinder {
+        String label;
+        APIFinder(String label, int devType, int mfg, int deviceId) {
+            super();
+            this.label = label;
+
+            ids = new int[1024];
+            for (int i = 0; i < 1024; i++) {
+                ids[i] = canBusId(devType, mfg, i, deviceId);
+            }
+        }
+
+        @Override
+        void report() {
+            for (int id: idsPresent) {
+                int apiId = extractApiId(id);
+                logger.info ("{}: API {} {} = msg {}", label, String.format("%2d", apiId), String.format("0x%03X", apiId), String.format("%08X", id));
+            }
+        }
+    }
     
     /**
      * polls for received framing to determine if a device is present. This is
@@ -64,60 +142,67 @@ public class CANDeviceFinder {
      * cached messages from the robot API.
      */
     public void find() {
+        logger.info ("calling find()");
         deviceList.clear();
-        pdpIsPresent = false;
+        pdps.clear();
         maxs.clear();
         spxs.clear();
         srxs.clear();
         pcms.clear();
 
-        /* get timestamp0 for each device */
-        long pdp0_timeStamp0; // only look for PDP at '0'
-        long[] pcm_timeStamp0 = new long[63];
-        long[] srx_timeStamp0 = new long[63];
-        long[] spx_timeStamp0 = new long[63];
-        long[] max_timeStamp0 = new long[63];
+        List<CanFinder> finders = new ArrayList<>();
 
         /*
-         * 2019.02.09: PDPs respond to APIs 0x50 0x51 0x52 
+         * PDPs used to be 0x08041400.
+         * 2019.02.09: PDPs respond to APIs 0x50 0x51 0x52 0x59 0x5d
          */
-        pdp0_timeStamp0 = checkMessage(8, 4, 0x50, 0);
+        finders.add(new DeviceFinder(8, 4, extractApiId(0x08041400), 1, pdps, deviceList, "PDP"));
 
-        for (int i = 0; i < 63; ++i) {
-            pcm_timeStamp0[i] = checkMessage(8, 4, 0x50, i);
+        /*
+         * SRX used to be 0x02041400.
 
-            /*
-            SRX used to respond to API 80 0x50.
+        As of 2019.02.08: (SRX @ devid 1)
+         7 0x007 = 020401C1
+        81 0x051 = 02041441 ** using this?
+        82 0x052 = 02041481
+        83 0x053 = 020414C1
+        87 0x057 = 020415C1
+        91 0x05B = 020416C1
+        92 0x05C = 02041701
+        93 0x05D = 02041741
+        94 0x05E = 02041781
+        */
+        finders.add(new DeviceFinder(2, 4, extractApiId(0x02041441), 64, srxs, deviceList, "SRX"));
 
-            As of 2019.02.08: (SRX @ devid 1)
-             7 0x007 = 020401C1
-            81 0x051 = 02041441 ** using this?
-            82 0x052 = 02041481
-            83 0x053 = 020414C1
-            87 0x057 = 020415C1
-            91 0x05B = 020416C1
-            92 0x05C = 02041701
-            93 0x05D = 02041741
-            94 0x05E = 02041781
-            */
-            srx_timeStamp0[i] = checkMessage(2, 4, 0x51, i);
+        /*
+        SPX used to be 0x01041400.
 
-            /*
-            SPX used to respond to API 80 0x50.
+        As of 2019.02.08:  (SPX @ devid 2)
+         7 0x007 = 010401C2
+        81 0x051 = 01041442 ** using this
+        83 0x053 = 010414C2
+        91 0x05B = 010416C2
+        92 0x05C = 01041702
+        93 0x05D = 01041742
+        94 0x05E = 01041782
+        */
+        finders.add(new DeviceFinder(1, 4, extractApiId(0x01041442), 64, spxs, deviceList, "SPX"));
 
-            As of 2019.02.08:  (SPX @ devid 2)
-             7 0x007 = 010401C2
-            81 0x051 = 01041442 ** using this
-            83 0x053 = 010414C2
-            91 0x05B = 010416C2
-            92 0x05C = 01041702
-            93 0x05D = 01041742
-            94 0x05E = 01041782
-            */
-            spx_timeStamp0[i] = checkMessage(1, 4, 0x51, i);
+        /* we always used 0x09041400 for PCMs */
+        finders.add(new DeviceFinder(9, 4, extractApiId(0x09041400), 64, pcms, deviceList, "PCM"));
 
-            // per REV
-            max_timeStamp0[i] = checkMessage(2, 5, 0x60, i);
+        // per REV (0x02051800)
+        finders.add(new DeviceFinder(2, 5, extractApiId(0x02051800), 64, maxs, deviceList, "MAX"));
+
+        // do research
+        /*
+        finders.add(new APIFinder("PDP", 8, 4, 0)); // PDP
+        finders.add(new APIFinder("SRX", 2, 4, 1)); // SRX #1
+        finders.add(new APIFinder("SPX", 1, 4, 2)); // SPX #2
+        */
+
+        for (CanFinder finder: finders) {
+            finder.pass1();
         }
 
         /* wait 200ms */
@@ -127,104 +212,14 @@ public class CANDeviceFinder {
             e.printStackTrace();
         }
 
-        /* get timestamp1 for each device */
-        long pdp0_timeStamp1; // only look for PDP at '0'
-        long[] pcm_timeStamp1 = new long[63];
-        long[] srx_timeStamp1 = new long[63];
-        long[] spx_timeStamp1 = new long[63];
-        long[] max_timeStamp1 = new long[63];
-
-        pdp0_timeStamp1 = checkMessage(8, 4, 0x50, 0);
-        for (int i = 0; i < 63; ++i) {
-            pcm_timeStamp1[i] = checkMessage(8, 4, 0x50, i);
-            srx_timeStamp1[i] = checkMessage(2, 4, 0x51, i);
-            spx_timeStamp1[i] = checkMessage(1, 4, 0x51, i);
-            max_timeStamp1[i] = checkMessage(2, 5, 0x60, i);
+        for (CanFinder finder: finders) {
+            finder.pass2();
         }
 
-        /*
-         * compare, if timestamp0 is good and timestamp1 is good, and they are
-         * different, device is healthy
-         */
-        if (pdp0_timeStamp0 >= 0 && pdp0_timeStamp1 >= 0
-                && pdp0_timeStamp0 != pdp0_timeStamp1) {
-            deviceList.add("PDP 0");
-            pdpIsPresent = true;
-        }
-
-        for (int i = 0; i < 63; ++i) {
-            if (pcm_timeStamp0[i] >= 0 && pcm_timeStamp1[i] >= 0
-                    && pcm_timeStamp0[i] != pcm_timeStamp1[i]) {
-                deviceList.add("PCM " + i);
-                pcms.add(i);
-            }
-        }
-        for (int i = 0; i < 63; ++i) {
-            if (srx_timeStamp0[i] >= 0 && srx_timeStamp1[i] >= 0
-                    && srx_timeStamp0[i] != srx_timeStamp1[i]) {
-                deviceList.add("SRX " + i);
-                srxs.add(i);
-            }
-        }
-        for (int i = 0; i < 63; ++i) {
-            if (spx_timeStamp0[i] >= 0 && spx_timeStamp1[i] >= 0
-                    && spx_timeStamp0[i] != spx_timeStamp1[i]) {
-                deviceList.add("SPX " + i);
-                spxs.add(i);
-            }
-        }
-        for (int i = 0; i < 63; ++i) {
-            if (max_timeStamp0[i] >= 0 && max_timeStamp1[i] >= 0
-                    && max_timeStamp0[i] != max_timeStamp1[i]) {
-                deviceList.add("MAX " + i);
-                maxs.add(i);
-            }
-        }
-
-        // searchAllApis ("PDP", 8, 4, 0); // PDP
-        // searchAllApis ("SRX", 2, 4, 1); // SRX #1
-        // searchAllApis ("SPX", 1, 4, 2); // SPX #2
-
-        // logCanBusIds = true;
-        // canBusId(8, 4, 0x50, 0);
-    }
-
-    private void searchAllApis (String x, int devType, int mfg, int devId) {
-        logger.info ("Searching for {}", x);
-        long[] xxx_timeStamp0 = new long[1024];
-        long[] xxx_timeStamp1 = new long[1024];
-        for (int api = 0; api < 1024; api++) {
-            xxx_timeStamp0[api] = checkMessage(devType, mfg, api, devId);
-        }
-        logCanBusIds = false;
-
-        /* wait 200ms */
-        try {
-            Thread.sleep(200);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        for (int api = 0; api < 1024; api++) {
-            xxx_timeStamp1[api] = checkMessage(devType, mfg, api, devId);
-        }
-
-        Set<Integer> apis = new TreeSet<>();
-        for (int api = 0; api < 1024; api++) {
-            if (xxx_timeStamp0[api] >= 0 && xxx_timeStamp1[api] >= 0
-                    && xxx_timeStamp0[api] != xxx_timeStamp1[api]) {
-                apis.add(api);
-            }
-        }
-
-        logger.info ("API ids = {}", apis);
-        for (int apiId: apis) {
-            logger.info (" {} {} = {}", String.format("%2d", apiId), String.format("0x%03X", apiId), String.format("%08X", canBusId(devType, mfg, apiId, devId)));
+        for (CanFinder finder: finders) {
+            finder.report();
         }
     }
-
-    private ByteBuffer targetID = ByteBuffer.allocateDirect(4);
-    private ByteBuffer timeStamp = ByteBuffer.allocateDirect(4);
 
     /* help to calculate the CAN bus ID for a devType|mfg|api|dev.
     total of 32 bits: 8 bit devType, 8 bit mfg, 10 bit API, 6 bit device id.
@@ -248,11 +243,18 @@ public class CANDeviceFinder {
         return rv;
     }
 
+    private int extractDeviceId (int canId) {
+        return canId & 0x3f;
+    }
+
+    private int extractApiId (int canId) {
+        return (canId & 0xffc0) >> 6;
+    }
+
     /** helper routine to get last received message for a given ID */
-
-
-    private long checkMessage(int devType, int mfg, int apiId, int devId) {
-        int id = canBusId (devType, mfg, apiId, devId);
+    private ByteBuffer targetID = ByteBuffer.allocateDirect(4);
+    private ByteBuffer timeStamp = ByteBuffer.allocateDirect(4);
+    private long checkMessage(int id) {
         try {
             targetID.clear();
             targetID.order(ByteOrder.LITTLE_ENDIAN);

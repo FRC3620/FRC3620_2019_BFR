@@ -189,8 +189,8 @@ public class RobotMap {
             hatchSubsystemPusher2 = new Solenoid(4);
         }
 
-        driveSubsystemAHRS = new AHRS(edu.wpi.first.wpilibj.SPI.Port.kMXP);
-		LiveWindow.addSensor("Drivetrain", "AHRS", driveSubsystemAHRS);
+        //driveSubsystemAHRS = new AHRS(edu.wpi.first.wpilibj.SPI.Port.kMXP);
+		//LiveWindow.addSensor("Drivetrain", "AHRS", driveSubsystemAHRS);
 
     }
 
