@@ -6,11 +6,16 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.slf4j.Logger;
+import org.usfirst.frc3620.logger.DataLogger;
 import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
+import org.usfirst.frc3620.misc.Hand;
 import org.usfirst.frc3620.misc.RobotMode;
+import org.usfirst.frc3620.robot.OI;
 import org.usfirst.frc3620.robot.commands.*;
 import org.usfirst.frc3620.robot.subsystems.*;
+import org.usfirst.frc3620.misc.CANDeviceFinder;
+import org.usfirst.frc3620.misc.LineSensor;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -40,7 +45,13 @@ public class Robot extends TimedRobot {
     public static RumbleSubsystem rumbleSubsystemOperator;
     public static HatchSubsystem hatchSubsystem;
     public static PivotSubsystem pivotSubsystem;
+    public static LineSubsystem lineSubsystem;
 
+    // data logging
+    public static DataLogger robotDataLogger;
+    private static Command leftLineWatcher;
+    private static Command rightLineWatcher;
+    
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
@@ -48,8 +59,8 @@ public class Robot extends TimedRobot {
     @Override
     public void robotInit() {
 		// set up logging
-		logger = EventLogging.getLogger(Robot.class, Level.INFO);
-
+        logger = EventLogging.getLogger(Robot.class, Level.INFO);
+        
         // set up hardware
         RobotMap.init();
 
@@ -64,16 +75,28 @@ public class Robot extends TimedRobot {
         rumbleSubsystemOperator = new RumbleSubsystem();
         hatchSubsystem = new HatchSubsystem();
         pivotSubsystem = new PivotSubsystem();
-        
+        lineSubsystem = new LineSubsystem();  
+
         // OI must be constructed after subsystems. If the OI creates Commands
         //(which it very likely will), subsystems are not guaranteed to be
         // constructed yet. Thus, their requires() statements may grab null
         // pointers. Bad news. Don't move it.
         oi = new OI();
 
-        // Add commands to Autonomous Sendable Chooser
+        leftLineWatcher = new LineDetectionCommand(LineSensor.LEFT_SENSOR);
+        leftLineWatcher.start(); 
+        rightLineWatcher = new LineDetectionCommand(LineSensor.RIGHT_SENSOR);
+        rightLineWatcher.start();
+
+          // Add commands to Autonomous Sendable Chooser
         chooser.addDefault("Autonomous Command", new AutonomousCommand());
         SmartDashboard.putData("Auto mode", chooser);
+
+        // get data logging going
+        robotDataLogger = new DataLogger();
+        new RobotDataLogger(robotDataLogger, RobotMap.canDeviceFinder);
+        robotDataLogger.setInterval(1.000);
+        robotDataLogger.start();
     }
 
     /**
@@ -121,6 +144,13 @@ public class Robot extends TimedRobot {
         // this line or comment it out.
         if (autonomousCommand != null) autonomousCommand.cancel();
         
+        if(leftLineWatcher != null)
+            leftLineWatcher.start();
+
+        if(rightLineWatcher != null)
+            rightLineWatcher.start();
+   
+
 		processRobotModeChange(RobotMode.TELEOP);
     }
 
@@ -140,7 +170,6 @@ public class Robot extends TimedRobot {
 		// test starts running.
 		if (autonomousCommand != null)
             ((Command) autonomousCommand).cancel();
-            
 		processRobotModeChange(RobotMode.TEST);
 	}
 

@@ -5,8 +5,8 @@ import org.usfirst.frc3620.robot.Robot;
 import org.slf4j.Logger;
 import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
-
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.usfirst.frc3620.robot.subsystems.LineSubsystem;
+import org.usfirst.frc3620.misc.LineSensor;
 
 /**
  *
@@ -14,9 +14,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class LineDetectionCommand extends Command {
     Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
     boolean isThereALine;
-	
-    public LineDetectionCommand() {
-        // requires(Robot.laserCannonSubsystem);
+    RumbleCommand rumbleCommand;
+    LineSensor lineSensor=LineSensor.LEFT_SENSOR; //default init
+    
+    
+    public LineDetectionCommand(LineSensor pos) {
+        lineSensor = pos;   
     }
 
     // Called just before this Command runs the first time
@@ -29,16 +32,26 @@ public class LineDetectionCommand extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        if(Robot.intakeSubsystem.readLineSensor()){
+        //reading the debounce counter (the counter will increment if line is detected.)
+        if(Robot.lineSubsystem.readLineDetectionCounter(lineSensor)){
+            // Line sensor detected now perform action
+            if(isThereALine == false)
+            {
+                Robot.lineSubsystem.setLineDetectionStatus(lineSensor,true);
+            }
             isThereALine = true;    
-            //add command for rumble 
         }
-
-        if(Robot.intakeSubsystem.readLineSensorDirectly()){
+        //reading the line sensor (digital input directly) to check 
+        if(Robot.lineSubsystem.readliveSensorInput(lineSensor)){
+            // Line sensor NOT detected, so do action
+            if(isThereALine == true)
+            {                
+                Robot.lineSubsystem.setLineDetectionStatus(lineSensor,false);              
+            }
             isThereALine = false;
-            Robot.intakeSubsystem.resetLineSensor();
+            //reset the counter if not detected
+            Robot.lineSubsystem.resetLineDetectionCounter(lineSensor);            
         }
-        SmartDashboard.putBoolean("Line?", isThereALine);
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -51,8 +64,8 @@ public class LineDetectionCommand extends Command {
     @Override
     protected void end() {
         EventLogging.commandMessage(logger);
-        //turn off Rumble
-        Robot.intakeSubsystem.resetLineSensor();
+        //reset the counter 
+        Robot.lineSubsystem.resetLineDetectionCounter(lineSensor);
     }
 
     // Called when another command which requires one or more of the same
@@ -60,7 +73,7 @@ public class LineDetectionCommand extends Command {
     @Override
     protected void interrupted() {
         EventLogging.commandMessage(logger);
-        //turn off Rumble
-        Robot.intakeSubsystem.resetLineSensor();
+        //reset the counter 
+        Robot.lineSubsystem.resetLineDetectionCounter(lineSensor);
     }
 }
