@@ -28,7 +28,7 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
     Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
     
     public static final double SETANGLE_BOTTOM = 75;
-    public static final double SETANGLE_MIDDLE = 45;
+    public static final double SETANGLE_MIDDLE = 55;
     public static final double SETANGLE_TOP = 0;
 
     private final CANSparkMax pivotMax = RobotMap.pivotSubsystemMax;
@@ -37,13 +37,14 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
     private final PIDController pivotPIDContoller;
 
     private boolean encoderisvalid = false;
-    private double desiredAngle = -10;
+    private double desiredAngle = SETANGLE_TOP;
+    private double PIDpower = 0;
 
     public PivotSubsystem(){
         pivotPIDContoller = new PIDController(0, 0, 0, 0, this, this);
         setPIDSourceType(PIDSourceType.kDisplacement);
         pivotPIDContoller.setInputRange(0, 100);
-        pivotPIDContoller.setOutputRange(-0.5, 0.2);
+        pivotPIDContoller.setOutputRange(-0.3, 0.2);
     }
 
     @Override
@@ -62,6 +63,7 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
             SmartDashboard.putNumber("pivotAngleInTics", pivotEncoder.getPosition());
         }
         SmartDashboard.putNumber("pivotAngleInDegrees", getPivotAngle());
+        SmartDashboard.putNumber("desiredAngle", desiredAngle);
 
         if(Robot.getCurrentRobotMode() == RobotMode.TELEOP || Robot.getCurrentRobotMode() == RobotMode.AUTONOMOUS){
             if(isTopPivotLimitDepressed()){
@@ -78,10 +80,12 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
                             if (error > 0) {
                             // we want to be in, but we are not there yet
                             // we need to do some pivotMove with a negative
-                            pivotMove(-0.2);
+                            pivotMove(-0.1);
                         } else {
                             pivotStop();
                         }
+                    } else{
+                        pivotStop();
                     }
                 } else if (desiredAngle == SETANGLE_BOTTOM) {
                     if(Math.abs(error) > 10) {
@@ -93,9 +97,11 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
                         } else {
                             pivotStop();
                         }
+                    } else{
+                        pivotStop();
                     }
                 }else{
-                    pivotStop();
+                    pivotMove(PIDpower);
                 }
             }else{
                 // encoder is not valid, let's start coming in
@@ -121,13 +127,16 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
      */
 
     public void pivotMove(double power) {
-        if(isTopPivotLimitDepressed() == true && power < 0){
+        if((isTopPivotLimitDepressed() == true) && (power < 0)){
             power = 0;
         }
+        SmartDashboard.putNumber("pivot power", power);
         pivotMax.set(-power);
+        
     }
 
     public void pivotStop() {
+        SmartDashboard.putNumber("pivot power", 0);
         pivotMax.set(0);
     }
 
@@ -173,7 +182,7 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
             pivotPIDContoller.setSetpoint(desiredAngle);
             if (!pivotPIDContoller.isEnabled()) {
                 // set the P, I, D, FF
-                double p = SmartDashboard.getNumber("pivotP", 0);
+                double p = SmartDashboard.getNumber("pivotP", 0.01);
                 double i = SmartDashboard.getNumber("pivotI", 0);
                 double d = SmartDashboard.getNumber("pivotD", 0);
                 double f = SmartDashboard.getNumber("pivotF", 0);
@@ -195,7 +204,7 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
 
     @Override
     public void pidWrite(double output) {
-        SmartDashboard.putNumber("intake PID output", output);
+        PIDpower = output;
     }
 
     PIDSourceType pidSourceType;
