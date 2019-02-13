@@ -42,8 +42,8 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
     public PivotSubsystem(){
         pivotPIDContoller = new PIDController(0, 0, 0, 0, this, this);
         setPIDSourceType(PIDSourceType.kDisplacement);
-        pivotPIDContoller.setInputRange(-100, 100);
-        pivotPIDContoller.setOutputRange(-1, 1);
+        pivotPIDContoller.setInputRange(0, 100);
+        pivotPIDContoller.setOutputRange(-0.5, 0.2);
     }
 
     @Override
@@ -212,9 +212,7 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
 
     @Override
     public double pidGet() {
-        double currentAngle = getPivotAngle();
-        double error = currentAngle - desiredAngle;
-        SmartDashboard.putNumber("intake PID error", error);
-        return error;
+        double pos = getPivotAngle();
+        return pos;
 	}
 }
