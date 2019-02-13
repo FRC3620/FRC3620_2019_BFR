@@ -66,7 +66,7 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
         SmartDashboard.putNumber("desiredAngle", desiredAngle);
 
         if(Robot.getCurrentRobotMode() == RobotMode.TELEOP || Robot.getCurrentRobotMode() == RobotMode.AUTONOMOUS){
-            if(isTopPivotLimitDepressed()){
+            if(isTopPivotLimitDepressed() && !encoderisvalid){
                 resetEncoder();
                 encoderisvalid = true;
             }
@@ -75,8 +75,9 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
                 double currentAngle = getPivotAngle();
                 // positive error is we are out too far
                 double error = currentAngle - desiredAngle;
+                SmartDashboard.putNumber("pivotError", error);
                 if (desiredAngle == SETANGLE_TOP) {
-                    if(Math.abs(error) > 10) {
+                    if(Math.abs(error) > 0) {
                             if (error > 0) {
                             // we want to be in, but we are not there yet
                             // we need to do some pivotMove with a negative
