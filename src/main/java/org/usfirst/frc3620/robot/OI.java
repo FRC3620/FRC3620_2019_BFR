@@ -82,7 +82,7 @@ public class OI {
             positionTwo.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_TOP));
             hatchExtend.toggleWhenPressed(new HatchExtendCommand());
             hatchCollect.whileHeld(new HatchCollectCommand());
-            angleOne.whenPressed(new SetPivotAngleCommand(PivotSubsystem.SETANGLE_BOTTOM));
+            angleOne.whenPressed(new SetPivotAngleCommand(PivotSubsystem.SETANGLE_MIDDLE));
             angleTwo.whenPressed(new SetPivotAngleCommand(PivotSubsystem.SETANGLE_TOP));
         }
 

@@ -29,6 +29,7 @@ public class SetPivotAngleCommand extends Command {
     @Override
     protected void execute() {
         Robot.pivotSubsystem.setDesiredAngle(desiredAngle);
+        logger.info("setting angle to {}", desiredAngle);
     }
 
     // Make this return true when this Command no longer needs to run execute()
