@@ -44,7 +44,7 @@ s
  * 
  * Note: This will get overwritten if another rumble starts on the same controller
  * 
- * P.S.: Hand.LEFT provides a choppy, viseral rumble where Hand.RIGHT provides a lighter, smooth rumble
+ * P.S.: Hand.LEFT provides a choppy, visceral rumble where Hand.RIGHT provides a lighter, smooth rumble
  */
 public class RumbleSubsystem extends Subsystem {
     Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
