@@ -24,9 +24,9 @@ public class DriveCommand extends Command {
     @Override
     protected void execute() {
         //gets values from Y-axis of Right stick on gamepad, X-axis goes unused
-        double vertical = Robot.oi.getRightVerticalJoystickSquared();
+        double vertical = Robot.oi.getLeftVerticalJoystickSquared();
         //gets values from X-axis of Left stick on gamepad, Y-axis goes unused
-        double horizontal = Robot.oi.getLeftHorizontalJoystickSquared();
+        double horizontal = Robot.oi.getRightHorizontalJoystickSquared();
         //displays current values on gamepad
             //Calls method to drive motors, declared in subsystem, sends real values to motors
             Robot.driveSubsystem.arcadeDrive(horizontal, -vertical);

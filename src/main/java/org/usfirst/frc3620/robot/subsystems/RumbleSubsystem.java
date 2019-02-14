@@ -1,24 +1,17 @@
 package org.usfirst.frc3620.robot.subsystems;
 
-
-
 import org.slf4j.Logger;
 import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
-import org.usfirst.frc3620.robot.Robot;
 import org.usfirst.frc3620.misc.Hand;
-import org.usfirst.frc3620.robot.commands.RumbleCommand;
 
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
-import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
-
 
 /**
  * @author Nick Zimanski (SlippStream)
- * @version 2/02/19
+ * @version 2/09/19
  * 
  * READ ME:
  * 
@@ -33,21 +26,21 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  * where
  * SUBSYSTEM is Robot.rumbleSubsystemDriver OR Robot.rumbleSubsystemOperator (decides which controller to rumble)
  * HAND is Hand.RIGHT OR Hand.LEFT OR Hand.BOTH (decides which side of the controller to rumble (default is BOTH))
- * INTENSITY is a float between 0.1f and 1f (decides how hard to rumble the controller -- greater is harder (default is 1f))
- * DURATION is a positive float in seconds (decides how long to rumble the controller (default is 3f))
+ * INTENSITY is a double between 0.1 and 1.0 (decides how hard to rumble the controller -- greater is harder (default is 1.0))
+ * DURATION is a positive double in seconds (decides how long to rumble the controller (default is 1.0))
  * 
  * TO GET THE COMMAND TO RUN WHILE [CONDITION]:
  * 
  * use new RumbleCommand([SUBSYSTEM], [HAND], [INTENSITY])
  * to start the command. When your condition terminates,
- * instantiate the command again with 0f for the intesity
+ * instantiate the command again with 0.0 for the intesity
  * 
  * Note: This will get overwritten if another rumble starts on the same controller
+ * 
+ * P.S.: Hand.LEFT provides a choppy, viseral rumble where Hand.RIGHT provides a lighter, smooth rumble
  */
 public class RumbleSubsystem extends Subsystem {
     Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
-    Timer timeOutDriverController = new Timer(); 
-    Timer timeOutOperatorController = new Timer(); 
 
     private Joystick controller;
 
@@ -55,7 +48,7 @@ public class RumbleSubsystem extends Subsystem {
     public void setController(Joystick newController) {controller = newController;} 
 
     //Called from RumbleSubsystem. Directly sets controller rumble
-    public void setRumble (Hand hand, Float intensity) {
+    public void setRumble (Hand hand, Double intensity) {
         //Switch/case for rumbling different sides of the controller
         switch (hand) {
             case LEFT:

@@ -1,7 +1,6 @@
 package org.usfirst.frc3620.robot.subsystems;
 
 import com.kauailabs.navx.frc.AHRS;
-import com.revrobotics.CANEncoder;
 
 import org.slf4j.Logger;
 import org.usfirst.frc3620.logger.EventLogging;
@@ -11,11 +10,9 @@ import org.usfirst.frc3620.robot.RobotMap;
 import org.usfirst.frc3620.robot.commands.DriveCommand;
 
 import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import com.kauailabs.navx.frc.AHRS;
 
 /**
  *
@@ -28,19 +25,23 @@ public class DriveSubsystem extends Subsystem {
     private final DifferentialDrive differentialDrive = RobotMap.driveSubsystemDifferentialDrive;
     private Encoder driveEncoderLeft = RobotMap.leftSideEncoder;
     private Encoder driveEncoderRight = RobotMap.rightSideEncoder;
-
+	
     public double automaticHeading;
     public boolean complainedAboutMissingAhrs;
-
-    public DriveSubsystem() {
-        // this code gets run when the DriveSubsystem is created 
-        // (when the robot is rebooted.)
-        ahrs = new AHRS(edu.wpi.first.wpilibj.SPI.Port.kMXP);
-        ahrs.enableLogging(false);
-        resetEncoders();
-    //    resetencoder();
-    }
     
+    boolean gotCompBot;
+
+
+    public DriveSubsystem(){
+        super();               
+		ahrs = new AHRS(edu.wpi.first.wpilibj.SPI.Port.kMXP);
+		ahrs.enableLogging(false);
+		
+        gotCompBot = RobotMap.amICompBot();
+
+        resetEncoders();
+    }
+
     @Override
     public void initDefaultCommand() {
         // Set the default command for a subsystem here. Drive command runs in background at all times
@@ -51,6 +52,12 @@ public class DriveSubsystem extends Subsystem {
     @Override
     public void periodic() {
         // Put code here to be run every loop
+        if(checkForCANDriveEncoders()) {
+            SmartDashboard.putNumber("leftsideEncoder", RobotMap.leftsideCANEncoder.getPosition());
+            SmartDashboard.putNumber("rightsideEncoder", RobotMap.rightsideCANEncoder.getPosition());
+        }
+        SmartDashboard.putNumber("rightsideEncoderInFeet", getRightSideDistance());
+        SmartDashboard.putNumber("leftsideEncoderInFeet", getLeftSideDistance());
   //      SmartDashboard.putNumber("leftsideEncoder", RobotMap.leftsideEncoder.getPosition());
   //      SmartDashboard.putNumber("rightsideEncoder", RobotMap.rightsideEncoder.getPosition());
    //     SmartDashboard.putNumber("rightsideEncoderInFeet", getRightSideDistance());
@@ -88,11 +95,6 @@ public class DriveSubsystem extends Subsystem {
         return  driveEncoderRight.getRaw();
       }
     
-    public void resetEncoders(){
-        driveEncoderLeft.reset();
-        driveEncoderRight.reset();
-    }
-
     private double getSpeedModifier() {	// TODO Tune me!!
 		return 1.0;
 		
@@ -182,11 +184,11 @@ public class DriveSubsystem extends Subsystem {
         differentialDrive.stopMotor();
     }
 
- /* public double getLeftSideDistance() {
-        if(checkForDriveEncoders()) {
-            double tics = RobotMap.leftsideEncoder.getPosition();
+    public double getLeftSideDistance() {
+        if(checkForCANDriveEncoders()) {
+            double tics = RobotMap.leftsideCANEncoder.getPosition();
             double howfarwehavemoved = tics - leftEncoderZeroValue;
-            double feet = ticstofeet(howfarwehavemoved);
+            double feet = ticsToFeet(howfarwehavemoved);
             return feet;
         } else {
             return(0);
@@ -194,10 +196,10 @@ public class DriveSubsystem extends Subsystem {
     
     }
     public double getRightSideDistance() {
-        if(checkForDriveEncoders()) {
-            double tics = RobotMap.rightsideEncoder.getPosition();
+        if(checkForCANDriveEncoders()) {
+            double tics = RobotMap.rightsideCANEncoder.getPosition();
             double howfarwehavemoved = tics - rightEncoderZeroValue;
-            double feet = ticstofeet(-howfarwehavemoved);
+            double feet = ticsToFeet(-howfarwehavemoved);
             return feet;
         } else {
             return(0);
@@ -205,13 +207,18 @@ public class DriveSubsystem extends Subsystem {
     }
 
     double leftEncoderZeroValue, rightEncoderZeroValue;
-    public boolean checkForDriveEncoders() {
-        return(!(RobotMap.leftsideEncoder==null));
+
+    public boolean checkForCANDriveEncoders() {
+        return(!(RobotMap.leftsideCANEncoder==null));
     }
-   public void resetencoder(){
-        if(checkForDriveEncoders()) {
-            leftEncoderZeroValue = RobotMap.leftsideEncoder.getPosition();
-            rightEncoderZeroValue = RobotMap.rightsideEncoder.getPosition();
+    
+    public void resetEncoders(){
+        driveEncoderLeft.reset();
+        driveEncoderRight.reset();
+
+        if(checkForCANDriveEncoders()) {
+            leftEncoderZeroValue = RobotMap.leftsideCANEncoder.getPosition();
+            rightEncoderZeroValue = RobotMap.rightsideCANEncoder.getPosition();
         }
-    } */
+    }
 }
