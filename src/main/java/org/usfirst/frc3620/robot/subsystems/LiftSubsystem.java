@@ -1,7 +1,5 @@
 package org.usfirst.frc3620.robot.subsystems;
 
-
-
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 
@@ -13,10 +11,8 @@ import org.usfirst.frc3620.robot.Robot;
 import org.usfirst.frc3620.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
 
 /**
  *
@@ -28,7 +24,6 @@ public class LiftSubsystem extends Subsystem {
     public static final double SETPOINT_TOP = 9;
 
     private final CANSparkMax liftMax = RobotMap.liftSubsystemMax;
-    private final Solenoid liftBrake = RobotMap.liftSubsystemBrake;
     private final DigitalInput topLimit = RobotMap.liftLimitSwitchTop;
     private final DigitalInput bottomLimit = RobotMap.liftLimitSwitchBottom;
     private final CANEncoder liftEncoder = RobotMap.liftEncoder;

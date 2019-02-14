@@ -1,7 +1,5 @@
 package org.usfirst.frc3620.robot.subsystems;
 
-
-
 import org.slf4j.Logger;
 import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
@@ -10,15 +8,12 @@ import org.usfirst.frc3620.misc.BlinkinDict.Color;
 import org.usfirst.frc3620.misc.RobotMode;
 
 import java.util.HashMap;
-import java.util.Map;
 
-import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SpeedController;
-
 
 /**
  *
