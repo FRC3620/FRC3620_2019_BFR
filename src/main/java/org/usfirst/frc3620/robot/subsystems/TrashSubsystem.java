@@ -17,11 +17,11 @@ public class TrashSubsystem extends Subsystem {
     Preferences speedPreferences = Preferences.getInstance();
     private final WPI_TalonSRX conveyorL = RobotMap.conveyorBeltMotorL;
     private final WPI_TalonSRX conveyorR = RobotMap.conveyorBeltMotorR;
-    private final WPI_TalonSRX conveyorC = RobotMap.conveyorBeltMotorC;
+   
 
     public void initDefaultCommand() {
         // Set the default command for a subsystem here. Drive command runs in background at all times
-        setDefaultCommand(new DriveCommand());
+      
     }
 
     @Override
@@ -32,22 +32,22 @@ public class TrashSubsystem extends Subsystem {
 
     public void conveyorBeltLeft(double speed){
         conveyorL.set(speed);
-        conveyorC.set(speed);
+        conveyorR.set(-speed);
     }
-
+    
     public void conveyorBeltRight(double speed){
         conveyorR.set(speed);
-        conveyorC.set(-speed);
+        conveyorL.set(-speed);
     }
-
+    
     public void conveyorBeltOff(){
         conveyorL.set(0);
-        conveyorR.set(0);
-        conveyorC.set(0);
+        conveyorR.set(0);  
     }
 
     public double getSpeedFromDashboard(){
         return speedPreferences.getDouble("IntakeSpeed", 0.5);
     }
+    
     
 }

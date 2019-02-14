@@ -25,7 +25,7 @@ public class RobotMap {
     public static DifferentialDrive driveSubsystemDifferentialDrive;
     public static WPI_TalonSRX conveyorBeltMotorL;
     public static WPI_TalonSRX conveyorBeltMotorR;
-    public static WPI_TalonSRX conveyorBeltMotorC;
+    
 
     static Logger logger = EventLogging.getLogger(RobotMap.class, Level.INFO);
 
@@ -57,9 +57,9 @@ public class RobotMap {
         driveSubsystemDifferentialDrive.setExpiration(0.1);
         driveSubsystemDifferentialDrive.setMaxOutput(1.0);
         
-        conveyorBeltMotorL = new WPI_TalonSRX(1);
-        conveyorBeltMotorR = new WPI_TalonSRX(2);
-        conveyorBeltMotorC = new WPI_TalonSRX(3);
+        conveyorBeltMotorL = new WPI_TalonSRX(7);
+        conveyorBeltMotorR = new WPI_TalonSRX(8);
+        
 
         
         //new code
