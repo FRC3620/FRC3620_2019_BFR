@@ -1,12 +1,9 @@
 package org.usfirst.frc3620.robot.subsystems;
 
-
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-
 import org.usfirst.frc3620.robot.RobotMap;
-import org.usfirst.frc3620.robot.commands.DriveCommand;
 
 import edu.wpi.first.wpilibj.Preferences;
+import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
@@ -15,8 +12,8 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class TrashSubsystem extends Subsystem {
 
     Preferences speedPreferences = Preferences.getInstance();
-    private final WPI_TalonSRX conveyorT = RobotMap.conveyorBeltMotorTop;
-    private final WPI_TalonSRX conveyorB = RobotMap.conveyorBeltMotorBottom;
+    private final SpeedController conveyorT = RobotMap.conveyorBeltMotorTop;
+    private final SpeedController conveyorB = RobotMap.conveyorBeltMotorBottom;
 
     public void initDefaultCommand() {
         // Set the default command for a subsystem here. Drive command runs in background at all times

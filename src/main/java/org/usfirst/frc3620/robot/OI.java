@@ -1,12 +1,10 @@
 package org.usfirst.frc3620.robot;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 import org.usfirst.frc3620.misc.XBoxConstants;
-import org.usfirst.frc3620.misc.Hand;
 import org.usfirst.frc3620.robot.commands.*;
 import org.usfirst.frc3620.robot.subsystems.LiftSubsystem;
 import org.usfirst.frc3620.robot.subsystems.PivotSubsystem;
@@ -46,7 +44,8 @@ public class OI {
     private Joystick driverJoystick;
     private Joystick operatorJoystick;
 
-    public OI() {
+    @SuppressWarnings("resource")
+	public OI() {
         //to interface with joysticks, no special initiallization nessessary
         driverJoystick = new Joystick(0);
         operatorJoystick = new Joystick(1);

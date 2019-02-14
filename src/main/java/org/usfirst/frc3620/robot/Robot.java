@@ -9,12 +9,10 @@ import org.slf4j.Logger;
 import org.usfirst.frc3620.logger.DataLogger;
 import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
-import org.usfirst.frc3620.misc.Hand;
 import org.usfirst.frc3620.misc.RobotMode;
 import org.usfirst.frc3620.robot.OI;
 import org.usfirst.frc3620.robot.commands.*;
 import org.usfirst.frc3620.robot.subsystems.*;
-import org.usfirst.frc3620.misc.CANDeviceFinder;
 import org.usfirst.frc3620.misc.LineSensor;
 
 /**
