@@ -6,9 +6,9 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.slf4j.Logger;
+import org.usfirst.frc3620.logger.DataLogger;
 import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
-import org.usfirst.frc3620.misc.Hand;
 import org.usfirst.frc3620.misc.RobotMode;
 import org.usfirst.frc3620.robot.OI;
 import org.usfirst.frc3620.robot.commands.*;
@@ -42,8 +42,11 @@ public class Robot extends TimedRobot {
     public static RumbleSubsystem rumbleSubsystemDriver;
     public static RumbleSubsystem rumbleSubsystemOperator;
     public static HatchSubsystem hatchSubsystem;
-
+    public static PivotSubsystem pivotSubsystem;
     public static LineSubsystem lineSubsystem;
+
+    // data logging
+    public static DataLogger robotDataLogger;
     private static Command leftLineWatcher;
     private static Command rightLineWatcher;
     
@@ -54,8 +57,8 @@ public class Robot extends TimedRobot {
     @Override
     public void robotInit() {
 		// set up logging
-		logger = EventLogging.getLogger(Robot.class, Level.INFO);
-
+        logger = EventLogging.getLogger(Robot.class, Level.INFO);
+        
         // set up hardware
         RobotMap.init();
 
@@ -69,6 +72,7 @@ public class Robot extends TimedRobot {
         rumbleSubsystemDriver = new RumbleSubsystem();
         rumbleSubsystemOperator = new RumbleSubsystem();
         hatchSubsystem = new HatchSubsystem();
+        pivotSubsystem = new PivotSubsystem();
         lineSubsystem = new LineSubsystem();  
 
         // OI must be constructed after subsystems. If the OI creates Commands
@@ -86,6 +90,11 @@ public class Robot extends TimedRobot {
         chooser.addDefault("Autonomous Command", new AutonomousCommand());
         SmartDashboard.putData("Auto mode", chooser);
 
+        // get data logging going
+        robotDataLogger = new DataLogger();
+        new RobotDataLogger(robotDataLogger, RobotMap.canDeviceFinder);
+        robotDataLogger.setInterval(1.000);
+        robotDataLogger.start();
     }
 
     /**

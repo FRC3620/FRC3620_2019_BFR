@@ -1,18 +1,12 @@
 package org.usfirst.frc3620.robot.subsystems;
 
-
-
 import org.slf4j.Logger;
 import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
-import org.usfirst.frc3620.robot.Robot;
 import org.usfirst.frc3620.misc.Hand;
-import org.usfirst.frc3620.robot.commands.RumbleCommand;
 
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
-import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**

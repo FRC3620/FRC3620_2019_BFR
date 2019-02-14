@@ -55,6 +55,7 @@ public class IntakeSubsystem extends Subsystem {
     public void intakeIn(double speed){
         intakeRollerTop.set(-speed);
         intakeRollerBottom.set(speed);
+        intakeRollerMiddle.set(speed);
     }
 
     public void intakeOut(double speed){
@@ -65,6 +66,7 @@ public class IntakeSubsystem extends Subsystem {
     public void intakeOff(){
         intakeRollerTop.set(0);
         intakeRollerBottom.set(0);
+        intakeRollerMiddle.set(0);
     }
     
     
