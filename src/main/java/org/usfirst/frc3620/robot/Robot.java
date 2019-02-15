@@ -50,6 +50,8 @@ public class Robot extends TimedRobot {
     private static Command leftLineWatcher;
     private static Command rightLineWatcher;
     
+    public static VisionSubsystem VisionSubsystem;
+
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
@@ -74,7 +76,8 @@ public class Robot extends TimedRobot {
         hatchSubsystem = new HatchSubsystem();
         pivotSubsystem = new PivotSubsystem();
         lineSubsystem = new LineSubsystem();  
-
+        VisionSubsystem = new VisionSubsystem();
+        
         // OI must be constructed after subsystems. If the OI creates Commands
         //(which it very likely will), subsystems are not guaranteed to be
         // constructed yet. Thus, their requires() statements may grab null
