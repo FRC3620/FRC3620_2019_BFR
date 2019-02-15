@@ -78,7 +78,7 @@ import edu.wpi.first.wpilibj.Counter;
         canDeviceFinder = new CANDeviceFinder();
         logger.info ("CANDEVICEfinder found {}", canDeviceFinder.getDeviceList());
 
-        practiceBotJumper = new DigitalInput(9);
+        practiceBotJumper = new DigitalInput(0);
 
         SpeedControllerGroup groupLeft;
         SpeedControllerGroup groupRight;
@@ -160,7 +160,7 @@ import edu.wpi.first.wpilibj.Counter;
         pivotEncoder = pivotSubsystemMax.getEncoder();
         pivotLimitSwitch = new DigitalInput(5);
         
-        lightSubsystemLightPWM = new Spark(7);
+        lightSubsystemLightPWM = new Spark(9);
         lightSubsystemLightPWM.setName("LightSubsystem", "LightPWM");
         lightSubsystemLightPWM.setInverted(false);
         
