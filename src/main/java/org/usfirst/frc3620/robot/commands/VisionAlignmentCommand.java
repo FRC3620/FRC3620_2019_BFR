@@ -20,8 +20,6 @@ import edu.wpi.first.wpilibj.command.Command;
 public class VisionAlignmentCommand extends Command {
   Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 
-  VisionSubsystem  visionSubsystem = Robot.VisionSubsystem;
-
   private double distance;
   private double angle;
   private double yaw;
@@ -30,7 +28,7 @@ public class VisionAlignmentCommand extends Command {
   public VisionAlignmentCommand() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    requires(Robot.VisionSubsystem);
+    requires(Robot.visionSubsystem);
   }
 
   // Called just before this Command runs the first time
@@ -41,13 +39,13 @@ public class VisionAlignmentCommand extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    angle = visionSubsystem.getTargetAngle();
+    angle = Robot.visionSubsystem.getTargetAngle();
     logger.info("Target angle: ", angle);
 
-    distance = visionSubsystem.getTargetDistance();
+    distance = Robot.visionSubsystem.getTargetDistance();
     logger.info("Target distance: ", distance);
 
-    yaw = visionSubsystem.getTargetYaw();
+    yaw = Robot.visionSubsystem.getTargetYaw();
     logger.info("Target yaw: ", yaw);
     
   }

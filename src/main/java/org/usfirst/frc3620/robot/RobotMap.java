@@ -79,7 +79,7 @@ import edu.wpi.first.wpilibj.Counter;
         canDeviceFinder = new CANDeviceFinder();
         logger.info ("CANDEVICEfinder found {}", canDeviceFinder.getDeviceList());
 
-        practiceBotJumper = new DigitalInput(9);
+        practiceBotJumper = new DigitalInput(0);
 
         SpeedControllerGroup groupLeft;
         SpeedControllerGroup groupRight;

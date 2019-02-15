@@ -7,7 +7,7 @@
 
 package org.usfirst.frc3620.robot.subsystems;
 
-import org.usfirst.frc3620.robot.commands.AutonomousCommand;
+import org.usfirst.frc3620.robot.commands.VisionAlignmentCommand;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -33,7 +33,7 @@ public class VisionSubsystem extends Subsystem {
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand())
-    setDefaultCommand(new AutonomousCommand());
+    setDefaultCommand(new VisionAlignmentCommand());
   }
 
   public double getTargetAngle(){
