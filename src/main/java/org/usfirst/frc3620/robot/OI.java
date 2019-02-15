@@ -10,6 +10,7 @@ import org.usfirst.frc3620.misc.XBoxConstants;
 import org.usfirst.frc3620.robot.commands.*;
 import org.usfirst.frc3620.robot.subsystems.LiftSubsystem;
 import org.usfirst.frc3620.robot.subsystems.PivotSubsystem;
+import org.usfirst.frc3620.robot.paths.*;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -88,6 +89,9 @@ public class OI {
             
             SmartDashboard.putData("Rumble both", new RumbleCommand(Robot.rumbleSubsystemDriver, Hand.BOTH, 0.2, 60.0));
             SmartDashboard.putData("Rumble left", new RumbleCommand(Robot.rumbleSubsystemDriver, Hand.LEFT, 0.2, 3.0));
+
+            SmartDashboard.putData("AutonomousAlign from 45", new AutoAlignmentTemplate(Robot.visionSubsystem.getTargetDistance(), Robot.visionSubsystem.getTargetAngle()));
+            SmartDashboard.putData("TrainingPath", new TrainingPath());
 
         }
 

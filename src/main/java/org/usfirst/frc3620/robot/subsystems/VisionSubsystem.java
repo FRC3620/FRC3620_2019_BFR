@@ -34,7 +34,7 @@ public class VisionSubsystem extends Subsystem {
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand())
-    setDefaultCommand(new VisionAlignmentCommand());
+   // setDefaultCommand(new VisionAlignmentCommand());
   }
 
   public double getTargetAngle(){

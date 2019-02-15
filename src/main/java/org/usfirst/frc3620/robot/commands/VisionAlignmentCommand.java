@@ -28,7 +28,7 @@ public class VisionAlignmentCommand extends Command {
   public VisionAlignmentCommand() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    requires(Robot.visionSubsystem);
+  //  requires(Robot.visionSubsystem);
   }
 
   // Called just before this Command runs the first time
