@@ -1,11 +1,8 @@
 package org.usfirst.frc3620.robot.subsystems;
 
-import java.awt.Robot;
-
 import org.usfirst.frc3620.robot.RobotMap;
 import org.usfirst.frc3620.robot.commands.DriveCommand;
 
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -26,9 +23,9 @@ public class DriveSubsystem extends Subsystem {
     public DriveSubsystem(){
         super();               
 		ahrs = new AHRS(edu.wpi.first.wpilibj.SPI.Port.kMXP);
-		ahrs.enableLogging(false);
+		//ahrs.enableLogging(false);
 		
-        gotCompBot = RobotMap.practiceBotJumper.get();
+        gotCompBot = RobotMap.amICompBot();
 
         resetEncoder();
     }
@@ -46,9 +43,9 @@ public class DriveSubsystem extends Subsystem {
     @Override
     public void periodic() {
         // Put code here to be run every loop
-        if(checkForDriveEncoders()) {
-            SmartDashboard.putNumber("leftsideEncoder", RobotMap.leftsideEncoder.getPosition());
-            SmartDashboard.putNumber("rightsideEncoder", RobotMap.rightsideEncoder.getPosition());
+        if(checkForCANDriveEncoders()) {
+            SmartDashboard.putNumber("leftsideEncoder", RobotMap.leftsideCANEncoder.getPosition());
+            SmartDashboard.putNumber("rightsideEncoder", RobotMap.rightsideCANEncoder.getPosition());
         }
         SmartDashboard.putNumber("rightsideEncoderInFeet", getRightSideDistance());
         SmartDashboard.putNumber("leftsideEncoderInFeet", getLeftSideDistance());
@@ -87,8 +84,8 @@ public class DriveSubsystem extends Subsystem {
     }
 
     public double getLeftSideDistance() {
-        if(checkForDriveEncoders()) {
-            double tics = RobotMap.leftsideEncoder.getPosition();
+        if(checkForCANDriveEncoders()) {
+            double tics = RobotMap.leftsideCANEncoder.getPosition();
             double howfarwehavemoved = tics - leftEncoderZeroValue;
             double feet = ticstofeet(howfarwehavemoved);
             return feet;
@@ -98,8 +95,8 @@ public class DriveSubsystem extends Subsystem {
     
     }
     public double getRightSideDistance() {
-        if(checkForDriveEncoders()) {
-            double tics = RobotMap.rightsideEncoder.getPosition();
+        if(checkForCANDriveEncoders()) {
+            double tics = RobotMap.rightsideCANEncoder.getPosition();
             double howfarwehavemoved = tics - rightEncoderZeroValue;
             double feet = ticstofeet(-howfarwehavemoved);
             return feet;
@@ -110,14 +107,14 @@ public class DriveSubsystem extends Subsystem {
 
     double leftEncoderZeroValue, rightEncoderZeroValue;
 
-    public boolean checkForDriveEncoders() {
-        return(!(RobotMap.leftsideEncoder==null));
+    public boolean checkForCANDriveEncoders() {
+        return(!(RobotMap.leftsideCANEncoder==null));
     }
 
     public void resetEncoder(){
-        if(checkForDriveEncoders()) {
-            leftEncoderZeroValue = RobotMap.leftsideEncoder.getPosition();
-            rightEncoderZeroValue = RobotMap.rightsideEncoder.getPosition();
+        if(checkForCANDriveEncoders()) {
+            leftEncoderZeroValue = RobotMap.leftsideCANEncoder.getPosition();
+            rightEncoderZeroValue = RobotMap.rightsideCANEncoder.getPosition();
         }
     }
 }

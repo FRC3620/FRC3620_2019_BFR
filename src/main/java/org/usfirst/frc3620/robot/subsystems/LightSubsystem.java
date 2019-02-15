@@ -1,7 +1,5 @@
 package org.usfirst.frc3620.robot.subsystems;
 
-
-
 import org.slf4j.Logger;
 import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
@@ -15,13 +13,11 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.io.Console;
 
-import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SpeedController;
-
 
 /**
  * @author Nick Zimanski (SlippStream)

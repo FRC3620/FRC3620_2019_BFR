@@ -9,10 +9,10 @@ import org.usfirst.frc3620.robot.Robot;
 /**
  *
  */
-public class TrashRightCommand extends Command {
+public class HatchExtendCommand extends Command {
 	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 	
-    public TrashRightCommand() {
+    public HatchExtendCommand() {
         // requires(Robot.laserCannonSubsystem);
     }
 
@@ -25,7 +25,7 @@ public class TrashRightCommand extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        Robot.trashSubsystem.conveyorBeltRight(0.8);
+        Robot.hatchSubsystem.hatchOut();
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -38,14 +38,14 @@ public class TrashRightCommand extends Command {
     @Override
     protected void end() {
         EventLogging.commandMessage(logger);
-        Robot.trashSubsystem.conveyorBeltOff();
+        Robot.hatchSubsystem.hatchIn();
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run or when cancelled by whileHeld
     @Override
     protected void interrupted() {
-        Robot.trashSubsystem.conveyorBeltOff();
-    	EventLogging.commandMessage(logger);
+        EventLogging.commandMessage(logger);
+        Robot.hatchSubsystem.hatchIn();
     }
 }

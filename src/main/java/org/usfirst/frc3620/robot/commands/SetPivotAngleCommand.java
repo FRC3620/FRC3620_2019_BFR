@@ -9,11 +9,14 @@ import org.usfirst.frc3620.robot.Robot;
 /**
  *
  */
-public class TrashRightCommand extends Command {
+public class SetPivotAngleCommand extends Command {
 	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
-	
-    public TrashRightCommand() {
+    
+    double desiredAngle;
+    
+    public SetPivotAngleCommand(double _desiredAngle) {
         // requires(Robot.laserCannonSubsystem);
+        desiredAngle = _desiredAngle;
     }
 
     // Called just before this Command runs the first time
@@ -25,27 +28,26 @@ public class TrashRightCommand extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        Robot.trashSubsystem.conveyorBeltRight(0.8);
+        Robot.pivotSubsystem.setDesiredAngle(desiredAngle);
+        logger.info("setting angle to {}", desiredAngle);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        return false;
+        return true;
     }
 
     // Called once after isFinished returns true
     @Override
     protected void end() {
         EventLogging.commandMessage(logger);
-        Robot.trashSubsystem.conveyorBeltOff();
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run or when cancelled by whileHeld
     @Override
     protected void interrupted() {
-        Robot.trashSubsystem.conveyorBeltOff();
-    	EventLogging.commandMessage(logger);
+        EventLogging.commandMessage(logger);
     }
 }

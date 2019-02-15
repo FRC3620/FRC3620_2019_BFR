@@ -1,5 +1,4 @@
 package org.usfirst.frc3620.robot.commands;
-import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc3620.robot.Robot;
 import org.slf4j.Logger;
@@ -14,6 +13,7 @@ public class IntakeCommand extends Command {
 	
     public IntakeCommand() {
         // requires(Robot.laserCannonSubsystem);
+        requires(Robot.intakeSubsystem);
     }
 
     // Called just before this Command runs the first time
@@ -25,7 +25,7 @@ public class IntakeCommand extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        Robot.intakeSubsystem.intakeIn();
+        Robot.intakeSubsystem.intakeIn(0.5);
     }
 
     // Make this return true when this Command no longer needs to run execute()
