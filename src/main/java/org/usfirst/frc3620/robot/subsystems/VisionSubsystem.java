@@ -21,11 +21,12 @@ public class VisionSubsystem extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
-  private final NetworkTableInstance inst = NetworkTableInstance.getDefault();
-  private final NetworkTable networkTable = inst.getTable("ChickenVision");
-  private final NetworkTableEntry targetAngle = networkTable.getEntry("angle frontCamera");
-  private final NetworkTableEntry targetDistance = networkTable.getEntry("realDistance frontCamera");
-  private final NetworkTableEntry targetYaw = networkTable.getEntry("tapeYaw frontCamera");
+  private NetworkTableInstance inst = NetworkTableInstance.getDefault();
+  private NetworkTable networkTable = inst.getTable("ChickenVision");
+
+  private NetworkTableEntry targetAngle = networkTable.getEntry("angle frontCamera");
+  private NetworkTableEntry targetDistance = networkTable.getEntry("realDistance frontCamera");
+  private NetworkTableEntry targetYaw = networkTable.getEntry("tapeYaw frontCamera");
 
   
 
@@ -42,12 +43,12 @@ public class VisionSubsystem extends Subsystem {
   }
 
   public double getTargetDistance(){
-    double angle = targetDistance.getDouble(0);
-    return angle;
+    double distance = targetDistance.getDouble(0);
+    return distance;
   }
 
   public double getTargetYaw(){
-    double angle = targetYaw.getDouble(0);
-    return angle;
+    double yaw = targetYaw.getDouble(0);
+    return yaw;
   }
 }

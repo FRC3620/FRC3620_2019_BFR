@@ -40,13 +40,13 @@ public class VisionAlignmentCommand extends Command {
   @Override
   protected void execute() {
     angle = Robot.visionSubsystem.getTargetAngle();
-    logger.info("Target angle: ", angle);
+    logger.info("Target angle: {} ", angle);
 
     distance = Robot.visionSubsystem.getTargetDistance();
-    logger.info("Target distance: ", distance);
+    logger.info("Target distance: {}", distance);
 
     yaw = Robot.visionSubsystem.getTargetYaw();
-    logger.info("Target yaw: ", yaw);
+    logger.info("Target yaw: {}", yaw);
     
   }
 
