@@ -34,7 +34,7 @@ public class TravelAlignPushCommand extends Command {
         if(yaw > 31){
             power = power -0.004545*yaw;
         } else if(yaw > 0){
-            power = power - 0.06*yaw + 0.08);
+            power = power - 0.06*yaw + 0.08;
         }
         return power;
     }
