@@ -55,7 +55,7 @@ public class AutoAlignmentTemplate extends AbstractPath{
         calculateY();
         return new Waypoint[] {
             new Waypoint(0, 0, Pathfinder.d2r(0)),
-            new Waypoint(x, y, Pathfinder.d2r(angle)),
+            new Waypoint(y, x, Pathfinder.d2r(angle)),
         };
 
 

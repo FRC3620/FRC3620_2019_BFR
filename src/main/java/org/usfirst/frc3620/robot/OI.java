@@ -91,6 +91,7 @@ public class OI {
             SmartDashboard.putData("Rumble left", new RumbleCommand(Robot.rumbleSubsystemDriver, Hand.LEFT, 0.2, 3.0));
 
             SmartDashboard.putData("AutonomousAlign from 45", new AutoAlignmentTemplate(Robot.visionSubsystem.getTargetDistance(), Robot.visionSubsystem.getTargetAngle()));
+            SmartDashboard.putData("AlignToPointD", new AlignToPointD(Robot.visionSubsystem.getTargetDistance(), Robot.visionSubsystem.getTargetAngle()));
             SmartDashboard.putData("TrainingPath", new TrainingPath());
 
         }
