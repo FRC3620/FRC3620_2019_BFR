@@ -14,10 +14,22 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
+import org.slf4j.Logger;
+import org.usfirst.frc3620.logger.EventLogging;
+import org.usfirst.frc3620.logger.EventLogging.Level;
+
+import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.PIDOutput;
+import edu.wpi.first.wpilibj.PIDSource;
+import edu.wpi.first.wpilibj.PIDSourceType;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+
 /**
  * Add your docs here.
  */
-public class VisionSubsystem extends Subsystem {
+public class VisionSubsystem extends Subsystem implements PIDSource, PIDOutput {
+  Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
 
@@ -28,7 +40,19 @@ public class VisionSubsystem extends Subsystem {
   private NetworkTableEntry targetDistance = networkTable.getEntry("realDistance frontCamera");
   private NetworkTableEntry targetYaw = networkTable.getEntry("tapeYaw frontCamera");
 
+  private final double DESIRED_YAW = 0;
+  private double error;
+
+  private final PIDController visionPIDController;
   
+  private double PIDpower = 0;
+
+  public VisionSubsystem(){
+    visionPIDController = new PIDController(0, 0, 0, 0, this, this);
+    setPIDSourceType(PIDSourceType.kDisplacement);
+    visionPIDController.setInputRange(-30, 30);
+    visionPIDController.setOutputRange(.14, 0.5);
+  }
 
   @Override
   public void initDefaultCommand() {
@@ -36,6 +60,11 @@ public class VisionSubsystem extends Subsystem {
     // setDefaultCommand(new MySpecialCommand())
    // setDefaultCommand(new VisionAlignmentCommand());
   }
+
+  @Override
+    public void periodic() {
+      error = getTargetYaw();
+    }
 
   public double getTargetAngle(){
     double angle = targetAngle.getDouble(0);
@@ -51,4 +80,62 @@ public class VisionSubsystem extends Subsystem {
     double yaw = targetYaw.getDouble(0);
     return yaw;
   }
+
+  public double getPIDOutput(){
+    return PIDpower;
+  }
+
+  public void runPID(){
+    visionPIDController.setSetpoint(DESIRED_YAW);
+    if (!visionPIDController.isEnabled()) {
+      // set the P, I, D, FF
+      double p = SmartDashboard.getNumber("visionP", 0.001);
+      double i = SmartDashboard.getNumber("visionI", 0);
+      double d = SmartDashboard.getNumber("visionD", 0);
+      double f = SmartDashboard.getNumber("visionF", 0);
+
+      logger.info("_visionP={}", p);
+      logger.info("_visionI={}", i);
+      logger.info("_visionD={}", d);
+      logger.info("_visionF={}", f);
+
+      visionPIDController.setP(p);
+      visionPIDController.setI(i);
+      visionPIDController.setD(d);
+      visionPIDController.setF(f);
+      visionPIDController.reset();
+      visionPIDController.enable();
+    }
+  }
+
+  public void disablePID(){
+    visionPIDController.disable();
+  }
+
+  public void enablePID(){
+    visionPIDController.enable();
+  }
+
+  @Override
+    public void pidWrite(double output) {
+        PIDpower = output;
+    }
+
+    PIDSourceType pidSourceType;
+
+    @Override
+    public void setPIDSourceType(PIDSourceType pidSource) {
+        pidSourceType = pidSource;
+    }
+
+    @Override
+    public PIDSourceType getPIDSourceType() {
+        return pidSourceType;
+    }
+
+    @Override
+    public double pidGet() {
+        double pos = getTargetYaw();
+        return pos;
+	}
 }

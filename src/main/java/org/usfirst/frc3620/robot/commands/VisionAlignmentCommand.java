@@ -25,6 +25,7 @@ public class VisionAlignmentCommand extends Command {
   private double angle;
   private double yaw;
   private double speed;
+
   private final double YAW_RANGE = 2;
   private final double P_CONSTANT = .0004 ;
   
@@ -43,45 +44,23 @@ public class VisionAlignmentCommand extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    angle = Robot.visionSubsystem.getTargetAngle();
-    //logger.info("Target angle: {} ", angle);
-
-    distance = Robot.visionSubsystem.getTargetDistance();
-    //logger.info("Target distance: {}", distance);
-
-    yaw = Robot.visionSubsystem.getTargetYaw();
-    //logger.info("Target yaw: {}", yaw);
-
-    if (yaw >= YAW_RANGE){
-      speed = yaw*yaw*P_CONSTANT+.105;
-      Robot.driveSubsystem.autoDriveTank(speed,-speed);
-      logger.info("Yaw: {}", yaw);
-      logger.info("Speed: {}", speed);
-    }
-    else if (yaw <= -YAW_RANGE){
-      speed = -yaw*yaw*P_CONSTANT-.105;
-      Robot.driveSubsystem.autoDriveTank(speed,-speed);
-      logger.info("Yaw: {}", yaw);
-      logger.info("Speed: {}", speed);
-    }
-    //else if ( yaw < YAW_RANGE || yaw > -YAW_RANGE){
-    //  Robot.driveSubsystem.stopDrive();
-    //}
-    
+    Robot.visionSubsystem.enablePID();
+    Robot.visionSubsystem.runPID();
+    speed = Robot.visionSubsystem.getPIDOutput();
+    logger.info("PID Speed: {}", speed);
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    if ( yaw < YAW_RANGE && yaw > -YAW_RANGE){
-      return true;
-    }
+    
     return false;
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    Robot.visionSubsystem.disablePID();
     Robot.driveSubsystem.stopDrive();
   }
 
@@ -89,6 +68,7 @@ public class VisionAlignmentCommand extends Command {
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
+    Robot.visionSubsystem.disablePID();
     Robot.driveSubsystem.stopDrive();
   }
 }
