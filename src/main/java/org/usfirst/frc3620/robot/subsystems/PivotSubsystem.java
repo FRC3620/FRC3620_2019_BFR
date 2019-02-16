@@ -61,7 +61,9 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
             SmartDashboard.putNumber("pivotAngleInTics", pivotEncoder.getPosition());
         }
         SmartDashboard.putNumber("pivotAngleInDegrees", getPivotAngle());
-        SmartDashboard.putNumber("desiredAngle", desiredAngle);
+        SmartDashboard.putNumber("pivotDesiredAngle", desiredAngle);
+        SmartDashboard.putBoolean("pivotAutomatic", autoMagicMode);
+        SmartDashboard.putBoolean("pivotEncoderIsValid", encoderisvalid);
 
         if(Robot.getCurrentRobotMode() == RobotMode.TELEOP || Robot.getCurrentRobotMode() == RobotMode.AUTONOMOUS){
             if(isTopPivotLimitDepressed() && !encoderisvalid){
@@ -89,7 +91,7 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
                 }else{
                     // we want to be in, but we are not there yet
                     // we need to do some pivotMove with a negative
-                    pivotMax.set(-0.1);
+                    pivotMove(-0.1);
                 }
             }
         }
@@ -141,7 +143,7 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
         // pivotMove needs a positive number to move out to the front of
         // the robot.
         // so we need to change the sign.
-        double power = -yPos * 0.60;
+        double power = -yPos * 1;
         if(power < -0.2){
             power = -0.2;
         }
