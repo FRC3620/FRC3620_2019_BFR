@@ -93,7 +93,7 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
                             // we want to be out, but we are not there yet
                             // we need to do some pivotMove with a positive
                             //Power was halved for two neo pivot
-                            pivotMove(0.1);
+                            pivotMove(1);
                         } else {
                             pivotStop();
                         }

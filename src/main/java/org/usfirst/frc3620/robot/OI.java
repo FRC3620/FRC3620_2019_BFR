@@ -57,15 +57,20 @@ public class OI {
             //Declare buttons
             
             //driver controls
-            Button inTakeIn = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_RIGHT_BUMPER);
-            Button inTakeOut = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_LEFT_BUMPER);
-            Button trashIn = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_LEFT_STICK);
+            Button inTakeIn = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_LEFT_STICK);
+            Button inTakeOut = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_RIGHT_STICK);
+            Button trashIn = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_START);
             Button conveyorL = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_X);
-            Button conveyorR = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_Y);
-            Button hatchExtend = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_START);
-            Button hatchCollect = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_RIGHT_STICK);
+            Button conveyorR = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_B);
+            //Button hatchExtend = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_START);
+            //Button hatchCollect = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_RIGHT_STICK);
             Button angleOne = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_A);
-            Button angleTwo = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_B);
+            Button angleTwo = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_Y);
+
+            Button moveUp = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_LEFT_BUMPER);
+            Button moveDown = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_RIGHT_BUMPER);
+            moveUp.whileHeld(new ManualLiftUpCommand());
+            moveDown.whileHeld(new ManualLiftDownCommand());
 
             //operator controls
             Button positionOne = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_A);
@@ -79,9 +84,9 @@ public class OI {
             conveyorR.whileHeld(new TrashRightCommand());
             positionOne.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_BOTTOM));
             positionTwo.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_TOP));
-            hatchExtend.toggleWhenPressed(new HatchExtendCommand());
-            hatchCollect.whileHeld(new HatchCollectCommand());
-            angleOne.whenPressed(new SetPivotAngleCommand(PivotSubsystem.SETANGLE_MIDDLE));
+            //hatchExtend.toggleWhenPressed(new HatchExtendCommand());
+            //hatchCollect.whileHeld(new HatchCollectCommand());
+            angleOne.whenPressed(new SetPivotAngleCommand(PivotSubsystem.SETANGLE_BOTTOM));
             angleTwo.whenPressed(new SetPivotAngleCommand(PivotSubsystem.SETANGLE_TOP));
         }
 

@@ -14,6 +14,7 @@ public class TrashLeftCommand extends Command {
 	
     public TrashLeftCommand() {
         // requires(Robot.laserCannonSubsystem);
+        requires(Robot.liftSubsystem);
     }
 
     // Called just before this Command runs the first time

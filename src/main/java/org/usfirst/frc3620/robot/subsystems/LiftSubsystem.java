@@ -162,4 +162,12 @@ public class LiftSubsystem extends Subsystem {
     private void turnBrakeOff(){
 
     }
+
+    public void manualMoveUp(double speed){
+        liftMax.set(speed);
+    }
+
+    public void manualMoveDown(double speed){
+        liftMax.set(-speed);
+    }
 }

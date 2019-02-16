@@ -159,6 +159,7 @@ import edu.wpi.first.wpilibj.Counter;
         pivotSubsystemMax.setRampRate(0.25);
         pivotEncoder = pivotSubsystemMax.getEncoder();
         pivotSubsystemMax2 = new CANSparkMax(12, MotorType.kBrushless);
+        resetMaxToKnownState(pivotSubsystemMax2);
         pivotSubsystemMax2.follow(pivotSubsystemMax, true);
         pivotLimitSwitch = new DigitalInput(5);
         
