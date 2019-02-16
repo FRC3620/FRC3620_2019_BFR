@@ -78,6 +78,7 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
                             if (error > 0) {
                             // we want to be in, but we are not there yet
                             // we need to do some pivotMove with a negative
+                            //Power was halved for two neo pivot
                             pivotMove(-0.1);
                         } else {
                             pivotStop();
@@ -91,7 +92,8 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
                         if (error < 0) {
                             // we want to be out, but we are not there yet
                             // we need to do some pivotMove with a positive
-                            pivotMove(0.2);
+                            //Power was halved for two neo pivot
+                            pivotMove(0.1);
                         } else {
                             pivotStop();
                         }
@@ -99,11 +101,13 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
                         pivotStop();
                     }
                 }else{
-                    pivotMove(PIDpower);
+                    //Power was halved for two neo pivot
+                    pivotMove(PIDpower/2); 
                 }
             }else{
                 // encoder is not valid, let's start coming in
-                pivotMove(-0.2);
+                //Power was halved for two neo pivot
+                pivotMove(-0.1);
             }
         }
     }
@@ -130,7 +134,6 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
         }
         SmartDashboard.putNumber("pivot power", power);
         pivotMax.set(-power);
-        
     }
 
     public void pivotStop() {

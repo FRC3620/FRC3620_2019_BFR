@@ -44,7 +44,6 @@ import edu.wpi.first.wpilibj.Counter;
     public static WPI_TalonSRX intakeSubsystemUpperMotor;
     public static WPI_TalonSRX intakeSubsystemLowerMotor;
     public static WPI_TalonSRX intakeSubsystemMiddleMotor;
-
     public static WPI_TalonSRX conveyorBeltMotorTop;
     public static WPI_TalonSRX conveyorBeltMotorBottom;
 
@@ -54,6 +53,7 @@ import edu.wpi.first.wpilibj.Counter;
     public static DigitalInput lineSensorR;
 
     public static CANSparkMax pivotSubsystemMax;
+    public static CANSparkMax pivotSubsystemMax2;
     public static CANEncoder pivotEncoder;
     public static DigitalInput pivotLimitSwitch;
 
@@ -158,6 +158,8 @@ import edu.wpi.first.wpilibj.Counter;
         pivotSubsystemMax.setIdleMode(IdleMode.kBrake);
         pivotSubsystemMax.setRampRate(0.25);
         pivotEncoder = pivotSubsystemMax.getEncoder();
+        pivotSubsystemMax2 = new CANSparkMax(12, MotorType.kBrushless);
+        pivotSubsystemMax2.follow(pivotSubsystemMax, true);
         pivotLimitSwitch = new DigitalInput(5);
         
         lightSubsystemLightPWM = new Spark(9);
