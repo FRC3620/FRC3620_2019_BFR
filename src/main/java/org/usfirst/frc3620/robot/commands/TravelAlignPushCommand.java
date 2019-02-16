@@ -30,18 +30,22 @@ public class TravelAlignPushCommand extends Command {
     }
 
     public double getLeftPower(double distance, double yaw){
-        double power = (k*distance)-(2*k) + 0.3;
-      /*  if(yaw > 0){
-            power = power + 0.004*(yaw*yaw);
-        } */
+        double power = 0; // = (k*distance)-(5*k) + 0.3;
+        if(yaw > 31){
+            power = power -0.004545*yaw;
+        } else if(yaw > 0){
+            power = power - 0.06*yaw + 0.08);
+        }
         return power;
     }
 
     public double getRightPower(double distance, double yaw){
-        double power = (k*distance)-(2*k) + 0.3;
-     /*   if(yaw < 0){
-            power = power + 0.004*(yaw*yaw);
-        } */
+        double power = 0; // = (k*distance)-(5*k)+ 0.3;
+        if(yaw < -31){
+            power = power -0.004545*yaw;
+        } else if(yaw < 0){
+            power = power + 0.14;
+        }
         return power;
     }
 
@@ -57,7 +61,7 @@ public class TravelAlignPushCommand extends Command {
     @Override
     protected boolean isFinished() {
         double distance = Robot.visionSubsystem.getTargetDistance();
-        if(distance > 2){
+        if(distance > 5){
             return false;
         }
         return true;
@@ -66,7 +70,8 @@ public class TravelAlignPushCommand extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
-    	EventLogging.commandMessage(logger);
+        EventLogging.commandMessage(logger);
+        Robot.driveSubsystem.autoDriveTank(0,0);
     }
 
     // Called when another command which requires one or more of the same
