@@ -94,6 +94,7 @@ public class OI {
             SmartDashboard.putData("AlignToPointD", new AlignToPointD(Robot.visionSubsystem.getTargetDistance(), Robot.visionSubsystem.getTargetAngle()));
             SmartDashboard.putData("TrainingPath", new TrainingPath());
             SmartDashboard.putData("CenterOnTarget", new VisionAlignmentCommand());
+            SmartDashboard.putData("TapTarget", new TravelAlignPushCommand());
 
         }
 

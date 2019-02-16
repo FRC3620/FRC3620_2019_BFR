@@ -36,9 +36,9 @@ public class VisionSubsystem extends Subsystem implements PIDSource, PIDOutput {
   private NetworkTableInstance inst = NetworkTableInstance.getDefault();
   private NetworkTable networkTable = inst.getTable("ChickenVision");
 
-  private NetworkTableEntry targetAngle = networkTable.getEntry("angle frontCamera");
-  private NetworkTableEntry targetDistance = networkTable.getEntry("realDistance frontCamera");
-  private NetworkTableEntry targetYaw = networkTable.getEntry("tapeYaw frontCamera");
+  private NetworkTableEntry targetAngle = networkTable.getEntry("angle frontCameratape");
+  private NetworkTableEntry targetDistance = networkTable.getEntry("RealDistance frontCameratape");
+  private NetworkTableEntry targetYaw = networkTable.getEntry("tapeYaw frontCameratape");
 
   private final double DESIRED_YAW = 0;
   private double error;
