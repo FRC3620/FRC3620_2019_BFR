@@ -26,7 +26,7 @@ public class VisionAlignmentCommand extends Command {
   private double yaw;
   private double speed;
   private final double YAW_RANGE = 2;
-  private final double P_CONSTANT = .0006;
+  private final double P_CONSTANT = .0004 ;
   
   
   public VisionAlignmentCommand() {
@@ -64,15 +64,18 @@ public class VisionAlignmentCommand extends Command {
       logger.info("Yaw: {}", yaw);
       logger.info("Speed: {}", speed);
     }
-    else if ( yaw < YAW_RANGE || yaw > -YAW_RANGE){
-      Robot.driveSubsystem.stopDrive();
-    }
+    //else if ( yaw < YAW_RANGE || yaw > -YAW_RANGE){
+    //  Robot.driveSubsystem.stopDrive();
+    //}
     
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
+    if ( yaw < YAW_RANGE && yaw > -YAW_RANGE){
+      return true;
+    }
     return false;
   }
 
