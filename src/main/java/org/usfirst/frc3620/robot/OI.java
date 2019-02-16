@@ -93,6 +93,7 @@ public class OI {
             SmartDashboard.putData("AutonomousAlign from 45", new AutoAlignmentTemplate(Robot.visionSubsystem.getTargetDistance(), Robot.visionSubsystem.getTargetAngle()));
             SmartDashboard.putData("AlignToPointD", new AlignToPointD(Robot.visionSubsystem.getTargetDistance(), Robot.visionSubsystem.getTargetAngle()));
             SmartDashboard.putData("TrainingPath", new TrainingPath());
+            SmartDashboard.putData("CenterOnTarget", new VisionAlignmentCommand());
 
         }
 

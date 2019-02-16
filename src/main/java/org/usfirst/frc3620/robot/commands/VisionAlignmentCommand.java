@@ -14,6 +14,7 @@ import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
 import org.usfirst.frc3620.robot.Robot;
 import org.usfirst.frc3620.robot.subsystems.VisionSubsystem;
+import org.usfirst.frc3620.robot.subsystems.DriveSubsystem;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -23,6 +24,9 @@ public class VisionAlignmentCommand extends Command {
   private double distance;
   private double angle;
   private double yaw;
+  private double speed;
+  private final double YAW_RANGE = 2;
+  private final double P_CONSTANT = .0006;
   
   
   public VisionAlignmentCommand() {
@@ -40,13 +44,29 @@ public class VisionAlignmentCommand extends Command {
   @Override
   protected void execute() {
     angle = Robot.visionSubsystem.getTargetAngle();
-    logger.info("Target angle: {} ", angle);
+    //logger.info("Target angle: {} ", angle);
 
     distance = Robot.visionSubsystem.getTargetDistance();
-    logger.info("Target distance: {}", distance);
+    //logger.info("Target distance: {}", distance);
 
     yaw = Robot.visionSubsystem.getTargetYaw();
-    logger.info("Target yaw: {}", yaw);
+    //logger.info("Target yaw: {}", yaw);
+
+    if (yaw >= YAW_RANGE){
+      speed = yaw*yaw*P_CONSTANT+.105;
+      Robot.driveSubsystem.autoDriveTank(speed,-speed);
+      logger.info("Yaw: {}", yaw);
+      logger.info("Speed: {}", speed);
+    }
+    else if (yaw <= -YAW_RANGE){
+      speed = -yaw*yaw*P_CONSTANT-.105;
+      Robot.driveSubsystem.autoDriveTank(speed,-speed);
+      logger.info("Yaw: {}", yaw);
+      logger.info("Speed: {}", speed);
+    }
+    else if ( yaw < YAW_RANGE || yaw > -YAW_RANGE){
+      Robot.driveSubsystem.stopDrive();
+    }
     
   }
 
@@ -59,11 +79,13 @@ public class VisionAlignmentCommand extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    Robot.driveSubsystem.stopDrive();
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
+    Robot.driveSubsystem.stopDrive();
   }
 }
