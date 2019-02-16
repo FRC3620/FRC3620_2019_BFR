@@ -223,6 +223,10 @@ public class Robot extends TimedRobot {
 	}
 	
 	void updateDashboard() {
+        SmartDashboard.putData("Turn off Operator Rumble", new RumbleCommand(rumbleSubsystemOperator, true));
+        SmartDashboard.putData("Turn on Operator Rumble", new RumbleCommand(rumbleSubsystemOperator, false));
+        SmartDashboard.putData("Turn off Driver Rumble", new RumbleCommand(rumbleSubsystemDriver, true));
+        SmartDashboard.putData("Turn on Driver Rumble", new RumbleCommand(rumbleSubsystemDriver, false));
 		//SmartDashboard.putNumber("driver y joystick", -Robot.m_oi.driveJoystick.getRawAxis(1));
 		//SmartDashboard.putNumber("driver x joystick", Robot.m_oi.driveJoystick.getRawAxis(4));
     }
