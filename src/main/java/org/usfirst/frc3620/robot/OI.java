@@ -72,11 +72,6 @@ public class OI {
             //Button hatchExtend = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_START);
             //Button hatchCollect = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_RIGHT_STICK);
 
-            Button moveUp = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_Y);
-            Button moveDown = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_A);
-            moveUp.whileHeld(new ManualLiftUpCommand());
-            moveDown.whileHeld(new ManualLiftDownCommand());
-
             //operator controls
             Button positionOne = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_A);
             Button positionTwo = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_B);

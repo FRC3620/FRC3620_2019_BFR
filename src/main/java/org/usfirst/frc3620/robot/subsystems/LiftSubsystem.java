@@ -54,7 +54,6 @@ public class LiftSubsystem extends Subsystem {
             SmartDashboard.putNumber("LiftEncoderPosition", liftEncoder.getPosition());
         }
         SmartDashboard.putNumber("liftEncoderInInches", getLiftHeight());
-/*
         if(Robot.getCurrentRobotMode() == RobotMode.TELEOP || Robot.getCurrentRobotMode() == RobotMode.AUTONOMOUS){
             if(isBottomLimitDepressed()){
                 resetEncoder();
@@ -65,7 +64,6 @@ public class LiftSubsystem extends Subsystem {
                 double currentheight = getLiftHeight();
                 double error = currentheight - desiredHeight;
                 if(Math.abs(error) > 1){
-                    turnBrakeOff();
                     if(error > 0){
                         liftMove(-0.2);
                     }
@@ -75,16 +73,12 @@ public class LiftSubsystem extends Subsystem {
                     }
                 }else{
                     liftStop();
-                    turnBrakeOn();
                 }
 
             }else{
                 liftMove(0);
-                turnBrakeOff();
             }
-
         }
-*/
     }
     
     public boolean isBottomLimitDepressed(){
@@ -153,13 +147,5 @@ public class LiftSubsystem extends Subsystem {
 
     public void setDesiredHeight(double h) {
         desiredHeight = h;
-    }
-
-    public void manualMoveUp(double speed){
-        liftMove(speed);
-    }
-
-    public void manualMoveDown(double speed){
-        liftMove(-speed);
     }
 }
