@@ -47,15 +47,15 @@ public class VisionSubsystem extends Subsystem implements PIDSource, PIDOutput {
   
   private double PIDpower = 0;
 
-  private final double kP = 0.01;
-  private final double kI = 0;
-  private final double kD = 0;
-  private final double kF = 0;
+  private final double kP = 0.0025;
+  private final double kI = 0.00005;
+  private final double kD = 0.000;
+  private final double kF = .2;
 
   public VisionSubsystem(){
     visionPIDController = new PIDController(kP, kI, kD, kF, this, this);
     setPIDSourceType(PIDSourceType.kDisplacement);
-    visionPIDController.setInputRange(-30, 30);
+    visionPIDController.setInputRange(-150, 150);
     visionPIDController.setOutputRange(-0.5, 0.5);
   }
 
