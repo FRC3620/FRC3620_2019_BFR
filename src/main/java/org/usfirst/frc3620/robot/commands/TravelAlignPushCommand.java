@@ -13,7 +13,7 @@ public class TravelAlignPushCommand extends Command {
 	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
     private double distanceInitial;
     private double k;
-    private double final stoppingDistance = 5;
+    private final double stoppingDistance = 5;
     
     public TravelAlignPushCommand() {
         // requires(Robot.laserCannonSubsystem);

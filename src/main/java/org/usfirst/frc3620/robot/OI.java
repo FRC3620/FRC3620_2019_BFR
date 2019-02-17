@@ -72,8 +72,9 @@ public class OI {
             Button trashIn = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_START);
             Button conveyorR = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_B);
             Button conveyorL = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_X);
-            //Button hatchExtend = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_START);
-            //Button hatchCollect = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_RIGHT_STICK);
+            Button hatchExtend = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_START);
+            Button hatchCollect = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_RIGHT_STICK);
+           
 
             //operator controls
             Button positionOne = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_A);
@@ -89,8 +90,7 @@ public class OI {
             positionTwo.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_TOP));
             hatchExtend.toggleWhenPressed(new HatchExtendCommand());
             hatchCollect.whileHeld(new HatchCollectCommand());
-            angleOne.whenPressed(new SetPivotAngleCommand(PivotSubsystem.SETANGLE_MIDDLE));
-            angleTwo.whenPressed(new SetPivotAngleCommand(PivotSubsystem.SETANGLE_TOP));
+           
             
             SmartDashboard.putData("Rumble both", new RumbleCommand(Robot.rumbleSubsystemDriver, Hand.BOTH, 0.2, 60.0));
             SmartDashboard.putData("Rumble left", new RumbleCommand(Robot.rumbleSubsystemDriver, Hand.LEFT, 0.2, 3.0));
