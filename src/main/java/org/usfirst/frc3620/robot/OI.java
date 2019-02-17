@@ -69,8 +69,8 @@ public class OI {
             Button trashIn = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_START);
             Button conveyorR = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_B);
             Button conveyorL = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_X);
-            //Button hatchExtend = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_START);
-            //Button hatchCollect = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_RIGHT_STICK);
+            Button hatchExtend = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_A);
+            Button hatchCollect = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_Y);
 
             //operator controls
             Button positionOne = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_A);
@@ -84,8 +84,8 @@ public class OI {
             conveyorR.whileHeld(new TrashRightCommand());
             positionOne.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_BOTTOM));
             positionTwo.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_TOP));
-            //hatchExtend.toggleWhenPressed(new HatchExtendCommand());
-            //hatchCollect.whileHeld(new HatchCollectCommand());
+            hatchExtend.toggleWhenPressed(new HatchExtendCommand());
+            hatchCollect.whileHeld(new HatchCollectCommand());
         }
 
     public Joystick getDriverJoystick() {

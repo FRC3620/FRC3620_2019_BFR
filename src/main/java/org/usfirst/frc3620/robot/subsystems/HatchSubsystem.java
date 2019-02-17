@@ -8,6 +8,7 @@ import org.usfirst.frc3620.logger.EventLogging.Level;
 import org.usfirst.frc3620.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
@@ -18,8 +19,8 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class HatchSubsystem extends Subsystem {
     Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
     
-    private DoubleSolenoid finger = RobotMap.hatchSubsystemFinger;
-    private DoubleSolenoid pusher = RobotMap.hatchSubsystemPusher;
+    private Solenoid finger = RobotMap.hatchSubsystemFinger;
+    private Solenoid pusher = RobotMap.hatchSubsystemPusher;
 
     @Override
     public void initDefaultCommand() {
@@ -36,19 +37,19 @@ public class HatchSubsystem extends Subsystem {
     // here. Call these from Commands.
 
     public void hatchOut() {
-        pusher.set(Value.kReverse);
+        pusher.set(true);
     }
 
     public void hatchIn() {
-        pusher.set(Value.kForward);
+        pusher.set(false);
     }
 
     public void fingerOut() {
-        finger.set(Value.kForward);
+        finger.set(true);
     }
 
     public void fingerIn() {
-        finger.set(Value.kReverse);
+        finger.set(false);
     }
 
 }

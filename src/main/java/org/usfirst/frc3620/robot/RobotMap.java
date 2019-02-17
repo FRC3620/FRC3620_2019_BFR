@@ -16,7 +16,6 @@ import org.usfirst.frc3620.logger.EventLogging.Level;
 import org.usfirst.frc3620.misc.CANDeviceFinder;
 
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
@@ -60,12 +59,11 @@ import edu.wpi.first.wpilibj.Counter;
 
     public static CANSparkMax liftSubsystemMax;
     public static CANEncoder liftEncoder;
-    public static Solenoid liftSubsystemBrake;
     public static DigitalInput liftLimitSwitchTop;
     public static DigitalInput liftLimitSwitchBottom;
 
-    public static DoubleSolenoid hatchSubsystemFinger;
-    public static DoubleSolenoid hatchSubsystemPusher;
+    public static Solenoid hatchSubsystemFinger;
+    public static Solenoid hatchSubsystemPusher;
 
     public static Spark lightSubsystemLightPWM;
 
@@ -180,10 +178,10 @@ import edu.wpi.first.wpilibj.Counter;
         lineSensorCounterR.setUpSourceEdge(false, true);
 
         if (canDeviceFinder.isPCMPresent(0)) {
-            // instantiate Pneumatics here
-            liftSubsystemBrake = new Solenoid(1);
-            hatchSubsystemFinger = new DoubleSolenoid(2, 3);
-            hatchSubsystemPusher = new DoubleSolenoid(4, 5);
+            //instantiate Pneumatics here
+            //doublesolenoids requires a PCM number first
+            hatchSubsystemPusher = new Solenoid(1, 0);
+            hatchSubsystemFinger = new Solenoid(1, 1);
         }
     }
 
