@@ -27,25 +27,25 @@ public class TravelAlignPushCommand extends Command {
     }
 
     public void calculateK(){
-        k = (0.8-0.3)/(distanceInitial - stoppingDistance);
+        k = (0.6-0.3)/(distanceInitial - stoppingDistance);
     }
 
     public double getLeftPower(double distance, double yaw){
-        double power = 0; // = (k*distance)-(5*k) + 0.3;
+        double power = k*(distance-stoppingDistance) + 0.3;
         if(yaw > 31){
-            power = power + 0.004545*yaw;
+            power = power + 0.2*(0.004545*yaw);
         } else if(yaw > 0){
-            power = power + (0.06/31)*yaw + 0.08;
+            power = power + 0.2*(-(0.06/31)*yaw + 0.14);
         }
         return power;
     }
 
     public double getRightPower(double distance, double yaw){
-        double power = 0; // = k*(distance-stoppingDistance)+ 0.3;
+        double power = k*(distance-stoppingDistance)+ 0.3;
         if(yaw < -31){
-            power = power -0.004545*yaw;
+            power = power - 0.2*(0.004545*yaw);
         } else if(yaw < 0){
-            power = power - (0.06/31)*yaw + 0.08;
+            power = power + 0.2*(-(0.06/31)*yaw + 0.14);
         }
         return power;
     }
@@ -54,7 +54,7 @@ public class TravelAlignPushCommand extends Command {
     @Override
     protected void execute() {
         double distance = Robot.visionSubsystem.getTargetDistance();
-        double yaw = Robot.visionSubsystem.getTargetAngle();
+        double yaw = Robot.visionSubsystem.getTargetYaw();
         Robot.driveSubsystem.autoDriveTank(getLeftPower(distance, yaw), getRightPower(distance, yaw));
     }
 
