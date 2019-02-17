@@ -44,8 +44,9 @@ import edu.wpi.first.wpilibj.Counter;
     public static WPI_TalonSRX intakeSubsystemUpperMotor;
     public static WPI_TalonSRX intakeSubsystemLowerMotor;
     public static WPI_TalonSRX intakeSubsystemMiddleMotor;
-    public static WPI_TalonSRX conveyorBeltMotorTop;
-    public static WPI_TalonSRX conveyorBeltMotorBottom;
+
+    public static WPI_VictorSPX conveyorBeltMotorTop;
+    public static WPI_VictorSPX conveyorBeltMotorBottom;
 
     public static Counter lineSensorCounterL; 
     public static Counter lineSensorCounterR;
@@ -133,9 +134,9 @@ import edu.wpi.first.wpilibj.Counter;
         driveSubsystemDifferentialDrive.setMaxOutput(1.0);
 
         //new code
-        conveyorBeltMotorTop = new WPI_TalonSRX(7);
+        conveyorBeltMotorTop = new WPI_VictorSPX(7);
         resetTalonToKnownState(conveyorBeltMotorTop);
-        conveyorBeltMotorBottom = new WPI_TalonSRX(8);
+        conveyorBeltMotorBottom = new WPI_VictorSPX(8);
         resetTalonToKnownState(conveyorBeltMotorBottom);
 
         intakeSubsystemUpperMotor = new WPI_TalonSRX(9);
