@@ -47,11 +47,16 @@ public class VisionSubsystem extends Subsystem implements PIDSource, PIDOutput {
   
   private double PIDpower = 0;
 
+  private final double kP = 0.01;
+  private final double kI = 0;
+  private final double kD = 0;
+  private final double kF = 0;
+
   public VisionSubsystem(){
-    visionPIDController = new PIDController(0, 0, 0, 0, this, this);
+    visionPIDController = new PIDController(kP, kI, kD, kF, this, this);
     setPIDSourceType(PIDSourceType.kDisplacement);
     visionPIDController.setInputRange(-30, 30);
-    visionPIDController.setOutputRange(.14, 0.5);
+    visionPIDController.setOutputRange(-0.5, 0.5);
   }
 
   @Override
@@ -64,6 +69,7 @@ public class VisionSubsystem extends Subsystem implements PIDSource, PIDOutput {
   @Override
     public void periodic() {
       error = getTargetYaw();
+      //logger.info("Yaw: {}", error);
     }
 
   public double getTargetAngle(){
@@ -87,25 +93,6 @@ public class VisionSubsystem extends Subsystem implements PIDSource, PIDOutput {
 
   public void runPID(){
     visionPIDController.setSetpoint(DESIRED_YAW);
-    if (!visionPIDController.isEnabled()) {
-      // set the P, I, D, FF
-      double p = SmartDashboard.getNumber("visionP", 0.001);
-      double i = SmartDashboard.getNumber("visionI", 0);
-      double d = SmartDashboard.getNumber("visionD", 0);
-      double f = SmartDashboard.getNumber("visionF", 0);
-
-      logger.info("_visionP={}", p);
-      logger.info("_visionI={}", i);
-      logger.info("_visionD={}", d);
-      logger.info("_visionF={}", f);
-
-      visionPIDController.setP(p);
-      visionPIDController.setI(i);
-      visionPIDController.setD(d);
-      visionPIDController.setF(f);
-      visionPIDController.reset();
-      visionPIDController.enable();
-    }
   }
 
   public void disablePID(){
@@ -113,6 +100,26 @@ public class VisionSubsystem extends Subsystem implements PIDSource, PIDOutput {
   }
 
   public void enablePID(){
+    visionPIDController.enable();
+  }
+
+  public void configurePID(){
+
+    double p = kP;
+    double i = kI;
+    double d = kD;
+    double f = kF;
+
+    logger.info("_visionP={}", p);
+    logger.info("_visionI={}", i);
+    logger.info("_visionD={}", d);
+    logger.info("_visionF={}", f);
+
+    visionPIDController.setP(p);
+    visionPIDController.setI(i);
+    visionPIDController.setD(d);
+    visionPIDController.setF(f);
+    visionPIDController.reset();
     visionPIDController.enable();
   }
 

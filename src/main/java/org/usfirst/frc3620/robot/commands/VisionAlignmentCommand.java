@@ -29,7 +29,6 @@ public class VisionAlignmentCommand extends Command {
   private final double YAW_RANGE = 2;
   private final double P_CONSTANT = .0004 ;
   
-  
   public VisionAlignmentCommand() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
@@ -39,12 +38,12 @@ public class VisionAlignmentCommand extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    Robot.visionSubsystem.configurePID();
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.visionSubsystem.enablePID();
     Robot.visionSubsystem.runPID();
     speed = Robot.visionSubsystem.getPIDOutput();
     logger.info("PID Speed: {}", speed);
