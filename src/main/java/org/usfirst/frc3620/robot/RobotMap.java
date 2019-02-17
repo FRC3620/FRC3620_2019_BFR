@@ -64,6 +64,7 @@ import edu.wpi.first.wpilibj.Counter;
 
     public static Solenoid hatchSubsystemFinger;
     public static Solenoid hatchSubsystemPusher;
+    public static Solenoid pcm0Dummy;
 
     public static Spark lightSubsystemLightPWM;
 
@@ -182,6 +183,7 @@ import edu.wpi.first.wpilibj.Counter;
             //doublesolenoids requires a PCM number first
             hatchSubsystemPusher = new Solenoid(1, 0);
             hatchSubsystemFinger = new Solenoid(1, 1);
+            pcm0Dummy = new Solenoid(0, 0);
         }
     }
 

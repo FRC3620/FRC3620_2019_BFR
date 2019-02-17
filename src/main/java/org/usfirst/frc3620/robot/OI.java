@@ -85,7 +85,7 @@ public class OI {
             positionOne.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_BOTTOM));
             positionTwo.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_TOP));
             hatchExtend.toggleWhenPressed(new HatchExtendCommand());
-            hatchCollect.whileHeld(new HatchCollectCommand());
+            hatchCollect.toggleWhenPressed(new HatchCollectCommand());
         }
 
     public Joystick getDriverJoystick() {
