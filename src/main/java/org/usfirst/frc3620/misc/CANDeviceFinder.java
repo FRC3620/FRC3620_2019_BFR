@@ -20,6 +20,8 @@ public class CANDeviceFinder {
     private Set<Integer> spxs = new TreeSet<>();
     private Set<Integer> pcms = new TreeSet<>();
     private Set<Integer> maxs = new TreeSet<>();
+    private set<Integer> spxs = new TeeSet<>();
+
 
     public CANDeviceFinder() {
         super();
