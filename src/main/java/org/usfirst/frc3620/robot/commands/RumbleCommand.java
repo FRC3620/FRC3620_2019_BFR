@@ -26,7 +26,7 @@ public class RumbleCommand extends Command {
     private Double intensityDefault = 1.0;
     private Double durationDefault = 1.0;
 
-    private boolean continuous;
+    private boolean disabled, continuous, disableChange = false;
 
     private Timer timer = new Timer();
     
@@ -82,34 +82,50 @@ public class RumbleCommand extends Command {
         continuous = true;
     }
 
+    /**
+     * @param subsystem Which controller to disable/enable rumble for
+     * @param disabled Which state to set the controller to
+     * 
+     * @see This command will stop any and all rumble from happening on the controller until it's enabled
+     */
+    public RumbleCommand(RumbleSubsystem subsystem, Boolean disabled) {
+        this.subsystem = subsystem;
+        this.disabled = disabled;
+        this.disableChange = true;
+    }
+
 
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-        EventLogging.commandMessage(logger);
-        System.out.println("Rumble Init");
-        //sets the defaults
-        if (duration == null) {duration = durationDefault;}
-        if (hand == null) {hand = handDefault;}
-        if (intensity == null) {intensity = intensityDefault;}
+        if (!disableChange) {
+            EventLogging.commandMessage(logger);
+            System.out.println("Rumble Init");
+            //sets the defaults
+            if (duration == null) {duration = durationDefault;}
+            if (hand == null) {hand = handDefault;}
+            if (intensity == null) {intensity = intensityDefault;}
 
-        //logs info
-        if (subsystem == Robot.rumbleSubsystemDriver) {
-            logger.info("Rumbling driver controller");
+            //logs info
+            if (subsystem == Robot.rumbleSubsystemDriver) {
+                logger.info("Rumbling driver controller");
+            }
+            else {
+                logger.info("Rumbling operator controller");
+            }
+
+            //Clears the rumble
+            subsystem.clearRumble();
+
+            //Sets the rumble and starts the timer
+            subsystem.setRumble(hand, intensity);
+            if (!continuous) {
+                timer.start();
+            }
         }
         else {
-            logger.info("Rumbling operator controller");
+            subsystem.setDisabled(this.disabled);
         }
-
-        //Clears the rumble
-        subsystem.clearRumble();
-
-        //Sets the rumble and starts the timer
-        subsystem.setRumble(hand, intensity);
-        if (!continuous) {
-            timer.start();
-        }
-
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -122,6 +138,9 @@ public class RumbleCommand extends Command {
     @Override
     protected boolean isFinished() {
         //Finishes the command when the timer is up
+        if (disableChange) {
+            return true;
+        }
         if (!continuous) {
             if (timer.get() >= duration) {return true;}
         }
@@ -131,15 +150,16 @@ public class RumbleCommand extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
-        EventLogging.commandMessage(logger);
+            EventLogging.commandMessage(logger);
+            if (!disabled) {
+            if (subsystem == Robot.rumbleSubsystemDriver) {
+                logger.info("Driver rumble finished");
+            }else{
+                logger.info("Operator rumble finished");
+            }
 
-        if (subsystem == Robot.rumbleSubsystemDriver) {
-            logger.info("Driver rumble finished");
-        }else{
-            logger.info("Operator rumble finished");
+            subsystem.clearRumble();
         }
-
-        subsystem.clearRumble();
     }
 
     // Called when another command which requires one or more of the same
