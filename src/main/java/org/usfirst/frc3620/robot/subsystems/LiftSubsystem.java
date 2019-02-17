@@ -54,7 +54,6 @@ public class LiftSubsystem extends Subsystem {
             SmartDashboard.putNumber("LiftEncoderPosition", liftEncoder.getPosition());
         }
         SmartDashboard.putNumber("liftEncoderInInches", getLiftHeight());
-
         if(Robot.getCurrentRobotMode() == RobotMode.TELEOP || Robot.getCurrentRobotMode() == RobotMode.AUTONOMOUS){
             if(isBottomLimitDepressed()){
                 resetEncoder();
@@ -65,26 +64,21 @@ public class LiftSubsystem extends Subsystem {
                 double currentheight = getLiftHeight();
                 double error = currentheight - desiredHeight;
                 if(Math.abs(error) > 1){
-                    turnBrakeOff();
                     if(error > 0){
                         liftMove(-0.2);
                     }
 
                     if(error < 0){
-                        liftMove(0.2);
+                        liftMove(+0.2);
                     }
                 }else{
                     liftStop();
-                    turnBrakeOn();
                 }
 
             }else{
-                liftMove(-0.2);
-                turnBrakeOff();
+                liftMove(0);
             }
-
         }
-
     }
     
     public boolean isBottomLimitDepressed(){
@@ -114,7 +108,7 @@ public class LiftSubsystem extends Subsystem {
             speed = 0;
         }
 
-        liftMax.set(speed);
+        liftMax.set(-speed);
     }
 
     public void liftStop(){
@@ -123,8 +117,8 @@ public class LiftSubsystem extends Subsystem {
     }
 
     double ticstoinches(double tics) { 
-        // turning the encoder readings from tics to feet
-        double inches = tics * 0.321;
+        // turning the encoder readings from tics to inches
+        double inches = tics * 0.5362505363; //(13inches/24.25tics)
         return inches;
     }
 
@@ -132,8 +126,8 @@ public class LiftSubsystem extends Subsystem {
         if(checkForLiftEncoder()) {
             double tics = liftEncoder.getPosition();
             double howfarwehavemoved = tics - liftEncoderZeroValue;
-            double feet = ticstoinches(howfarwehavemoved);
-            return feet;
+            double inches = ticstoinches(howfarwehavemoved);
+            return -inches;
         } else {
             return(0);
         }
@@ -153,13 +147,5 @@ public class LiftSubsystem extends Subsystem {
 
     public void setDesiredHeight(double h) {
         desiredHeight = h;
-    }
-
-    private void turnBrakeOn(){
-        
-    }
-
-    private void turnBrakeOff(){
-
     }
 }

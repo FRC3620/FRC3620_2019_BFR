@@ -1,6 +1,7 @@
 package org.usfirst.frc3620.misc;
 
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.Trigger;
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -53,7 +54,7 @@ public class DPad {
 	AngleLimits alLeft = new AngleLimits(225, 315);
 	AngleLimits alUp = new AngleLimits(315, 45);
 
-	class AlTrigger extends Trigger {
+	class AlTrigger extends Button {
 		private AngleLimits angleLimits;
 
 		public AlTrigger(AngleLimits angleLimits) {
@@ -70,38 +71,38 @@ public class DPad {
 		}
 	}
 
-	public Trigger up() {
+	public Button up() {
         alLeft.narrowHi();
         alRight.narrowLo();
 		return new AlTrigger(alUp);
 	}
 
-	public Trigger right() {
+	public Button right() {
         alUp.narrowHi();
         alDown.narrowLo();
 		return new AlTrigger(alRight);
 	}
 
-	public Trigger down() {
+	public Button down() {
         alRight.narrowHi();
         alLeft.narrowLo();
 		return new AlTrigger(alDown);
 	}
 
-	public Trigger left() {
+	public Button left() {
         alDown.narrowHi();
         alUp.narrowLo();
 		return new AlTrigger(alLeft);
 	}
 	
 	public void horizontalCommand (Command command) {
-		right().whenActive(command);
-		left().cancelWhenActive(command);
+		right().whileHeld(command);
+		left().cancelWhenPressed(command);
 	}
 
 	public void verticalCommand (Command command) {
-		up().whenActive(command);
-		down().cancelWhenActive(command);
+		up().whileHeld(command);
+		down().cancelWhenPressed(command);
 	}
 
 }
