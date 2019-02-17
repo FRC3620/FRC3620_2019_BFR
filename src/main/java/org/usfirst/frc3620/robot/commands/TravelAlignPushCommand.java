@@ -75,4 +75,5 @@ public class TravelAlignPushCommand extends Command {
     protected void interrupted() {
     	EventLogging.commandMessage(logger);
     }
+    
 }
