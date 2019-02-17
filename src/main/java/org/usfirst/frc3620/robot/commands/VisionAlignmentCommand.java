@@ -46,13 +46,17 @@ public class VisionAlignmentCommand extends Command {
   protected void execute() {
     Robot.visionSubsystem.runPID();
     speed = Robot.visionSubsystem.getPIDOutput();
+    Robot.driveSubsystem.autoDriveTank(-speed,speed);
     logger.info("PID Speed: {}", speed);
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    
+    yaw = Robot.visionSubsystem.getTargetYaw();
+    if (yaw > 3 || yaw < -3){
+      return false;
+    }
     return false;
   }
 
