@@ -25,9 +25,6 @@ public class VisionAlignmentCommand extends Command {
   private double angle;
   private double yaw;
   private double speed;
-
-  private final double YAW_RANGE = 2;
-  private final double P_CONSTANT = .0004 ;
   
   public VisionAlignmentCommand() {
     // Use requires() here to declare subsystem dependencies
@@ -53,10 +50,10 @@ public class VisionAlignmentCommand extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    yaw = Robot.visionSubsystem.getTargetYaw();
+    /*yaw = Robot.visionSubsystem.getTargetYaw();
     if (yaw > 3 || yaw < -3){
       return false;
-    }
+    }*/
     return false;
   }
 
