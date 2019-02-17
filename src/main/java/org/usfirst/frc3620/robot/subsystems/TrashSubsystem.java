@@ -25,21 +25,17 @@ public class TrashSubsystem extends Subsystem {
     }
 
     public void conveyorBeltLeft(double speed){
-        conveyorT.set(speed);
-        conveyorB.set(speed);
+        conveyorT.set(-speed);
+        conveyorB.set(-speed);
     }
 
     public void conveyorBeltRight(double speed){
-        conveyorT.set(-speed);
-        conveyorB.set(-speed);
+        conveyorT.set(speed);
+        conveyorB.set(speed);
     }
 
     public void conveyorBeltOff(){
         conveyorT.set(0);
         conveyorB.set(0);
-    }
-
-    public double getSpeedFromDashboard(){
-        return speedPreferences.getDouble("IntakeSpeed", 0.5);
     }
 }

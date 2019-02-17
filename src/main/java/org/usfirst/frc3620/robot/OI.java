@@ -67,8 +67,8 @@ public class OI {
             Button inTakeIn = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_LEFT_STICK);
             Button inTakeOut = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_RIGHT_STICK);
             Button trashIn = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_START);
-            Button conveyorL = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_X);
             Button conveyorR = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_B);
+            Button conveyorL = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_X);
             //Button hatchExtend = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_START);
             //Button hatchCollect = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_RIGHT_STICK);
 
