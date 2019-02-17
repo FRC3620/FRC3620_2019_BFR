@@ -37,37 +37,44 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  * 
  * Note: This will get overwritten if another rumble starts on the same controller
  * 
- * P.S.: Hand.LEFT provides a choppy, viseral rumble where Hand.RIGHT provides a lighter, smooth rumble
+ * P.S.: Hand.LEFT provides a choppy, visceral rumble where Hand.RIGHT provides a lighter, smooth rumble
  */
 public class RumbleSubsystem extends Subsystem {
     Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 
     private Joystick controller;
+    private Boolean disabled = false;
 
     //sets the controller for this instance of the subsystem
-    public void setController(Joystick newController) {controller = newController;} 
+    public void setController(Joystick controller) {this.controller = controller;} 
+
+    public void setDisabled(Boolean disabled) {this.disabled = disabled;}
 
     //Called from RumbleSubsystem. Directly sets controller rumble
     public void setRumble (Hand hand, Double intensity) {
-        //Switch/case for rumbling different sides of the controller
-        switch (hand) {
-            case LEFT:
-                controller.setRumble(RumbleType.kLeftRumble, intensity);
-                break;
-            case RIGHT:
-                controller.setRumble(RumbleType.kRightRumble, intensity);
-                break;
-            default:
-                controller.setRumble(RumbleType.kRightRumble, intensity);
-                controller.setRumble(RumbleType.kLeftRumble, intensity);
+        if (!disabled) {
+            //Switch/case for rumbling different sides of the controller
+            switch (hand) {
+                case LEFT:
+                    controller.setRumble(RumbleType.kLeftRumble, intensity);
+                    break;
+                case RIGHT:
+                    controller.setRumble(RumbleType.kRightRumble, intensity);
+                    break;
+                default:
+                    controller.setRumble(RumbleType.kRightRumble, intensity);
+                    controller.setRumble(RumbleType.kLeftRumble, intensity);
+            }
         }
     }
 
     //Called from RumbleSubsystem. Clears the rumble of part or all of the controller.
     public void clearRumble () {
-        //clears the rumble
+        if (!disabled) {
+            //clears the rumble
             controller.setRumble(RumbleType.kRightRumble, 0);
             controller.setRumble(RumbleType.kLeftRumble, 0);
+        }
     }
 
 

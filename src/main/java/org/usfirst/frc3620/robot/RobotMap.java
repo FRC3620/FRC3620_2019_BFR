@@ -16,6 +16,7 @@ import org.usfirst.frc3620.logger.EventLogging.Level;
 import org.usfirst.frc3620.misc.CANDeviceFinder;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
@@ -45,7 +46,6 @@ import edu.wpi.first.wpilibj.Counter;
     public static WPI_TalonSRX intakeSubsystemUpperMotor;
     public static WPI_TalonSRX intakeSubsystemLowerMotor;
     public static WPI_TalonSRX intakeSubsystemMiddleMotor;
-
     public static WPI_TalonSRX conveyorBeltMotorTop;
     public static WPI_TalonSRX conveyorBeltMotorBottom;
 
@@ -55,6 +55,7 @@ import edu.wpi.first.wpilibj.Counter;
     public static DigitalInput lineSensorR;
 
     public static CANSparkMax pivotSubsystemMax;
+    public static CANSparkMax pivotSubsystemMax2;
     public static CANEncoder pivotEncoder;
     public static DigitalInput pivotLimitSwitch;
 
@@ -64,9 +65,8 @@ import edu.wpi.first.wpilibj.Counter;
     public static DigitalInput liftLimitSwitchTop;
     public static DigitalInput liftLimitSwitchBottom;
 
-    public static Solenoid hatchSubsystemFinger;
-    public static Solenoid hatchSubsystemPusher1;
-    public static Solenoid hatchSubsystemPusher2;
+    public static DoubleSolenoid hatchSubsystemFinger;
+    public static DoubleSolenoid hatchSubsystemPusher;
 
     public static Spark lightSubsystemLightPWM;
 
@@ -163,9 +163,13 @@ import edu.wpi.first.wpilibj.Counter;
         pivotSubsystemMax.setIdleMode(IdleMode.kBrake);
         pivotSubsystemMax.setRampRate(0.25);
         pivotEncoder = pivotSubsystemMax.getEncoder();
+        pivotSubsystemMax2 = new CANSparkMax(12, MotorType.kBrushless);
+        resetMaxToKnownState(pivotSubsystemMax2);
+        pivotSubsystemMax2.follow(pivotSubsystemMax, true);
+        pivotSubsystemMax2.setIdleMode(IdleMode.kBrake);
         pivotLimitSwitch = new DigitalInput(5);
         
-        lightSubsystemLightPWM = new Spark(7);
+        lightSubsystemLightPWM = new Spark(9);
         lightSubsystemLightPWM.setName("LightSubsystem", "LightPWM");
         lightSubsystemLightPWM.setInverted(false);
         
@@ -182,11 +186,9 @@ import edu.wpi.first.wpilibj.Counter;
         if (canDeviceFinder.isPCMPresent(0)) {
             // instantiate Pneumatics here
             liftSubsystemBrake = new Solenoid(1);
-            hatchSubsystemFinger = new Solenoid(2);
-            hatchSubsystemPusher1 = new Solenoid(3);
-            hatchSubsystemPusher2 = new Solenoid(4);
+            hatchSubsystemFinger = new DoubleSolenoid(2, 3);
+            hatchSubsystemPusher = new DoubleSolenoid(4, 5);
         }
-
     }
 
     public static boolean amICompBot(){
