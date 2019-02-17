@@ -27,13 +27,13 @@ public class TravelAlignPushCommand extends Command {
     }
 
     public void calculateK(){
-        k = (0.6-0.3)/(distanceInitial - stoppingDistance);
+        k = (0.6-0.14)/(distanceInitial - stoppingDistance);
     }
 
     public double getLeftPower(double distance, double yaw){
-        double power = k*(distance-stoppingDistance) + 0.3;
+        double power = k*(distance-stoppingDistance) + 0.14*distance;
         if(yaw > 31){
-            power = power + 0.2*(0.004545*yaw);
+            power = power + 0.2*(0.006451*yaw);
         } else if(yaw > 0){
             power = power + 0.2*(-(0.06/31)*yaw + 0.14);
         }
@@ -41,9 +41,9 @@ public class TravelAlignPushCommand extends Command {
     }
 
     public double getRightPower(double distance, double yaw){
-        double power = k*(distance-stoppingDistance)+ 0.3;
+        double power = k*(distance-stoppingDistance) + 0.14*distance;
         if(yaw < -31){
-            power = power - 0.2*(0.004545*yaw);
+            power = power - 0.2*(0.006451*yaw);
         } else if(yaw < 0){
             power = power + 0.2*(-(0.06/31)*yaw + 0.14);
         }
