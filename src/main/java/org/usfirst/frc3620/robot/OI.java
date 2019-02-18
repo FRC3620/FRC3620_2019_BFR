@@ -74,6 +74,7 @@ public class OI {
             Button conveyorL = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_X);
             Button hatchExtend = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_START);
             Button hatchCollect = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_RIGHT_STICK);
+            Button driveIn = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_A);
            
 
             //operator controls
@@ -90,6 +91,7 @@ public class OI {
             positionTwo.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_TOP));
             hatchExtend.toggleWhenPressed(new HatchExtendCommand());
             hatchCollect.whileHeld(new HatchCollectCommand());
+            driveIn.whileHeld(new AutoMoveForwardCommand(10,.7));
            
             
             SmartDashboard.putData("Rumble both", new RumbleCommand(Robot.rumbleSubsystemDriver, Hand.BOTH, 0.2, 60.0));
@@ -100,6 +102,7 @@ public class OI {
             SmartDashboard.putData("TrainingPath", new TrainingPath());
             SmartDashboard.putData("CenterOnTarget", new VisionAlignmentCommand());
             SmartDashboard.putData("TapTarget", new TravelAlignPushCommand());
+            SmartDashboard.putData("DriveForward", new AutoMoveForwardCommand(10,.7));
 
         }
 
