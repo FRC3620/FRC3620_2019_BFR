@@ -14,7 +14,8 @@ public class TravelAlignPushCommand extends Command {
     private double distanceInitial;
     private double k;
     private final double stoppingDistance = 3;
-    private final double startingPower = 0.4;
+    private final double startingPower = distanceInitial/20; 
+     ;
     
     public TravelAlignPushCommand() {
         // requires(Robot.laserCannonSubsystem);
