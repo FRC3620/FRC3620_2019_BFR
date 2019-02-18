@@ -3,6 +3,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.Timer;
 
 import org.slf4j.Logger;
+import org.usfirst.frc3620.robot.Robot;
 import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
 import org.usfirst.frc3620.robot.subsystems.RumbleSubsystem;
@@ -10,103 +11,138 @@ import org.usfirst.frc3620.misc.Hand;
 
 /**
  * @author Nick Zimanski (SlippStream)
- * @version 2/02/19
+ * @version 2/09/19
+ * 
+ * Finalised command -- rules in subsystem
  */
 public class RumbleCommand extends Command {
     Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
-    public RumbleSubsystem rumbleSubsystem;
-    public Hand rumbleHand;
-    public Float rumbleIntensity; // 0.1f to 1f
-    public Float rumbleDuration; // In seconds
+    public RumbleSubsystem subsystem;
+    public Hand hand;
+    public Double intensity; // 0.1 to 1.0
+    public Double duration; // In seconds
 
-    private Hand rumbleHandDefault = Hand.BOTH;
-    private Float rumbleIntensityDefault = 1f;
-    private Float rumbleDurationDefault = 3f;
-    private boolean continuous;
+    private Hand handDefault = Hand.BOTH;
+    private Double intensityDefault = 1.0;
+    private Double durationDefault = 1.0;
+
+    private boolean disabled, continuous, disableChange = false;
 
     private Timer timer = new Timer();
-	
-    public RumbleCommand(RumbleSubsystem subsystem, Hand hand, Float intensity, Float duration) {
+    
+    /**
+     * @param subsystem Which controller to rumble. Either Robot.rumbleSubsystemDriver or Robot.rumbleSubsystemOperator
+     * @param hand Which side of the controller to rumble. Either Hand.LEFT, Hand.RIGHT, or Hand.BOTH
+     * @param intensity How hard to rumble the controller. Between 0.1 and 1.0
+     * @param duration How long the controller will rumble in seconds
+     */
+    public RumbleCommand(RumbleSubsystem subsystem, Hand hand, Double intensity, Double duration) {
         requires(subsystem); //requires the subsystem provided by caller
 
-        rumbleSubsystem = subsystem;
-        rumbleDuration = duration;
-        rumbleHand = hand;
-        rumbleIntensity = intensity;
+        this.subsystem = subsystem;
+        this.duration = duration;
+        this.hand = hand;
+        this.intensity = intensity;
 
         continuous = false;
     }
 
-    public RumbleCommand(RumbleSubsystem subsystem, Float intensity, Float duration) {
-        requires(subsystem); //requires the subsystem provided by caller
-
-        rumbleSubsystem = subsystem;
-        rumbleDuration = duration;
-        rumbleHand = null;
-        rumbleIntensity = intensity;
-
-        continuous = false;
+    /**
+     * @param subsystem Which controller to rumble. Either Robot.rumbleSubsystemDriver or Robot.rumbleSubsystemOperator
+     * @param intensity How hard to rumble the controller. Between 0.1 and 1.0
+     * @param duration How long the controller will rumble in seconds
+     * 
+     * @see Hand defaults to Hand.BOTH
+     */
+    public RumbleCommand(RumbleSubsystem subsystem, Double intensity, Double duration) {
+        this(subsystem, null, intensity, duration);
     }
 
+    /**
+     * @param subsystem Which controller to rumble. Either Robot.rumbleSubsystemDriver or Robot.rumbleSubsystemOperator
+     * 
+     * @see Hand defaults to Hand.BOTH
+     * @see Intensity defaults to 1.0
+     * @see Duration defaults to 1.0
+     */
     public RumbleCommand(RumbleSubsystem subsystem) {
-        requires(subsystem); //requires the provided subsystem by caller
-
-        rumbleSubsystem = subsystem;
-        rumbleDuration = null;
-        rumbleHand = null;
-        rumbleIntensity = null;
-
-        continuous = false;
+        this(subsystem, null, null, null);
     }
 
-    public RumbleCommand(RumbleSubsystem subsystem, Hand hand, Float intensity) {
-        requires(subsystem); //requires the subsystem provided by caller
-
-        rumbleSubsystem = subsystem;
-        rumbleDuration = 0.05f;
-        rumbleHand = hand;
-        rumbleIntensity = intensity;
+    /**
+     * @param subsystem Which controller to rumble. Either Robot.rumbleSubsystemDriver or Robot.rumbleSubsystemOperator
+     * @param hand Which side of the controller to rumble. Either Hand.LEFT, Hand.RIGHT, or Hand.BOTH
+     * @param intensity How hard to rumble the controller. Between 0.1 and 1.0
+     * 
+     * @see This command should ONLY be used if you plan on interrupting it with .cancel()
+     */
+    public RumbleCommand(RumbleSubsystem subsystem, Hand hand, Double intensity) {
+        this(subsystem, hand, intensity, null);
 
         continuous = true;
+    }
+
+    /**
+     * @param subsystem Which controller to disable/enable rumble for
+     * @param disabled Which state to set the controller to
+     * 
+     * @see This command will stop any and all rumble from happening on the controller until it's enabled
+     */
+    public RumbleCommand(RumbleSubsystem subsystem, Boolean disabled) {
+        this.subsystem = subsystem;
+        this.disabled = disabled;
+        this.disableChange = true;
     }
 
 
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-        EventLogging.commandMessage(logger);
+        if (!disableChange) {
+            EventLogging.commandMessage(logger);
+            System.out.println("Rumble Init");
+            //sets the defaults
+            if (duration == null) {duration = durationDefault;}
+            if (hand == null) {hand = handDefault;}
+            if (intensity == null) {intensity = intensityDefault;}
 
-        //sets the defaults
-        if (rumbleDuration == null) {rumbleDuration = rumbleDurationDefault;}
-        if (rumbleHand == null) {rumbleHand = rumbleHandDefault;}
-        if (rumbleIntensity == null) {rumbleIntensity = rumbleIntensityDefault;}
+            //logs info
+            if (subsystem == Robot.rumbleSubsystemDriver) {
+                logger.info("Rumbling driver controller");
+            }
+            else {
+                logger.info("Rumbling operator controller");
+            }
 
-        //Clears the rumble
-        rumbleSubsystem.clearRumble();
+            //Clears the rumble
+            subsystem.clearRumble();
 
-        //Sets the rumble and starts the timer
-        rumbleSubsystem.setRumble(rumbleHand, rumbleIntensity);
-        if (!continuous) {
-            timer.reset();
-            timer.start();
+            //Sets the rumble and starts the timer
+            subsystem.setRumble(hand, intensity);
+            if (!continuous) {
+                timer.start();
+            }
+        }
+        else {
+            subsystem.setDisabled(this.disabled);
         }
     }
 
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        if (!continuous) {
-            if (timer.get() >= rumbleDuration) {rumbleSubsystem.clearRumble();}
-        }
+        
     }
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        //Finishes when either the command is continuous, or the timer is up
-        if (continuous) {return true;}
-        else {
-            if (timer.get() >= rumbleDuration) {return true;}
+        //Finishes the command when the timer is up
+        if (disableChange) {
+            return true;
+        }
+        if (!continuous) {
+            if (timer.get() >= duration) {return true;}
         }
         return false;
     }
@@ -114,7 +150,16 @@ public class RumbleCommand extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
-    	EventLogging.commandMessage(logger);
+            EventLogging.commandMessage(logger);
+            if (!disabled) {
+            if (subsystem == Robot.rumbleSubsystemDriver) {
+                logger.info("Driver rumble finished");
+            }else{
+                logger.info("Operator rumble finished");
+            }
+
+            subsystem.clearRumble();
+        }
     }
 
     // Called when another command which requires one or more of the same
@@ -122,6 +167,12 @@ public class RumbleCommand extends Command {
     @Override
     protected void interrupted() {
         EventLogging.commandMessage(logger);
-        rumbleSubsystem.clearRumble();
-    }
+        if (subsystem == Robot.rumbleSubsystemDriver) {
+            logger.info("Driver rumble interrupted");
+        }
+        else {
+            logger.info("Operator rumble interrupted");
+        }
+        subsystem.clearRumble();
+    } 
 }

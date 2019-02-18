@@ -5,16 +5,16 @@ import org.slf4j.Logger;
 import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
 import org.usfirst.frc3620.robot.Robot;
+import org.usfirst.frc3620.robot.subsystems.HatchSubsystem;
 
 /**
  *
  */
-public class TrashInCommand extends Command {
+public class HatchExtendCommand extends Command {
 	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 	
-    public TrashInCommand() {
+    public HatchExtendCommand() {
         // requires(Robot.laserCannonSubsystem);
-        requires(Robot.intakeSubsystem);
     }
 
     // Called just before this Command runs the first time
@@ -26,7 +26,7 @@ public class TrashInCommand extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        Robot.intakeSubsystem.TrashIn(1);
+        Robot.hatchSubsystem.hatchOut();
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -39,7 +39,7 @@ public class TrashInCommand extends Command {
     @Override
     protected void end() {
         EventLogging.commandMessage(logger);
-        Robot.intakeSubsystem.TrashOff();
+        Robot.hatchSubsystem.hatchIn();
     }
 
     // Called when another command which requires one or more of the same
@@ -47,6 +47,6 @@ public class TrashInCommand extends Command {
     @Override
     protected void interrupted() {
         EventLogging.commandMessage(logger);
-        Robot.intakeSubsystem.TrashOff();
+        Robot.hatchSubsystem.hatchIn();
     }
 }

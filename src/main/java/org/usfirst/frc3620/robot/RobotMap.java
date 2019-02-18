@@ -8,8 +8,6 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
-import com.revrobotics.CANSparkMax.InputMode;
-import com.revrobotics.CANSparkMaxLowLevel.ConfigParameter;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import org.slf4j.Logger;
@@ -18,17 +16,11 @@ import org.usfirst.frc3620.logger.EventLogging.Level;
 import org.usfirst.frc3620.misc.CANDeviceFinder;
 
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.Relay;
-import edu.wpi.first.wpilibj.Servo;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Solenoid;
-import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
-import edu.wpi.first.wpilibj.SpeedController;
-import edu.wpi.first.wpilibj.Victor;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.Spark;
-import edu.wpi.first.wpilibj.livewindow.LiveWindow;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.Counter;
 
 /**
@@ -38,64 +30,69 @@ import edu.wpi.first.wpilibj.Counter;
  * floating around.
  */
 
- /**
-  * @author Nick Zimanski (SlippStream)
-  * @version 1/25/19
-  *
-  * Added light subsystem functionality, initialized to PWM 9
-  */
-public class RobotMap {
-    public static DifferentialDrive driveSubsystemDifferentialDrive;
-    public static SpeedController lightSubsystemLightPWM;
-
-    public static Victor intakeSubsystemUpperMotor;
-    public static Victor intakeSubsystemLowerMotor;
-    public static Victor intakeSubsystemMiddleMotor;
-
-    public static WPI_TalonSRX conveyorBeltMotorL;
-    public static WPI_TalonSRX conveyorBeltMotorR;
-    public static WPI_TalonSRX conveyorBeltMotorC;
-
-    public static DigitalInput lineSensor;
-    public static DigitalInput liftLimitSwitchTop;
-    public static DigitalInput liftLimitSwitchBottom;
-    public static Counter counter; 
-    public static Solenoid liftSubsystemBrake;
-
-    public static CANEncoder leftsideEncoder, rightsideEncoder, liftEncoder;
+ public class RobotMap {
+    public static Encoder leftsideEncoder, rightsideEncoder;
+    public static CANEncoder leftsideCANEncoder, rightsideCANEncoder;
     public static CANSparkMax driveSubsystemMaxLeftA;
     public static CANSparkMax driveSubsystemMaxLeftB;
     public static CANSparkMax driveSubsystemMaxRightA;
     public static CANSparkMax driveSubsystemMaxRightB;
-    public static CANSparkMax liftSubsystemMax;
     public static CANDeviceFinder canDeviceFinder;
+
+    public static DifferentialDrive driveSubsystemDifferentialDrive;
+ 
+    public static WPI_TalonSRX intakeSubsystemUpperMotor;
+    public static WPI_TalonSRX intakeSubsystemLowerMotor;
+    public static WPI_TalonSRX intakeSubsystemMiddleMotor;
+
+    public static WPI_VictorSPX conveyorBeltMotorTop;
+    public static WPI_VictorSPX conveyorBeltMotorBottom;
+
+    public static Counter lineSensorCounterL; 
+    public static Counter lineSensorCounterR;
+    public static DigitalInput lineSensorL;
+    public static DigitalInput lineSensorR;
+
+    public static CANSparkMax pivotSubsystemMax;
+    public static CANSparkMax pivotSubsystemMax2;
+    public static CANEncoder pivotEncoder;
+    public static DigitalInput pivotLimitSwitch;
+
+    public static CANSparkMax liftSubsystemMax;
+    public static CANEncoder liftEncoder;
+    public static DigitalInput liftLimitSwitchTop;
+    public static DigitalInput liftLimitSwitchBottom;
+
+    public static Solenoid hatchSubsystemFinger;
+    public static Solenoid hatchSubsystemPusher;
+    public static Solenoid pcm0Dummy;
+
+    public static Spark lightSubsystemLightPWM;
+
+    // no touchee!
+    private static DigitalInput practiceBotJumper;
 
     static Logger logger = EventLogging.getLogger(RobotMap.class, Level.INFO);
     
-    @SuppressWarnings("deprecation")
-	public static void init() {
+    public static void init() {
         canDeviceFinder = new CANDeviceFinder();
         logger.info ("CANDEVICEfinder found {}", canDeviceFinder.getDeviceList());
 
-        liftSubsystemMax = new CANSparkMax(5, MotorType.kBrushless);
-        resetMaxToKnownState(liftSubsystemMax);
-        liftEncoder = liftSubsystemMax.getEncoder();
-        liftLimitSwitchTop = new DigitalInput(1);
-        liftLimitSwitchBottom = new DigitalInput(2);
+        practiceBotJumper = new DigitalInput(0);
 
         SpeedControllerGroup groupLeft;
         SpeedControllerGroup groupRight;
         if(canDeviceFinder.isMAXPresent(1)) {
             CANSparkMax driveSubsystemMaxLeftA = new CANSparkMax(1, MotorType.kBrushless);
             resetMaxToKnownState(driveSubsystemMaxLeftA);
-            leftsideEncoder = driveSubsystemMaxLeftA.getEncoder();
+            leftsideCANEncoder = driveSubsystemMaxLeftA.getEncoder();
 
             CANSparkMax driveSubsystemMaxLeftB = new CANSparkMax(2, MotorType.kBrushless);
             resetMaxToKnownState(driveSubsystemMaxLeftB);
 
             CANSparkMax driveSubsystemMaxRightA = new CANSparkMax(3, MotorType.kBrushless);
             resetMaxToKnownState(driveSubsystemMaxRightA);
-            rightsideEncoder = driveSubsystemMaxRightA.getEncoder();
+            rightsideCANEncoder = driveSubsystemMaxRightA.getEncoder();
 
             CANSparkMax driveSubsystemMaxRightB = new CANSparkMax(4, MotorType.kBrushless);
             resetMaxToKnownState(driveSubsystemMaxRightB);
@@ -136,35 +133,73 @@ public class RobotMap {
         driveSubsystemDifferentialDrive.setExpiration(0.1);
         driveSubsystemDifferentialDrive.setMaxOutput(1.0);
 
-        conveyorBeltMotorL = new WPI_TalonSRX(7);
-        conveyorBeltMotorR = new WPI_TalonSRX(8);
-        conveyorBeltMotorC = new WPI_TalonSRX(9);
+        //new code
+        conveyorBeltMotorTop = new WPI_VictorSPX(7);
+        resetTalonToKnownState(conveyorBeltMotorTop);
+        conveyorBeltMotorBottom = new WPI_VictorSPX(8);
+        resetTalonToKnownState(conveyorBeltMotorBottom);
 
-        intakeSubsystemUpperMotor = new Victor(4);
-        intakeSubsystemLowerMotor = new Victor(5);
-        intakeSubsystemMiddleMotor = new Victor(6);
+        intakeSubsystemUpperMotor = new WPI_TalonSRX(9);
+        resetTalonToKnownState(intakeSubsystemUpperMotor);
+        intakeSubsystemMiddleMotor = new WPI_TalonSRX(10);
+        resetTalonToKnownState(intakeSubsystemMiddleMotor);
+        intakeSubsystemLowerMotor = new WPI_TalonSRX(11);
+        resetTalonToKnownState(intakeSubsystemLowerMotor);
 
-        lightSubsystemLightPWM = new Spark(7);
-        // lightSubsystemLightPWM = new Spark(5);
-		LiveWindow.addActuator("LightSubsystem", "LightPWM", (Spark) lightSubsystemLightPWM);
+        liftSubsystemMax = new CANSparkMax(6, MotorType.kBrushless);
+        resetMaxToKnownState(liftSubsystemMax);
+        liftSubsystemMax.setIdleMode(IdleMode.kBrake);
+        liftEncoder = liftSubsystemMax.getEncoder();
+        liftLimitSwitchTop = new DigitalInput(1);
+        liftLimitSwitchBottom = new DigitalInput(2);
+
+        pivotSubsystemMax = new CANSparkMax(5, MotorType.kBrushless);
+        resetMaxToKnownState(pivotSubsystemMax);
+        pivotSubsystemMax.setIdleMode(IdleMode.kBrake);
+        pivotSubsystemMax.setOpenLoopRampRate(0.25);
+        pivotSubsystemMax.setClosedLoopRampRate(0.25);
+        pivotEncoder = pivotSubsystemMax.getEncoder();
+        pivotSubsystemMax2 = new CANSparkMax(12, MotorType.kBrushless);
+        resetMaxToKnownState(pivotSubsystemMax2);
+        pivotSubsystemMax2.follow(pivotSubsystemMax, true);
+        pivotSubsystemMax2.setIdleMode(IdleMode.kBrake);
+        pivotLimitSwitch = new DigitalInput(5);
+        
+        lightSubsystemLightPWM = new Spark(9);
+        lightSubsystemLightPWM.setName("LightSubsystem", "LightPWM");
         lightSubsystemLightPWM.setInverted(false);
         
-        //initiating line sensor
-        lineSensor = new DigitalInput(0);
-        counter = new Counter(lineSensor);
-        counter.setUpSourceEdge(false, true);
+        //initiating line left sensor 
+        lineSensorL = new DigitalInput(3);
+        lineSensorCounterL = new Counter(lineSensorL);
+        lineSensorCounterL.setUpSourceEdge(false, true);
+
+        //initiating line right sensor 
+        lineSensorR = new DigitalInput(4);
+        lineSensorCounterR = new Counter(lineSensorR);
+        lineSensorCounterR.setUpSourceEdge(false, true);
 
         if (canDeviceFinder.isPCMPresent(0)) {
-            // instantiate Pneumatics here
-            liftSubsystemBrake = new Solenoid(1);
+            //instantiate Pneumatics here
+            //doublesolenoids requires a PCM number first
+            hatchSubsystemPusher = new Solenoid(1, 0);
+            hatchSubsystemFinger = new Solenoid(1, 1);
+            pcm0Dummy = new Solenoid(0, 0);
         }
+    }
 
+    public static boolean amICompBot(){
+        if(practiceBotJumper.get() == true){
+            return true;
+        }
+        return false;
     }
 
     static void resetMaxToKnownState (CANSparkMax x) {
 		x.setInverted(false);
         x.setIdleMode(IdleMode.kCoast);
-		x.setRampRate(1);
+        x.setOpenLoopRampRate(1);
+        x.setClosedLoopRampRate(1);
         x.setSmartCurrentLimit(50);
     }
 

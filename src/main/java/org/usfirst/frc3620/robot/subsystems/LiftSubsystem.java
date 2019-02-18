@@ -1,7 +1,5 @@
 package org.usfirst.frc3620.robot.subsystems;
 
-
-
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 
@@ -13,10 +11,8 @@ import org.usfirst.frc3620.robot.Robot;
 import org.usfirst.frc3620.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
 
 /**
  *
@@ -24,11 +20,17 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class LiftSubsystem extends Subsystem {
     Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 
-    public static final double SETPOINT_BOTTOM = 3;
-    public static final double SETPOINT_TOP = 9;
+    public static final double SETPOINT_BOTTOM = 0;
+    public static final double SETPOINT_TRASHIN = 3;
+    public static final double SETPOINT_CARGOSHIP = 16;
+    public static final double SETPOINT_ROCKET_MIDDLE = 31;
+    public static final double SETPOINT_ROCKET_TOP = 59;
+
+    public static final double SETPOINT_HATCH_BOTTOM = 0;
+    public static final double SETPOINT_HATCH_MIDDLE = 0;
+    public static final double SETPOINT_HATCH_TOP = 0;
 
     private final CANSparkMax liftMax = RobotMap.liftSubsystemMax;
-    private final Solenoid liftBrake = RobotMap.liftSubsystemBrake;
     private final DigitalInput topLimit = RobotMap.liftLimitSwitchTop;
     private final DigitalInput bottomLimit = RobotMap.liftLimitSwitchBottom;
     private final CANEncoder liftEncoder = RobotMap.liftEncoder;
@@ -59,7 +61,6 @@ public class LiftSubsystem extends Subsystem {
             SmartDashboard.putNumber("LiftEncoderPosition", liftEncoder.getPosition());
         }
         SmartDashboard.putNumber("liftEncoderInInches", getLiftHeight());
-
         if(Robot.getCurrentRobotMode() == RobotMode.TELEOP || Robot.getCurrentRobotMode() == RobotMode.AUTONOMOUS){
             if(isBottomLimitDepressed()){
                 resetEncoder();
@@ -70,26 +71,21 @@ public class LiftSubsystem extends Subsystem {
                 double currentheight = getLiftHeight();
                 double error = currentheight - desiredHeight;
                 if(Math.abs(error) > 1){
-                    turnBrakeOff();
                     if(error > 0){
                         liftMove(-0.2);
                     }
 
                     if(error < 0){
-                        liftMove(0.2);
+                        liftMove(+0.2);
                     }
                 }else{
                     liftStop();
-                    turnBrakeOn();
                 }
 
             }else{
-                liftMove(-0.2);
-                turnBrakeOff();
+                liftMove(0);
             }
-
         }
-
     }
     
     public boolean isBottomLimitDepressed(){
@@ -119,7 +115,7 @@ public class LiftSubsystem extends Subsystem {
             speed = 0;
         }
 
-        liftMax.set(speed);
+        liftMax.set(-speed);
     }
 
     public void liftStop(){
@@ -128,8 +124,8 @@ public class LiftSubsystem extends Subsystem {
     }
 
     double ticstoinches(double tics) { 
-        // turning the encoder readings from tics to feet
-        double inches = tics * 0.321;
+        // turning the encoder readings from tics to inches
+        double inches = tics * 0.508696934; //(9.75inches/19.16661837167tics)
         return inches;
     }
 
@@ -137,14 +133,14 @@ public class LiftSubsystem extends Subsystem {
         if(checkForLiftEncoder()) {
             double tics = liftEncoder.getPosition();
             double howfarwehavemoved = tics - liftEncoderZeroValue;
-            double feet = ticstoinches(howfarwehavemoved);
-            return feet;
+            double inches = ticstoinches(howfarwehavemoved);
+            return -inches;
         } else {
             return(0);
         }
     }
 
-    double liftEncoderZeroValue;
+    private double liftEncoderZeroValue;
     
     public boolean checkForLiftEncoder() {
         return(!(liftEncoder == null));
@@ -158,13 +154,5 @@ public class LiftSubsystem extends Subsystem {
 
     public void setDesiredHeight(double h) {
         desiredHeight = h;
-    }
-
-    private void turnBrakeOn(){
-        
-    }
-
-    private void turnBrakeOff(){
-
     }
 }

@@ -14,6 +14,7 @@ public class TrashLeftCommand extends Command {
 	
     public TrashLeftCommand() {
         // requires(Robot.laserCannonSubsystem);
+        requires(Robot.liftSubsystem);
     }
 
     // Called just before this Command runs the first time
@@ -25,7 +26,7 @@ public class TrashLeftCommand extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        Robot.trashSubsystem.conveyorBeltLeft(Robot.trashSubsystem.getSpeedFromDashboard());
+        Robot.trashSubsystem.conveyorBeltLeft(0.8);
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -45,7 +46,7 @@ public class TrashLeftCommand extends Command {
     // subsystems is scheduled to run or when cancelled by whileHeld
     @Override
     protected void interrupted() {
+        EventLogging.commandMessage(logger);
         Robot.trashSubsystem.conveyorBeltOff();
-    	EventLogging.commandMessage(logger);
     }
 }

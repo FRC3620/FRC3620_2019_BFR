@@ -14,6 +14,7 @@ public class TrashRightCommand extends Command {
 	
     public TrashRightCommand() {
         // requires(Robot.laserCannonSubsystem);
+        requires(Robot.liftSubsystem);
     }
 
     // Called just before this Command runs the first time
@@ -25,7 +26,7 @@ public class TrashRightCommand extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        Robot.trashSubsystem.conveyorBeltRight(Robot.trashSubsystem.getSpeedFromDashboard());
+        Robot.trashSubsystem.conveyorBeltRight(0.8);
     }
 
     // Make this return true when this Command no longer needs to run execute()
