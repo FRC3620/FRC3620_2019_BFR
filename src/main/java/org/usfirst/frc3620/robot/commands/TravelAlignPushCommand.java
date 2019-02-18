@@ -13,7 +13,8 @@ public class TravelAlignPushCommand extends Command {
 	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
     private double distanceInitial;
     private double k;
-    private final double stoppingDistance = 5;
+    private final double stoppingDistance = 3;
+    private final double startingPower = 0.4;
     
     public TravelAlignPushCommand() {
         // requires(Robot.laserCannonSubsystem);
@@ -23,15 +24,20 @@ public class TravelAlignPushCommand extends Command {
     @Override
     protected void initialize() {
         EventLogging.commandMessage(logger);
+        calculateK();
         distanceInitial = Robot.visionSubsystem.getTargetDistance();
+    }
+    public double sech(double x){
+        return 1/Math.cosh(x);
     }
 
     public void calculateK(){
-        k = (0.6-0.14)/(distanceInitial - stoppingDistance);
+        k = (startingPower)/(-sech(distanceInitial-stoppingDistance) + 1.14);
+    
     }
 
     public double getLeftPower(double distance, double yaw){
-        double power = k*(distance-stoppingDistance) + 0.14*distance;
+        double power = k*(-sech(distance - stoppingDistance) + 1.14);
         if(yaw > 31){
             power = power + 0.2*(0.006451*yaw);
         } else if(yaw > 0){
@@ -41,7 +47,8 @@ public class TravelAlignPushCommand extends Command {
     }
 
     public double getRightPower(double distance, double yaw){
-        double power = k*(distance-stoppingDistance) + 0.14*distance;
+        double power = k*(-sech(distance - stoppingDistance) + 1.14);
+        
         if(yaw < -31){
             power = power - 0.2*(0.006451*yaw);
         } else if(yaw < 0){
@@ -79,6 +86,7 @@ public class TravelAlignPushCommand extends Command {
     // subsystems is scheduled to run or when cancelled by whileHeld
     @Override
     protected void interrupted() {
+        Robot.driveSubsystem.autoDriveTank(0,0);
     	EventLogging.commandMessage(logger);
     }
 }
