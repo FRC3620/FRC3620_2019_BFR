@@ -161,7 +161,8 @@ import edu.wpi.first.wpilibj.Counter;
         pivotSubsystemMax = new CANSparkMax(5, MotorType.kBrushless);
         resetMaxToKnownState(pivotSubsystemMax);
         pivotSubsystemMax.setIdleMode(IdleMode.kBrake);
-        pivotSubsystemMax.setRampRate(0.25);
+        pivotSubsystemMax.setOpenLoopRampRate(0.25);
+        pivotSubsystemMax.setClosedLoopRampRate(0.25);
         pivotEncoder = pivotSubsystemMax.getEncoder();
         pivotSubsystemMax2 = new CANSparkMax(12, MotorType.kBrushless);
         resetMaxToKnownState(pivotSubsystemMax2);
@@ -201,7 +202,8 @@ import edu.wpi.first.wpilibj.Counter;
     static void resetMaxToKnownState (CANSparkMax x) {
 		x.setInverted(false);
         x.setIdleMode(IdleMode.kCoast);
-		x.setRampRate(1);
+        x.setOpenLoopRampRate(1);
+        x.setClosedLoopRampRate(1);
         x.setSmartCurrentLimit(50);
     }
 
