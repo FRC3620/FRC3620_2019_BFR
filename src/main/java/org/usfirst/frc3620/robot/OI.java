@@ -83,7 +83,7 @@ public class OI {
             conveyorL.whileHeld(new TrashLeftCommand());
             conveyorR.whileHeld(new TrashRightCommand());
             positionOne.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_BOTTOM));
-            positionTwo.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_TOP));
+            positionTwo.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_CARGOSHIP));
             hatchExtend.toggleWhenPressed(new HatchExtendCommand());
             hatchCollect.toggleWhenPressed(new HatchCollectCommand());
         }
