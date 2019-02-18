@@ -20,8 +20,15 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class LiftSubsystem extends Subsystem {
     Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 
-    public static final double SETPOINT_BOTTOM = 3;
-    public static final double SETPOINT_TOP = 9;
+    public static final double SETPOINT_BOTTOM = 0;
+    public static final double SETPOINT_TRASHIN = 3;
+    public static final double SETPOINT_CARGOSHIP = 16;
+    public static final double SETPOINT_ROCKET_MIDDLE = 31;
+    public static final double SETPOINT_ROCKET_TOP = 59;
+
+    public static final double SETPOINT_HATCH_BOTTOM = 0;
+    public static final double SETPOINT_HATCH_MIDDLE = 0;
+    public static final double SETPOINT_HATCH_TOP = 0;
 
     private final CANSparkMax liftMax = RobotMap.liftSubsystemMax;
     private final DigitalInput topLimit = RobotMap.liftLimitSwitchTop;
@@ -118,7 +125,7 @@ public class LiftSubsystem extends Subsystem {
 
     double ticstoinches(double tics) { 
         // turning the encoder readings from tics to inches
-        double inches = tics * 0.5362505363; //(13inches/24.25tics)
+        double inches = tics * 0.508696934; //(9.75inches/19.16661837167tics)
         return inches;
     }
 
