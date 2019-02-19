@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.Spark;
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.Counter;
 
 /**
@@ -65,8 +66,9 @@ import edu.wpi.first.wpilibj.Counter;
 
     public static Solenoid hatchSubsystemFinger;
     public static Solenoid hatchSubsystemPusher;
-    public static Solenoid pcm0Dummy;
-
+    public static Compressor c;
+  
+    
     public static Spark lightSubsystemLightPWM;
 
     // no touchee!
@@ -182,9 +184,12 @@ import edu.wpi.first.wpilibj.Counter;
         if (canDeviceFinder.isPCMPresent(0)) {
             //instantiate Pneumatics here
             //doublesolenoids requires a PCM number first
+            c = new Compressor(0);
+        }
+
+        if (canDeviceFinder.isPCMPresent(1)) {
             hatchSubsystemPusher = new Solenoid(1, 0);
             hatchSubsystemFinger = new Solenoid(1, 1);
-            pcm0Dummy = new Solenoid(0, 0);
         }
     }
 
