@@ -103,6 +103,8 @@ public class OI {
             SmartDashboard.putData("CenterOnTarget", new VisionAlignmentCommand());
             SmartDashboard.putData("TapTarget", new TravelAlignPushCommand());
             SmartDashboard.putData("DriveForward", new AutoMoveForwardCommand(10,.7));
+            SmartDashboard.putData("LineUpWithCargoship", new AutoLineUpWithCargoshipCommand());
+
 
         }
 

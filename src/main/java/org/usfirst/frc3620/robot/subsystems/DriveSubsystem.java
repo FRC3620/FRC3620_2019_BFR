@@ -10,6 +10,8 @@ import org.usfirst.frc3620.robot.RobotMap;
 import org.usfirst.frc3620.robot.commands.DriveCommand;
 
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.PIDSource;
+import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -21,6 +23,8 @@ public class DriveSubsystem extends Subsystem {
 
     Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
     public AHRS ahrs = null /* will set in the constructor */;
+
+    PIDSourceType pidSourceType = PIDSourceType.kDisplacement;
 
     private final DifferentialDrive differentialDrive = RobotMap.driveSubsystemDifferentialDrive;
     private Encoder driveEncoderLeft = RobotMap.leftSideEncoder;
@@ -146,6 +150,15 @@ public class DriveSubsystem extends Subsystem {
 		}
     }
 
+    public double getRealAngle(){
+        double angle = getAngle();
+        double realAngle = angle % 360;
+        if (realAngle < 0){
+            realAngle += 360;
+        }
+        return realAngle;
+    }
+
     public double getAutomaticHeading() {
 		return automaticHeading;
 	}
@@ -222,5 +235,26 @@ public class DriveSubsystem extends Subsystem {
         }
     }
 
-	
+	public PIDSource getAhrsPidSource() {
+		if (ahrsIsConnected()) {
+			return ahrs;
+		} else {
+			return new PIDSource() {
+
+				@Override
+				public void setPIDSourceType(PIDSourceType pidSource) {
+				}
+
+				@Override
+				public double pidGet() {
+					return 0;
+				}
+
+                @Override
+                public PIDSourceType getPIDSourceType() {
+                    return null;
+				}
+			};
+		}
+	}
 }
