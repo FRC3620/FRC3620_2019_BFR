@@ -123,4 +123,14 @@ public class OI {
         //gets value from x axis on (left)Climberjoystick on operatorJoystick.
     	return computeDeadband(operatorJoystick.getRawAxis(XBoxConstants.AXIS_LEFT_X), 0);
     }
+
+    public double getLiftManualVerticalJoystick(){
+        //gets value from y axis on (right)LiftJoystick on operatorJoystick.
+        return computeDeadband(operatorJoystick.getRawAxis(XBoxConstants.AXIS_RIGHT_Y), 0.2);
+    }
+
+    public double getLiftManualHorizontalJoystick(){
+        //gets value from  axis on (right)LiftJoystick on operatorJoystick.
+        return computeDeadband(operatorJoystick.getRawAxis(XBoxConstants.AXIS_RIGHT_X), 0.2);
+    }
 }
