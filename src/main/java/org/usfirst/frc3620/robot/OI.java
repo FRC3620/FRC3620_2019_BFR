@@ -51,30 +51,29 @@ public class OI {
         driverJoystick = new Joystick(0);
         operatorJoystick = new Joystick(1);
 
+        DPad operatorDPad = new DPad(operatorJoystick, 0);
+
         Robot.rumbleSubsystemDriver.setController(driverJoystick);
         Robot.rumbleSubsystemOperator.setController(operatorJoystick);
         // map buttons to Joystick buttons here
         
-        DPad operatorDPad = new DPad(operatorJoystick, 0);
-        operatorDPad.down().whenPressed(new SetPivotAngleCommand(PivotSubsystem.SETANGLE_BOTTOM));
-        operatorDPad.up().whenPressed(new SetPivotAngleCommand(PivotSubsystem.SETANGLE_TOP));
-        operatorDPad.right().whenPressed(new SetPivotAngleCommand(PivotSubsystem.SETANGLE_MIDDLE));
-        operatorDPad.left().whenPressed(new SetPivotAngleCommand(PivotSubsystem.SETANGLE_MIDDLE));
-
-            //Declare buttons
+        //Declare buttons
             
             //driver controls
-            Button inTakeIn = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_LEFT_STICK);
-            Button inTakeOut = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_RIGHT_STICK);
-            Button trashIn = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_START);
-            Button conveyorR = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_B);
-            Button conveyorL = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_X);
-            Button hatchExtend = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_A);
-            Button hatchCollect = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_Y);
+            
+            //operator controls 
+            Button conveyorR = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_RIGHT_BUMPER);
+            Button conveyorL = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_LEFT_BUMPER);
+            Button hatchExtend = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_X);
+            Button hatchCollect = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_B);
+            Button inTakeIn = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_A); 
+            Button inTakeOut = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_START);
+            Button trashIn = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_Y);
 
-            //operator controls
-            Button positionOne = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_A);
-            Button positionTwo = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_B);
+            operatorDPad.down().whenPressed(new SetPivotAngleCommand(PivotSubsystem.SETANGLE_BOTTOM));
+            operatorDPad.up().whenPressed(new SetPivotAngleCommand(PivotSubsystem.SETANGLE_TOP));
+            operatorDPad.right().whenPressed(new SetPivotAngleCommand(PivotSubsystem.SETANGLE_MIDDLE));
+            operatorDPad.left().whenPressed(new SetPivotAngleCommand(PivotSubsystem.SETANGLE_MIDDLE));
 
             //buttons run commands
             inTakeIn.toggleWhenPressed(new IntakeCommand());
@@ -82,8 +81,6 @@ public class OI {
             trashIn.toggleWhenPressed(new TrashInCommand());
             conveyorL.whileHeld(new TrashLeftCommand());
             conveyorR.whileHeld(new TrashRightCommand());
-            positionOne.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_BOTTOM));
-            positionTwo.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_CARGOSHIP));
             hatchExtend.toggleWhenPressed(new HatchExtendCommand());
             hatchCollect.toggleWhenPressed(new HatchCollectCommand());
         }
