@@ -100,7 +100,7 @@ import edu.wpi.first.wpilibj.Counter;
             groupLeft = new SpeedControllerGroup(driveSubsystemMaxLeftA, driveSubsystemMaxLeftB);
             groupRight = new SpeedControllerGroup(driveSubsystemMaxRightA, driveSubsystemMaxRightB);
 
-        } else if (canDeviceFinder.isSRXPresent(1)) {
+        } else {
 
             WPI_TalonSRX driveSubsystemLeftSpeedControllerA = new WPI_TalonSRX(1);
             resetTalonToKnownState(driveSubsystemLeftSpeedControllerA);
@@ -125,17 +125,19 @@ import edu.wpi.first.wpilibj.Counter;
 
             groupLeft = new SpeedControllerGroup(driveSubsystemLeftSpeedControllerA, driveSubsystemLeftSpeedControllerB, driveSubsystemLeftSpeedControllerC);
             groupRight = new SpeedControllerGroup(driveSubsystemRightSpeedControllerA, driveSubsystemRightSpeedControllerB, driveSubsystemRightSpeedControllerC);
-        } else {
-            logger.warn ("paraplegic robot");
+        //} else {
+        //    logger.warn ("paraplegic robot");
         }
 
-        if (groupLeft != null) {
+        //if (groupLeft != null) {
             driveSubsystemDifferentialDrive = new DifferentialDrive(groupLeft, groupRight);
             driveSubsystemDifferentialDrive.setName("DriveSubsystem", "Drive");
             driveSubsystemDifferentialDrive.setSafetyEnabled(true);
             driveSubsystemDifferentialDrive.setExpiration(0.1);
             driveSubsystemDifferentialDrive.setMaxOutput(1.0);
-        }
+
+        //    logger.info ("not paraplegic");
+        //}
         
         //new code
         conveyorBeltMotorTop = new WPI_TalonSRX(7);
