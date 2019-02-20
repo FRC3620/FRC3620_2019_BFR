@@ -15,7 +15,7 @@ public class AlignToPointD extends AbstractPath{
     double x;
     double y;
     double r;
-    private final double d = 1.5;
+    private final double d = 3;
     double angle;
 
     public void calculateX(){
@@ -31,6 +31,11 @@ public class AlignToPointD extends AbstractPath{
     public void setDistanceAndIntercept(){
         r = Robot.visionSubsystem.getFrontTargetDistance();
         angle = Math.toRadians(Robot.visionSubsystem.getFrontTargetAngle());
+    }
+
+    @Override
+    public double getPathfinderP() {
+       return 0.008;
     }
 
     @Override
