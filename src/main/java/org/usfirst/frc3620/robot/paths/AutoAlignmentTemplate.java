@@ -12,6 +12,8 @@ public class AutoAlignmentTemplate extends AbstractPath{
     public AutoAlignmentTemplate(double distance, double theta){
         r = distance;
         angle = theta;
+        logger.info("R: {}", r);
+        logger.info("Theta: {}", angle);
     }
 
     public void calculateX(){
@@ -30,6 +32,7 @@ public class AutoAlignmentTemplate extends AbstractPath{
             x = r*(Math.sin(angle))*(Math.sin(1.5*angle))/
             (Math.sin(180-1.5*angle));
         }
+        logger.info("X: {}", x);
     }
 
     public void calculateY(){
@@ -47,6 +50,7 @@ public class AutoAlignmentTemplate extends AbstractPath{
             y = r*(Math.sin(angle))*(Math.cos(1.5*angle))/
             (Math.sin(180-1.5*angle));
         } 
+        logger.info("Y: {}", y);
     }
 
     @Override
