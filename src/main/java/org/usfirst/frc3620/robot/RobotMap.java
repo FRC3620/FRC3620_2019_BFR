@@ -45,8 +45,8 @@ import edu.wpi.first.wpilibj.Counter;
     public static WPI_TalonSRX intakeSubsystemLowerMotor;
     public static WPI_TalonSRX intakeSubsystemMiddleMotor;
 
-    public static WPI_TalonSRX conveyorBeltMotorTop;
-    public static WPI_TalonSRX conveyorBeltMotorBottom;
+    public static WPI_VictorSPX conveyorBeltMotorTop;
+    public static WPI_VictorSPX conveyorBeltMotorBottom;
 
     public static Counter lineSensorCounterL; 
     public static Counter lineSensorCounterR;
@@ -54,18 +54,18 @@ import edu.wpi.first.wpilibj.Counter;
     public static DigitalInput lineSensorR;
 
     public static CANSparkMax pivotSubsystemMax;
+    public static CANSparkMax pivotSubsystemMax2;
     public static CANEncoder pivotEncoder;
     public static DigitalInput pivotLimitSwitch;
 
     public static CANSparkMax liftSubsystemMax;
     public static CANEncoder liftEncoder;
-    public static Solenoid liftSubsystemBrake;
     public static DigitalInput liftLimitSwitchTop;
     public static DigitalInput liftLimitSwitchBottom;
 
     public static Solenoid hatchSubsystemFinger;
-    public static Solenoid hatchSubsystemPusher1;
-    public static Solenoid hatchSubsystemPusher2;
+    public static Solenoid hatchSubsystemPusher;
+    public static Solenoid pcm0Dummy;
 
     public static Spark lightSubsystemLightPWM;
 
@@ -78,7 +78,7 @@ import edu.wpi.first.wpilibj.Counter;
         canDeviceFinder = new CANDeviceFinder();
         logger.info ("CANDEVICEfinder found {}", canDeviceFinder.getDeviceList());
 
-        practiceBotJumper = new DigitalInput(9);
+        practiceBotJumper = new DigitalInput(0);
 
         SpeedControllerGroup groupLeft;
         SpeedControllerGroup groupRight;
@@ -134,9 +134,9 @@ import edu.wpi.first.wpilibj.Counter;
         driveSubsystemDifferentialDrive.setMaxOutput(1.0);
 
         //new code
-        conveyorBeltMotorTop = new WPI_TalonSRX(7);
+        conveyorBeltMotorTop = new WPI_VictorSPX(7);
         resetTalonToKnownState(conveyorBeltMotorTop);
-        conveyorBeltMotorBottom = new WPI_TalonSRX(8);
+        conveyorBeltMotorBottom = new WPI_VictorSPX(8);
         resetTalonToKnownState(conveyorBeltMotorBottom);
 
         intakeSubsystemUpperMotor = new WPI_TalonSRX(9);
@@ -156,8 +156,13 @@ import edu.wpi.first.wpilibj.Counter;
         pivotSubsystemMax = new CANSparkMax(5, MotorType.kBrushless);
         resetMaxToKnownState(pivotSubsystemMax);
         pivotSubsystemMax.setIdleMode(IdleMode.kBrake);
-        pivotSubsystemMax.setRampRate(0.25);
+        pivotSubsystemMax.setOpenLoopRampRate(0.25);
+        pivotSubsystemMax.setClosedLoopRampRate(0.25);
         pivotEncoder = pivotSubsystemMax.getEncoder();
+        pivotSubsystemMax2 = new CANSparkMax(12, MotorType.kBrushless);
+        resetMaxToKnownState(pivotSubsystemMax2);
+        pivotSubsystemMax2.follow(pivotSubsystemMax, true);
+        pivotSubsystemMax2.setIdleMode(IdleMode.kBrake);
         pivotLimitSwitch = new DigitalInput(5);
         
         lightSubsystemLightPWM = new Spark(9);
@@ -175,13 +180,12 @@ import edu.wpi.first.wpilibj.Counter;
         lineSensorCounterR.setUpSourceEdge(false, true);
 
         if (canDeviceFinder.isPCMPresent(0)) {
-            // instantiate Pneumatics here
-            liftSubsystemBrake = new Solenoid(1);
-            hatchSubsystemFinger = new Solenoid(2);
-            hatchSubsystemPusher1 = new Solenoid(3);
-            hatchSubsystemPusher2 = new Solenoid(4);
+            //instantiate Pneumatics here
+            //doublesolenoids requires a PCM number first
+            hatchSubsystemPusher = new Solenoid(1, 0);
+            hatchSubsystemFinger = new Solenoid(1, 1);
+            pcm0Dummy = new Solenoid(0, 0);
         }
-
     }
 
     public static boolean amICompBot(){
@@ -194,7 +198,8 @@ import edu.wpi.first.wpilibj.Counter;
     static void resetMaxToKnownState (CANSparkMax x) {
 		x.setInverted(false);
         x.setIdleMode(IdleMode.kCoast);
-		x.setRampRate(1);
+        x.setOpenLoopRampRate(1);
+        x.setClosedLoopRampRate(1);
         x.setSmartCurrentLimit(50);
     }
 
