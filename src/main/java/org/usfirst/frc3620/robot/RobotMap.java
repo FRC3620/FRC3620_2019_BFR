@@ -80,8 +80,8 @@ import edu.wpi.first.wpilibj.Counter;
 
         practiceBotJumper = new DigitalInput(0);
 
-        SpeedControllerGroup groupLeft;
-        SpeedControllerGroup groupRight;
+        SpeedControllerGroup groupLeft = null;
+        SpeedControllerGroup groupRight = null;
         if(canDeviceFinder.isMAXPresent(1)) {
             CANSparkMax driveSubsystemMaxLeftA = new CANSparkMax(1, MotorType.kBrushless);
             resetMaxToKnownState(driveSubsystemMaxLeftA);
@@ -100,7 +100,7 @@ import edu.wpi.first.wpilibj.Counter;
             groupLeft = new SpeedControllerGroup(driveSubsystemMaxLeftA, driveSubsystemMaxLeftB);
             groupRight = new SpeedControllerGroup(driveSubsystemMaxRightA, driveSubsystemMaxRightB);
 
-        } else {
+        } else if (canDeviceFinder.isSRXPresent(1)) {
 
             WPI_TalonSRX driveSubsystemLeftSpeedControllerA = new WPI_TalonSRX(1);
             resetTalonToKnownState(driveSubsystemLeftSpeedControllerA);
@@ -125,14 +125,18 @@ import edu.wpi.first.wpilibj.Counter;
 
             groupLeft = new SpeedControllerGroup(driveSubsystemLeftSpeedControllerA, driveSubsystemLeftSpeedControllerB, driveSubsystemLeftSpeedControllerC);
             groupRight = new SpeedControllerGroup(driveSubsystemRightSpeedControllerA, driveSubsystemRightSpeedControllerB, driveSubsystemRightSpeedControllerC);
+        } else {
+            logger.warn ("paraplegic robot");
+        }
+
+        if (groupLeft != null) {
+            driveSubsystemDifferentialDrive = new DifferentialDrive(groupLeft, groupRight);
+            driveSubsystemDifferentialDrive.setName("DriveSubsystem", "Drive");
+            driveSubsystemDifferentialDrive.setSafetyEnabled(true);
+            driveSubsystemDifferentialDrive.setExpiration(0.1);
+            driveSubsystemDifferentialDrive.setMaxOutput(1.0);
         }
         
-        driveSubsystemDifferentialDrive = new DifferentialDrive(groupLeft, groupRight);
-        driveSubsystemDifferentialDrive.setName("DriveSubsystem", "Drive");
-        driveSubsystemDifferentialDrive.setSafetyEnabled(true);
-        driveSubsystemDifferentialDrive.setExpiration(0.1);
-        driveSubsystemDifferentialDrive.setMaxOutput(1.0);
-
         //new code
         conveyorBeltMotorTop = new WPI_TalonSRX(7);
         resetTalonToKnownState(conveyorBeltMotorTop);
@@ -162,6 +166,7 @@ import edu.wpi.first.wpilibj.Counter;
         resetMaxToKnownState(pivotSubsystemMax2);
         pivotSubsystemMax2.follow(pivotSubsystemMax, true);
         pivotSubsystemMax2.setIdleMode(IdleMode.kBrake);
+        pivotSubsystemMax.setRampRate(0.25);
         pivotLimitSwitch = new DigitalInput(5);
         
         lightSubsystemLightPWM = new Spark(9);

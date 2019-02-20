@@ -69,6 +69,8 @@ public class OI {
             Button trashIn = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_START);
             Button conveyorL = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_X);
             Button conveyorR = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_B);
+            Button reverseDrive = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_RIGHT_BUMPER);
+            reverseDrive.whenPressed(new ToggleReverseCommand());
             //Button hatchExtend = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_START);
             //Button hatchCollect = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_RIGHT_STICK);
 
