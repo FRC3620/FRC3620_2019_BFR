@@ -97,12 +97,12 @@ public class OI {
             SmartDashboard.putData("Rumble both", new RumbleCommand(Robot.rumbleSubsystemDriver, Hand.BOTH, 0.2, 60.0));
             SmartDashboard.putData("Rumble left", new RumbleCommand(Robot.rumbleSubsystemDriver, Hand.LEFT, 0.2, 3.0));
 
-            SmartDashboard.putData("AutonomousAlign from 45", new AutoAlignmentTemplate(Robot.visionSubsystem.getTargetDistance(), Robot.visionSubsystem.getTargetAngle()));
-            SmartDashboard.putData("AlignToPointD", new AlignToPointD(Robot.visionSubsystem.getTargetDistance(), Robot.visionSubsystem.getTargetAngle()));
+            SmartDashboard.putData("AutonomousAlign from 45", new AutoAlignmentTemplate(Robot.visionSubsystem.getFrontTargetDistance(), Robot.visionSubsystem.getFrontTargetAngle()));
+            SmartDashboard.putData("AlignToPointD", new AlignToPointD(Robot.visionSubsystem.getFrontTargetDistance(), Robot.visionSubsystem.getFrontTargetAngle()));
             SmartDashboard.putData("TrainingPath", new TrainingPath());
             SmartDashboard.putData("CenterOnTarget", new VisionAlignmentCommand());
             SmartDashboard.putData("TapTarget", new TravelAlignPushCommand());
-            SmartDashboard.putData("DriveForward", new AutoMoveForwardCommand(10,.7));
+            SmartDashboard.putData("DriveForward", new AutoMoveForwardCommand(15,.7));
             SmartDashboard.putData("LineUpWithCargoship", new AutoLineUpWithCargoshipCommand());
 
 

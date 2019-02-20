@@ -26,7 +26,7 @@ public class TravelAlignPushCommand extends Command {
     protected void initialize() {
         EventLogging.commandMessage(logger);
         calculateK();
-        distanceInitial = Robot.visionSubsystem.getTargetDistance();
+        distanceInitial = Robot.visionSubsystem.getFrontTargetDistance();
     }
     public double sech(double x){
         return 1/Math.cosh(x);
@@ -61,15 +61,15 @@ public class TravelAlignPushCommand extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        double distance = Robot.visionSubsystem.getTargetDistance();
-        double yaw = Robot.visionSubsystem.getTargetYaw();
+        double distance = Robot.visionSubsystem.getFrontTargetDistance();
+        double yaw = Robot.visionSubsystem.getFrontTargetYaw();
         Robot.driveSubsystem.autoDriveTank(getLeftPower(distance, yaw), getRightPower(distance, yaw));
     }
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        double distance = Robot.visionSubsystem.getTargetDistance();
+        double distance = Robot.visionSubsystem.getFrontTargetDistance();
         if(distance > stoppingDistance){
             return false;
         }

@@ -26,9 +26,9 @@ public class AutoMoveForwardCommand extends Command implements PIDOutput, PIDSou
 
 	static final double kP = .009;
 	
-	static final double kI = 0.0005;	
+	static final double kI = 0.000;	
 	
-	static final double kD = 0;
+	static final double kD = .05;
 	
   static final double kF = 0;
 	double sideStick;
@@ -47,8 +47,9 @@ public class AutoMoveForwardCommand extends Command implements PIDOutput, PIDSou
     // eg. requires(chassis);
     requires(Robot.driveSubsystem);
     pidDriveStraight.setOutputRange(-.5, .5);
-    pidDriveStraight.setInputRange(-40, 40);
-    pidDriveStraight.setContinuous(true);
+    pidDriveStraight.setInputRange(-150, 150);
+    pidDriveStraight.setContinuous(false);
+    pidDriveStraight.setAbsoluteTolerance(10);
     howFastToMove = howFast;
     howLongWeWantToMove = howLongInSeconds;
 
@@ -74,8 +75,9 @@ public class AutoMoveForwardCommand extends Command implements PIDOutput, PIDSou
     double vertical = Robot.oi.getLeftVerticalJoystickSquared();
     logger.info("turnValue: {}", sideStick);
     Robot.driveSubsystem.arcadeDrive(-vertical, -sideStick);
+    
+    
   }
-
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
@@ -108,7 +110,7 @@ public class AutoMoveForwardCommand extends Command implements PIDOutput, PIDSou
 
   @Override
   public double pidGet() {
-    return Robot.visionSubsystem.getTargetYaw();
+    return Robot.visionSubsystem.getFrontTargetYaw();
   }
 
   @Override

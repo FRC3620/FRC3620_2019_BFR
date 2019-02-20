@@ -90,7 +90,7 @@ public class AutoLineUpWithCargoshipCommand extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-      if (Robot.visionSubsystem.getTargetYaw() != 0){
+      if (Robot.visionSubsystem.getRightTargetYaw() != 0){
         return false;
       }
       return false;
@@ -125,7 +125,7 @@ public class AutoLineUpWithCargoshipCommand extends Command {
 
       @Override
       public double pidGet() {
-        return Robot.visionSubsystem.getTargetYaw();
+        return Robot.visionSubsystem.getRightTargetYaw();
       }
   
     }

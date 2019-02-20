@@ -36,12 +36,22 @@ public class VisionSubsystem extends Subsystem implements PIDSource, PIDOutput {
   private NetworkTableInstance inst = NetworkTableInstance.getDefault();
   private NetworkTable networkTable = inst.getTable("ChickenVision");
 
-  private NetworkTableEntry targetAngle = networkTable.getEntry("angle frontCameratape");
-  private NetworkTableEntry targetDistance = networkTable.getEntry("RealDistance frontCameratape");
-  private NetworkTableEntry targetYaw = networkTable.getEntry("tapeYaw frontCameratape");
+  private NetworkTableEntry frontTargetAngle = networkTable.getEntry("angle frontCameratape");
+  private NetworkTableEntry frontTargetDistance = networkTable.getEntry("RealDistance frontCameratape");
+  private NetworkTableEntry frontTargetYaw = networkTable.getEntry("tapeYaw frontCameratape");
+  private NetworkTableEntry frontIsThereTarget = networkTable.getEntry("tapeDetected frontCameratape");
+
+  private NetworkTableEntry rightTargetAngle = networkTable.getEntry("angle rightCameratape");
+  private NetworkTableEntry rightTargetDistance = networkTable.getEntry("RealDistance rightCameratape");
+  private NetworkTableEntry rightTargetYaw = networkTable.getEntry("tapeYaw rightCameratape");
+  private NetworkTableEntry rightIsThereTarget = networkTable.getEntry("tapeDetected rightCameratape");
+
+  private NetworkTableEntry leftTargetAngle = networkTable.getEntry("angle leftCameratape");
+  private NetworkTableEntry leftTargetDistance = networkTable.getEntry("RealDistance leftCameratape");
+  private NetworkTableEntry leftTargetYaw = networkTable.getEntry("tapeYaw leftCameratape");
+  private NetworkTableEntry leftIsThereTarget = networkTable.getEntry("tapeDetected leftCameratape");
 
   private final double DESIRED_YAW = 0;
-  private double error;
 
   private final PIDController visionPIDController;
   
@@ -68,23 +78,87 @@ public class VisionSubsystem extends Subsystem implements PIDSource, PIDOutput {
 
   @Override
     public void periodic() {
-      error = getTargetYaw();
-      //logger.info("Yaw: {}", error);
     }
 
-  public double getTargetAngle(){
-    double angle = targetAngle.getDouble(0);
-    return angle;
+  public double getFrontTargetAngle(){
+    if (frontIsThereTarget.getBoolean(false)){
+      double angle = frontTargetAngle.getDouble(0);
+      return angle;
+    }
+    logger.info("No front target detected, returning angle = 0");
+    return 0;
   }
 
-  public double getTargetDistance(){
-    double distance = targetDistance.getDouble(0);
-    return distance;
+  public double getFrontTargetDistance(){
+    if (frontIsThereTarget.getBoolean(false)){
+      double distance = frontTargetDistance.getDouble(0);
+      return distance;
+    }
+    logger.info("No front target detected, returning distance = 0");
+    return 0;
   }
 
-  public double getTargetYaw(){
-    double yaw = targetYaw.getDouble(0);
-    return yaw;
+  public double getFrontTargetYaw(){
+    if (frontIsThereTarget.getBoolean(false)){
+      double yaw = frontTargetYaw.getDouble(0);
+      return yaw;
+    }
+    logger.info("No front target detected, returning yaw = 0");
+    return 0;
+  }
+
+  public double getRightTargetYaw(){
+    if (rightIsThereTarget.getBoolean(false)){
+      double yaw = rightTargetYaw.getDouble(0);
+      return yaw;
+    }
+    logger.info("No right target detected, returning yaw = 0");
+    return 0;
+  }
+
+  public double getRightTargetAngle(){
+    if (rightIsThereTarget.getBoolean(false)){
+      double angle = rightTargetAngle.getDouble(0);
+      return angle;
+    }
+    logger.info("No right target detected, returning angle = 0");
+    return 0;
+  }
+
+  public double getRightTargetDistance(){
+    if (rightIsThereTarget.getBoolean(false)){
+      double distance = rightTargetDistance.getDouble(0);
+      return distance;
+    }
+    logger.info("No front target detected, returning distance = 0");
+    return 0;
+  }
+
+  public double getLeftTargetYaw(){
+    if (leftIsThereTarget.getBoolean(false)){
+      double yaw = leftTargetYaw.getDouble(0);
+      return yaw;
+    }
+    logger.info("No left target detected, returning yaw = 0");
+    return 0;
+  }
+
+  public double getLeftTargetAngle(){
+    if (leftIsThereTarget.getBoolean(false)){
+      double angle = leftTargetAngle.getDouble(0);
+      return angle;
+    }
+    logger.info("No left target detected, returning angle = 0");
+    return 0;
+  }
+
+  public double getLeftTargetDistance(){
+    if (leftIsThereTarget.getBoolean(false)){
+      double distance = leftTargetDistance.getDouble(0);
+      return distance;
+    }
+    logger.info("No left target detected, returning distance = 0");
+    return 0;
   }
 
   public double getPIDOutput(){
@@ -142,7 +216,7 @@ public class VisionSubsystem extends Subsystem implements PIDSource, PIDOutput {
 
     @Override
     public double pidGet() {
-        double pos = getTargetYaw();
+        double pos = getFrontTargetYaw();
         return pos;
 	}
 }
