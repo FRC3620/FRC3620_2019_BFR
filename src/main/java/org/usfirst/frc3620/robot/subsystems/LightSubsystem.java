@@ -34,12 +34,6 @@ public class LightSubsystem extends Subsystem {
 
     ArrayList<ColorTimers> colorTimers = new ArrayList<ColorTimers>();
     DriverStation.Alliance teamColor = DriverStation.getInstance().getAlliance();
-    /**
-     * @author Nick Zimanski (SlippStream)
-     * @version 2/01/19
-     * 
-     * Added autonomous and teleop functions
-     */
     
     /**
      * @see Hashmap stores the priority of lighting effects as an integer tied to the PWM power as a double
@@ -53,15 +47,15 @@ public class LightSubsystem extends Subsystem {
 
     public void modeChange (RobotMode newMode, RobotMode previousMode) {
         //sets the lights to a green by defalt when in anything other than disabled
-        if (newMode != RobotMode.DISABLED) {lightsPriority.put(4, Color.DARK_GREEN.value);}
+        if (newMode != RobotMode.DISABLED) {lightsPriority.put(5, Color.DARK_GREEN.value);}
 
         if ((newMode == RobotMode.TELEOP || newMode == RobotMode.AUTONOMOUS) && previousMode == RobotMode.DISABLED) {
-            //fires when robot is put initialized from diasabled
             initTime.reset();
             initTime.start();
+            //fires when robot is put initialized from diasabled
             //checks alliance color and strobes it
-            if (teamColor == Alliance.Red) {lightsPriority.put(0, Color.STROBE_TEAMCOLOR2.value);}
-            else if (teamColor == Alliance.Blue) {lightsPriority.put(0, Color.STROBE_TEAMCOLOR1.value);}
+            if (teamColor == Alliance.Red) {setEffect(0, Color.STROBE_TEAMCOLOR2, 1.5);}
+            else if (teamColor == Alliance.Blue) {setEffect(0, Color.STROBE_TEAMCOLOR1, 1.5);}
 
             if (newMode == RobotMode.AUTONOMOUS) {
                 //fires if the robot initialized into auto from disabled
@@ -127,12 +121,6 @@ public class LightSubsystem extends Subsystem {
     @Override
     public void periodic() {
         
-        //activates 1.5 seconds after initialization
-        if (initTime.get() >= 1.5 && !afterInitialized) {
-            lightsPriority.remove(0);
-            afterInitialized = true;
-        }
-        
         //constantly updates team color
         teamColor = DriverStation.getInstance().getAlliance();
 
@@ -148,6 +136,7 @@ public class LightSubsystem extends Subsystem {
                 colorToRemove = effect;
             }
         }
+        
         if (colorToRemove != null) {
             colorTimers.remove(colorToRemove);
             colorToRemove = null;
@@ -172,6 +161,9 @@ public class LightSubsystem extends Subsystem {
     // here. Call these from Commands.
 
     public void finished() {
+        initTime.stop();
+        initTime.reset();
+
         lightsPriority.remove(0);
         lightsPriority.remove(1);
         lightsPriority.remove(2);
