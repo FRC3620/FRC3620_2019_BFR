@@ -21,9 +21,9 @@ public class LiftSubsystem extends Subsystem {
     Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 
     public static final double SETPOINT_BOTTOM = 0;
-    public static final double SETPOINT_TRASHIN = 3;
+    public static final double SETPOINT_TRASHIN = 3.25;
     public static final double SETPOINT_CARGOSHIP = 16;
-    public static final double SETPOINT_ROCKET_MIDDLE = 31;
+    public static final double SETPOINT_ROCKET_MIDDLE = 30.75;
     public static final double SETPOINT_ROCKET_TOP = 59;
 
     public static final double SETPOINT_HATCH_BOTTOM = 0;
@@ -37,6 +37,7 @@ public class LiftSubsystem extends Subsystem {
 
     private boolean encoderisvalid = false;
     private double desiredHeight = 0;
+    private boolean autoMagicMode = true;
 
     public LiftSubsystem(){
         // this code gets run when the LiftSubsystem is created 
@@ -62,32 +63,65 @@ public class LiftSubsystem extends Subsystem {
         }
         SmartDashboard.putNumber("liftEncoderInInches", getLiftHeight());
         if(Robot.getCurrentRobotMode() == RobotMode.TELEOP || Robot.getCurrentRobotMode() == RobotMode.AUTONOMOUS){
-            if(isBottomLimitDepressed()){
+            if(isBottomLimitDepressed() && !encoderisvalid){
                 resetEncoder();
                 encoderisvalid = true;
             }
-
-            if(encoderisvalid){
-                double currentheight = getLiftHeight();
-                double error = currentheight - desiredHeight;
-                if(Math.abs(error) > 1){
-                    if(error > 0){
-                        liftMove(-0.2);
-                    }
-
-                    if(error < 0){
-                        liftMove(+0.2);
-                    }
-                }else{
-                    liftStop();
+           
+            double xPos = Robot.oi.getLiftManualHorizontalJoystick();
+            double yPos = Robot.oi.getLiftManualVerticalJoystick();
+            if (Math.abs(xPos) > 0.2 || Math.abs(yPos) > 0.2){
+                if (autoMagicMode){
+                    logger.info("Switching to Manual Mode");
                 }
+                autoMagicMode = false;
+            }
 
+            if(!autoMagicMode){
+                periodicManualMode();
             }else{
-                liftMove(0);
+                //Automagic
+                if (encoderisvalid){
+                    periodicAutoMagicMode();
+                }else{
+                    //we want to be down, but we're not there yet
+                    //we need to do some LiftMove with a negative
+                    liftMove(-0.2);
+                }
             }
         }
     }
     
+    private void periodicAutoMagicMode(){
+        double currentheight = getLiftHeight();
+        double error = currentheight - desiredHeight;
+        if(Math.abs(error) > 1){
+            if(error > 0){
+                liftMove(-0.3);
+            }
+
+            if(error < 0){
+                liftMove(+0.3);
+            }
+        }else{
+            liftStop();
+        }
+    }
+
+    private void periodicManualMode() {
+        double yPos = Robot.oi.getLiftManualVerticalJoystick();
+        // joystick position is negative if we move up.
+        // if we are moving up, that means we want to 
+        // Move lift upward.
+        // liftMove needs a positive number to move up.
+        // so we need to change the sign. 
+        double speed = -yPos * 0.4;
+        if(speed < -0.2){
+            speed = -0.2;
+        }
+        liftMove(speed);
+    }
+
     public boolean isBottomLimitDepressed(){
        if(bottomLimit.get() == true){
            return false; 
@@ -153,6 +187,11 @@ public class LiftSubsystem extends Subsystem {
     }
 
     public void setDesiredHeight(double h) {
+        logger.info("setting desired hieght");
         desiredHeight = h;
+        if (!autoMagicMode){
+            logger.info("going to Automagic mode");
+        }
+        autoMagicMode = true;
     }
 }
