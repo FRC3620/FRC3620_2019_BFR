@@ -57,7 +57,7 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
 
         SmartDashboard.putBoolean("Pivot limit switch", isTopPivotLimitDepressed());
 
-        if(checkForLiftEncoder()) {
+        if(checkForPivotEncoder()) {
             SmartDashboard.putNumber("pivotAngleInTics", pivotEncoder.getPosition());
         }
         SmartDashboard.putNumber("pivotAngleInDegrees", getPivotAngle());
@@ -192,7 +192,7 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
      * @return
      */
     public double getPivotAngle() {
-        if(checkForLiftEncoder()) {
+        if(checkForPivotEncoder()) {
             double tics = pivotEncoder.getPosition();
             double howfarwehavemoved = tics - pivotEncoderZeroValue;
             double degrees = ticstodegrees(howfarwehavemoved);
@@ -204,12 +204,12 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
 
     private double pivotEncoderZeroValue;
 
-    public boolean checkForLiftEncoder() {
+    public boolean checkForPivotEncoder() {
         return(!(pivotEncoder == null));
     }
 
     public void resetEncoder(){
-        if(checkForLiftEncoder()) {
+        if(checkForPivotEncoder()) {
             pivotEncoderZeroValue = pivotEncoder.getPosition();
         }
     }

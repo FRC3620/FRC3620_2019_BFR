@@ -74,9 +74,6 @@ public class DriveSubsystem extends Subsystem {
         //!!! Make sure robot is in open area, drive carefully
         if (differentialDrive != null) {
             differentialDrive.arcadeDrive(y, x);
-            SmartDashboard.putString("drive", "" + y + " " + x );
-        } else {
-            SmartDashboard.putString("drive", "paraplegic");
         }
         SmartDashboard.putNumber("Y diff. drive", y);
         SmartDashboard.putNumber("X diff. drive", x);
