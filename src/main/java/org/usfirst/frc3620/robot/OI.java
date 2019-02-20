@@ -103,12 +103,12 @@ public class OI {
 
     public double getLeftVerticalJoystickSquared() {
         //gets value from x or y axis on joysticks on gamepad. In this istance, Left X
-    	return computeDeadband(driverJoystick.getRawAxis(XBoxConstants.AXIS_LEFT_Y), 0.2);
+    	return computeDeadband(driverJoystick.getRawAxis(XBoxConstants.AXIS_LEFT_Y), 0);
     }
 
     public double getRightHorizontalJoystickSquared() {
         //gets value from x or y axis on joysticks on gamepad. In this istance, Right Y
-        return computeDeadband(driverJoystick.getRawAxis(XBoxConstants.AXIS_RIGHT_X), 0.2);
+        return computeDeadband(driverJoystick.getRawAxis(XBoxConstants.AXIS_RIGHT_X), 0);
     }
 
     public double getClimberVerticalJoystick() {
