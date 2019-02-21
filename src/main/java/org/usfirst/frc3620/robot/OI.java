@@ -113,5 +113,4 @@ public class OI {
         //gets value from x or y axis on joysticks on gamepad. In this istance, Right Y
         return computeDeadband(driverJoystick.getRawAxis(XBoxConstants.AXIS_RIGHT_X), 0.2);
     }
-     
 }

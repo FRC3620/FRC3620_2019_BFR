@@ -2,8 +2,8 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <bytecodeTargetLevel>
-      <module name="FRC3620_2019_BFR.main" target="1.8" />
-      <module name="FRC3620_2019_BFR.test" target="1.8" />
+      <module name="FRC3620_2019_BFR.main" target="11" />
+      <module name="FRC3620_2019_BFR.test" target="11" />
     </bytecodeTargetLevel>
   </component>
   <component name="Encoding" addBOMForNewFiles="with NO BOM" />
@@ -35,7 +35,7 @@
       <module fileurl="file://$PROJECT_DIR$/FRC3620_2019_BFR.test.iml" filepath="$PROJECT_DIR$/FRC3620_2019_BFR.test.iml" />
     </modules>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="false" project-jdk-name="11" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="11" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/classes" />
   </component>
   <component name="VcsDirectoryMappings">

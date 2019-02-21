@@ -7,17 +7,18 @@ import org.usfirst.frc3620.logger.EventLogging.Level;
 import org.usfirst.frc3620.misc.LineSensor;
 
 /**
+ * LineDetectionsubsystem, Simple format building code
  *
+ * Coded for future edits with commands within logic-based statements
  */
 public class LineDetectionCommand extends Command {
     Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
     boolean isThereALine;
     RumbleCommand rumbleCommand;
     LineSensor lineSensor=LineSensor.LEFT_SENSOR; //default init
-    
-    
+
     public LineDetectionCommand(LineSensor pos) {
-        lineSensor = pos;   
+        lineSensor = pos;
     }
 
     // Called just before this Command runs the first time
@@ -34,24 +35,24 @@ public class LineDetectionCommand extends Command {
         if(Robot.lineSubsystem.readLineDetectionCounter(lineSensor)){
             // Line sensor detected now perform action
             if(isThereALine == false)
-            {
                 Robot.lineSubsystem.setLineDetectionStatus(lineSensor,true);
+            {
+
             }
-            isThereALine = true;    
+            isThereALine = true;
         }
-        //reading the line sensor (digital input directly) to check 
+        //reading the line sensor (digital input directly) to check
         if(Robot.lineSubsystem.readliveSensorInput(lineSensor)){
             // Line sensor NOT detected, so do action
             if(isThereALine == true)
-            {                
-                Robot.lineSubsystem.setLineDetectionStatus(lineSensor,false);              
+            {
+                Robot.lineSubsystem.setLineDetectionStatus(lineSensor,false);
             }
-            isThereALine = false;
+             isThereALine = false;
             //reset the counter if not detected
-            Robot.lineSubsystem.resetLineDetectionCounter(lineSensor);            
+            Robot.lineSubsystem.resetLineDetectionCounter(lineSensor);
         }
     }
-
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
@@ -62,16 +63,17 @@ public class LineDetectionCommand extends Command {
     @Override
     protected void end() {
         EventLogging.commandMessage(logger);
-        //reset the counter 
+        //reset the counter
         Robot.lineSubsystem.resetLineDetectionCounter(lineSensor);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run or when cancelled by whileHeld
+
     @Override
     protected void interrupted() {
         EventLogging.commandMessage(logger);
-        //reset the counter 
+        //reset the counter
         Robot.lineSubsystem.resetLineDetectionCounter(lineSensor);
     }
 }
