@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc3620.misc.XBoxConstants;
 import org.usfirst.frc3620.robot.commands.*;
 import org.usfirst.frc3620.robot.subsystems.LiftSubsystem;
@@ -83,6 +84,8 @@ public class OI {
             hatchCollect.whileHeld(new HatchCollectCommand());
             angleOne.whenPressed(new SetPivotAngleCommand(PivotSubsystem.SETANGLE_MIDDLE));
             angleTwo.whenPressed(new SetPivotAngleCommand(PivotSubsystem.SETANGLE_TOP));
+
+            SmartDashboard.putData(new HabInstrumentationCommand());
         }
 
     public Joystick getDriverJoystick() {

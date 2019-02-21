@@ -8,13 +8,13 @@ import java.util.TimerTask;
 
 abstract public class FastDataLoggerBase extends DataLoggerBase implements IFastDataLogger {
 
-	double maxLengthInSeconds;
+	Double maxLengthInSeconds = null;
 	double t0;
 
 	boolean isDone = false;
 
 	@Override
-	public void setMaxLength(double seconds) {
+	public void setMaxLength(Double seconds) {
 		maxLengthInSeconds = seconds;
 	}
 
@@ -39,7 +39,7 @@ abstract public class FastDataLoggerBase extends DataLoggerBase implements IFast
 		@Override
 		public void run() {
 			double t = getTimeInSeconds();
-			if (t > t0 + maxLengthInSeconds) {
+			if (maxLengthInSeconds != null && (t > t0 + maxLengthInSeconds)) {
 				done();
 			} else {
 				Object[] row = new Object[namedDataProviders.size()];
