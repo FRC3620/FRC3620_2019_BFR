@@ -1,7 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="88a998b1-fc64-42db-af6b-10c22e5fc755" name="Default Changelist" comment="" />
+    <list default="true" id="88a998b1-fc64-42db-af6b-10c22e5fc755" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/FRC3620_2019_BFR.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/usfirst/frc3620/misc/ColorTimers.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FRC3620_2019_BFR.ipr" beforeDir="false" afterPath="$PROJECT_DIR$/FRC3620_2019_BFR.ipr" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FRC3620_2019_BFR.main.iml" beforeDir="false" afterPath="$PROJECT_DIR$/FRC3620_2019_BFR.main.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FRC3620_2019_BFR.test.iml" beforeDir="false" afterPath="$PROJECT_DIR$/FRC3620_2019_BFR.test.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/usfirst/frc3620/misc/CANDeviceFinder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/usfirst/frc3620/misc/CANDeviceFinder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/usfirst/frc3620/robot/OI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/usfirst/frc3620/robot/OI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/usfirst/frc3620/robot/Robot.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/usfirst/frc3620/robot/Robot.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/usfirst/frc3620/robot/RobotMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/usfirst/frc3620/robot/RobotMap.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/usfirst/frc3620/robot/commands/LineDetectionCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/usfirst/frc3620/robot/commands/LineDetectionCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/usfirst/frc3620/robot/subsystems/LightSubsystem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/usfirst/frc3620/robot/subsystems/LightSubsystem.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/usfirst/frc3620/robot/subsystems/LineSubsystem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/usfirst/frc3620/robot/subsystems/LineSubsystem.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/usfirst/frc3620/robot/subsystems/RumbleSubsystem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/usfirst/frc3620/robot/subsystems/RumbleSubsystem.java" afterDir="false" />
+    </list>
     <ignored path="$PROJECT_DIR$/.gradle/" />
     <ignored path="$PROJECT_DIR$/build/" />
     <ignored path="$PROJECT_DIR$/out/" />
@@ -98,8 +118,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/org/usfirst/frc3620/robot/OI.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="313">
-              <caret line="101" lean-forward="true" selection-start-line="101" selection-end-line="101" />
+            <state relative-caret-position="1530">
+              <caret line="101" selection-start-line="101" selection-end-line="101" />
             </state>
           </provider>
         </entry>
@@ -107,7 +127,7 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/build.gradle">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="270">
+            <state relative-caret-position="534">
               <caret line="62" column="13" selection-start-line="62" selection-start-column="13" selection-end-line="62" selection-end-column="13" />
             </state>
           </provider>
@@ -155,36 +175,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane">
-        <subPane>
-          <expand>
-            <path>
-              <item name="FRC3620_2019_BFR" type="58d84e3e:PackageViewProjectNode" />
-              <item name="FRC3620_2019_BFR.main" type="616d4139:PackageViewModuleNode" />
-            </path>
-            <path>
-              <item name="FRC3620_2019_BFR" type="58d84e3e:PackageViewProjectNode" />
-              <item name="FRC3620_2019_BFR.main" type="616d4139:PackageViewModuleNode" />
-              <item name="org.usfirst.frc3620" type="1f31426a:PackageElementNode" />
-            </path>
-            <path>
-              <item name="FRC3620_2019_BFR" type="58d84e3e:PackageViewProjectNode" />
-              <item name="FRC3620_2019_BFR.main" type="616d4139:PackageViewModuleNode" />
-              <item name="org.usfirst.frc3620" type="1f31426a:PackageElementNode" />
-              <item name="robot" type="1f31426a:PackageElementNode" />
-            </path>
-            <path>
-              <item name="FRC3620_2019_BFR" type="58d84e3e:PackageViewProjectNode" />
-              <item name="FRC3620_2019_BFR.main" type="616d4139:PackageViewModuleNode" />
-              <item name="org.usfirst.frc3620" type="1f31426a:PackageElementNode" />
-              <item name="robot" type="1f31426a:PackageElementNode" />
-              <item name="commands" type="1f31426a:PackageElementNode" />
-            </path>
-          </expand>
-          <select />
-        </subPane>
-      </pane>
       <pane id="Scope" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -360,7 +352,7 @@
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1616" height="876" extended-state="6" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.498998" visible="true" weight="0.26285347" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.498998" visible="true" weight="0.26606685" />
       <window_info id="Structure" order="1" sideWeight="0.501002" side_tool="true" weight="0.2596401" />
       <window_info id="Designer" order="2" />
       <window_info id="UI Designer" order="3" />
@@ -430,14 +422,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/org/usfirst/frc3620/robot/OI.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="313">
-          <caret line="101" lean-forward="true" selection-start-line="101" selection-end-line="101" />
+        <state relative-caret-position="1530">
+          <caret line="101" selection-start-line="101" selection-end-line="101" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/build.gradle">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
+        <state relative-caret-position="534">
           <caret line="62" column="13" selection-start-line="62" selection-start-column="13" selection-end-line="62" selection-end-column="13" />
         </state>
       </provider>
