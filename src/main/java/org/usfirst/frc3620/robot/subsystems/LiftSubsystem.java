@@ -115,9 +115,9 @@ public class LiftSubsystem extends Subsystem {
         // Move lift upward.
         // liftMove needs a positive number to move up.
         // so we need to change the sign. 
-        double speed = -yPos * 0.4;
-        if(speed < -0.2){
-            speed = -0.2;
+        double speed = -yPos * 0.5;
+        if(speed < -0.3){
+            speed = -0.3;
         }
         liftMove(speed);
     }
