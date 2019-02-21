@@ -32,6 +32,7 @@ public class DriveSubsystem extends Subsystem {
 	
     public double automaticHeading;
     public boolean complainedAboutMissingAhrs;
+    public double initialNavXReading = 0;
     
     boolean gotCompBot;
 
@@ -40,7 +41,7 @@ public class DriveSubsystem extends Subsystem {
         super();               
 		ahrs = new AHRS(edu.wpi.first.wpilibj.SPI.Port.kMXP);
 		// ahrs.enableLogging(false);
-		
+       
         gotCompBot = RobotMap.amICompBot();
 
         resetEncoders();
