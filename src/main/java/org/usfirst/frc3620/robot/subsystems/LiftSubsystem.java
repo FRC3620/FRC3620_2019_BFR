@@ -119,6 +119,21 @@ public class LiftSubsystem extends Subsystem {
         if(speed < -0.3){
             speed = -0.3;
         }
+
+        if(encoderisvalid){
+            double currentHeight = getLiftHeight();
+            // we don't want the lift to blow past the 
+            // limitswitch/hard stop and want power to be
+            // low enough we don't go past it. 
+            if(currentHeight > 50 && speed > 0.2) {
+                speed = 0.2;
+            } 
+
+            if(currentHeight < 6 && speed < -0.2) {
+                speed = -0.2;
+            }
+        }
+
         liftMove(speed);
     }
 
