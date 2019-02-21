@@ -149,6 +149,7 @@ public class Robot extends TimedRobot {
         if(rightLineWatcher != null)
             rightLineWatcher.start();
    
+        driveSubsystem.clearReverseMode();    
 
 		processRobotModeChange(RobotMode.TELEOP);
     }

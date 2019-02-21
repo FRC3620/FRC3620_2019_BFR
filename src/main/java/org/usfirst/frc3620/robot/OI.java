@@ -60,13 +60,15 @@ public class OI {
         //Declare buttons
             
             //driver controls
+            Button reverseDrive = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_RIGHT_BUMPER);
+            reverseDrive.whenPressed(new ToggleReverseCommand());
             
             //operator controls 
             Button conveyorR = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_RIGHT_BUMPER);
             Button conveyorL = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_LEFT_BUMPER);
             Button hatchExtend = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_X);
             Button hatchCollect = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_B);
-            Button inTakeIn = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_A); 
+            Button inTakeIn = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_RIGHT_STICK);
             Button inTakeOut = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_START);
             Button trashIn = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_Y);
 

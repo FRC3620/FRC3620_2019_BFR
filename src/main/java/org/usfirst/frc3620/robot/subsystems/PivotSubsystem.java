@@ -25,8 +25,8 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
     Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
     
     public static final double SETANGLE_BOTTOM = 75;
-    public static final double SETANGLE_MIDDLE = 55;
-    public static final double SETANGLE_TOP = 0;
+    public static final double SETANGLE_MIDDLE = 65;
+    public static final double SETANGLE_TOP = 5;
 
     private final CANSparkMax pivotMax = RobotMap.pivotSubsystemMax;
     private final CANEncoder pivotEncoder = RobotMap.pivotEncoder;
@@ -108,7 +108,7 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
                     // we want to be in, but we are not there yet
                     // we need to do some pivotMove with a negative
                     //Power was halved for two neo pivot
-                    pivotMove(-0.1);
+                    pivotMove(-0.2);
                 } else {
                     pivotStop();
                 }
@@ -122,7 +122,7 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
                     // we want to be out, but we are not there yet
                     // we need to do some pivotMove with a positive
                     //Power was halved for two neo pivot
-                    pivotMove(0.1);
+                    pivotMove(0.3);
                 } else {
                     pivotStop();
                 }
@@ -143,7 +143,7 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
         // pivotMove needs a positive number to move out to the front of
         // the robot.
         // so we need to change the sign.
-        double power = -yPos * 1;
+        double power = -yPos * 0.7;
         if(power < -0.2){
             power = -0.2;
         }
