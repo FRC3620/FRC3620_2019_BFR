@@ -148,6 +148,7 @@ import edu.wpi.first.wpilibj.Counter;
         intakeSubsystemLowerMotor = new WPI_TalonSRX(11);
         resetTalonToKnownState(intakeSubsystemLowerMotor);
 
+        // lift motor power is positive going up
         liftSubsystemMax = new CANSparkMax(6, MotorType.kBrushless);
         resetMaxToKnownState(liftSubsystemMax);
         liftSubsystemMax.setIdleMode(IdleMode.kBrake);
@@ -155,6 +156,7 @@ import edu.wpi.first.wpilibj.Counter;
         liftLimitSwitchTop = new DigitalInput(1);
         liftLimitSwitchBottom = new DigitalInput(2);
 
+        // pivot motor power is negitive when coming down
         pivotSubsystemMax = new CANSparkMax(5, MotorType.kBrushless);
         resetMaxToKnownState(pivotSubsystemMax);
         pivotSubsystemMax.setIdleMode(IdleMode.kBrake);
@@ -163,6 +165,8 @@ import edu.wpi.first.wpilibj.Counter;
         pivotEncoder = pivotSubsystemMax.getEncoder();
         pivotSubsystemMax2 = new CANSparkMax(12, MotorType.kBrushless);
         resetMaxToKnownState(pivotSubsystemMax2);
+        //second pivot motor is following the first 
+        // but the inverse is set to true because of how they are mounted
         pivotSubsystemMax2.follow(pivotSubsystemMax, true);
         pivotSubsystemMax2.setIdleMode(IdleMode.kBrake);
         pivotLimitSwitch = new DigitalInput(5);
