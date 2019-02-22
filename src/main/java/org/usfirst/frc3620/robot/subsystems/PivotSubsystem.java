@@ -160,7 +160,7 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
     }
 
     /**
-     * Move the lift, disabling if we go past the limit switch
+     * Move the pivot, disabling if we go past the limit switch
      * @param power amount of power to apply to motor. Positive 
      * moves the pivot out to the front of the robot.
      */
