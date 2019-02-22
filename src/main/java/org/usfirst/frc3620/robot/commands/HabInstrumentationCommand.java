@@ -29,28 +29,28 @@ public class HabInstrumentationCommand extends Command {
     protected void initialize() {
     	EventLogging.commandMessage(logger);
 
-        SimpleDateFormat formatName = new SimpleDateFormat(
-                "yyyyMMdd-HHmmss");
-        String _timestampString = formatName.format(new Date());
-    	String name = "hab_" + _timestampString;
-
         iFastDataLogger = new FastDataLoggerCollections();
         iFastDataLogger.setInterval(0.1);
-        iFastDataLogger.setFilename(name);
-        iFastDataLogger.addMetadata("pi", Math.PI);
-        iFastDataLogger.addMetadata("e", Math.E);
+        iFastDataLogger.setFilename("hab");
 
         if(Robot.liftSubsystem.checkForLiftEncoder()) {
-            iFastDataLogger.addDataProvider("getLiftHeight()", () -> Robot.liftSubsystem.getLiftHeight());
-            iFastDataLogger.addDataProvider("Lift Motor power", () -> Robot.liftSubsystem.getMaxPower());
-            iFastDataLogger.addDataProvider("Lift Motor current", () -> Robot.liftSubsystem.getMaxCurrent());
-            iFastDataLogger.addDataProvider("Lift Motor bus voltage", () -> Robot.liftSubsystem.getMaxVoltage());
+            iFastDataLogger.addDataProvider("liftHeight", () -> Robot.liftSubsystem.getLiftHeight());
+            iFastDataLogger.addDataProvider("liftMotorPower", () -> Robot.liftSubsystem.getMaxPower());
+            iFastDataLogger.addDataProvider("liftMotorCurrent", () -> Robot.liftSubsystem.getMaxCurrent());
+            iFastDataLogger.addDataProvider("liftMotorBusVoltage", () -> Robot.liftSubsystem.getMaxBusVoltage());
         }
-        if(Robot.pivotSubsystem.checkForLiftEncoder()) {
-            iFastDataLogger.addDataProvider("getPivotAngle()", () -> Robot.pivotSubsystem.getPivotAngle());
-            iFastDataLogger.addDataProvider("Pivot Motor power", () -> Robot.pivotSubsystem.getMaxPower());
-            iFastDataLogger.addDataProvider("Pivot Motor current", () -> Robot.pivotSubsystem.getMaxCurrent());
-            iFastDataLogger.addDataProvider("Pivot Motor bus voltage", () -> Robot.pivotSubsystem.getMaxVoltage());
+        if(Robot.pivotSubsystem.checkForPivotEncoder()) {
+            iFastDataLogger.addDataProvider("pivotAngle", () -> Robot.pivotSubsystem.getPivotAngle());
+        }
+        if (RobotMap.pivotSubsystemMax2 != null) {
+            iFastDataLogger.addDataProvider("pivotMotorPower", () -> RobotMap.pivotSubsystemMax.get());
+            iFastDataLogger.addDataProvider("pivotMotorCurrent", () -> RobotMap.pivotSubsystemMax.getOutputCurrent());
+            iFastDataLogger.addDataProvider("pivotMotorBusVoltage", () -> RobotMap.pivotSubsystemMax.getBusVoltage());
+        }
+        if (RobotMap.pivotSubsystemMax2 != null) {
+            iFastDataLogger.addDataProvider("pivotMotorPower2", () -> RobotMap.pivotSubsystemMax2.get());
+            iFastDataLogger.addDataProvider("pivotMotorCurrent2", () -> RobotMap.pivotSubsystemMax2.getOutputCurrent());
+            iFastDataLogger.addDataProvider("pivotMotorBusVoltage2", () -> RobotMap.pivotSubsystemMax2.getBusVoltage());
         }
 
         iFastDataLogger.addDataProvider("RIO X", () -> RobotMap.accel.getX());

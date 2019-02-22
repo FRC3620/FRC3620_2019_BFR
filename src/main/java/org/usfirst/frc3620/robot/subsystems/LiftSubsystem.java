@@ -211,14 +211,26 @@ public class LiftSubsystem extends Subsystem {
     }
 
     public double getMaxPower() {
-        return(liftMax.get());
+        if (liftMax != null) {
+            return (liftMax.get());
+        } else {
+            return Double.NaN;
+        }
     }
 
     public double getMaxCurrent() {
-        return(liftMax.getOutputCurrent());
+        if (liftMax != null) {
+            return(liftMax.getOutputCurrent());
+        } else {
+            return Double.NaN;
+        }
     }
 
-    public double getMaxVoltage() {
-        return(liftMax.getBusVoltage());
+    public double getMaxBusVoltage() {
+        if (liftMax != null) {
+            return(liftMax.getBusVoltage());
+        } else {
+            return Double.NaN;
+        }
     }
 }
