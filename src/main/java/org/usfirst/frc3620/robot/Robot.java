@@ -10,6 +10,7 @@ import org.usfirst.frc3620.logger.DataLogger;
 import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
 import org.usfirst.frc3620.misc.RobotMode;
+import org.usfirst.frc3620.misc.BlinkinDict.Color;
 import org.usfirst.frc3620.robot.OI;
 import org.usfirst.frc3620.robot.commands.*;
 import org.usfirst.frc3620.robot.subsystems.*;
@@ -148,6 +149,7 @@ public class Robot extends TimedRobot {
         if(rightLineWatcher != null)
             rightLineWatcher.start();
    
+        driveSubsystem.clearReverseMode();    
 
 		processRobotModeChange(RobotMode.TELEOP);
     }
@@ -222,6 +224,10 @@ public class Robot extends TimedRobot {
 	}
 	
 	void updateDashboard() {
+        SmartDashboard.putData("Turn off Operator Rumble", new RumbleCommand(rumbleSubsystemOperator, true));
+        SmartDashboard.putData("Turn on Operator Rumble", new RumbleCommand(rumbleSubsystemOperator, false));
+        SmartDashboard.putData("Turn off Driver Rumble", new RumbleCommand(rumbleSubsystemDriver, true));
+        SmartDashboard.putData("Turn on Driver Rumble", new RumbleCommand(rumbleSubsystemDriver, false));
 		//SmartDashboard.putNumber("driver y joystick", -Robot.m_oi.driveJoystick.getRawAxis(1));
 		//SmartDashboard.putNumber("driver x joystick", Robot.m_oi.driveJoystick.getRawAxis(4));
     }

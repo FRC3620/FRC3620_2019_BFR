@@ -1,5 +1,8 @@
 package org.usfirst.frc3620.robot.subsystems;
 
+import org.slf4j.Logger;
+import org.usfirst.frc3620.logger.EventLogging;
+import org.usfirst.frc3620.logger.EventLogging.Level;
 import org.usfirst.frc3620.robot.RobotMap;
 import org.usfirst.frc3620.robot.commands.DriveCommand;
 
@@ -13,10 +16,11 @@ import com.kauailabs.navx.frc.AHRS;
  *
  */
 public class DriveSubsystem extends Subsystem {
+    Logger logger = EventLogging.getLogger(getClass(), Level.INFO);    
 
     public AHRS ahrs = null;
     private boolean gotCompBot;
-    
+    private boolean reverseModeQuestion;
 
     private final DifferentialDrive differentialDrive = RobotMap.driveSubsystemDifferentialDrive;
 
@@ -68,19 +72,40 @@ public class DriveSubsystem extends Subsystem {
     public void arcadeDrive (double y, double x) {
         //sends values to motor
         //!!! Make sure robot is in open area, drive carefully
-        differentialDrive.arcadeDrive(y, x);
+        if (differentialDrive != null) {
+            differentialDrive.arcadeDrive(y, x);
+        }
         SmartDashboard.putNumber("Y diff. drive", y);
         SmartDashboard.putNumber("X diff. drive", x);
     }
-    
 
+    public boolean areWeInReverseMode(){
+        return reverseModeQuestion;
+    }
+
+    public void toggleReverseMode(){
+       if (reverseModeQuestion == true){
+           reverseModeQuestion = false;
+       }
+       else{
+           reverseModeQuestion = true;
+       }
+       logger.info ("reverse mode toggled, now {}", reverseModeQuestion);
+    }
+
+    public void clearReverseMode(){
+        reverseModeQuestion = false;
+        logger.info ("reverse mode cleared");
+    }
 
     /**
      * shut down the robot.
      */
     public void stopDrive() {
         //stops robot
-        differentialDrive.stopMotor();
+        if (differentialDrive != null) {
+            differentialDrive.stopMotor();
+        }
     }
 
     public double getLeftSideDistance() {

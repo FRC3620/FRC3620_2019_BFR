@@ -18,6 +18,9 @@ import org.usfirst.frc3620.logger.EventLogging.Level;
 import org.usfirst.frc3620.misc.CANDeviceFinder;
 
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.Spark;
+import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.Counter;
 
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
@@ -43,8 +46,8 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
     public static WPI_TalonSRX intakeSubsystemLowerMotor;
     public static WPI_TalonSRX intakeSubsystemMiddleMotor;
 
-    public static WPI_TalonSRX conveyorBeltMotorTop;
-    public static WPI_TalonSRX conveyorBeltMotorBottom;
+    public static WPI_VictorSPX conveyorBeltMotorTop;
+    public static WPI_VictorSPX conveyorBeltMotorBottom;
 
     public static Counter lineSensorCounterL; 
     public static Counter lineSensorCounterR;
@@ -52,19 +55,20 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
     public static DigitalInput lineSensorR;
 
     public static CANSparkMax pivotSubsystemMax;
+    public static CANSparkMax pivotSubsystemMax2;
     public static CANEncoder pivotEncoder;
     public static DigitalInput pivotLimitSwitch;
 
     public static CANSparkMax liftSubsystemMax;
     public static CANEncoder liftEncoder;
-    public static Solenoid liftSubsystemBrake;
     public static DigitalInput liftLimitSwitchTop;
     public static DigitalInput liftLimitSwitchBottom;
 
     public static Solenoid hatchSubsystemFinger;
-    public static Solenoid hatchSubsystemPusher1;
-    public static Solenoid hatchSubsystemPusher2;
-
+    public static Solenoid hatchSubsystemPusher;
+    public static Compressor c;
+  
+    
     public static Spark lightSubsystemLightPWM;
 
     // no touchee!
@@ -76,13 +80,13 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
         canDeviceFinder = new CANDeviceFinder();
         logger.info ("CANDEVICEfinder found {}", canDeviceFinder.getDeviceList());
 
-        practiceBotJumper = new DigitalInput(9);
+        practiceBotJumper = new DigitalInput(0);
 
         accel = new BuiltInAccelerometer();
-        //accel = new BuiltInAccelerometer(Accelerometer.Range.k4G);
 
-        SpeedControllerGroup groupLeft;
-        SpeedControllerGroup groupRight;
+        SpeedControllerGroup groupLeft = null;
+        SpeedControllerGroup groupRight = null;
+		
         if(canDeviceFinder.isMAXPresent(1)) {
             CANSparkMax driveSubsystemMaxLeftA = new CANSparkMax(1, MotorType.kBrushless);
             resetMaxToKnownState(driveSubsystemMaxLeftA);
@@ -101,7 +105,7 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
             groupLeft = new SpeedControllerGroup(driveSubsystemMaxLeftA, driveSubsystemMaxLeftB);
             groupRight = new SpeedControllerGroup(driveSubsystemMaxRightA, driveSubsystemMaxRightB);
 
-        } else {
+        } else if (canDeviceFinder.isSRXPresent(1)) {
 
             WPI_TalonSRX driveSubsystemLeftSpeedControllerA = new WPI_TalonSRX(1);
             resetTalonToKnownState(driveSubsystemLeftSpeedControllerA);
@@ -126,18 +130,22 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 
             groupLeft = new SpeedControllerGroup(driveSubsystemLeftSpeedControllerA, driveSubsystemLeftSpeedControllerB, driveSubsystemLeftSpeedControllerC);
             groupRight = new SpeedControllerGroup(driveSubsystemRightSpeedControllerA, driveSubsystemRightSpeedControllerB, driveSubsystemRightSpeedControllerC);
+        } else {
+            logger.warn ("paraplegic robot");
+        }
+
+        if (groupLeft != null) {
+            driveSubsystemDifferentialDrive = new DifferentialDrive(groupLeft, groupRight);
+            driveSubsystemDifferentialDrive.setName("DriveSubsystem", "Drive");
+            driveSubsystemDifferentialDrive.setSafetyEnabled(true);
+            driveSubsystemDifferentialDrive.setExpiration(0.1);
+            driveSubsystemDifferentialDrive.setMaxOutput(1.0);
         }
         
-        driveSubsystemDifferentialDrive = new DifferentialDrive(groupLeft, groupRight);
-        driveSubsystemDifferentialDrive.setName("DriveSubsystem", "Drive");
-        driveSubsystemDifferentialDrive.setSafetyEnabled(true);
-        driveSubsystemDifferentialDrive.setExpiration(0.1);
-        driveSubsystemDifferentialDrive.setMaxOutput(1.0);
-
         //new code
-        conveyorBeltMotorTop = new WPI_TalonSRX(7);
+        conveyorBeltMotorTop = new WPI_VictorSPX(7);
         resetTalonToKnownState(conveyorBeltMotorTop);
-        conveyorBeltMotorBottom = new WPI_TalonSRX(8);
+        conveyorBeltMotorBottom = new WPI_VictorSPX(8);
         resetTalonToKnownState(conveyorBeltMotorBottom);
 
         intakeSubsystemUpperMotor = new WPI_TalonSRX(9);
@@ -147,6 +155,7 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
         intakeSubsystemLowerMotor = new WPI_TalonSRX(11);
         resetTalonToKnownState(intakeSubsystemLowerMotor);
 
+        // lift motor power is positive going up
         liftSubsystemMax = new CANSparkMax(6, MotorType.kBrushless);
         resetMaxToKnownState(liftSubsystemMax);
         liftSubsystemMax.setIdleMode(IdleMode.kBrake);
@@ -154,14 +163,24 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
         liftLimitSwitchTop = new DigitalInput(1);
         liftLimitSwitchBottom = new DigitalInput(2);
 
+        // pivot motor power is negitive when coming down
         pivotSubsystemMax = new CANSparkMax(5, MotorType.kBrushless);
         resetMaxToKnownState(pivotSubsystemMax);
         pivotSubsystemMax.setIdleMode(IdleMode.kBrake);
-        pivotSubsystemMax.setRampRate(0.25);
+        pivotSubsystemMax.setOpenLoopRampRate(0.25);
+        pivotSubsystemMax.setClosedLoopRampRate(0.25);
         pivotEncoder = pivotSubsystemMax.getEncoder();
+        pivotSubsystemMax2 = new CANSparkMax(12, MotorType.kBrushless);
+        resetMaxToKnownState(pivotSubsystemMax2);
+        //second pivot motor is following the first 
+        // but the inverse is set to true because of how they are mounted
+        pivotSubsystemMax2.follow(pivotSubsystemMax, true);
+        pivotSubsystemMax2.setIdleMode(IdleMode.kBrake);
+        pivotSubsystemMax2.setOpenLoopRampRate(0.25);
+        pivotSubsystemMax2.setClosedLoopRampRate(0.25);
         pivotLimitSwitch = new DigitalInput(5);
         
-        lightSubsystemLightPWM = new Spark(7);
+        lightSubsystemLightPWM = new Spark(9);
         lightSubsystemLightPWM.setName("LightSubsystem", "LightPWM");
         lightSubsystemLightPWM.setInverted(false);
         
@@ -176,13 +195,15 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
         lineSensorCounterR.setUpSourceEdge(false, true);
 
         if (canDeviceFinder.isPCMPresent(0)) {
-            // instantiate Pneumatics here
-            liftSubsystemBrake = new Solenoid(1);
-            hatchSubsystemFinger = new Solenoid(2);
-            hatchSubsystemPusher1 = new Solenoid(3);
-            hatchSubsystemPusher2 = new Solenoid(4);
+            //instantiate Pneumatics here
+            //doublesolenoids requires a PCM number first
+            c = new Compressor(0);
         }
 
+        if (canDeviceFinder.isPCMPresent(1)) {
+            hatchSubsystemPusher = new Solenoid(1, 0);
+            hatchSubsystemFinger = new Solenoid(1, 1);
+        }
     }
 
     public static boolean amICompBot(){
@@ -195,7 +216,8 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
     static void resetMaxToKnownState (CANSparkMax x) {
 		x.setInverted(false);
         x.setIdleMode(IdleMode.kCoast);
-		x.setRampRate(1);
+        x.setOpenLoopRampRate(1);
+        x.setClosedLoopRampRate(1);
         x.setSmartCurrentLimit(50);
     }
 
