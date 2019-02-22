@@ -10,15 +10,13 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.*;
+import edu.wpi.first.wpilibj.interfaces.Accelerometer;
 import org.slf4j.Logger;
 import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
 import org.usfirst.frc3620.misc.CANDeviceFinder;
 
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.Solenoid;
-import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.Compressor;
@@ -41,7 +39,9 @@ import edu.wpi.first.wpilibj.Counter;
     public static CANDeviceFinder canDeviceFinder;
 
     public static DifferentialDrive driveSubsystemDifferentialDrive;
- 
+
+    public static Accelerometer accel;
+
     public static WPI_TalonSRX intakeSubsystemUpperMotor;
     public static WPI_TalonSRX intakeSubsystemLowerMotor;
     public static WPI_TalonSRX intakeSubsystemMiddleMotor;
@@ -82,8 +82,11 @@ import edu.wpi.first.wpilibj.Counter;
 
         practiceBotJumper = new DigitalInput(0);
 
+        accel = new BuiltInAccelerometer();
+
         SpeedControllerGroup groupLeft = null;
         SpeedControllerGroup groupRight = null;
+		
         if(canDeviceFinder.isMAXPresent(1)) {
             CANSparkMax driveSubsystemMaxLeftA = new CANSparkMax(1, MotorType.kBrushless);
             resetMaxToKnownState(driveSubsystemMaxLeftA);

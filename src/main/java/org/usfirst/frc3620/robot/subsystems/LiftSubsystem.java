@@ -209,4 +209,28 @@ public class LiftSubsystem extends Subsystem {
         }
         autoMagicMode = true;
     }
+
+    public double getMaxPower() {
+        if (liftMax != null) {
+            return (liftMax.get());
+        } else {
+            return Double.NaN;
+        }
+    }
+
+    public double getMaxCurrent() {
+        if (liftMax != null) {
+            return(liftMax.getOutputCurrent());
+        } else {
+            return Double.NaN;
+        }
+    }
+
+    public double getMaxBusVoltage() {
+        if (liftMax != null) {
+            return(liftMax.getBusVoltage());
+        } else {
+            return Double.NaN;
+        }
+    }
 }
