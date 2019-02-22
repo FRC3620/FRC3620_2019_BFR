@@ -6,6 +6,9 @@ import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
 import org.usfirst.frc3620.logger.FastDataLoggerCollections;
 import org.usfirst.frc3620.logger.IFastDataLogger;
+import org.usfirst.frc3620.robot.Robot;
+import org.usfirst.frc3620.robot.RobotMap;
+import org.usfirst.frc3620.robot.subsystems.LiftSubsystem;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -37,9 +40,32 @@ public class HabInstrumentationCommand extends Command {
         iFastDataLogger.addMetadata("pi", Math.PI);
         iFastDataLogger.addMetadata("e", Math.E);
 
-        iFastDataLogger.addDataProvider("r1", () -> Math.random());
-        iFastDataLogger.addDataProvider("r2", () -> Math.random() * 2.0);
-        iFastDataLogger.addDataProvider("r3", () -> Math.random() * 3.0);
+        if(Robot.liftSubsystem.checkForLiftEncoder()) {
+            iFastDataLogger.addDataProvider("getLiftHeight()", () -> Robot.liftSubsystem.getLiftHeight());
+            iFastDataLogger.addDataProvider("Lift Motor power", () -> Robot.liftSubsystem.getMaxPower());
+            iFastDataLogger.addDataProvider("Lift Motor current", () -> Robot.liftSubsystem.getMaxCurrent());
+            iFastDataLogger.addDataProvider("Lift Motor bus voltage", () -> Robot.liftSubsystem.getMaxVoltage());
+        }
+        if(Robot.pivotSubsystem.checkForLiftEncoder()) {
+            iFastDataLogger.addDataProvider("getPivotAngle()", () -> Robot.pivotSubsystem.getPivotAngle());
+            iFastDataLogger.addDataProvider("Pivot Motor power", () -> Robot.pivotSubsystem.getMaxPower());
+            iFastDataLogger.addDataProvider("Pivot Motor current", () -> Robot.pivotSubsystem.getMaxCurrent());
+            iFastDataLogger.addDataProvider("Pivot Motor bus voltage", () -> Robot.pivotSubsystem.getMaxVoltage());
+        }
+
+        iFastDataLogger.addDataProvider("RIO X", () -> RobotMap.accel.getX());
+        iFastDataLogger.addDataProvider("RIO Y", () -> RobotMap.accel.getY());
+        iFastDataLogger.addDataProvider("RIO Z", () -> RobotMap.accel.getZ());
+
+        if(Robot.driveSubsystem.ahrs!=null) {
+            iFastDataLogger.addDataProvider("NAV pitch", () -> Robot.driveSubsystem.ahrs.getPitch());
+            iFastDataLogger.addDataProvider("NAV roll", () -> Robot.driveSubsystem.ahrs.getRoll());
+            iFastDataLogger.addDataProvider("NAV angle", () -> Robot.driveSubsystem.ahrs.getAngle());
+
+            iFastDataLogger.addDataProvider("NAV x acc", () -> Robot.driveSubsystem.ahrs.getRawAccelX());
+            iFastDataLogger.addDataProvider("NAV y acc", () -> Robot.driveSubsystem.ahrs.getRawAccelY());
+            iFastDataLogger.addDataProvider("NAV z acc", () -> Robot.driveSubsystem.ahrs.getRawAccelZ());
+        }
 
         iFastDataLogger.start();
     }

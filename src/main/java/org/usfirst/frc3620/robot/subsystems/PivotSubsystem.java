@@ -222,4 +222,16 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
         double pos = getPivotAngle();
         return pos;
 	}
+
+	public double getMaxPower() {
+        return(pivotMax.get());
+    }
+
+    public double getMaxVoltage() {
+        return(pivotMax.getBusVoltage());
+    }
+
+    public double getMaxCurrent() {
+        return(pivotMax.getOutputCurrent());
+    }
 }

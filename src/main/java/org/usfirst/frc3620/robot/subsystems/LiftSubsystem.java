@@ -162,4 +162,16 @@ public class LiftSubsystem extends Subsystem {
     private void turnBrakeOff(){
 
     }
+
+    public double getMaxPower() {
+        return(liftMax.get());
+    }
+
+    public double getMaxCurrent() {
+        return(liftMax.getOutputCurrent());
+    }
+
+    public double getMaxVoltage() {
+        return(liftMax.getBusVoltage());
+    }
 }

@@ -30,7 +30,7 @@ abstract public class FastDataLoggerBase extends DataLoggerBase implements IFast
 		t0 = getTimeInSeconds();
 
 		timer = new Timer();
-		long interval = Math.min(1, Math.round(intervalInSeconds * 1000));
+		long interval = Math.max(1, Math.round(intervalInSeconds * 1000));
 		System.out.println("fastlogger interval = " + interval);
 		timer.schedule(new FastLoggerTimerTask(), 0, interval);
 	}
