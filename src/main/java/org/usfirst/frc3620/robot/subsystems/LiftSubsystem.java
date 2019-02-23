@@ -26,7 +26,7 @@ public class LiftSubsystem extends Subsystem {
     public static final double SETPOINT_ROCKET_MIDDLE = 30.75;
     public static final double SETPOINT_ROCKET_TOP = 59;
 
-    public static final double SETPOINT_HATCH_BOTTOM = 0;
+    public static final double SETPOINT_HATCH_BOTTOM = 3.5;
     public static final double SETPOINT_HATCH_MIDDLE = 0;
     public static final double SETPOINT_HATCH_TOP = 0;
 
