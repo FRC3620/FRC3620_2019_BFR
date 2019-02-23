@@ -6,6 +6,7 @@ import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
 import org.usfirst.frc3620.misc.RobotMode;
 import org.usfirst.frc3620.robot.Robot;
+import org.usfirst.frc3620.robot.subsystems.PivotSubsystem;
 
 /**
  *
@@ -20,7 +21,7 @@ public class PivotModeToggleCommand extends Command {
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-    	Robot.pivotSubsystem.currentPivotMode = Robot.pivotSubsystem.PivotMode.HAB;
+    	Robot.pivotSubsystem.setCurrentPivotMode(PivotSubsystem.PivotMode.HAB);
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -38,6 +39,7 @@ public class PivotModeToggleCommand extends Command {
     @Override
     protected void end() {
     	EventLogging.commandMessage(logger);
+    	Robot.pivotSubsystem.setCurrentPivotMode(PivotSubsystem.PivotMode.MANUAL);
     }
 
     // Called when another command which requires one or more of the same
@@ -45,5 +47,6 @@ public class PivotModeToggleCommand extends Command {
     @Override
     protected void interrupted() {
     	EventLogging.commandMessage(logger);
+    	Robot.pivotSubsystem.setCurrentPivotMode(PivotSubsystem.PivotMode.MANUAL);
     }
 }

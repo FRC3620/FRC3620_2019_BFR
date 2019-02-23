@@ -1,4 +1,4 @@
-package org.usfirst.frc3620.robot.subsystems;
+org.usfirst.frc3620.robot.subsystems;
 
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
@@ -40,8 +40,7 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
     private boolean encoderisvalid = false;
     private double desiredAngle = SETANGLE_TOP;
     private double PIDpower = 0;
-    public PivotMode currentPivotMode=PivotMode.AUTOMAGIC;
-    
+    private PivotMode currentPivotMode = PivotMode.AUTOMAGIC;
 
     public PivotSubsystem(){
         pivotPIDContoller = new PIDController(0, 0, 0, 0, this, this);
@@ -82,11 +81,7 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
             double xPos = Robot.oi.getClimberHorizontalJoystick();
             double yPos = Robot.oi.getClimberVerticalJoystick();
             if (Math.abs(xPos) > 0.2 || Math.abs(yPos) > 0.2){
-                if (currentPivotMode != PivotMode.MANUAL) {
-                    logger.info ("going to manual mode");
-                }
-                currentPivotMode = PivotMode.MANUAL;
-                pivotPIDContoller.disable();
+                setCurrentPivotMode(PivotMode.MANUAL);
             }
 
             if(currentPivotMode == PivotMode.MANUAL) {
@@ -111,22 +106,20 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
     private void periodicHAB() {
         double liftMotorPower = Robot.liftSubsystem.getMaxPower();
         double intakeMotorPower = (liftMotorPower * -1)/2;
+
+        //- pitch = nose down. + pitch = nose up
         double pitch = Robot.driveSubsystem.ahrs.getPitch();
+        double adjustFactor = 1.0;
         if(Math.abs(pitch) > 5) {
             /*
             If and only if the |pitch| is greater than 5, the formula 
             below is meant to return 0.8 if the pitch is negative and 
             1.2 if the pitch is positive, correcting for any "wobbling"
             */
-            double adjustFactor = (1.0 + (pitch/Math.abs(pitch)*0.2));
-            intakeMotorPower = intakeMotorPower * adjustFactor;
+            adjustFactor = (1.0 + (pitch/Math.abs(pitch)*0.2));
         }
-        //- pitch = nose down. + pitch = nose up
+        intakeMotorPower = intakeMotorPower * adjustFactor;
         pivotMove(intakeMotorPower);
-
-        //WIP - not accounting for tilt
-        //y Nav 
-        
     }
 
     private void periodicAutoMagicMode(){
@@ -231,6 +224,21 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
             return degrees;
         } else {
             return(0);
+        }
+    }
+
+    public PivotMode getCurrentPivotMode() {
+        return currentPivotMode;
+    }
+
+    public void setCurrentPivotMode(PivotMode newPivotMode) {
+        if (currentPivotMode != newPivotMode) {
+            logger.info ("Changing PivotMode from {} to {}", currentPivotMode, newPivotMode);
+        }
+        currentPivotMode = newPivotMode;
+
+        if (currentPivotMode != PivotMode.AUTOMAGIC) {
+            pivotPIDContoller.disable();          
         }
     }
 
