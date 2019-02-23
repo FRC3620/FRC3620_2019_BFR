@@ -1,4 +1,4 @@
-org.usfirst.frc3620.robot.subsystems;
+package org.usfirst.frc3620.robot.subsystems;
 
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
