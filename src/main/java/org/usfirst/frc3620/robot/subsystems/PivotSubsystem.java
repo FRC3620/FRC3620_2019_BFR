@@ -107,7 +107,7 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
         double liftMotorPower = Robot.liftSubsystem.getMaxPower();
         //+lift power makes the lift go down
         //-lift power makes the lift go up 
-        double intakeMotorPower = (liftMotorPower)*2/3;
+        double pivotMotorPower = (liftMotorPower)*2/3;
 
         //- pitch = nose down. + pitch = nose up
         double pitch = Robot.driveSubsystem.ahrs.getPitch();
@@ -120,12 +120,12 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
             */
             adjustFactor = (1.0 + (pitch/Math.abs(pitch)*0.5));
         }
-        SmartDashboard.putNumber("HAB pivot motor power", intakeMotorPower);
+        SmartDashboard.putNumber("HAB pivot motor power", pivotMotorPower);
         SmartDashboard.putNumber("HAB adjust factor", adjustFactor);
         SmartDashboard.putNumber("HAB lift motor power", liftMotorPower);
         SmartDashboard.putNumber("HAB pitch", pitch);
-        intakeMotorPower = intakeMotorPower * adjustFactor;
-        pivotMove(intakeMotorPower);
+        pivotMotorPower = pivotMotorPower * adjustFactor;
+        pivotMove(pivotMotorPower);
     }
 
     private void periodicAutoMagicMode(){
