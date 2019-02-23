@@ -65,6 +65,7 @@ public class DriveSubsystem extends Subsystem {
         }
         SmartDashboard.putNumber("rightsideEncoderInFeet", getRightSideDistance());
         SmartDashboard.putNumber("leftsideEncoderInFeet", getLeftSideDistance());
+        SmartDashboard.putNumber("NavX Heading", getRealAngle());
   //      SmartDashboard.putNumber("leftsideEncoder", RobotMap.leftsideEncoder.getPosition());
   //      SmartDashboard.putNumber("rightsideEncoder", RobotMap.rightsideEncoder.getPosition());
    //     SmartDashboard.putNumber("rightsideEncoderInFeet", getRightSideDistance());
