@@ -8,6 +8,7 @@ import org.usfirst.frc3620.logger.EventLogging.Level;
 import org.usfirst.frc3620.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
@@ -18,8 +19,8 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class HatchSubsystem extends Subsystem {
     Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
     
-    private DoubleSolenoid finger = RobotMap.hatchSubsystemFinger;
-    private DoubleSolenoid pusher = RobotMap.hatchSubsystemPusher;
+    private Solenoid finger = RobotMap.hatchSubsystemFinger;
+    private Solenoid pusher = RobotMap.hatchSubsystemPusher;
 
     @Override
     public void initDefaultCommand() {
@@ -36,19 +37,37 @@ public class HatchSubsystem extends Subsystem {
     // here. Call these from Commands.
 
     public void hatchOut() {
-        pusher.set(Value.kReverse);
+        if (pusher != null) {
+            pusher.set(true);
+        } else {
+            logger.info ("Can't push hatch pusher out, it's not there!");
+        }
     }
 
     public void hatchIn() {
-        pusher.set(Value.kForward);
+        if (pusher != null) {
+            pusher.set(false);
+        } else {
+            logger.info ("Can't pull hatch pusher in, it's not there!");
+        }
     }
 
     public void fingerOut() {
-        finger.set(Value.kForward);
+        if (finger != null) {
+            finger.set(true);
+        } else {
+            logger.info ("Can't push hatch pusher out, it's not there!");
+        }
     }
 
     public void fingerIn() {
-        finger.set(Value.kReverse);
+        if (finger != null) {
+            finger.set(false);
+        } else {
+            logger.info ("Can't pull hatch pusher in, it's not there!");
+        }
+        
     }
+    
 
 }

@@ -10,7 +10,7 @@ import org.usfirst.frc3620.logger.DataLogger;
 import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
 import org.usfirst.frc3620.misc.RobotMode;
-import org.usfirst.frc3620.misc.BlinkinDict.Color;
+import org.usfirst.frc3620.misc.OperatorView;
 import org.usfirst.frc3620.robot.OI;
 import org.usfirst.frc3620.robot.commands.*;
 import org.usfirst.frc3620.robot.subsystems.*;
@@ -100,6 +100,8 @@ public class Robot extends TimedRobot {
         new RobotDataLogger(robotDataLogger, RobotMap.canDeviceFinder);
         robotDataLogger.setInterval(1.000);
         robotDataLogger.start();
+        OperatorView operatorView = new OperatorView();
+        operatorView.operatorViewInit();
     }
 
     /**
@@ -153,6 +155,7 @@ public class Robot extends TimedRobot {
         if(rightLineWatcher != null)
             rightLineWatcher.start();
    
+        driveSubsystem.clearReverseMode();    
 
 		processRobotModeChange(RobotMode.TELEOP);
     }

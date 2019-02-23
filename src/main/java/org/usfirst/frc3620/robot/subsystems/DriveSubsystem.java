@@ -6,6 +6,9 @@ import org.slf4j.Logger;
 import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
 
+import org.slf4j.Logger;
+import org.usfirst.frc3620.logger.EventLogging;
+import org.usfirst.frc3620.logger.EventLogging.Level;
 import org.usfirst.frc3620.robot.RobotMap;
 import org.usfirst.frc3620.robot.commands.DriveCommand;
 
@@ -20,22 +23,21 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  *
  */
 public class DriveSubsystem extends Subsystem {
+    Logger logger = EventLogging.getLogger(getClass(), Level.INFO);    
 
-    Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
     public AHRS ahrs = null /* will set in the constructor */;
 
     PIDSourceType pidSourceType = PIDSourceType.kDisplacement;
+    boolean gotCompBot;
 
     private final DifferentialDrive differentialDrive = RobotMap.driveSubsystemDifferentialDrive;
     private Encoder driveEncoderLeft = RobotMap.leftSideEncoder;
     private Encoder driveEncoderRight = RobotMap.rightSideEncoder;
-	
+    private boolean reverseModeQuestion;
+    
     public double automaticHeading;
     public boolean complainedAboutMissingAhrs;
     public double initialNavXReading = 0;
-    
-    boolean gotCompBot;
-
 
     public DriveSubsystem(){
         super();               
@@ -87,7 +89,9 @@ public class DriveSubsystem extends Subsystem {
     public void arcadeDrive (double y, double x) {
         //sends values to motor
         //!!! Make sure robot is in open area, drive carefully
-        differentialDrive.arcadeDrive(y, x);
+        if (differentialDrive != null) {
+            differentialDrive.arcadeDrive(y, x);
+        }
         SmartDashboard.putNumber("Y diff. drive", y);
         SmartDashboard.putNumber("X diff. drive", x);
     }
@@ -190,12 +194,32 @@ public class DriveSubsystem extends Subsystem {
 		return diff;
 	}
 
+    public boolean areWeInReverseMode(){
+        return reverseModeQuestion;
+    }
+
+    public void toggleReverseMode(){
+       if (reverseModeQuestion == true){
+           reverseModeQuestion = false;
+       } else{
+           reverseModeQuestion = true;
+       }
+       logger.info ("reverse mode toggled, now {}", reverseModeQuestion);
+    }
+
+    public void clearReverseMode(){
+        reverseModeQuestion = false;
+        logger.info ("reverse mode cleared");
+    }
+
     /**
      * shut down the robot.
      */
     public void stopDrive() {
         //stops robot
-        differentialDrive.stopMotor();
+        if (differentialDrive != null) {
+            differentialDrive.stopMotor();
+        }
     }
 
     public double getLeftSideDistance() {
