@@ -136,7 +136,7 @@ public class VisionSubsystem extends Subsystem implements PIDSource, PIDOutput {
 
   public double getLeftTargetYaw(){
     if (leftIsThereTarget.getBoolean(false)){
-      double yaw = leftTargetYaw.getDouble(0);
+      double yaw = -leftTargetYaw.getDouble(0);
       return yaw;
     }
     logger.info("No left target detected, returning yaw = 0");
