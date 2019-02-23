@@ -62,14 +62,13 @@ public class OI {
             
             //driver controls
             Button reverseDrive = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_RIGHT_BUMPER);
-            reverseDrive.whenPressed(new ToggleReverseCommand());
-            
+            Button conveyorR = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_X);
+            Button conveyorL = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_B);
+            Button inTakeIn = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_LEFT_BUMPER);
+
             //operator controls 
-            Button conveyorR = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_RIGHT_BUMPER);
-            Button conveyorL = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_LEFT_BUMPER);
             Button hatchExtend = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_X);
             Button hatchCollect = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_B);
-            Button inTakeIn = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_RIGHT_STICK);
             Button inTakeOut = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_START);
             Button trashIn = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_Y);
 
@@ -87,6 +86,7 @@ public class OI {
             hatchExtend.toggleWhenPressed(new HatchExtendCommand());
             hatchCollect.toggleWhenPressed(new HatchCollectCommand());
 
+            reverseDrive.whenPressed(new ToggleReverseCommand());
             SmartDashboard.putData(new HabInstrumentationCommand());
         }
 
