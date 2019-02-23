@@ -71,11 +71,15 @@ public class OI {
             Button hatchCollect = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_B);
             Button inTakeOut = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_START);
             Button trashIn = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_Y);
+            Button pivotModeToggle = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_LEFT_BUMPER);
+
 
             operatorDPad.down().whenPressed(new SetPivotAngleCommand(PivotSubsystem.SETANGLE_BOTTOM));
             operatorDPad.up().whenPressed(new SetPivotAngleCommand(PivotSubsystem.SETANGLE_TOP));
             operatorDPad.right().whenPressed(new SetPivotAngleCommand(PivotSubsystem.SETANGLE_MIDDLE));
             operatorDPad.left().whenPressed(new SetPivotAngleCommand(PivotSubsystem.SETANGLE_MIDDLE));
+
+
 
             //buttons run commands
             inTakeIn.toggleWhenPressed(new IntakeCommand());
@@ -85,6 +89,7 @@ public class OI {
             conveyorR.whileHeld(new TrashRightCommand());
             hatchExtend.toggleWhenPressed(new HatchExtendCommand());
             hatchCollect.toggleWhenPressed(new HatchCollectCommand());
+            pivotModeToggle.toggleWhenPressed(new );
 
             reverseDrive.whenPressed(new ToggleReverseCommand());
             SmartDashboard.putData(new HabInstrumentationCommand());
