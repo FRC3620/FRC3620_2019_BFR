@@ -91,7 +91,7 @@ public class OI {
             positionTwo.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_TOP));
             hatchExtend.toggleWhenPressed(new HatchExtendCommand());
             hatchCollect.whileHeld(new HatchCollectCommand());
-            driveIn.whileHeld(new AutoMoveForwardCommand(10,.7));
+            driveIn.whileHeld(new AutonomousAlignmentAndApproachCommand());
            
             
             SmartDashboard.putData("Rumble both", new RumbleCommand(Robot.rumbleSubsystemDriver, Hand.BOTH, 0.2, 60.0));
@@ -103,6 +103,7 @@ public class OI {
             SmartDashboard.putData("CenterOnTarget", new VisionAlignmentCommand());
             SmartDashboard.putData("TapTarget", new TravelAlignPushCommand());
             SmartDashboard.putData("DriveForward", new AutoMoveForwardCommand(15,.7));
+            SmartDashboard.putData("Align to Hatch Target", new AutonomousAlignmentAndApproachCommand());
             SmartDashboard.putData("LineUpWithCargoship", new AutoLineUpWithCargoshipCommand());
 
 
