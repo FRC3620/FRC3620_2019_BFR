@@ -96,7 +96,7 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
                     pivotMove(-0.1);
                 }
             } else if(currentPivotMode == PivotMode.HAB) {
-
+                periodicHAB();
             } else {
                 logger.warn("Pivot Mode Not Normal!");
             }
@@ -105,7 +105,9 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
 
     private void periodicHAB() {
         double liftMotorPower = Robot.liftSubsystem.getMaxPower();
-        double intakeMotorPower = (liftMotorPower * -1)/2;
+        //+lift power makes the lift go down
+        //-lift power makes the lift go up 
+        double intakeMotorPower = (liftMotorPower)*2/3;
 
         //- pitch = nose down. + pitch = nose up
         double pitch = Robot.driveSubsystem.ahrs.getPitch();
@@ -116,8 +118,12 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
             below is meant to return 0.8 if the pitch is negative and 
             1.2 if the pitch is positive, correcting for any "wobbling"
             */
-            adjustFactor = (1.0 + (pitch/Math.abs(pitch)*0.2));
+            adjustFactor = (1.0 + (pitch/Math.abs(pitch)*0.5));
         }
+        SmartDashboard.putNumber("HAB pivot motor power", intakeMotorPower);
+        SmartDashboard.putNumber("HAB adjust factor", adjustFactor);
+        SmartDashboard.putNumber("HAB lift motor power", liftMotorPower);
+        SmartDashboard.putNumber("HAB pitch", pitch);
         intakeMotorPower = intakeMotorPower * adjustFactor;
         pivotMove(intakeMotorPower);
     }

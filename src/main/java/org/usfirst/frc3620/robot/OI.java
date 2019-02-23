@@ -89,7 +89,7 @@ public class OI {
             conveyorR.whileHeld(new TrashRightCommand());
             hatchExtend.toggleWhenPressed(new HatchExtendCommand());
             hatchCollect.toggleWhenPressed(new HatchCollectCommand());
-            pivotModeToggle.toggleWhenPressed(new );
+            pivotModeToggle.toggleWhenPressed(new PivotModeToggleCommand());
 
             reverseDrive.whenPressed(new ToggleReverseCommand());
             SmartDashboard.putData(new HabInstrumentationCommand());
