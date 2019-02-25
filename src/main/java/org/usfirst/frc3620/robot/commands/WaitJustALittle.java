@@ -1,55 +1,52 @@
 package org.usfirst.frc3620.robot.commands;
-import edu.wpi.first.wpilibj.command.Command;
 
 import org.slf4j.Logger;
 import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
-import org.usfirst.frc3620.robot.Robot;
+
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
-public class HatchCollectCommand extends Command {
+public class WaitJustALittle extends Command {
+	double delay;
 	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
-	boolean intaking;
-    public HatchCollectCommand(boolean snappingUp) {
-        // requires(Robot.laserCannonSubsystem);
-        intaking = snappingUp;
+	Timer timer = new Timer();
+    public WaitJustALittle(double delaySeconds) {
+        // Use requires() here to declare subsystem dependencies
+        // eg. requires(chassis);
+    	this.delay = delaySeconds;
     }
 
     // Called just before this Command runs the first time
-    @Override
     protected void initialize() {
-        EventLogging.commandMessage(logger);
-        if(intaking){
-            Robot.hatchSubsystem.fingerIn();
-        }
-        else{
-            Robot.hatchSubsystem.fingerOut();
-        }
+    	EventLogging.commandMessage(logger);
+    	timer.reset();
+    	timer.start();
     }
 
     // Called repeatedly when this Command is scheduled to run
-    @Override
     protected void execute() {
     }
 
     // Make this return true when this Command no longer needs to run execute()
-    @Override
     protected boolean isFinished() {
-        return true;
+    	if(timer.get() > delay) {
+    		return true;
+    	}
+        return false;
     }
 
     // Called once after isFinished returns true
-    @Override
     protected void end() {
-        EventLogging.commandMessage(logger);
+    	EventLogging.commandMessage(logger);
     }
 
     // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run or when cancelled by whileHeld
-    @Override
+    // subsystems is scheduled to run
     protected void interrupted() {
-        EventLogging.commandMessage(logger);
+    	EventLogging.commandMessage(logger);
     }
 }

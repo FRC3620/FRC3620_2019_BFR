@@ -12,16 +12,22 @@ import org.usfirst.frc3620.robot.subsystems.HatchSubsystem;
  */
 public class HatchExtendCommand extends Command {
 	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
-	
-    public HatchExtendCommand() {
+	boolean extending;
+    public HatchExtendCommand(boolean pushing) {
         // requires(Robot.laserCannonSubsystem);
+        extending = pushing;
     }
 
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
         EventLogging.commandMessage(logger);
-        Robot.hatchSubsystem.hatchOut();
+        if(extending){
+            Robot.hatchSubsystem.hatchOut();
+        } else {
+            Robot.hatchSubsystem.hatchIn();
+        }
+       
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -32,14 +38,14 @@ public class HatchExtendCommand extends Command {
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        return false;
+        return true;
     }
 
     // Called once after isFinished returns true
     @Override
     protected void end() {
         EventLogging.commandMessage(logger);
-        Robot.hatchSubsystem.hatchIn();
+       
     }
 
     // Called when another command which requires one or more of the same
@@ -47,6 +53,5 @@ public class HatchExtendCommand extends Command {
     @Override
     protected void interrupted() {
         EventLogging.commandMessage(logger);
-        Robot.hatchSubsystem.hatchIn();
     }
 }

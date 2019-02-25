@@ -67,8 +67,8 @@ public class OI {
             Button inTakeIn = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_LEFT_BUMPER);
 
             //operator controls 
-            Button hatchExtend = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_X);
-            Button hatchCollect = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_B);
+            Button hatchIntake = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_X);
+            Button hatchOuttake = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_B);
             Button inTakeOut = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_START);
             Button trashIn = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_Y);
             Button liftHome = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_A);
@@ -84,8 +84,8 @@ public class OI {
             trashIn.toggleWhenPressed(new TrashInCommand());
             conveyorL.whileHeld(new TrashLeftCommand());
             conveyorR.whileHeld(new TrashRightCommand());
-            hatchExtend.toggleWhenPressed(new HatchExtendCommand());
-            hatchCollect.toggleWhenPressed(new HatchCollectCommand());
+            hatchOuttake.toggleWhenPressed(new HatchOuttakeCommand());
+            hatchIntake.toggleWhenPressed(new HatchIntakeCommand());
             liftHome.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_HATCH_BOTTOM));
 
             reverseDrive.whenPressed(new ToggleReverseCommand());
