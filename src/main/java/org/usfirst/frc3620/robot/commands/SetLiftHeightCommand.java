@@ -14,9 +14,10 @@ public class SetLiftHeightCommand extends Command {
     
     double desiredHeight;
     
-    public SetLiftHeightCommand(double _desiredHeight) {
+    public SetLiftHeightCommand(double _desiredHeight, boolean pid) {
         // requires(Robot.laserCannonSubsystem);
         desiredHeight = _desiredHeight;
+        Robot.liftSubsystem.doingPID = pid;
     }
 
     // Called just before this Command runs the first time
