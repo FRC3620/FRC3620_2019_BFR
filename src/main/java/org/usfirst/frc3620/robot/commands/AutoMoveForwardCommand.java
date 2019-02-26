@@ -33,7 +33,7 @@ public class AutoMoveForwardCommand extends Command implements PIDOutput, PIDSou
   static final double kF = 0;
 	double sideStick;
 	
-	double howLongWeWantToMove = 0;
+  double howLongWeWantToMove = 0;
 	double howFastToMove = 0;
 	
 	Timer timer = new Timer();

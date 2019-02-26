@@ -24,9 +24,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
     Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
     
-    public static final double SETANGLE_BOTTOM = 75;
-    public static final double SETANGLE_MIDDLE = 55;
-    public static final double SETANGLE_TOP = 0;
+    public static final double SETANGLE_BOTTOM = 80;
+    public static final double SETANGLE_MIDDLE = 65;
+    public static final double SETANGLE_TOP = 5;
 
     private final CANSparkMax pivotMax = RobotMap.pivotSubsystemMax;
     private final CANEncoder pivotEncoder = RobotMap.pivotEncoder;
@@ -57,7 +57,7 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
 
         SmartDashboard.putBoolean("Pivot limit switch", isTopPivotLimitDepressed());
 
-        if(checkForLiftEncoder()) {
+        if(checkForPivotEncoder()) {
             SmartDashboard.putNumber("pivotAngleInTics", pivotEncoder.getPosition());
         }
         SmartDashboard.putNumber("pivotAngleInDegrees", getPivotAngle());
@@ -108,7 +108,7 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
                     // we want to be in, but we are not there yet
                     // we need to do some pivotMove with a negative
                     //Power was halved for two neo pivot
-                    pivotMove(-0.1);
+                    pivotMove(-0.2);
                 } else {
                     pivotStop();
                 }
@@ -122,7 +122,7 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
                     // we want to be out, but we are not there yet
                     // we need to do some pivotMove with a positive
                     //Power was halved for two neo pivot
-                    pivotMove(0.1);
+                    pivotMove(0.3);
                 } else {
                     pivotStop();
                 }
@@ -143,7 +143,7 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
         // pivotMove needs a positive number to move out to the front of
         // the robot.
         // so we need to change the sign.
-        double power = -yPos * 1;
+        double power = -yPos * 0.7;
         if(power < -0.2){
             power = -0.2;
         }
@@ -160,7 +160,7 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
     }
 
     /**
-     * Move the lift, disabling if we go past the limit switch
+     * Move the pivot, disabling if we go past the limit switch
      * @param power amount of power to apply to motor. Positive 
      * moves the pivot out to the front of the robot.
      */
@@ -192,7 +192,7 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
      * @return
      */
     public double getPivotAngle() {
-        if(checkForLiftEncoder()) {
+        if(checkForPivotEncoder()) {
             double tics = pivotEncoder.getPosition();
             double howfarwehavemoved = tics - pivotEncoderZeroValue;
             double degrees = ticstodegrees(howfarwehavemoved);
@@ -204,12 +204,12 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
 
     private double pivotEncoderZeroValue;
 
-    public boolean checkForLiftEncoder() {
+    public boolean checkForPivotEncoder() {
         return(!(pivotEncoder == null));
     }
 
     public void resetEncoder(){
-        if(checkForLiftEncoder()) {
+        if(checkForPivotEncoder()) {
             pivotEncoderZeroValue = pivotEncoder.getPosition();
         }
     }
