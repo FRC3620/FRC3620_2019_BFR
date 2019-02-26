@@ -115,7 +115,7 @@ public class LiftSubsystem extends Subsystem implements PIDSource, PIDOutput {
             }
 
             if(error < 0){
-                liftMove(+0.3);
+                liftMove(+0.7);
             }
         } 
         else {
