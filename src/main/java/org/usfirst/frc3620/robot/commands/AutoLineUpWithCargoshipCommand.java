@@ -14,6 +14,7 @@ import org.usfirst.frc3620.misc.AverageJoePIDOutput;
 import org.usfirst.frc3620.misc.AverageJoePIDSource;
 import org.usfirst.frc3620.robot.Robot;
 import org.usfirst.frc3620.robot.RobotMap;
+import org.usfirst.frc3620.robot.subsystems.VisionSubsystem;
 
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.Timer;
@@ -71,6 +72,8 @@ public class AutoLineUpWithCargoshipCommand extends Command {
     // Called just before this Command runs the first time
     protected void initialize() {
       logger.info("AutoLineUpWithCargoshipCommand start");
+
+      Robot.visionSubsystem.turnLightSwitchOn();
       
     /*    pidDriveStraight.setSetpoint(Robot.driveSubsystem.getRealAngle());
         pidDriveStraight.reset();
@@ -117,6 +120,8 @@ public class AutoLineUpWithCargoshipCommand extends Command {
     protected void end() {
       logger.info("AutoLineUpWithCargoshipCommand end");
       
+      Robot.visionSubsystem.turnLightSwitchOff();
+
     //  pidDriveStraight.disable();
       pidLineUp.disable();
     }
