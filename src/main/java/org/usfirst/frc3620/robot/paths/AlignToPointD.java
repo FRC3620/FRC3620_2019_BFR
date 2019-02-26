@@ -44,12 +44,18 @@ public class AlignToPointD extends AbstractPath{
     }
 
     public int getLeftOrRightOfTarget(){
-        if(Robot.driveSubsystem.getAngle() > Robot.driveSubsystem.initialNavXReading){
-            return -1;
-        } else if(Robot.driveSubsystem.getAngle() < Robot.driveSubsystem.initialNavXReading){
+        //Based on current setup in final statement of getMyWaypoints(), right of target is 1, left of target is -1
+        //Therefore, if the below is < 0, then you're to the left of your real target and vice versa
+        if(Robot.visionSubsystem.getFrontSecondClosestYaw() > 0){
             return 1;
-        } else{
-            return 0;
+        } else if(Robot.visionSubsystem.getFrontSecondClosestYaw() < 0){
+            return -1;   
+        } else if(Robot.visionSubsystem.getFrontSecondClosestYaw() == 0){
+            if(Math.abs(Robot.driveSubsystem.getRealAngle()) > 90){
+                return -1;
+            } else{
+                return 1;
+            }
         }
     }
 

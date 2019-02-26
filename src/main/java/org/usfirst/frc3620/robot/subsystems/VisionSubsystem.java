@@ -51,6 +51,8 @@ public class VisionSubsystem extends Subsystem implements PIDSource, PIDOutput {
   private NetworkTableEntry leftTargetYaw = networkTable.getEntry("tapeYaw leftCameratape");
   private NetworkTableEntry leftIsThereTarget = networkTable.getEntry("tapeDetected leftCameratape");
 
+  private NetworkTableEntry frontSecondClosestYaw = networkTable.getEntry("yawSecondClosest frontCameratape");
+
   private final double DESIRED_YAW = 0;
 
   private final PIDController visionPIDController;
@@ -101,6 +103,15 @@ public class VisionSubsystem extends Subsystem implements PIDSource, PIDOutput {
   public double getFrontTargetYaw(){
     if (frontIsThereTarget.getBoolean(false)){
       double yaw = frontTargetYaw.getDouble(0);
+      return yaw;
+    }
+    logger.info("No front target detected, returning yaw = 0");
+    return 0;
+  }
+
+  public double getFrontSecondClosestYaw(){
+    if (frontSecondClosestYaw.getBoolean(false)){
+      double yaw = frontSecondClosestYaw.getDouble(0);
       return yaw;
     }
     logger.info("No front target detected, returning yaw = 0");
