@@ -26,7 +26,7 @@ public class LiftSubsystem extends Subsystem {
     public static final double SETPOINT_ROCKET_MIDDLE = 30.75;
     public static final double SETPOINT_ROCKET_TOP = 59;
 
-    public static final double SETPOINT_HATCH_BOTTOM = 3.5;
+    public static final double SETPOINT_HATCH_BOTTOM = 6.5;
     public static final double SETPOINT_HATCH_MIDDLE = 0;
     public static final double SETPOINT_HATCH_TOP = 0;
 
@@ -97,11 +97,11 @@ public class LiftSubsystem extends Subsystem {
         double error = currentheight - desiredHeight;
         if(Math.abs(error) > 1){
             if(error > 0){
-                liftMove(-0.7);
+                liftMove(-0.3);
             }
 
             if(error < 0){
-                liftMove(+0.7);
+                liftMove(+0.3);
             }
         }else{
             liftStop();
@@ -115,7 +115,7 @@ public class LiftSubsystem extends Subsystem {
         // Move lift upward.
         // liftMove needs a positive number to move up.
         // so we need to change the sign. 
-        double speed = -yPos * 0.7;
+        double speed = -yPos * 0.9;
         if(speed < -0.4){
             speed = -0.4;
         }
@@ -125,8 +125,8 @@ public class LiftSubsystem extends Subsystem {
             // we don't want the lift to blow past the 
             // limitswitch/hard stop and want power to be
             // low enough we don't go past it. 
-            if(currentHeight > 50 && speed > 0.1) {
-                speed = 0.1;
+            if(currentHeight > 35 && speed > 0.2) {
+                speed = 0.2;
             } 
 
             if(currentHeight < 6 && speed < -0.1) {
