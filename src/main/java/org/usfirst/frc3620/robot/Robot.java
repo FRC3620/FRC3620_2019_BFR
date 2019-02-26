@@ -46,6 +46,7 @@ public class Robot extends TimedRobot {
     public static HatchSubsystem hatchSubsystem;
     public static PivotSubsystem pivotSubsystem;
     public static LineSubsystem lineSubsystem;
+    
 
     // data logging
     public static DataLogger robotDataLogger;
@@ -76,7 +77,7 @@ public class Robot extends TimedRobot {
         hatchSubsystem = new HatchSubsystem();
         pivotSubsystem = new PivotSubsystem();
         lineSubsystem = new LineSubsystem();
-
+        
         // OI must be constructed after subsystems. If the OI creates Commands
         //(which it very likely will), subsystems are not guaranteed to be
         // constructed yet. Thus, their requires() statements may grab null

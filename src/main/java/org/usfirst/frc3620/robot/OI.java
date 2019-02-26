@@ -10,6 +10,7 @@ import org.usfirst.frc3620.misc.XBoxConstants;
 import org.usfirst.frc3620.robot.commands.*;
 import org.usfirst.frc3620.robot.subsystems.LiftSubsystem;
 import org.usfirst.frc3620.robot.subsystems.PivotSubsystem;
+import org.usfirst.frc3620.robot.subsystems.LiftSubsystem.LiftDecider;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -45,12 +46,14 @@ public class OI {
 
     private Joystick driverJoystick;
     private Joystick operatorJoystick;
+    private Joystick magicBoardJoystick;
 
     @SuppressWarnings("resource")
 	public OI() {
         //to interface with joysticks, no special initiallization nessessary
         driverJoystick = new Joystick(0);
         operatorJoystick = new Joystick(1);
+        magicBoardJoystick = new Joystick(2);
 
         DPad operatorDPad = new DPad(operatorJoystick, 0);
 
@@ -90,6 +93,18 @@ public class OI {
 
             reverseDrive.whenPressed(new ToggleReverseCommand());
             SmartDashboard.putData(new HabInstrumentationCommand());
+
+             //Magic Board Controls
+             Button liftRocket1 = new JoystickButton(magicBoardJoystick,9);
+             Button liftRocket2 = new JoystickButton(magicBoardJoystick,10);
+             Button liftRocket3 = new JoystickButton(magicBoardJoystick,11);
+             Button cargoShip1 = new JoystickButton(magicBoardJoystick, 7);
+
+             liftRocket1.whenPressed(new LiftMagicCommand(LiftSubsystem.LiftHeight.ROCKET1));
+             liftRocket2.whenPressed(new LiftMagicCommand(LiftSubsystem.LiftHeight.ROCKET2));
+             liftRocket3.whenPressed(new LiftMagicCommand(LiftSubsystem.LiftHeight.ROCKET3));
+             cargoShip1.whenPressed(new LiftMagicCommand(LiftSubsystem.LiftHeight.CARGOSHIP));
+            
         }
 
     public Joystick getDriverJoystick() {
@@ -136,5 +151,13 @@ public class OI {
     public double getLiftManualHorizontalJoystick(){
         //gets value from  axis on (right)LiftJoystick on operatorJoystick.
         return computeDeadband(operatorJoystick.getRawAxis(XBoxConstants.AXIS_RIGHT_X), 0.2);
+    }
+
+    public LiftSubsystem.LiftDecider getLiftDecider(){
+        if (magicBoardJoystick.getRawButton(12)){
+            return LiftDecider.CARGO;
+        }else{
+            return LiftDecider.HATCH;
+        }
     }
 }

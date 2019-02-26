@@ -20,6 +20,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class LiftSubsystem extends Subsystem {
     Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 
+    public enum LiftHeight{CARGOSHIP, ROCKET1, ROCKET2, ROCKET3}
+    public enum LiftDecider{CARGO, HATCH}
+
     public static final double SETPOINT_BOTTOM = 0;
     public static final double SETPOINT_TRASHIN = 3.25;
     public static final double SETPOINT_CARGOSHIP = 16;
@@ -189,6 +192,36 @@ public class LiftSubsystem extends Subsystem {
         }
     }
 
+    public double calculateLiftHeight(LiftHeight liftHeight, LiftDecider liftDecider){
+        if (liftDecider == LiftDecider.CARGO){
+            switch (liftHeight) {
+                case CARGOSHIP:
+                    return SETPOINT_CARGOSHIP;
+                case ROCKET1:
+                    // TODO is this correct?
+                    return SETPOINT_BOTTOM;
+                case ROCKET2:
+                    return SETPOINT_ROCKET_MIDDLE;
+                case ROCKET3:
+                    return SETPOINT_ROCKET_TOP;
+            }
+        } else {
+            switch (liftHeight) {
+                case CARGOSHIP:
+                    return SETPOINT_CARGOSHIP;
+                case ROCKET1:
+                    // TODO is this correct?
+                    return SETPOINT_HATCH_BOTTOM;
+                case ROCKET2:
+                    return SETPOINT_HATCH_MIDDLE;
+                case ROCKET3:
+                    return SETPOINT_HATCH_TOP;
+            }
+        }
+        logger.warn ("we got hit with a combination of {} and {} that we can't handle", liftHeight, liftDecider);
+        return SETPOINT_CARGOSHIP;
+    }
+
     private double liftEncoderZeroValue;
     
     public boolean checkForLiftEncoder() {
@@ -202,7 +235,7 @@ public class LiftSubsystem extends Subsystem {
     }
 
     public void setDesiredHeight(double h) {
-        logger.info("setting desired hieght");
+        logger.info("setting desired hieght to {}", h);
         desiredHeight = h;
         if (!autoMagicMode){
             logger.info("going to Automagic mode");
