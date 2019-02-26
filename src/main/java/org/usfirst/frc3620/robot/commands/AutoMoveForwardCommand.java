@@ -60,6 +60,8 @@ public class AutoMoveForwardCommand extends Command implements PIDOutput, PIDSou
   @Override
   protected void initialize() {
     logger.info("AutomatedMoveForward start");
+
+    Robot.visionSubsystem.turnLightSwitchOn();
   
     pidDriveStraight.setSetpoint(0);
     pidDriveStraight.reset();
@@ -87,6 +89,7 @@ public class AutoMoveForwardCommand extends Command implements PIDOutput, PIDSou
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    Robot.visionSubsystem.turnLightSwitchOff();
     pidDriveStraight.disable();
     Robot.driveSubsystem.stopDrive();
   }

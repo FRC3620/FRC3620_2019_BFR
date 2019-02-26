@@ -47,6 +47,8 @@ import edu.wpi.first.wpilibj.Counter;
 
     public static Accelerometer accel;
 
+    public static Relay visionSubsystemNightLight;
+
     public static WPI_TalonSRX intakeSubsystemUpperMotor;
     public static WPI_TalonSRX intakeSubsystemLowerMotor;
     public static WPI_TalonSRX intakeSubsystemMiddleMotor;
@@ -73,7 +75,6 @@ import edu.wpi.first.wpilibj.Counter;
     public static Solenoid hatchSubsystemPusher;
     public static Compressor c;
   
-    
     public static Spark lightSubsystemLightPWM;
 
     // no touchee!
@@ -162,6 +163,8 @@ import edu.wpi.first.wpilibj.Counter;
         resetTalonToKnownState(intakeSubsystemMiddleMotor);
         intakeSubsystemLowerMotor = new WPI_TalonSRX(11);
         resetTalonToKnownState(intakeSubsystemLowerMotor);
+
+        visionSubsystemNightLight = new Relay(0);
 
         // lift motor power is positive going up
         liftSubsystemMax = new CANSparkMax(6, MotorType.kBrushless);

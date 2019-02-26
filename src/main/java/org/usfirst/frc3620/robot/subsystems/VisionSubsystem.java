@@ -7,6 +7,7 @@
 
 package org.usfirst.frc3620.robot.subsystems;
 
+import org.usfirst.frc3620.robot.RobotMap;
 import org.usfirst.frc3620.robot.commands.VisionAlignmentCommand;
 
 import edu.wpi.first.networktables.NetworkTable;
@@ -22,6 +23,7 @@ import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
+import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
@@ -49,11 +51,13 @@ public class VisionSubsystem extends Subsystem implements PIDSource, PIDOutput {
   private NetworkTableEntry leftTargetAngle = networkTable.getEntry("angle leftCameratape");
   private NetworkTableEntry leftTargetDistance = networkTable.getEntry("RealDistance leftCameratape");
   private NetworkTableEntry leftTargetYaw = networkTable.getEntry("tapeYaw leftCameratape");
-  private NetworkTableEntry leftIsThereTarget = networkTable.getEntry("tapeDetected leftCameratape");
+  private NetworkTableEntry leftIsThereTarget = networkTable.getEntry("tapeDetected leftCameratape");\
 
   private NetworkTableEntry frontSecondClosestYaw = networkTable.getEntry("yawSecondClosest frontCameratape");
 
   private final double DESIRED_YAW = 0;
+
+  private Relay NightLight = RobotMap.visionSubsystemNightLight;
 
   private final PIDController visionPIDController;
   
@@ -81,6 +85,14 @@ public class VisionSubsystem extends Subsystem implements PIDSource, PIDOutput {
   @Override
     public void periodic() {
     }
+  
+  public void turnLightSwitchOn() {
+    NightLight.set(Relay.Value.kForward);
+  }
+
+  public void turnLightSwitchOff() {
+    NightLight.set(Relay.Value.kReverse);
+  }
 
   public double getFrontTargetAngle(){
     if (frontIsThereTarget.getBoolean(false)){
