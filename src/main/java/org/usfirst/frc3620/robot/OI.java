@@ -86,7 +86,7 @@ public class OI {
             conveyorR.whileHeld(new TrashRightCommand());
             hatchOuttake.toggleWhenPressed(new HatchOuttakeCommand());
             hatchIntake.toggleWhenPressed(new HatchIntakeCommand());
-            liftHome.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_HATCH_BOTTOM));
+            liftHome.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_HATCH_BOTTOM, false));
 
             reverseDrive.whenPressed(new ToggleReverseCommand());
             SmartDashboard.putData(new HabInstrumentationCommand());
