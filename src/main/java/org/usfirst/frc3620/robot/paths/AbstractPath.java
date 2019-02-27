@@ -23,6 +23,8 @@ public abstract class AbstractPath extends Command {
 
 	boolean finishedFlag = false;
 	boolean debugMode = false;
+	boolean lastCompBot = true;
+
 	int competitionMultiplier;
 	EncoderFollower left;
 	EncoderFollower right;
@@ -177,8 +179,13 @@ public abstract class AbstractPath extends Command {
 		setup();
 
 		finishedFlag = false;
-
-		Robot.driveSubsystem.resetEncoders();
+		try{
+			Robot.driveSubsystem.resetEncoders();
+		} catch(NullPointerException nullPointer){
+			lastCompBot = false;
+			Robot.driveSubsystem.
+		}
+		
 		//Robot.driveSubsystem.resetNavX();
 		startingAbsoluteHeading = Robot.driveSubsystem.getAngle();
 		
