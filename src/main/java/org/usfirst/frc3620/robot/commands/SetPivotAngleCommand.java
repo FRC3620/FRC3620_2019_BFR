@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
 import org.usfirst.frc3620.robot.Robot;
+import org.usfirst.frc3620.robot.subsystems.PivotSubsystem;
 
 /**
  *
@@ -12,9 +13,10 @@ import org.usfirst.frc3620.robot.Robot;
 public class SetPivotAngleCommand extends Command {
 	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
     
-    double desiredAngle;
+    PivotSubsystem.DesiredAngle desiredAngle;
+   
     
-    public SetPivotAngleCommand(double _desiredAngle) {
+    public SetPivotAngleCommand(PivotSubsystem.DesiredAngle _desiredAngle) {
         // requires(Robot.laserCannonSubsystem);
         desiredAngle = _desiredAngle;
     }
@@ -28,7 +30,8 @@ public class SetPivotAngleCommand extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        Robot.pivotSubsystem.setDesiredAngle(desiredAngle);
+        double desiredAngleInDegress = Robot.pivotSubsystem.calculatePivotAngle(desiredAngle);
+        Robot.pivotSubsystem.setDesiredAngle(desiredAngleInDegress);
         logger.info("setting angle to {}", desiredAngle);
     }
 

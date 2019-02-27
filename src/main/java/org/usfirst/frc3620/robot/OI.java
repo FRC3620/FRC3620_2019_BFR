@@ -11,6 +11,7 @@ import org.usfirst.frc3620.robot.commands.*;
 import org.usfirst.frc3620.robot.subsystems.LiftSubsystem;
 import org.usfirst.frc3620.robot.subsystems.PivotSubsystem;
 import org.usfirst.frc3620.robot.subsystems.LiftSubsystem.LiftDecider;
+import org.usfirst.frc3620.robot.subsystems.PivotSubsystem.PivotSet;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -99,11 +100,17 @@ public class OI {
              Button liftRocket2 = new JoystickButton(magicBoardJoystick,10);
              Button liftRocket3 = new JoystickButton(magicBoardJoystick,11);
              Button cargoShip1 = new JoystickButton(magicBoardJoystick, 7);
+             Button pivotLevel1 = new JoystickButton(magicBoardJoystick, 5);
+             Button pivotLevel2 = new JoystickButton(magicBoardJoystick, 4);
+             Button pivotLevel3 = new JoystickButton(magicBoardJoystick, 3);
 
              liftRocket1.whenPressed(new LiftMagicCommand(LiftSubsystem.LiftHeight.ROCKET1));
              liftRocket2.whenPressed(new LiftMagicCommand(LiftSubsystem.LiftHeight.ROCKET2));
              liftRocket3.whenPressed(new LiftMagicCommand(LiftSubsystem.LiftHeight.ROCKET3));
              cargoShip1.whenPressed(new LiftMagicCommand(LiftSubsystem.LiftHeight.CARGOSHIP));
+             pivotLevel1.whenPressed(new SetPivotAngleCommand(PivotSubsystem.DesiredAngle.Bottom));
+             pivotLevel2.whenPressed(new SetPivotAngleCommand(PivotSubsystem.DesiredAngle.Middle));
+             pivotLevel3.whenPressed(new SetPivotAngleCommand(PivotSubsystem.DesiredAngle.Top));
             
         }
 

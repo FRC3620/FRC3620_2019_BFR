@@ -24,6 +24,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
     Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
     
+    public enum DesiredAngle{Bottom, Middle, Top}
+
     public static final double SETANGLE_BOTTOM = 80;
     public static final double SETANGLE_MIDDLE = 65;
     public static final double SETANGLE_TOP = 5;
@@ -134,6 +136,53 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
             pivotMove(PIDpower/2); 
         }
     }
+   
+        public double Bottom = SETANGLE_BOTTOM;
+
+        public double calculatePivotAngle(DesiredAngle desiredAngle){
+            switch (desiredAngle) {
+                case Bottom:
+                    return SETANGLE_BOTTOM;
+                case Middle:
+                    return SETANGLE_MIDDLE;
+                case Top:
+                    return SETANGLE_TOP;
+                default:
+                    return SETANGLE_BOTTOM;
+               
+            }
+              
+        }
+
+        private void TellPivotAngleBottom(){
+            double currentAngle = getPivotAngle();
+            if (currentAngle == Bottom){
+                logger.info("BottomPivot");
+            } else {
+                logger.info("Not Bottom");
+            }
+        }
+
+        private void TellPivotAngleMiddle(){
+            double currentAngle = getPivotAngle();
+            if (currentAngle == Middle){
+                logger.info("MiddlePivot");
+            } else {
+                logger.info("Not Middle");
+            }
+        }
+
+        
+        private void TellPivotAngleTop(){
+            double currentAngle = getPivotAngle();
+            if (currentAngle == Top){
+                logger.info("TopPivot");
+            } else {
+                logger.info("Not Top");
+            }
+        }
+
+
 
     private void periodicManualMode(){
         double yPos = Robot.oi.getClimberVerticalJoystick();
@@ -157,7 +206,7 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
             return false;
         }
         return true;
-    }
+    } 
 
     /**
      * Move the pivot, disabling if we go past the limit switch
