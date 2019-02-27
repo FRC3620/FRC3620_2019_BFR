@@ -2,6 +2,8 @@ package org.usfirst.frc3620.logger;
 
 import org.usfirst.frc3620.logger.FastDataLoggerCollections;
 
+import java.util.Date;
+
 public class RandomFastLogger {
     public static void startRandomFastLogger(String name) {
         IFastDataLogger iFastDataLogger;
@@ -10,6 +12,7 @@ public class RandomFastLogger {
         iFastDataLogger.setInterval(0.001);
         iFastDataLogger.setMaxLength(5.000);
         iFastDataLogger.setFilename(name);
+        iFastDataLogger.setFilenameTimestamp(new Date());
         iFastDataLogger.addMetadata("pi", Math.PI);
         iFastDataLogger.addMetadata("e", Math.E);
 
