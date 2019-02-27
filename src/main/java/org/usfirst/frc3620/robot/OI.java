@@ -82,12 +82,12 @@ public class OI {
             //buttons run commands
             inTakeIn.toggleWhenPressed(new IntakeCommand());
             inTakeOut.toggleWhenPressed(new OutTakeCommand());
-            trashIn.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_ROCKET_MIDDLE, false));
+            trashIn.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_ROCKET_MIDDLE, true));
             conveyorL.whileHeld(new TrashLeftCommand());
             conveyorR.whileHeld(new TrashRightCommand());
             hatchOuttake.toggleWhenPressed(new HatchOuttakeCommand());
             hatchIntake.toggleWhenPressed(new HatchIntakeCommand());
-            liftHome.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_HATCH_BOTTOM, false));
+            liftHome.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_HATCH_BOTTOM, true));
             liftAllTheWayUp.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_ROCKET_TOP, false));
 
             reverseDrive.whenPressed(new ToggleReverseCommand());

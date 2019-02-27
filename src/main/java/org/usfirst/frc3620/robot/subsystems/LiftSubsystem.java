@@ -53,8 +53,8 @@ public class LiftSubsystem extends Subsystem implements PIDSource, PIDOutput {
         resetEncoder();
         liftPIDContoller = new PIDController(0, 0, 0, 0, this, this);
         setPIDSourceType(PIDSourceType.kDisplacement);
-        liftPIDContoller.setInputRange(0, 100);
-        liftPIDContoller.setOutputRange(-0.3, 0.3);
+        liftPIDContoller.setInputRange(0, 30);
+        liftPIDContoller.setOutputRange(-0.3, 1.0);
     }
 
 
@@ -87,6 +87,7 @@ public class LiftSubsystem extends Subsystem implements PIDSource, PIDOutput {
                     logger.info("Switching to Manual Mode");
                 }
                 autoMagicMode = false;
+                doingPID = false;
                 liftPIDContoller.disable();
             }
 
@@ -109,7 +110,9 @@ public class LiftSubsystem extends Subsystem implements PIDSource, PIDOutput {
         double currentheight = getLiftHeight();
         double error = currentheight - desiredHeight;
         if(doingPID){
-            liftMove(PIDpower);
+         logger.info("PIDPower: {}", PIDpower);
+         liftMove(PIDpower);
+          
         } else if(Math.abs(error) > 1){
             if(error > 0){
                 liftMove(-0.3);
@@ -228,9 +231,10 @@ public class LiftSubsystem extends Subsystem implements PIDSource, PIDOutput {
             liftPIDContoller.setSetpoint(desiredHeight);
             if (!liftPIDContoller.isEnabled()) {
                  // set the P, I, D, FF
-                double p = SmartDashboard.getNumber("pivotP", 0.01);
-                double i = SmartDashboard.getNumber("pivotI", 0);
-                double d = SmartDashboard.getNumber("pivotD", 0);
+                 //Base P: 0.04
+                double p = SmartDashboard.getNumber("pivotP", 0.06);
+                double i = SmartDashboard.getNumber("pivotI", 0.0004);
+                double d = SmartDashboard.getNumber("pivotD", 0.12);
                 double f = SmartDashboard.getNumber("pivotF", 0);
     
                 logger.info("_pivotP={}", p);
@@ -242,11 +246,16 @@ public class LiftSubsystem extends Subsystem implements PIDSource, PIDOutput {
                 liftPIDContoller.setI(i);
                 liftPIDContoller.setD(d);
                 liftPIDContoller.setF(f);
+
                 liftPIDContoller.reset();
                 liftPIDContoller.enable();
             }
         }
         
+    }
+
+    public void setDoingPID(boolean toPIDOrNotToPID){
+        doingPID = toPIDOrNotToPID;
     }
 
     public double getMaxPower() {
