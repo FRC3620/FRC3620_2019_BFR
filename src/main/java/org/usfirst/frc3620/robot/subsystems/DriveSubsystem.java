@@ -31,7 +31,7 @@ public class DriveSubsystem extends Subsystem {
 		
         gotCompBot = RobotMap.amICompBot();
 
-        resetEncoder();
+        resetCANDriveEncoders();
     }
 
     @Override
@@ -136,7 +136,7 @@ public class DriveSubsystem extends Subsystem {
         return(!(RobotMap.leftsideCANEncoder==null));
     }
 
-    public void resetEncoder(){
+    public void resetCANDriveEncoders(){
         if(checkForCANDriveEncoders()) {
             leftEncoderZeroValue = RobotMap.leftsideCANEncoder.getPosition();
             rightEncoderZeroValue = RobotMap.rightsideCANEncoder.getPosition();
