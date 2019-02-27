@@ -88,7 +88,7 @@ public class OI {
             hatchExtend.toggleWhenPressed(new HatchExtendCommand());
             hatchCollect.toggleWhenPressed(new HatchCollectCommand());
             reverseDrive.whenPressed(new ToggleReverseCommand());
-            driveIn.whileHeld(new AutonomousAlignmentAndApproachCommand());
+            driveIn.whileHeld(new AutoMoveForwardCommand(10,.7));
 
             SmartDashboard.putData(new HabInstrumentationCommand());
             SmartDashboard.putData("Rumble both", new RumbleCommand(Robot.rumbleSubsystemDriver, Hand.BOTH, 0.2, 60.0));

@@ -51,7 +51,7 @@ public class VisionSubsystem extends Subsystem implements PIDSource, PIDOutput {
   private NetworkTableEntry leftTargetAngle = networkTable.getEntry("angle leftCameratape");
   private NetworkTableEntry leftTargetDistance = networkTable.getEntry("RealDistance leftCameratape");
   private NetworkTableEntry leftTargetYaw = networkTable.getEntry("tapeYaw leftCameratape");
-  private NetworkTableEntry leftIsThereTarget = networkTable.getEntry("tapeDetected leftCameratape");\
+  private NetworkTableEntry leftIsThereTarget = networkTable.getEntry("tapeDetected leftCameratape");
 
   private NetworkTableEntry frontSecondClosestYaw = networkTable.getEntry("yawSecondClosest frontCameratape");
 

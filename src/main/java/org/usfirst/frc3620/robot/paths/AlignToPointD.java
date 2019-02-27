@@ -56,6 +56,8 @@ public class AlignToPointD extends AbstractPath{
             } else{
                 return 1;
             }
+        } else {
+            return 0;
         }
     }
 
