@@ -87,6 +87,7 @@ public class LiftSubsystem extends Subsystem implements PIDSource, PIDOutput {
                     logger.info("Switching to Manual Mode");
                 }
                 autoMagicMode = false;
+                liftPIDContoller.disable();
             }
 
             if(!autoMagicMode){
@@ -115,7 +116,7 @@ public class LiftSubsystem extends Subsystem implements PIDSource, PIDOutput {
             }
 
             if(error < 0){
-                liftMove(+0.7);
+                liftMove(+0.3);
             }
         } 
         else {
