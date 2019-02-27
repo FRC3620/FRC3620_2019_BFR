@@ -45,8 +45,13 @@ public class DriveSubsystem extends Subsystem {
 		// ahrs.enableLogging(false);
        
         gotCompBot = RobotMap.amICompBot();
-
-        resetEncoders();
+        try{
+            resetEncoders();
+        } catch(NullPointerException nullPointer){
+            resetCANDriveEncoders();
+        }
+        
+        
     }
 
     @Override
@@ -240,7 +245,7 @@ public class DriveSubsystem extends Subsystem {
             double howfarwehavemoved = tics - rightEncoderZeroValue;
             double feet = ticsToFeet(-howfarwehavemoved);
             return feet;
-        } else {
+        } else if(resetEncoders() != null) {
             return(0);
         }
     }
@@ -254,7 +259,9 @@ public class DriveSubsystem extends Subsystem {
     public void resetEncoders(){
         driveEncoderLeft.reset();
         driveEncoderRight.reset();
+    }
 
+    public void resetCANDriveEncoders(){
         if(checkForCANDriveEncoders()) {
             leftEncoderZeroValue = RobotMap.leftsideCANEncoder.getPosition();
             rightEncoderZeroValue = RobotMap.rightsideCANEncoder.getPosition();

@@ -179,12 +179,18 @@ public abstract class AbstractPath extends Command {
 		setup();
 
 		finishedFlag = false;
-		try{
-			Robot.driveSubsystem.resetEncoders();
-		} catch(NullPointerException nullPointer){
+		
+		if(Robot.driveSubsystem.checkForCANDriveEncoders()){
+			Robot.driveSubsystem.resetCANDriveEncoders();
 			lastCompBot = false;
-			Robot.driveSubsystem.
+		} else{
+			try{
+				Robot.driveSubsystem.resetEncoders();
+			} catch(NullPointerException nullPointer){
+				lastCompBot = false;
+			}
 		}
+	
 		
 		//Robot.driveSubsystem.resetNavX();
 		startingAbsoluteHeading = Robot.driveSubsystem.getAngle();
@@ -200,9 +206,16 @@ public abstract class AbstractPath extends Command {
 		
 		logger.info("PIDVAs configured.");
 		logger.info("Navx initial 3 = {}", Robot.driveSubsystem.getAngle());
-		lastLeftEncoder = encoderPosLeft = Robot.driveSubsystem.readLeftEncRaw();
+		if(lastCompBot){
+			lastLeftEncoder = encoderPosLeft = Robot.driveSubsystem.readLeftEncRaw();
+			lastRightEncoder = encoderPosRight = Robot.driveSubsystem.readRightEncRaw();
+		} else {
+			lastLeftEncoder = encoderPosLeft = Robot.driveSubsystem.leftsideCANEncoder.getPosition();
+			lastRightEncoder = encoderPosRight = RobotMap.rightsideCANEncoder.getPosition();;
+		}
+		
 		//lastLeftEncoder = encoderPosLeft = RobotMap.driveSubsystemLeftEncoder.getRaw();
-		lastRightEncoder = encoderPosRight = Robot.driveSubsystem.readRightEncRaw();
+		
 		//lastRightEncoder = encoderPosRight = RobotMap.driveSubsystemRightEncoder.getRaw();
 
 		logger.info("Encoders L,R initial = {}, {}", encoderPosLeft, encoderPosRight);
