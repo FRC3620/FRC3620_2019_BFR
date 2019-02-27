@@ -14,17 +14,18 @@ public class RobotDataLogger {
 	PowerDistributionPanel powerDistributionPanel = null;
 	DriverStation driverStation = DriverStation.getInstance();
 
-	public RobotDataLogger (DataLogger robotDataLogger, CANDeviceFinder canDeviceFinder) {
-		robotDataLogger.addDataProvider("robotMode", () -> Robot.currentRobotMode.toString());
-		robotDataLogger.addDataProvider("robotModeInt", () -> Robot.currentRobotMode.ordinal());
-		robotDataLogger.addDataProvider("batteryVoltage", () -> f2(RobotController.getBatteryVoltage()));
+	public RobotDataLogger (DataLogger dataLogger, CANDeviceFinder canDeviceFinder) {
+		powerDistributionPanel = new PowerDistributionPanel();
+
+		dataLogger.addDataProvider("robotMode", () -> Robot.currentRobotMode.toString());
+		dataLogger.addDataProvider("robotModeInt", () -> Robot.currentRobotMode.ordinal());
+		dataLogger.addDataProvider("batteryVoltage", () -> f2(RobotController.getBatteryVoltage()));
 
 		// do not log extra stuff
 		if (canDeviceFinder.isDevicePresent(CANDeviceId.CANDeviceType.PDP, 0)) {
-			powerDistributionPanel = new PowerDistributionPanel();
-		 	robotDataLogger.addDataProvider("pdp.totalCurrent", () -> f2(powerDistributionPanel.getTotalCurrent()));
-			robotDataLogger.addDataProvider("pdp.totalPower", () -> f2(powerDistributionPanel.getTotalPower()));
-			robotDataLogger.addDataProvider("pdp.totalEnergy", () -> f2(powerDistributionPanel.getTotalEnergy()));
+		 	dataLogger.addDataProvider("pdp.totalCurrent", () -> f2(powerDistributionPanel.getTotalCurrent()));
+			dataLogger.addDataProvider("pdp.totalPower", () -> f2(powerDistributionPanel.getTotalPower()));
+			dataLogger.addDataProvider("pdp.totalEnergy", () -> f2(powerDistributionPanel.getTotalEnergy()));
 			
 			// this needs work!
 
@@ -37,24 +38,43 @@ public class RobotDataLogger {
 		}
 
 		if (RobotMap.driveSubsystemMaxLeftA != null) {
-			robotDataLogger.addDataProvider("drive.l1.power", () -> f2(RobotMap.driveSubsystemMaxLeftA.get()));
-			robotDataLogger.addDataProvider("drive.l1.current",
+			dataLogger.addDataProvider("drive.l1.appliedOutput", () -> f2(RobotMap.driveSubsystemMaxLeftA.getAppliedOutput()));
+			dataLogger.addDataProvider("drive.l1.current",
 					() -> f2(RobotMap.driveSubsystemMaxLeftA.getOutputCurrent()));
 		}
 		if (RobotMap.driveSubsystemMaxLeftB != null) {
-			robotDataLogger.addDataProvider("drive.l2.current",
+			dataLogger.addDataProvider("drive.l2.current",
 					() -> f2(RobotMap.driveSubsystemMaxLeftB.getOutputCurrent()));
 		}
 		//
 		if (RobotMap.driveSubsystemMaxRightA != null) {
-			robotDataLogger.addDataProvider("drive.r1.power", () -> f2(RobotMap.driveSubsystemMaxRightA.get()));
-			robotDataLogger.addDataProvider("drive.r1.current",
+			dataLogger.addDataProvider("drive.r1.appliedOutput", () -> f2(RobotMap.driveSubsystemMaxRightA.getAppliedOutput()));
+			dataLogger.addDataProvider("drive.r1.current",
 					() -> f2(RobotMap.driveSubsystemMaxRightA.getOutputCurrent()));
 		}
 		if (RobotMap.driveSubsystemMaxRightB != null) {
-			robotDataLogger.addDataProvider("drive.r2.current",
+			dataLogger.addDataProvider("drive.r2.current",
 					() -> f2(RobotMap.driveSubsystemMaxRightB.getOutputCurrent()));
 		}
+		if (Robot.liftSubsystem.checkForLiftEncoder()) {
+			dataLogger.addDataProvider("liftHeight", () -> Robot.liftSubsystem.getLiftHeight());
+		}
+		if (RobotMap.liftSubsystemMax != null) {
+			dataLogger.addDataProvider("liftMotorAppliedOutput", () -> RobotMap.liftSubsystemMax.getAppliedOutput());
+			dataLogger.addDataProvider("liftMotorCurrent", () -> RobotMap.liftSubsystemMax.getOutputCurrent());
+		}
+		if (Robot.pivotSubsystem.checkForPivotEncoder()) {
+			dataLogger.addDataProvider("pivotAngle", () -> Robot.pivotSubsystem.getPivotAngle());
+		}
+		if (RobotMap.pivotSubsystemMax != null) {
+			dataLogger.addDataProvider("pivotMotorAppliedOutput", () -> RobotMap.pivotSubsystemMax.getAppliedOutput());
+			dataLogger.addDataProvider("pivotMotorCurrent", () -> RobotMap.pivotSubsystemMax.getOutputCurrent());
+		}
+		if (RobotMap.pivotSubsystemMax2 != null) {
+			dataLogger.addDataProvider("pivotMotor2AppliedOutputPower", () -> RobotMap.pivotSubsystemMax2.getAppliedOutput());
+			dataLogger.addDataProvider("pivotMotor2Current", () -> RobotMap.pivotSubsystemMax2.getOutputCurrent());
+		}
+
 	}
 
 	private DecimalFormat f2Formatter = new DecimalFormat("#.##");
