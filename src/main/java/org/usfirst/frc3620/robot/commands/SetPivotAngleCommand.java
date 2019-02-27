@@ -15,7 +15,7 @@ public class SetPivotAngleCommand extends Command {
     
     PivotSubsystem.DesiredAngle desiredAngle;
    
-    
+    //set for ENUM
     public SetPivotAngleCommand(PivotSubsystem.DesiredAngle _desiredAngle) {
         // requires(Robot.laserCannonSubsystem);
         desiredAngle = _desiredAngle;

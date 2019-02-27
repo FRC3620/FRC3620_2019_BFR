@@ -137,7 +137,9 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
         }
     }
    
-        public double Bottom = SETANGLE_BOTTOM;
+       
+        
+
 
         public double calculatePivotAngle(DesiredAngle desiredAngle){
             switch (desiredAngle) {
@@ -156,8 +158,8 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
 
         private void TellPivotAngleBottom(){
             double currentAngle = getPivotAngle();
-            if (currentAngle == Bottom){
-                logger.info("BottomPivot");
+            if (currentAngle == SETANGLE_BOTTOM){
+                logger.info("BottomPivot Set");
             } else {
                 logger.info("Not Bottom");
             }
@@ -165,8 +167,8 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
 
         private void TellPivotAngleMiddle(){
             double currentAngle = getPivotAngle();
-            if (currentAngle == Middle){
-                logger.info("MiddlePivot");
+            if (currentAngle == SETANGLE_MIDDLE){
+                logger.info("MiddlePivot Set");
             } else {
                 logger.info("Not Middle");
             }
@@ -175,7 +177,7 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
         
         private void TellPivotAngleTop(){
             double currentAngle = getPivotAngle();
-            if (currentAngle == Top){
+            if (currentAngle == SETANGLE_TOP){
                 logger.info("TopPivot");
             } else {
                 logger.info("Not Top");
