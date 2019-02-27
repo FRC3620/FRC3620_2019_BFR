@@ -14,7 +14,6 @@ import org.usfirst.frc3620.misc.RobotMode;
 import org.usfirst.frc3620.misc.OperatorView;
 import org.usfirst.frc3620.robot.commands.*;
 import org.usfirst.frc3620.robot.subsystems.*;
-import org.usfirst.frc3620.misc.LineSensor;
 
 /**
  * The VM is configured to automatically run this class, and to call the
