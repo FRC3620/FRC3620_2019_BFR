@@ -8,54 +8,38 @@ import org.slf4j.Logger;
 import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
 
+import org.usfirst.frc3620.misc.CANDeviceId.CANDeviceType;
+
 import edu.wpi.first.hal.can.CANJNI;
 
 public class CANDeviceFinder {
     Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 
-    ArrayList<String> deviceList = new ArrayList<String>();
+    Set<CANDeviceId> deviceSet = new TreeSet<>();
 
-    private Set<Integer> pdps = new TreeSet<>();
-    private Set<Integer> srxs = new TreeSet<>();
-    private Set<Integer> spxs = new TreeSet<>();
-    private Set<Integer> pcms = new TreeSet<>();
-    private Set<Integer> maxs = new TreeSet<>();
+    /*
+     * this is a map, keyed by CANDeviceType, whose values are sets contained
+     * the device numbers for all the present devices of that type.
+     */
+    Map<CANDeviceType, Set<Integer>> byDeviceType = new TreeMap<>();
 
     public CANDeviceFinder() {
         super();
         find();
     }
 
-    public boolean isPDPPresent() {
-        return pdps.contains(0);
-    }
-
-    public boolean isSRXPresent(int i) {
-        return srxs.contains(i);
-    }
-
-    public boolean isSPXPresent(int i) {
-        return spxs.contains(i);
-    }
-
-    public boolean isPCMPresent(int i) {
-        return pcms.contains(i);
-    }
-
-    public boolean isMAXPresent(int i) {
-        return maxs.contains(i);
-    }
-    
-    public boolean isDevicePresent(String s) {
-    	return deviceList.contains(s);
+    public boolean isDevicePresent(CANDeviceType deviceType, int id) {
+        Set<Integer> deviceTypeSet = byDeviceType.get(deviceType);
+        if (deviceTypeSet == null) return false;
+        return deviceTypeSet.contains(id);
     }
 
     /**
      * 
      * @return ArrayList of strings holding the names of devices we've found.
      */
-    public List<String> getDeviceList() {
-        return deviceList;
+    public Set<CANDeviceId> getDeviceSet() {
+        return deviceSet;
     }
 
     abstract class CanFinder {
@@ -89,15 +73,13 @@ public class CANDeviceFinder {
     }
 
     class DeviceFinder extends CanFinder {
-        Set<Integer> deviceIds;
-        List<String> deviceList;
-        String deviceListPrefix;
-        DeviceFinder(int devType, int mfg, int apiId, int maxDevices, Set<Integer> deviceIdSet, List<String> deviceList, String deviceListPrefix) {
+        Set<CANDeviceId> deviceSet;
+        CANDeviceType canDeviceType;
+        DeviceFinder(int devType, int mfg, int apiId, int maxDevices, Set<CANDeviceId> deviceSet, CANDeviceType canDeviceType) {
             super();
 
-            this.deviceIds = deviceIdSet;
-            this.deviceList = deviceList;
-            this.deviceListPrefix = deviceListPrefix;
+            this.deviceSet = deviceSet;
+            this.canDeviceType = canDeviceType;
 
             ids = new int[maxDevices];
             for (int i = 0; i < maxDevices; i++) {
@@ -109,17 +91,16 @@ public class CANDeviceFinder {
         void report() {
             for (int id: idsPresent) {
                 int deviceId = extractDeviceId(id);
-                deviceIds.add(deviceId);
-                deviceList.add(deviceListPrefix + " " + Integer.toString(deviceId));
+                deviceSet.add(new CANDeviceId(canDeviceType, deviceId));
             }
         }
     }
 
     class APIFinder extends CanFinder {
-        String label;
-        APIFinder(String label, int devType, int mfg, int deviceId) {
+        CANDeviceType canDeviceType;
+        APIFinder(CANDeviceType canDeviceType, int devType, int mfg, int deviceId) {
             super();
-            this.label = label;
+            this.canDeviceType = canDeviceType;
 
             ids = new int[1024];
             for (int i = 0; i < 1024; i++) {
@@ -131,24 +112,21 @@ public class CANDeviceFinder {
         void report() {
             for (int id: idsPresent) {
                 int apiId = extractApiId(id);
-                logger.info ("{}: API {} {} = msg {}", label, String.format("%2d", apiId), String.format("0x%03X", apiId), String.format("%08X", id));
+                logger.info ("{}: API {} {} = msg {}", canDeviceType, String.format("%2d", apiId), String.format("0x%03X", apiId), String.format("%08X", id));
             }
         }
     }
     
     /**
-     * polls for received framing to determine if a device is present. This is
+     * polls for received framing to determine if a device is deviceSet. This is
      * meant to be used once initially (and not periodically) since this steals
      * cached messages from the robot API.
      */
     public void find() {
         logger.info ("calling find()");
-        deviceList.clear();
-        pdps.clear();
-        maxs.clear();
-        spxs.clear();
-        srxs.clear();
-        pcms.clear();
+
+        deviceSet.clear();
+        byDeviceType.clear();
 
         List<CanFinder> finders = new ArrayList<>();
 
@@ -156,7 +134,7 @@ public class CANDeviceFinder {
          * PDPs used to be 0x08041400.
          * 2019.02.09: PDPs respond to APIs 0x50 0x51 0x52 0x59 0x5d
          */
-        finders.add(new DeviceFinder(8, 4, extractApiId(0x08041400), 1, pdps, deviceList, "PDP"));
+        finders.add(new DeviceFinder(8, 4, extractApiId(0x08041400), 1, deviceSet, CANDeviceType.PDP));
 
         /*
          * SRX used to be 0x02041400.
@@ -172,7 +150,7 @@ public class CANDeviceFinder {
         93 0x05D = 02041741
         94 0x05E = 02041781
         */
-        finders.add(new DeviceFinder(2, 4, extractApiId(0x02041441), 64, srxs, deviceList, "SRX"));
+        finders.add(new DeviceFinder(2, 4, extractApiId(0x02041441), 64, deviceSet, CANDeviceType.SRX));
 
         /*
         SPX used to be 0x01041400.
@@ -186,19 +164,19 @@ public class CANDeviceFinder {
         93 0x05D = 01041742
         94 0x05E = 01041782
         */
-        finders.add(new DeviceFinder(1, 4, extractApiId(0x01041442), 64, spxs, deviceList, "SPX"));
+        finders.add(new DeviceFinder(1, 4, extractApiId(0x01041442), 64, deviceSet, CANDeviceType.SPX));
 
         /* we always used 0x09041400 for PCMs */
-        finders.add(new DeviceFinder(9, 4, extractApiId(0x09041400), 64, pcms, deviceList, "PCM"));
+        finders.add(new DeviceFinder(9, 4, extractApiId(0x09041400), 64, deviceSet, CANDeviceType.PCM));
 
         // per REV (0x02051800)
-        finders.add(new DeviceFinder(2, 5, extractApiId(0x02051800), 64, maxs, deviceList, "MAX"));
+        finders.add(new DeviceFinder(2, 5, extractApiId(0x02051800), 64, deviceSet, CANDeviceType.MAX));
 
         // do research
         /*
-        finders.add(new APIFinder("PDP", 8, 4, 0)); // PDP
-        finders.add(new APIFinder("SRX", 2, 4, 1)); // SRX #1
-        finders.add(new APIFinder("SPX", 1, 4, 2)); // SPX #2
+        finders.add(new APIFinder(CANDeviceType.PDP, 8, 4, 0)); // PDP
+        finders.add(new APIFinder(CANDeviceType.SRX, 2, 4, 1)); // SRX #1
+        finders.add(new APIFinder(CANDeviceType.SPX, 1, 4, 2)); // SPX #2
         */
 
         for (CanFinder finder: finders) {
@@ -218,6 +196,19 @@ public class CANDeviceFinder {
 
         for (CanFinder finder: finders) {
             finder.report();
+        }
+
+        /*
+         fill in the byDeviceType map.
+         */
+        for (CANDeviceId canDeviceId: deviceSet) {
+            CANDeviceType canDeviceType = canDeviceId.getDeviceType();
+            Set<Integer> deviceNumberSet = byDeviceType.get(canDeviceType);
+            if (deviceNumberSet == null) {
+                deviceNumberSet = new TreeSet<>();
+                byDeviceType.put(canDeviceType, deviceNumberSet);
+            }
+            deviceNumberSet.add(canDeviceId.getDeviceNumber());
         }
     }
 

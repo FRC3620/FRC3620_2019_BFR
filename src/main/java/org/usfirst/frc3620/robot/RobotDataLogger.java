@@ -8,6 +8,7 @@ import org.usfirst.frc3620.misc.CANDeviceFinder;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.RobotController;
+import org.usfirst.frc3620.misc.CANDeviceId;
 
 public class RobotDataLogger {
 	PowerDistributionPanel powerDistributionPanel = null;
@@ -19,11 +20,11 @@ public class RobotDataLogger {
 		robotDataLogger.addDataProvider("batteryVoltage", () -> f2(RobotController.getBatteryVoltage()));
 
 		// do not log extra stuff
-		if (canDeviceFinder.isPDPPresent()) {
+		if (canDeviceFinder.isDevicePresent(CANDeviceId.CANDeviceType.PDP, 0)) {
 			powerDistributionPanel = new PowerDistributionPanel();
-		/*	robotDataLogger.addDataProvider("pdp.totalCurrent", () -> f2(powerDistributionPanel.getTotalCurrent()));
+		 	robotDataLogger.addDataProvider("pdp.totalCurrent", () -> f2(powerDistributionPanel.getTotalCurrent()));
 			robotDataLogger.addDataProvider("pdp.totalPower", () -> f2(powerDistributionPanel.getTotalPower()));
-			robotDataLogger.addDataProvider("pdp.totalEnergy", () -> f2(powerDistributionPanel.getTotalEnergy())); */
+			robotDataLogger.addDataProvider("pdp.totalEnergy", () -> f2(powerDistributionPanel.getTotalEnergy()));
 			
 			// this needs work!
 
@@ -34,42 +35,26 @@ public class RobotDataLogger {
 			robotDataLogger.addDataProvider("drive.r4.pdpcurrent", () -> f2(powerDistributionPanel.getCurrent(1)));
 			robotDataLogger.addDataProvider("drive.r5.pdpcurrent", () -> f2(powerDistributionPanel.getCurrent(0))); */
 		}
-		
 
-        //We switched the motor types over from last year and thus the methods to 
-        //get the maximum voltage were differemt so we had to change those.
 		if (RobotMap.driveSubsystemMaxLeftA != null) {
 			robotDataLogger.addDataProvider("drive.l1.power", () -> f2(RobotMap.driveSubsystemMaxLeftA.get()));
-			robotDataLogger.addDataProvider("drive.l1.voltage",
-					() -> f2(RobotMap.driveSubsystemMaxLeftA.getBusVoltage()));
 			robotDataLogger.addDataProvider("drive.l1.current",
 					() -> f2(RobotMap.driveSubsystemMaxLeftA.getOutputCurrent()));
 		}
 		if (RobotMap.driveSubsystemMaxLeftB != null) {
-			robotDataLogger.addDataProvider("drive.l3.voltage",
-					() -> f2(RobotMap.driveSubsystemMaxLeftB.getBusVoltage()));
-		}
-		if (RobotMap.driveSubsystemMaxLeftB != null) {
-			robotDataLogger.addDataProvider("drive.l4.voltage",
-					() -> f2(RobotMap.driveSubsystemMaxLeftB.getBusVoltage()));
+			robotDataLogger.addDataProvider("drive.l2.current",
+					() -> f2(RobotMap.driveSubsystemMaxLeftB.getOutputCurrent()));
 		}
 		//
 		if (RobotMap.driveSubsystemMaxRightA != null) {
 			robotDataLogger.addDataProvider("drive.r1.power", () -> f2(RobotMap.driveSubsystemMaxRightA.get()));
-			robotDataLogger.addDataProvider("drive.r1.voltage",
-					() -> f2(RobotMap.driveSubsystemMaxRightA.getBusVoltage()));
 			robotDataLogger.addDataProvider("drive.r1.current",
 					() -> f2(RobotMap.driveSubsystemMaxRightA.getOutputCurrent()));
 		}
 		if (RobotMap.driveSubsystemMaxRightB != null) {
-			robotDataLogger.addDataProvider("drive.r3.voltage",
-					() -> f2(RobotMap.driveSubsystemMaxRightB.getBusVoltage()));
+			robotDataLogger.addDataProvider("drive.r2.current",
+					() -> f2(RobotMap.driveSubsystemMaxRightB.getOutputCurrent()));
 		}
-        /* THIS 5TH MOTOR was not utilized so is not being used here
-        if (RobotMap.driveSubsystemVictorRight4 != null) {
-			robotDataLogger.addDataProvider("drive.r4.voltage",
-					() -> f2(RobotMap.driveSubsystemVictorRight4.getMotorOutputVoltage()));
-		}*/
 	}
 
 	private DecimalFormat f2Formatter = new DecimalFormat("#.##");

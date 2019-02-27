@@ -10,9 +10,7 @@ import org.usfirst.frc3620.logger.DataLogger;
 import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
 import org.usfirst.frc3620.misc.RobotMode;
-import org.usfirst.frc3620.misc.BlinkinDict.Color;
 import org.usfirst.frc3620.misc.OperatorView;
-import org.usfirst.frc3620.robot.OI;
 import org.usfirst.frc3620.robot.commands.*;
 import org.usfirst.frc3620.robot.subsystems.*;
 import org.usfirst.frc3620.misc.LineSensor;
@@ -63,6 +61,7 @@ public class Robot extends TimedRobot {
         
         // set up hardware
         RobotMap.init();
+        RobotMap.reportMissingDevices();
 
         // set up subsystems
         // initalized drive subsystem, which control motors to move robot
@@ -139,7 +138,7 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopInit() {
         RobotMap.canDeviceFinder.find();
-        logger.info ("CAN bus = {}", RobotMap.canDeviceFinder.getDeviceList());
+        logger.info ("CAN bus = {}", RobotMap.canDeviceFinder.getDeviceSet());
         // This makes sure that the autonomous stops running when
         // teleop starts running. If you want the autonomous to
         // continue until interrupted by another command, remove
@@ -174,6 +173,9 @@ public class Robot extends TimedRobot {
 		if (autonomousCommand != null)
             ((Command) autonomousCommand).cancel();
 		processRobotModeChange(RobotMode.TEST);
+
+		RobotMap.canDeviceFinder.find();
+		RobotMap.reportMissingDevices();
 	}
 
 	/**
