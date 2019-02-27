@@ -1,5 +1,6 @@
 package org.usfirst.frc3620.robot;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -119,7 +120,8 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousInit() {
     	processRobotModeChange(RobotMode.AUTONOMOUS);
-		
+        logMatchInfo();
+
         autonomousCommand = chooser.getSelected();
         // schedule the autonomous command (example)
         if (autonomousCommand != null) autonomousCommand.start();
@@ -137,14 +139,15 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopInit() {
-        RobotMap.canDeviceFinder.find();
-        logger.info ("CAN bus = {}", RobotMap.canDeviceFinder.getDeviceSet());
         // This makes sure that the autonomous stops running when
         // teleop starts running. If you want the autonomous to
         // continue until interrupted by another command, remove
         // this line or comment it out.
         if (autonomousCommand != null) autonomousCommand.cancel();
-        
+
+        processRobotModeChange(RobotMode.TELEOP);
+        logMatchInfo();
+
         if(leftLineWatcher != null)
             leftLineWatcher.start();
 
@@ -153,7 +156,6 @@ public class Robot extends TimedRobot {
    
         driveSubsystem.clearReverseMode();    
 
-		processRobotModeChange(RobotMode.TELEOP);
     }
 
     /**
@@ -172,6 +174,7 @@ public class Robot extends TimedRobot {
 		// test starts running.
 		if (autonomousCommand != null)
             ((Command) autonomousCommand).cancel();
+
 		processRobotModeChange(RobotMode.TEST);
 
 		RobotMap.canDeviceFinder.find();
@@ -240,5 +243,13 @@ public class Robot extends TimedRobot {
     public static RobotMode getCurrentRobotMode(){
         return currentRobotMode;
     }
-    
+
+    void logMatchInfo() {
+	    DriverStation ds = DriverStation.getInstance();
+	    if (ds.isFMSAttached()) {
+	        logger.info ("FMS attached. Event name {}, match type {}, match number {}, replay number {}",
+                    ds.getEventName(), ds.getMatchType(), ds.getMatchNumber(), ds.getReplayNumber());
+        }
+	    logger.info ("Alliance {}, position {}", ds.getAlliance(), ds.getLocation());
+    }
 }
