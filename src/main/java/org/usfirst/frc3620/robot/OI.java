@@ -10,8 +10,9 @@ import org.usfirst.frc3620.misc.XBoxConstants;
 import org.usfirst.frc3620.robot.commands.*;
 import org.usfirst.frc3620.robot.subsystems.LiftSubsystem;
 import org.usfirst.frc3620.robot.subsystems.PivotSubsystem;
+import org.usfirst.frc3620.robot.subsystems.TrashSubsystem;
 import org.usfirst.frc3620.robot.subsystems.LiftSubsystem.LiftDecider;
-import org.usfirst.frc3620.robot.subsystems.PivotSubsystem.PivotSet;
+
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -77,11 +78,11 @@ public class OI {
             Button trashIn = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_Y);
             Button liftHome = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_A);
 
-            operatorDPad.down().whenPressed(new SetPivotAngleCommand(PivotSubsystem.SETANGLE_BOTTOM));
-            operatorDPad.up().whenPressed(new SetPivotAngleCommand(PivotSubsystem.SETANGLE_TOP));
-            operatorDPad.right().whenPressed(new SetPivotAngleCommand(PivotSubsystem.SETANGLE_MIDDLE));
-            operatorDPad.left().whenPressed(new SetPivotAngleCommand(PivotSubsystem.SETANGLE_MIDDLE));
-
+            operatorDPad.down().whenPressed(new SetPivotAngleCommand(PivotSubsystem.DesiredAngle.Bottom));
+            operatorDPad.up().whenPressed(new SetPivotAngleCommand(PivotSubsystem.DesiredAngle.Top));
+            operatorDPad.right().whenPressed(new SetPivotAngleCommand(PivotSubsystem.DesiredAngle.Middle));
+            operatorDPad.left().whenPressed(new SetPivotAngleCommand(PivotSubsystem.DesiredAngle.Middle));
+            
             //buttons run commands
             inTakeIn.toggleWhenPressed(new IntakeCommand());
             inTakeOut.toggleWhenPressed(new OutTakeCommand());
@@ -100,9 +101,12 @@ public class OI {
              Button liftRocket2 = new JoystickButton(magicBoardJoystick,10);
              Button liftRocket3 = new JoystickButton(magicBoardJoystick,11);
              Button cargoShip1 = new JoystickButton(magicBoardJoystick, 7);
-             Button pivotLevel1 = new JoystickButton(magicBoardJoystick, 5);
-             Button pivotLevel2 = new JoystickButton(magicBoardJoystick, 4);
-             Button pivotLevel3 = new JoystickButton(magicBoardJoystick, 3);
+             Button pivotLevel1 = new JoystickButton(magicBoardJoystick, 6);
+             Button pivotLevel2 = new JoystickButton(magicBoardJoystick, 5);
+             Button pivotLevel3 = new JoystickButton(magicBoardJoystick, 4);
+             Button trashLeft = new JoystickButton(magicBoardJoystick, 2);
+             Button trashRight = new JoystickButton(magicBoardJoystick, 3);
+             Button camSwitch = new JoystickButton(magicBoardJoystick, 8);
 
              liftRocket1.whenPressed(new LiftMagicCommand(LiftSubsystem.LiftHeight.ROCKET1));
              liftRocket2.whenPressed(new LiftMagicCommand(LiftSubsystem.LiftHeight.ROCKET2));
@@ -111,6 +115,8 @@ public class OI {
              pivotLevel1.whenPressed(new SetPivotAngleCommand(PivotSubsystem.DesiredAngle.Bottom));
              pivotLevel2.whenPressed(new SetPivotAngleCommand(PivotSubsystem.DesiredAngle.Middle));
              pivotLevel3.whenPressed(new SetPivotAngleCommand(PivotSubsystem.DesiredAngle.Top));
+             trashRight.whileHeld(new TrashRightCommand());
+             trashLeft.whileHeld(new TrashLeftCommand());
             
         }
 

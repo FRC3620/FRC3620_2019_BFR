@@ -98,7 +98,7 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
             }
         }
     }
-
+    
     private void periodicAutoMagicMode(){
         double currentAngle = getPivotAngle();
         // positive error is we are out too far
