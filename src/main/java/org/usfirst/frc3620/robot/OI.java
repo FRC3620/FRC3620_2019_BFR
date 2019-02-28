@@ -67,10 +67,12 @@ public class OI {
             Button inTakeIn = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_LEFT_BUMPER);
 
             //operator controls 
-            Button hatchIntake = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_X);
-            Button hatchOuttake = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_B);
+            Button hatchExtend = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_X);
+            Button hatchCollect = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_B);
             Button inTakeOut = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_START);
             Button trashIn = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_Y);
+            Button middlePos = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_RIGHT_BUMPER);
+            Button topPos = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_LEFT_BUMPER);
             Button liftHome = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_A);
             Button liftAllTheWayUp = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_LEFT_BUMPER);
 
@@ -85,11 +87,11 @@ public class OI {
             trashIn.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_ROCKET_MIDDLE, true));
             conveyorL.whileHeld(new TrashLeftCommand());
             conveyorR.whileHeld(new TrashRightCommand());
-            hatchOuttake.toggleWhenPressed(new HatchOuttakeCommand());
-            hatchIntake.toggleWhenPressed(new HatchIntakeCommand());
-            liftHome.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_HATCH_BOTTOM, true));
-            liftAllTheWayUp.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_ROCKET_TOP, false));
-
+            hatchExtend.toggleWhenPressed(new HatchExtendCommand());
+            hatchCollect.toggleWhenPressed(new HatchCollectCommand());
+            liftHome.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_TRASHIN, true));
+            middlePos.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_ROCKET_MIDDLE, true));
+            topPos.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_ROCKET_TOP, true));
             reverseDrive.whenPressed(new ToggleReverseCommand());
             SmartDashboard.putData(new HabInstrumentationCommand());
         }

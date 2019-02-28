@@ -11,22 +11,16 @@ import org.usfirst.frc3620.robot.Robot;
  */
 public class HatchCollectCommand extends Command {
 	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
-	boolean intaking;
-    public HatchCollectCommand(boolean snappingUp) {
+	
+    public HatchCollectCommand() {
         // requires(Robot.laserCannonSubsystem);
-        intaking = snappingUp;
     }
 
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
         EventLogging.commandMessage(logger);
-        if(intaking){
-            Robot.hatchSubsystem.fingerIn();
-        }
-        else{
-            Robot.hatchSubsystem.fingerOut();
-        }
+        Robot.hatchSubsystem.fingerOut();
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -37,13 +31,14 @@ public class HatchCollectCommand extends Command {
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        return true;
+        return false;
     }
 
     // Called once after isFinished returns true
     @Override
     protected void end() {
         EventLogging.commandMessage(logger);
+        Robot.hatchSubsystem.fingerIn();
     }
 
     // Called when another command which requires one or more of the same
@@ -51,5 +46,6 @@ public class HatchCollectCommand extends Command {
     @Override
     protected void interrupted() {
         EventLogging.commandMessage(logger);
+        Robot.hatchSubsystem.fingerIn();
     }
 }
