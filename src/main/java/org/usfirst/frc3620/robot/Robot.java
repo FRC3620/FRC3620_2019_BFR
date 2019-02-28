@@ -44,12 +44,15 @@ public class Robot extends TimedRobot {
     public static HatchSubsystem hatchSubsystem;
     public static PivotSubsystem pivotSubsystem;
     public static LineSubsystem lineSubsystem;
+    public static VisionSubsystem visionSubsystem;
 
     // data logging
     public static DataLogger robotDataLogger;
     private static Command leftLineWatcher;
     private static Command rightLineWatcher;
     
+    
+
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
@@ -66,7 +69,7 @@ public class Robot extends TimedRobot {
         // set up subsystems
         // initalized drive subsystem, which control motors to move robot
         driveSubsystem = new DriveSubsystem();
-        lightSubsystem = new LightSubsystem();
+      
         intakeSubsystem = new IntakeSubsystem();
         trashSubsystem = new TrashSubsystem();
         liftSubsystem = new LiftSubsystem();
@@ -74,8 +77,9 @@ public class Robot extends TimedRobot {
         rumbleSubsystemOperator = new RumbleSubsystem();
         hatchSubsystem = new HatchSubsystem();
         pivotSubsystem = new PivotSubsystem();
-        lineSubsystem = new LineSubsystem();
-
+        lineSubsystem = new LineSubsystem();  
+        visionSubsystem = new VisionSubsystem();
+        
         // OI must be constructed after subsystems. If the OI creates Commands
         //(which it very likely will), subsystems are not guaranteed to be
         // constructed yet. Thus, their requires() statements may grab null
@@ -200,7 +204,7 @@ public class Robot extends TimedRobot {
 			// RobotMap.checkTheCANBus();
 		}
         
-        lightSubsystem.modeChange(newMode, currentRobotMode);
+     
         
 		previousRobotMode = currentRobotMode;
 		currentRobotMode = newMode;

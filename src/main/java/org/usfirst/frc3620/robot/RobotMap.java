@@ -17,6 +17,11 @@ import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
 import org.usfirst.frc3620.misc.CANDeviceFinder;
 
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
+import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.Compressor;
@@ -35,7 +40,7 @@ import java.util.*;
  */
 
  public class RobotMap {
-    public static Encoder leftsideEncoder, rightsideEncoder;
+    public static Encoder leftSideEncoder, rightSideEncoder;
     public static CANEncoder leftsideCANEncoder, rightsideCANEncoder;
     public static CANSparkMax driveSubsystemMaxLeftA;
     public static CANSparkMax driveSubsystemMaxLeftB;
@@ -46,6 +51,8 @@ import java.util.*;
     public static DifferentialDrive driveSubsystemDifferentialDrive;
 
     public static Accelerometer accel;
+
+    public static Relay visionSubsystemNightLight;
 
     public static WPI_TalonSRX intakeSubsystemUpperMotor;
     public static WPI_TalonSRX intakeSubsystemLowerMotor;
@@ -138,6 +145,9 @@ import java.util.*;
             resetTalonToKnownState(driveSubsystemRightSpeedControllerC);
             driveSubsystemRightSpeedControllerC.setInverted(true);
 
+            leftSideEncoder = new Encoder(6,7, true, EncodingType.k4X);
+            rightSideEncoder = new Encoder(8,9, true, EncodingType.k4X);
+
             groupLeft = new SpeedControllerGroup(driveSubsystemLeftSpeedControllerA, driveSubsystemLeftSpeedControllerB, driveSubsystemLeftSpeedControllerC);
             groupRight = new SpeedControllerGroup(driveSubsystemRightSpeedControllerA, driveSubsystemRightSpeedControllerB, driveSubsystemRightSpeedControllerC);
         } else {
@@ -171,6 +181,8 @@ import java.util.*;
         requiredDevices.put(new CANDeviceId(CANDeviceType.SRX, 11), "IntakeLower");
         intakeSubsystemLowerMotor = new WPI_TalonSRX(11);
         resetTalonToKnownState(intakeSubsystemLowerMotor);
+
+        visionSubsystemNightLight = new Relay(0);
 
         // lift motor power is positive going up
         requiredDevices.put(new CANDeviceId(CANDeviceType.MAX, 6), "IntakeLower");
