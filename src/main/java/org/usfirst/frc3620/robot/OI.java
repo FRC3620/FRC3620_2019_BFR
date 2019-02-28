@@ -3,8 +3,9 @@ package org.usfirst.frc3620.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+import org.usfirst.frc3620.misc.Hand;
 import org.usfirst.frc3620.misc.DPad;
 import org.usfirst.frc3620.misc.XBoxConstants;
 import org.usfirst.frc3620.robot.commands.*;
@@ -13,6 +14,7 @@ import org.usfirst.frc3620.robot.subsystems.PivotSubsystem;
 import org.usfirst.frc3620.robot.subsystems.TrashSubsystem;
 import org.usfirst.frc3620.robot.subsystems.LiftSubsystem.LiftDecider;
 
+import org.usfirst.frc3620.robot.paths.*;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -70,30 +72,36 @@ public class OI {
             Button conveyorR = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_X);
             Button conveyorL = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_B);
             Button inTakeIn = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_LEFT_BUMPER);
+            Button driveIn = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_A);
 
             //operator controls 
             Button hatchExtend = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_X);
             Button hatchCollect = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_B);
             Button inTakeOut = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_START);
             Button trashIn = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_Y);
+            Button middlePos = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_RIGHT_BUMPER);
+            Button topPos = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_LEFT_BUMPER);
             Button liftHome = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_A);
 
             operatorDPad.down().whenPressed(new SetPivotAngleCommand(PivotSubsystem.DesiredAngle.Bottom));
             operatorDPad.up().whenPressed(new SetPivotAngleCommand(PivotSubsystem.DesiredAngle.Top));
             operatorDPad.right().whenPressed(new SetPivotAngleCommand(PivotSubsystem.DesiredAngle.Middle));
             operatorDPad.left().whenPressed(new SetPivotAngleCommand(PivotSubsystem.DesiredAngle.Middle));
-            
+
             //buttons run commands
             inTakeIn.toggleWhenPressed(new IntakeCommand());
             inTakeOut.toggleWhenPressed(new OutTakeCommand());
-            trashIn.toggleWhenPressed(new TrashInCommand());
+            trashIn.whenPressed(new TrashInCommand());
             conveyorL.whileHeld(new TrashLeftCommand());
             conveyorR.whileHeld(new TrashRightCommand());
             hatchExtend.toggleWhenPressed(new HatchExtendCommand());
             hatchCollect.toggleWhenPressed(new HatchCollectCommand());
-            liftHome.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_HATCH_BOTTOM));
-
+            liftHome.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_TRASHIN, true));
+            middlePos.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_ROCKET_MIDDLE, true));
+            topPos.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_ROCKET_TOP, true));
             reverseDrive.whenPressed(new ToggleReverseCommand());
+            driveIn.whileHeld(new AutoMoveForwardCommand(10,.7));
+
             SmartDashboard.putData(new HabInstrumentationCommand());
 
              //Magic Board Controls
@@ -118,6 +126,18 @@ public class OI {
              trashRight.whileHeld(new TrashRightCommand());
              trashLeft.whileHeld(new TrashLeftCommand());
             
+            SmartDashboard.putData("Rumble both", new RumbleCommand(Robot.rumbleSubsystemDriver, Hand.BOTH, 0.2, 60.0));
+            SmartDashboard.putData("Rumble left", new RumbleCommand(Robot.rumbleSubsystemDriver, Hand.LEFT, 0.2, 3.0));
+
+            SmartDashboard.putData("AutonomousAlign from 45", new AutoAlignmentTemplate(Robot.visionSubsystem.getFrontTargetDistance(), Robot.visionSubsystem.getFrontTargetAngle()));
+            SmartDashboard.putData("AlignToPointD", new AlignToPointD());
+            SmartDashboard.putData("TrainingPath", new TrainingPath());
+            SmartDashboard.putData("CenterOnTarget", new VisionAlignmentCommand());
+            SmartDashboard.putData("TapTarget", new TravelAlignPushCommand());
+            SmartDashboard.putData("DriveForward", new AutoMoveForwardCommand(15,.7));
+            SmartDashboard.putData("Align to Hatch Target", new AutonomousAlignmentAndApproachCommand());
+            SmartDashboard.putData("LineUpWithCargoship", new AutoLineUpWithCargoshipCommand());
+
         }
 
     public Joystick getDriverJoystick() {
@@ -126,7 +146,7 @@ public class OI {
     public Joystick getOperatorJoystick() {
         return operatorJoystick;
     }
-
+    
     public double computeDeadband (double position, double deadband) {
         if (Math.abs(position) < deadband) {
             return 0;

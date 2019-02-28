@@ -13,6 +13,7 @@ abstract public class DataLoggerBase implements IDataLogger {
 
 	File loggingDirectory = LoggingMaster.getLoggingDirectory();
 	String filename = null;
+	Date filenameTimestamp = null;
 
 	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 
@@ -45,6 +46,11 @@ abstract public class DataLoggerBase implements IDataLogger {
 		} else {
 			logger.error("Cannot setFilename(...) after start()");
 		}
+	}
+
+	@Override
+	public void setFilenameTimestamp(Date date) {
+		filenameTimestamp = date;
 	}
 
 	@Override
@@ -85,8 +91,12 @@ abstract public class DataLoggerBase implements IDataLogger {
 		if (outputFile == null) {
 			synchronized (DataLoggerBase.this) {
 				if (outputFile == null) {
-					String _timestampString = LoggingMaster.getTimestampString();
-					if (_timestampString != null) {
+					Date timestamp = filenameTimestamp;
+					if (timestamp == null) {
+						timestamp = LoggingMaster.getTimestamp();
+					}
+					if (timestamp != null) {
+						String _timestampString = LoggingMaster.convertTimestampToString(timestamp);
 						String fullFilename = _timestampString + ".csv";
 						if (filename != null) {
 							fullFilename = filename + "_" + fullFilename;

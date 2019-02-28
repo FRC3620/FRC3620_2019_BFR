@@ -18,6 +18,7 @@ public class TrashSubsystem extends Subsystem {
 
     public void initDefaultCommand() {
         // Set the default command for a subsystem here. Drive command runs in background at all times
+      
     }
 
     @Override
