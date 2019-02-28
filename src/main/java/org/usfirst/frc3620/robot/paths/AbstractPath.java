@@ -209,10 +209,10 @@ public abstract class AbstractPath extends Command {
 		if(lastCompBot){
 			lastLeftEncoder = encoderPosLeft = Robot.driveSubsystem.readLeftEncRaw();
 			lastRightEncoder = encoderPosRight = Robot.driveSubsystem.readRightEncRaw();
-		} else {
+		} /* else {
 			lastLeftEncoder = encoderPosLeft = Robot.driveSubsystem.leftsideCANEncoder.getPosition();
 			lastRightEncoder = encoderPosRight = RobotMap.rightsideCANEncoder.getPosition();;
-		}
+		} */
 		
 		//lastLeftEncoder = encoderPosLeft = RobotMap.driveSubsystemLeftEncoder.getRaw();
 		
