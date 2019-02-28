@@ -45,13 +45,12 @@ public class DriveSubsystem extends Subsystem {
 		// ahrs.enableLogging(false);
        
         gotCompBot = RobotMap.amICompBot();
+        
         try{
             resetEncoders();
         } catch(NullPointerException nullPointer){
             resetCANDriveEncoders();
         }
-        
-        
     }
 
     @Override

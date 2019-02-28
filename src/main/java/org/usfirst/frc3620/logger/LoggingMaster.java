@@ -7,32 +7,36 @@ import java.util.*;
 public class LoggingMaster {
     private final static long SOME_TIME_AFTER_1970 = 523980000000L;
 
-    private static String _timestampString = null;
+    private static Date _timestamp = null;
 
     private static File _logDirectory = null;
     
     private static String defaultLogLocation = "/home/lvuser/logs"; 
 
     // http://javarevisited.blogspot.com/2014/05/double-checked-locking-on-singleton-in-java.html
-    public static String getTimestampString() {
-        if (_timestampString == null) { // do a quick check (no overhead from
+    public static Date getTimestamp() {
+        if (_timestamp == null) { // do a quick check (no overhead from
                                         // synchonized)
             synchronized (LoggingMaster.class) {
-                if (_timestampString == null) { // Double checked
+                if (_timestamp == null) { // Double checked
                     long now = System.currentTimeMillis();
                     
                     if (now > SOME_TIME_AFTER_1970) {
-                        SimpleDateFormat formatName = new SimpleDateFormat(
-                                "yyyyMMdd-HHmmss");
-                        _timestampString = formatName.format(new Date());
+                        _timestamp = new Date();
                         String logMessage = String.format(
-                                "timestamp for logs is %s\n", _timestampString);
+                                "timestamp for logs is %s\n",convertTimestampToString(_timestamp));
                         EventLogging.writeWarningToDS(logMessage);
                     }
                 }
             }
         }
-        return _timestampString;
+        return _timestamp;
+    }
+
+    public static String convertTimestampToString(Date ts) {
+        SimpleDateFormat formatName = new SimpleDateFormat(
+                "yyyyMMdd-HHmmss");
+        return formatName.format(ts);
     }
     
     public static void setDefaultLogLocation (String s) {
