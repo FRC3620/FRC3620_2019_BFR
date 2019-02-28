@@ -11,13 +11,17 @@ import org.usfirst.frc3620.robot.Robot;
 import org.usfirst.frc3620.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.PIDOutput;
+import edu.wpi.first.wpilibj.PIDSource;
+import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
  */
-public class LiftSubsystem extends Subsystem {
+public class LiftSubsystem extends Subsystem implements PIDSource, PIDOutput {
     Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 
     public static final double SETPOINT_BOTTOM = 0;
@@ -34,15 +38,23 @@ public class LiftSubsystem extends Subsystem {
     private final DigitalInput topLimit = RobotMap.liftLimitSwitchTop;
     private final DigitalInput bottomLimit = RobotMap.liftLimitSwitchBottom;
     private final CANEncoder liftEncoder = RobotMap.liftEncoder;
+    private final PIDController liftPIDContoller;
 
     private boolean encoderisvalid = false;
     private double desiredHeight = 0;
     private boolean autoMagicMode = true;
+    private double PIDpower = 0;
+
+    public boolean doingPID;
 
     public LiftSubsystem(){
         // this code gets run when the LiftSubsystem is created 
         // (when the robot is rebooted.)
         resetEncoder();
+        liftPIDContoller = new PIDController(0, 0, 0, 0, this, this);
+        setPIDSourceType(PIDSourceType.kDisplacement);
+        liftPIDContoller.setInputRange(0, 30);
+        liftPIDContoller.setOutputRange(-0.3, 1.0);
     }
 
 
@@ -75,6 +87,8 @@ public class LiftSubsystem extends Subsystem {
                     logger.info("Switching to Manual Mode");
                 }
                 autoMagicMode = false;
+                doingPID = false;
+                liftPIDContoller.disable();
             }
 
             if(!autoMagicMode){
@@ -95,7 +109,11 @@ public class LiftSubsystem extends Subsystem {
     private void periodicAutoMagicMode(){
         double currentheight = getLiftHeight();
         double error = currentheight - desiredHeight;
-        if(Math.abs(error) > 1){
+        if(doingPID){
+         logger.info("PIDPower: {}", PIDpower);
+         liftMove(PIDpower);
+          
+        } else if(Math.abs(error) > 1){
             if(error > 0){
                 liftMove(-0.3);
             }
@@ -103,7 +121,8 @@ public class LiftSubsystem extends Subsystem {
             if(error < 0){
                 liftMove(+0.3);
             }
-        }else{
+        } 
+        else {
             liftStop();
         }
     }
@@ -208,6 +227,35 @@ public class LiftSubsystem extends Subsystem {
             logger.info("going to Automagic mode");
         }
         autoMagicMode = true;
+        if(doingPID){
+            liftPIDContoller.setSetpoint(desiredHeight);
+            if (!liftPIDContoller.isEnabled()) {
+                 // set the P, I, D, FF
+                 //Base P: 0.04
+                double p = SmartDashboard.getNumber("pivotP", 0.06);
+                double i = SmartDashboard.getNumber("pivotI", 0.0004);
+                double d = SmartDashboard.getNumber("pivotD", 0.12);
+                double f = SmartDashboard.getNumber("pivotF", 0);
+    
+                logger.info("_pivotP={}", p);
+                logger.info("_pivotI={}", i);
+                logger.info("_pivotD={}", d);
+                logger.info("_pivotF={}", f);
+    
+                liftPIDContoller.setP(p);
+                liftPIDContoller.setI(i);
+                liftPIDContoller.setD(d);
+                liftPIDContoller.setF(f);
+
+                liftPIDContoller.reset();
+                liftPIDContoller.enable();
+            }
+        }
+        
+    }
+
+    public void setDoingPID(boolean toPIDOrNotToPID){
+        doingPID = toPIDOrNotToPID;
     }
 
     public double getMaxPower() {
@@ -233,4 +281,27 @@ public class LiftSubsystem extends Subsystem {
             return Double.NaN;
         }
     }
+
+    @Override
+    public void pidWrite(double output) {
+        PIDpower = output;
+    }
+
+    PIDSourceType pidSourceType;
+
+    @Override
+    public void setPIDSourceType(PIDSourceType pidSource) {
+        pidSourceType = pidSource;
+    }
+
+    @Override
+    public PIDSourceType getPIDSourceType() {
+        return pidSourceType;
+    }
+
+    @Override
+    public double pidGet() {
+        double pos = getLiftHeight();
+        return pos;
+	}
 }

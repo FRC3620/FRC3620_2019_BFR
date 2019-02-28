@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
 import org.usfirst.frc3620.robot.Robot;
-import org.usfirst.frc3620.robot.subsystems.DriveSubsystem;
 
 /**
  *
@@ -29,11 +28,11 @@ public class DriveCommand extends Command {
         //gets values from X-axis of Left stick on gamepad, Y-axis goes unused
         double horizontal = Robot.oi.getRightHorizontalJoystickSquared();
         //displays current values on gamepad
-            //Calls method to drive motors, declared in subsystem, sends real values to motors
-            if (Robot.driveSubsystem.areWeInReverseMode()){
-                vertical = -vertical;
-            }
-            Robot.driveSubsystem.arcadeDrive(-vertical, horizontal);
+        //Calls method to drive motors, declared in subsystem, sends real values to motors
+        if (Robot.driveSubsystem.areWeInReverseMode()){
+            vertical = -vertical;
+        }
+        Robot.driveSubsystem.arcadeDrive(-vertical, horizontal);
     }
 
     // Make this return true when this Command no longer needs to run execute()
