@@ -77,10 +77,14 @@ public class AutoLineUpWithCargoshipCommand extends Command {
 
       Robot.visionSubsystem.turnLightSwitchOn();
       double currentHeading = Robot.driveSubsystem.getRealAngle();
-      if(currentHeading < 90 || currentHeading > 270){
+      if(currentHeading <= 45 || currentHeading >= 315) {
         driveStraightSetpoint = 0;
-      } else if(currentHeading >= 90 && currentHeading <= 270) {
+      } else if(currentHeading > 45 && currentHeading < 135){
+        driveStraightSetpoint = 90; 
+      } else if(currentHeading > 135 && currentHeading < 225){
         driveStraightSetpoint = 180;
+      } else if(currentHeading > 225 && currentHeading < 315){
+        driveStraightSetpoint = 270;
       } else {
         driveStraightSetpoint = currentHeading;
       }
