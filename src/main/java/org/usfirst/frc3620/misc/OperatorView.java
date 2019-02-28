@@ -14,9 +14,9 @@ public class OperatorView {
     public OperatorView() {
     }
 
-	public void operatorViewInit() {
+	public void operatorViewInit(boolean competitionBot) {
 		File videoCamera = new File("/dev/video0");
-		if (videoCamera.exists()) {
+		if (competitionBot || videoCamera.exists()) {
 			logger.info ("/dev/video0 exists, starting the camera server");
             CameraServer.getInstance().startAutomaticCapture();
         } else {
