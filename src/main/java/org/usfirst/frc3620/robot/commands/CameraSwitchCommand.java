@@ -8,10 +8,10 @@ import org.usfirst.frc3620.logger.EventLogging.Level;
 /**
  *
  */
-public class CameraSwitch extends Command {
+public class CameraSwitchCommand extends Command {
 	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 	
-    public CameraSwitch() {
+    public CameraSwitchCommand() {
         // requires(Robot.laserCannonSubsystem);
     }
 
