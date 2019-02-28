@@ -77,8 +77,7 @@ public class OI {
             Button middlePos = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_RIGHT_BUMPER);
             Button topPos = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_LEFT_BUMPER);
             Button liftHome = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_A);
-            Button liftAllTheWayUp = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_LEFT_BUMPER);
-
+            
             operatorDPad.down().whenPressed(new SetPivotAngleCommand(PivotSubsystem.SETANGLE_BOTTOM));
             operatorDPad.up().whenPressed(new SetPivotAngleCommand(PivotSubsystem.SETANGLE_TOP));
             operatorDPad.right().whenPressed(new SetPivotAngleCommand(PivotSubsystem.SETANGLE_MIDDLE));
@@ -87,7 +86,7 @@ public class OI {
             //buttons run commands
             inTakeIn.toggleWhenPressed(new IntakeCommand());
             inTakeOut.toggleWhenPressed(new OutTakeCommand());
-            trashIn.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_ROCKET_MIDDLE, true));
+            trashIn.whenPressed(new TrashInCommand());
             conveyorL.whileHeld(new TrashLeftCommand());
             conveyorR.whileHeld(new TrashRightCommand());
             hatchExtend.toggleWhenPressed(new HatchExtendCommand());
