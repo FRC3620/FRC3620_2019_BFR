@@ -69,8 +69,8 @@ public class OI {
             
             //driver controls
             Button reverseDrive = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_RIGHT_BUMPER);
-            Button conveyorR = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_X);
-            Button conveyorL = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_B);
+            Button conveyorL = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_X);
+            Button conveyorR = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_B);
             Button inTakeIn = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_LEFT_BUMPER);
             Button driveIn = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_A);
 
@@ -96,9 +96,9 @@ public class OI {
             conveyorR.whileHeld(new TrashRightCommand());
             hatchExtend.toggleWhenPressed(new HatchExtendCommand());
             hatchCollect.toggleWhenPressed(new HatchCollectCommand());
-            liftHome.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_TRASHIN, true));
-            middlePos.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_ROCKET_MIDDLE, true));
-            topPos.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_ROCKET_TOP, true));
+            liftHome.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_CARGO_TRASHIN, true));
+            middlePos.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_CARGO_ROCKET_MIDDLE, true));
+            topPos.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_CARGO_ROCKET_TOP, true));
             reverseDrive.whenPressed(new ToggleReverseCommand());
             driveIn.whileHeld(new AutoMoveForwardCommand(10,.7));
 
