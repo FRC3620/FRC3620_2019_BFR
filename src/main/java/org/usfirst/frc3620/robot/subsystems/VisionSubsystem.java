@@ -27,6 +27,7 @@ import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
+
 /**
  * Add your docs here.
  */
@@ -52,7 +53,9 @@ public class VisionSubsystem extends Subsystem implements PIDSource, PIDOutput {
   private NetworkTableEntry leftTargetDistance = networkTable.getEntry("RealDistance leftCameratape");
   private NetworkTableEntry leftTargetYaw = networkTable.getEntry("tapeYaw leftCameratape");
   private NetworkTableEntry leftIsThereTarget = networkTable.getEntry("tapeDetected leftCameratape");
-
+  private NetworkTableEntry switchCamera = networkTable.getEntry("switchCamera");
+  private NetworkTableEntry currentCamera = networkTable.getEntry("currentCamera");
+  private NetworkTableEntry allCameraNames = networkTable.getEntry("allCameraNames");
   private NetworkTableEntry frontSecondClosestYaw = networkTable.getEntry("yawSecondClosest frontCameratape");
 
   private final double DESIRED_YAW = 0;
@@ -67,6 +70,22 @@ public class VisionSubsystem extends Subsystem implements PIDSource, PIDOutput {
   private final double kI = 0.00005;
   private final double kD = 0.000;
   private final double kF = .2;
+  
+  private final String[] cameraNames = {"frontCamera", "leftCamera", "rightCamera"};
+  
+  public void setCurrentCameraView(String nameCamera){
+    switchCamera.setString(nameCamera);
+  }
+
+  public String getCurrentCameraView() {
+    return(switchCamera.getString(""));
+
+  }
+
+  public String[] getAllCameraNames() {
+      String[] defaultStringArray = {"NONE FOUND","",""};
+      return(allCameraNames.getStringArray(defaultStringArray));
+  }
 
   public VisionSubsystem(){
     visionPIDController = new PIDController(kP, kI, kD, kF, this, this);
@@ -80,6 +99,12 @@ public class VisionSubsystem extends Subsystem implements PIDSource, PIDOutput {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand())
    // setDefaultCommand(new VisionAlignmentCommand());
+  }
+
+  
+
+  private void setCamera(String switchCamera){
+    
   }
 
   @Override

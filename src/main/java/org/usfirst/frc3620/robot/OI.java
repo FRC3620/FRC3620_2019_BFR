@@ -12,6 +12,7 @@ import org.usfirst.frc3620.robot.commands.*;
 import org.usfirst.frc3620.robot.subsystems.LiftSubsystem;
 import org.usfirst.frc3620.robot.subsystems.PivotSubsystem;
 import org.usfirst.frc3620.robot.subsystems.TrashSubsystem;
+import org.usfirst.frc3620.robot.subsystems.VisionSubsystem;
 import org.usfirst.frc3620.robot.subsystems.LiftSubsystem.LiftDecider;
 
 import org.usfirst.frc3620.robot.paths.*;
@@ -116,6 +117,7 @@ public class OI {
              Button trashRight = new JoystickButton(magicBoardJoystick, 3);
              Button camSwitch = new JoystickButton(magicBoardJoystick, 8);
 
+
              liftRocket1.whenPressed(new LiftMagicCommand(LiftSubsystem.LiftHeight.ROCKET1));
              liftRocket2.whenPressed(new LiftMagicCommand(LiftSubsystem.LiftHeight.ROCKET2));
              liftRocket3.whenPressed(new LiftMagicCommand(LiftSubsystem.LiftHeight.ROCKET3));
@@ -125,7 +127,8 @@ public class OI {
              pivotLevel3.whenPressed(new SetPivotAngleCommand(PivotSubsystem.DesiredAngle.Top));
              trashRight.whileHeld(new TrashRightCommand());
              trashLeft.whileHeld(new TrashLeftCommand());
-            
+             camSwitch.whenPressed(new SwitchCameraCommand());            
+
             SmartDashboard.putData("Rumble both", new RumbleCommand(Robot.rumbleSubsystemDriver, Hand.BOTH, 0.2, 60.0));
             SmartDashboard.putData("Rumble left", new RumbleCommand(Robot.rumbleSubsystemDriver, Hand.LEFT, 0.2, 3.0));
 
