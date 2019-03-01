@@ -50,8 +50,6 @@ public class Robot extends TimedRobot {
     public static DataLogger robotDataLogger;
     private static Command leftLineWatcher;
     private static Command rightLineWatcher;
-    
-    
 
     /**
      * This function is run when the robot is first started up and should be
@@ -101,7 +99,7 @@ public class Robot extends TimedRobot {
         robotDataLogger.setInterval(1.000);
         robotDataLogger.start();
         OperatorView operatorView = new OperatorView();
-        operatorView.operatorViewInit();
+        operatorView.operatorViewInit(RobotMap.amICompBot());
     }
 
     /**

@@ -171,6 +171,10 @@ public abstract class AbstractPath extends Command {
 	double lastLeftEncoder = 0;
 	double lastRightEncoder = 0;
 	double startingAbsoluteHeading; 
+	//For reference, 0.0009765625 = 1/1024
+	public int convertCANEncoderTicstoPulses(double CANTics){
+		return (int)((CANTics/0.0009765625)-(CANTics % 0.0009765625));
+	}
 	
 	@Override
 	protected void initialize() {
@@ -209,10 +213,10 @@ public abstract class AbstractPath extends Command {
 		if(lastCompBot){
 			lastLeftEncoder = encoderPosLeft = Robot.driveSubsystem.readLeftEncRaw();
 			lastRightEncoder = encoderPosRight = Robot.driveSubsystem.readRightEncRaw();
-		} /* else {
-			lastLeftEncoder = encoderPosLeft = Robot.driveSubsystem.leftsideCANEncoder.getPosition();
-			lastRightEncoder = encoderPosRight = RobotMap.rightsideCANEncoder.getPosition();;
-		} */
+		}  else {
+			lastLeftEncoder = encoderPosLeft = convertCANEncoderTicstoPulses(RobotMap.leftsideCANEncoder.getPosition());
+			lastRightEncoder = encoderPosRight = convertCANEncoderTicstoPulses(RobotMap.rightsideCANEncoder.getPosition());
+		} 
 		
 		//lastLeftEncoder = encoderPosLeft = RobotMap.driveSubsystemLeftEncoder.getRaw();
 		

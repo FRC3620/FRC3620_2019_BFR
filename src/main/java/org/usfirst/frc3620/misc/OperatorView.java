@@ -14,10 +14,12 @@ public class OperatorView {
     public OperatorView() {
     }
 
-	public void operatorViewInit() {
+	public void operatorViewInit(boolean competitionBot) {
 		File videoCamera = new File("/dev/video0");
-		if (videoCamera.exists()) {
-			logger.info ("/dev/video0 exists, starting the camera server");
+		if (competitionBot || videoCamera.exists()) {
+			if (videoCamera.exists()) {
+			    logger.info ("/dev/video0 exists, starting the camera server");
+            }
             CameraServer.getInstance().startAutomaticCapture();
         } else {
 			logger.warn ("Camera is missing");
