@@ -24,13 +24,17 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class LiftSubsystem extends Subsystem implements PIDSource, PIDOutput {
     Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 
+    public enum LiftHeight{CARGOSHIP, ROCKET1, ROCKET2, ROCKET3}
+    public enum LiftDecider{CARGO, HATCH}
+
     public static final double SETPOINT_BOTTOM = 0;
-    public static final double SETPOINT_TRASHIN = 3.25;
-    public static final double SETPOINT_CARGOSHIP = 16;
-    public static final double SETPOINT_ROCKET_MIDDLE = 27.5;
-    public static final double SETPOINT_ROCKET_TOP = 54;
+    public static final double SETPOINT_CARGO_TRASHIN = 3.25;
+    public static final double SETPOINT_CARGO_CARGOSHIP = 16;
+    public static final double SETPOINT_CARGO_ROCKET_MIDDLE = 27.5;
+    public static final double SETPOINT_CARGO_ROCKET_TOP = 54;
 
     public static final double SETPOINT_HATCH_BOTTOM = 3.25;
+    public static final double SETPOINT_HATCH_CARGOSHIP = 0;
     public static final double SETPOINT_HATCH_MIDDLE = 0;
     public static final double SETPOINT_HATCH_TOP = 0;
 
@@ -208,6 +212,36 @@ public class LiftSubsystem extends Subsystem implements PIDSource, PIDOutput {
         }
     }
 
+    public double calculateLiftHeight(LiftHeight liftHeight, LiftDecider liftDecider){
+        if (liftDecider == LiftDecider.CARGO){
+            switch (liftHeight) {
+                case CARGOSHIP:
+                    return SETPOINT_CARGO_CARGOSHIP;
+                case ROCKET1:
+                    // TODO is this correct?
+                    return SETPOINT_CARGO_TRASHIN;
+                case ROCKET2:
+                    return SETPOINT_CARGO_ROCKET_MIDDLE;
+                case ROCKET3:
+                    return SETPOINT_CARGO_ROCKET_TOP;
+            }
+        } else {
+            switch (liftHeight) {
+                case CARGOSHIP:
+                    return SETPOINT_HATCH_CARGOSHIP;
+                case ROCKET1:
+                    // TODO is this correct?
+                    return SETPOINT_HATCH_BOTTOM;
+                case ROCKET2:
+                    return SETPOINT_HATCH_MIDDLE;
+                case ROCKET3:
+                    return SETPOINT_HATCH_TOP;
+            }
+        }
+        logger.warn ("we got hit with a combination of {} and {} that we can't handle", liftHeight, liftDecider);
+        return SETPOINT_BOTTOM;
+    }
+
     private double liftEncoderZeroValue;
     
     public boolean checkForLiftEncoder() {
@@ -221,7 +255,7 @@ public class LiftSubsystem extends Subsystem implements PIDSource, PIDOutput {
     }
 
     public void setDesiredHeight(double h) {
-        logger.info("setting desired hieght");
+        logger.info("setting desired hieght to {}", h);
         desiredHeight = h;
         if (!autoMagicMode){
             logger.info("going to Automagic mode");
