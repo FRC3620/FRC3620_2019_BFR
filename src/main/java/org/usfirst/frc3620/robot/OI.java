@@ -68,6 +68,7 @@ public class OI {
             Button conveyorL = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_B);
             Button inTakeIn = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_LEFT_BUMPER);
             Button driveIn = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_A);
+            Button cargoShipLineUp = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_Y);
 
             //operator controls 
             Button hatchExtend = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_X);
@@ -97,6 +98,7 @@ public class OI {
             topPos.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_ROCKET_TOP, true));
             reverseDrive.whenPressed(new ToggleReverseCommand());
             driveIn.whileHeld(new AutoMoveForwardCommand(10,.7));
+            cargoShipLineUp.whileHeld(new AutoLineUpWithCargoshipCommand());
 
             SmartDashboard.putData(new HabInstrumentationCommand());
             SmartDashboard.putData("Rumble both", new RumbleCommand(Robot.rumbleSubsystemDriver, Hand.BOTH, 0.2, 60.0));
