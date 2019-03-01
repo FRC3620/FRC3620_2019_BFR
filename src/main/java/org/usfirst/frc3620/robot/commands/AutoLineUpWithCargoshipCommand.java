@@ -87,7 +87,7 @@ public class AutoLineUpWithCargoshipCommand extends Command {
       logger.info("fwdStick: {}", fwdStick);
       if(Robot.visionSubsystem.getRightTargetPresent() == false){
         weAreDone = true;
-        rumbleCommand.start();
+        
         return;
       }
       double horizontal = Robot.oi.getRightHorizontalJoystickSquared();
@@ -107,6 +107,8 @@ public class AutoLineUpWithCargoshipCommand extends Command {
         return true;
       }
       if (Robot.visionSubsystem.getRightTargetYaw() != 0){
+
+        rumbleCommand.start();
         return false;
       } else {
         return true;
