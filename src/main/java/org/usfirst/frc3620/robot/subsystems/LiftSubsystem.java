@@ -28,12 +28,13 @@ public class LiftSubsystem extends Subsystem implements PIDSource, PIDOutput {
     public enum LiftDecider{CARGO, HATCH}
 
     public static final double SETPOINT_BOTTOM = 0;
-    public static final double SETPOINT_TRASHIN = 3.25;
-    public static final double SETPOINT_CARGOSHIP = 16;
-    public static final double SETPOINT_ROCKET_MIDDLE = 27.5;
-    public static final double SETPOINT_ROCKET_TOP = 54;
+    public static final double SETPOINT_CARGO_TRASHIN = 3.25;
+    public static final double SETPOINT_CARGO_CARGOSHIP = 16;
+    public static final double SETPOINT_CARGO_ROCKET_MIDDLE = 27.5;
+    public static final double SETPOINT_CARGO_ROCKET_TOP = 54;
 
     public static final double SETPOINT_HATCH_BOTTOM = 3.25;
+    public static final double SETPOINT_HATCH_CARGOSHIP = 0;
     public static final double SETPOINT_HATCH_MIDDLE = 0;
     public static final double SETPOINT_HATCH_TOP = 0;
 
@@ -215,19 +216,19 @@ public class LiftSubsystem extends Subsystem implements PIDSource, PIDOutput {
         if (liftDecider == LiftDecider.CARGO){
             switch (liftHeight) {
                 case CARGOSHIP:
-                    return SETPOINT_CARGOSHIP;
+                    return SETPOINT_CARGO_CARGOSHIP;
                 case ROCKET1:
                     // TODO is this correct?
-                    return SETPOINT_BOTTOM;
+                    return SETPOINT_CARGO_TRASHIN;
                 case ROCKET2:
-                    return SETPOINT_ROCKET_MIDDLE;
+                    return SETPOINT_CARGO_ROCKET_MIDDLE;
                 case ROCKET3:
-                    return SETPOINT_ROCKET_TOP;
+                    return SETPOINT_CARGO_ROCKET_TOP;
             }
         } else {
             switch (liftHeight) {
                 case CARGOSHIP:
-                    return SETPOINT_CARGOSHIP;
+                    return SETPOINT_HATCH_CARGOSHIP;
                 case ROCKET1:
                     // TODO is this correct?
                     return SETPOINT_HATCH_BOTTOM;
@@ -238,7 +239,7 @@ public class LiftSubsystem extends Subsystem implements PIDSource, PIDOutput {
             }
         }
         logger.warn ("we got hit with a combination of {} and {} that we can't handle", liftHeight, liftDecider);
-        return SETPOINT_CARGOSHIP;
+        return SETPOINT_BOTTOM;
     }
 
     private double liftEncoderZeroValue;
