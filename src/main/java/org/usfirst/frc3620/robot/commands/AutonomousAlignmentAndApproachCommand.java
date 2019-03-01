@@ -16,9 +16,17 @@ public class AutonomousAlignmentAndApproachCommand extends CommandGroup {
   double interceptAngle;
   double distance;
   public AutonomousAlignmentAndApproachCommand() {
+    double leftDiff = 135 - Robot.driveSubsystem.getRealAngle();
+    double rightDiff = 215 - Robot.driveSubsystem.getRealAngle();
+    if(Math.abs(rightDiff) > Math.abs(leftDiff)){
+      interceptAngle = leftDiff;
+    } else if(Math.abs(leftDiff) > Math.abs(rightDiff)){
+      interceptAngle = rightDiff;
+    }
+
     interceptAngle = Robot.visionSubsystem.getFrontTargetAngle();
    
-    if(Math.abs(interceptAngle) > 30){
+    if(Math.abs(interceptAngle) > 10){
       addSequential(new AlignToPointD());
     }    
     addSequential(new AutoMoveForwardCommand(10,.7));
