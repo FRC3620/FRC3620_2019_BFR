@@ -1,5 +1,6 @@
 package org.usfirst.frc3620.robot;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -10,12 +11,9 @@ import org.usfirst.frc3620.logger.DataLogger;
 import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
 import org.usfirst.frc3620.misc.RobotMode;
-import org.usfirst.frc3620.misc.BlinkinDict.Color;
 import org.usfirst.frc3620.misc.OperatorView;
-import org.usfirst.frc3620.robot.OI;
 import org.usfirst.frc3620.robot.commands.*;
 import org.usfirst.frc3620.robot.subsystems.*;
-import org.usfirst.frc3620.misc.LineSensor;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -46,12 +44,13 @@ public class Robot extends TimedRobot {
     public static HatchSubsystem hatchSubsystem;
     public static PivotSubsystem pivotSubsystem;
     public static LineSubsystem lineSubsystem;
+    public static VisionSubsystem visionSubsystem;
 
     // data logging
     public static DataLogger robotDataLogger;
     private static Command leftLineWatcher;
     private static Command rightLineWatcher;
-    
+
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
@@ -63,11 +62,12 @@ public class Robot extends TimedRobot {
         
         // set up hardware
         RobotMap.init();
+        RobotMap.reportMissingDevices();
 
         // set up subsystems
         // initalized drive subsystem, which control motors to move robot
         driveSubsystem = new DriveSubsystem();
-        lightSubsystem = new LightSubsystem();
+      
         intakeSubsystem = new IntakeSubsystem();
         trashSubsystem = new TrashSubsystem();
         liftSubsystem = new LiftSubsystem();
@@ -75,8 +75,9 @@ public class Robot extends TimedRobot {
         rumbleSubsystemOperator = new RumbleSubsystem();
         hatchSubsystem = new HatchSubsystem();
         pivotSubsystem = new PivotSubsystem();
-        lineSubsystem = new LineSubsystem();
-
+        lineSubsystem = new LineSubsystem();  
+        visionSubsystem = new VisionSubsystem();
+        
         // OI must be constructed after subsystems. If the OI creates Commands
         //(which it very likely will), subsystems are not guaranteed to be
         // constructed yet. Thus, their requires() statements may grab null
@@ -98,7 +99,7 @@ public class Robot extends TimedRobot {
         robotDataLogger.setInterval(1.000);
         robotDataLogger.start();
         OperatorView operatorView = new OperatorView();
-        operatorView.operatorViewInit();
+        operatorView.operatorViewInit(RobotMap.amICompBot());
     }
 
     /**
@@ -120,7 +121,8 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousInit() {
     	processRobotModeChange(RobotMode.AUTONOMOUS);
-		
+        logMatchInfo();
+
         autonomousCommand = chooser.getSelected();
         // schedule the autonomous command (example)
         if (autonomousCommand != null) autonomousCommand.start();
@@ -138,14 +140,15 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopInit() {
-        RobotMap.canDeviceFinder.find();
-        logger.info ("CAN bus = {}", RobotMap.canDeviceFinder.getDeviceList());
         // This makes sure that the autonomous stops running when
         // teleop starts running. If you want the autonomous to
         // continue until interrupted by another command, remove
         // this line or comment it out.
         if (autonomousCommand != null) autonomousCommand.cancel();
-        
+
+        processRobotModeChange(RobotMode.TELEOP);
+        logMatchInfo();
+
         if(leftLineWatcher != null)
             leftLineWatcher.start();
 
@@ -154,7 +157,6 @@ public class Robot extends TimedRobot {
    
         driveSubsystem.clearReverseMode();    
 
-		processRobotModeChange(RobotMode.TELEOP);
     }
 
     /**
@@ -173,7 +175,11 @@ public class Robot extends TimedRobot {
 		// test starts running.
 		if (autonomousCommand != null)
             ((Command) autonomousCommand).cancel();
+
 		processRobotModeChange(RobotMode.TEST);
+
+		RobotMap.canDeviceFinder.find();
+		RobotMap.reportMissingDevices();
 	}
 
 	/**
@@ -196,7 +202,7 @@ public class Robot extends TimedRobot {
 			// RobotMap.checkTheCANBus();
 		}
         
-        lightSubsystem.modeChange(newMode, currentRobotMode);
+     
         
 		previousRobotMode = currentRobotMode;
 		currentRobotMode = newMode;
@@ -238,5 +244,13 @@ public class Robot extends TimedRobot {
     public static RobotMode getCurrentRobotMode(){
         return currentRobotMode;
     }
-    
+
+    void logMatchInfo() {
+	    DriverStation ds = DriverStation.getInstance();
+	    if (ds.isFMSAttached()) {
+	        logger.info ("FMS attached. Event name {}, match type {}, match number {}, replay number {}",
+                    ds.getEventName(), ds.getMatchType(), ds.getMatchNumber(), ds.getReplayNumber());
+        }
+	    logger.info ("Alliance {}, position {}", ds.getAlliance(), ds.getLocation());
+    }
 }
