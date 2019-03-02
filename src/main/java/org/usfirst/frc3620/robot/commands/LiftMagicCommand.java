@@ -28,13 +28,14 @@ public class LiftMagicCommand extends Command {
         LiftSubsystem.LiftDecider liftDecider = Robot.oi.getLiftDecider();
         double desiredLiftHeight = Robot.liftSubsystem.calculateLiftHeight(liftHeight, liftDecider);
         logger.info("setting left height for {} {} to {}", liftHeight, liftDecider, desiredLiftHeight);
+        Robot.liftSubsystem.setDoingPID(true);
         Robot.liftSubsystem.setDesiredHeight(desiredLiftHeight);
     }
 
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-
+        
     }
 
     // Make this return true when this Command no longer needs to run execute()

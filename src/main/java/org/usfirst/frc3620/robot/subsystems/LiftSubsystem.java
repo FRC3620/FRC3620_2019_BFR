@@ -31,7 +31,7 @@ public class LiftSubsystem extends Subsystem implements PIDSource, PIDOutput {
     public static final double SETPOINT_CARGO_TRASHIN = 3.25;
     public static final double SETPOINT_CARGO_CARGOSHIP = 16;
     public static final double SETPOINT_CARGO_ROCKET_MIDDLE = 27.5;
-    public static final double SETPOINT_CARGO_ROCKET_TOP = 54;
+    public static final double SETPOINT_CARGO_ROCKET_TOP = 48;
 
     public static final double SETPOINT_HATCH_BOTTOM = 3.25;
     public static final double SETPOINT_HATCH_CARGOSHIP = 0;
