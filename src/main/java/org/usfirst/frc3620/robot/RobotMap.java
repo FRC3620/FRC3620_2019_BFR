@@ -60,6 +60,7 @@ import java.util.*;
 
     public static WPI_VictorSPX conveyorBeltMotorTop;
     public static WPI_VictorSPX conveyorBeltMotorBottom;
+    public static WPI_VictorSPX habDriveMotor;
 
     public static Counter lineSensorCounterL; 
     public static Counter lineSensorCounterR;
@@ -182,6 +183,10 @@ import java.util.*;
         intakeSubsystemLowerMotor = new WPI_TalonSRX(11);
         resetTalonToKnownState(intakeSubsystemLowerMotor);
 
+        requiredDevices.put(new CANDeviceId(CANDeviceType.SPX, 13), "HabDrive");
+        habDriveMotor = new WPI_VictorSPX(13);
+        resetTalonToKnownState(habDriveMotor);
+        
         visionSubsystemNightLight = new Relay(0);
 
         // lift motor power is positive going up
