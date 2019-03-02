@@ -13,10 +13,10 @@ import org.usfirst.frc3620.robot.subsystems.PivotSubsystem.PivotMode;
 /**
  *
  */
-public class PivotModeToggleCommand extends Command {
+public class HabClimbCommand extends Command {
 	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 	
-    public PivotModeToggleCommand() {
+    public HabClimbCommand() {
         requires(Robot.driveSubsystem);
         // requires(Robot.laserCannonSubsystem);
     }
@@ -24,7 +24,8 @@ public class PivotModeToggleCommand extends Command {
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-    	Robot.pivotSubsystem.setCurrentPivotMode(PivotSubsystem.PivotMode.HAB);
+        Robot.pivotSubsystem.setCurrentPivotMode(PivotSubsystem.PivotMode.HAB);
+        Robot.liftSubsystem.setManualMode();
     }
 
     // Called repeatedly when this Command is scheduled to run

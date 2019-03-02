@@ -83,12 +83,7 @@ public class LiftSubsystem extends Subsystem implements PIDSource, PIDOutput {
             double xPos = Robot.oi.getLiftManualHorizontalJoystick();
             double yPos = Robot.oi.getLiftManualVerticalJoystick();
             if (Math.abs(xPos) > 0.2 || Math.abs(yPos) > 0.2){
-                if (autoMagicMode){
-                    logger.info("Switching to Manual Mode");
-                }
-                autoMagicMode = false;
-                doingPID = false;
-                liftPIDContoller.disable();
+                setManualMode();
             }
 
             if(!autoMagicMode){
@@ -104,6 +99,15 @@ public class LiftSubsystem extends Subsystem implements PIDSource, PIDOutput {
                 }
             }
         }
+    }
+
+    public void setManualMode() {
+        if (autoMagicMode){
+            logger.info("Switching to Manual Mode");
+        }
+        autoMagicMode = false;
+        doingPID = false;
+        liftPIDContoller.disable();
     }
     
     private void periodicAutoMagicMode(){
