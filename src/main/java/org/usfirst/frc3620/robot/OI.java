@@ -83,8 +83,6 @@ public class OI {
             operatorDPad.right().whenPressed(new SetPivotAngleCommand(PivotSubsystem.SETANGLE_MIDDLE));
             operatorDPad.left().whenPressed(new SetPivotAngleCommand(PivotSubsystem.SETANGLE_MIDDLE));
 
-
-
             //buttons run commands
             inTakeIn.toggleWhenPressed(new IntakeCommand());
             inTakeOut.toggleWhenPressed(new OutTakeCommand());

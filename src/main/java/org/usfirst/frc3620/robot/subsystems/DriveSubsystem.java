@@ -76,8 +76,10 @@ public class DriveSubsystem extends Subsystem {
         SmartDashboard.putNumber("leftsideEncoderInFeet", getLeftSideDistance());
         
         SmartDashboard.putNumber("habDriveMotorPower", RobotMap.habDriveMotor.get());
-        SmartDashboard.putNumber("leftDriveMotorPower", RobotMap.driveSubsystemMaxLeftA.get());
-        SmartDashboard.putNumber("rightDriveMotorPower", RobotMap.driveSubsystemMaxRightA.get());
+        if (RobotMap.driveSubsystemMaxLeftA != null) {
+            SmartDashboard.putNumber("leftDriveMotorPower", RobotMap.driveSubsystemMaxLeftA.get());
+            SmartDashboard.putNumber("rightDriveMotorPower", RobotMap.driveSubsystemMaxRightA.get());
+        }
     }
 
     double ticsToFeet(double tics) { 
