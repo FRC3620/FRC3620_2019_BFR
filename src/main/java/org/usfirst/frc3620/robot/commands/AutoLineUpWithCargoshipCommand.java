@@ -37,7 +37,8 @@ public class AutoLineUpWithCargoshipCommand extends Command {
    
     static final double kILineUp = 0;	
     
-    static final double kDLineUp = 0.0;
+    static final double kDLineUp = 0.0
+    ;
     
     static final double kFLineUp = 0;
 
