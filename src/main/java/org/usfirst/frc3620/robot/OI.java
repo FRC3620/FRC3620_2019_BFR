@@ -78,6 +78,8 @@ public class OI {
             Button middlePos = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_RIGHT_BUMPER);
             Button topPos = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_LEFT_BUMPER);
             Button liftHome = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_A);
+            Button lockLiftPinsButton = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_BACK);
+            lockLiftPinsButton.toggleWhenPressed(new LockLiftPinsCommand());
             operatorDPad.down().whenPressed(new SetPivotAngleCommand(PivotSubsystem.SETANGLE_BOTTOM));
             operatorDPad.up().whenPressed(new SetPivotAngleCommand(PivotSubsystem.SETANGLE_TOP));
             operatorDPad.right().whenPressed(new SetPivotAngleCommand(PivotSubsystem.SETANGLE_MIDDLE));
@@ -91,7 +93,7 @@ public class OI {
             conveyorR.whileHeld(new TrashRightCommand());
             hatchExtend.toggleWhenPressed(new HatchExtendCommand());
             hatchCollect.toggleWhenPressed(new HatchCollectCommand());
-            habClimbButton.toggleWhenPressed(new HabClimbCommand());
+            habClimbButton.whenPressed(new HabClimbCommand());
             liftHome.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_TRASHIN, true));
             middlePos.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_ROCKET_MIDDLE, true));
             topPos.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_ROCKET_TOP, true));
@@ -137,6 +139,11 @@ public class OI {
     public double getRightHorizontalJoystickSquared() {
         //gets value from x or y axis on joysticks on gamepad. In this istance, Right Y
         return computeDeadband(driverJoystick.getRawAxis(XBoxConstants.AXIS_RIGHT_X), 0);
+    }
+
+    public double getRightVerticalJoystick() {
+        //gets value from x or y axis on joysticks on gamepad. In this istance, Right
+        return computeDeadband(driverJoystick.getRawAxis(XBoxConstants.AXIS_RIGHT_Y), 0.2);
     }
 
     public double getClimberVerticalJoystick() {

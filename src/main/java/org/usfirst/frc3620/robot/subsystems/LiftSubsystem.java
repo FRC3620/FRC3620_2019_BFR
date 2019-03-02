@@ -9,6 +9,7 @@ import org.usfirst.frc3620.logger.EventLogging.Level;
 import org.usfirst.frc3620.misc.RobotMode;
 import org.usfirst.frc3620.robot.Robot;
 import org.usfirst.frc3620.robot.RobotMap;
+import org.usfirst.frc3620.robot.subsystems.PivotSubsystem.PivotMode;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.PIDController;
@@ -67,8 +68,8 @@ public class LiftSubsystem extends Subsystem implements PIDSource, PIDOutput {
     @Override
     public void periodic() {
         // Put code here to be run every loop
-        SmartDashboard.putBoolean("Top limit switch", isTopLimitDepressed());
-        SmartDashboard.putBoolean("Bottom limit switch", isBottomLimitDepressed());
+        SmartDashboard.putBoolean("liftTopLimitSwitch", isTopLimitDepressed());
+        SmartDashboard.putBoolean("liftBottomLimitSwitch", isBottomLimitDepressed());
         
         if(checkForLiftEncoder()) {
             SmartDashboard.putNumber("LiftEncoderPosition", liftEncoder.getPosition());
@@ -99,6 +100,10 @@ public class LiftSubsystem extends Subsystem implements PIDSource, PIDOutput {
                 }
             }
         }
+        SmartDashboard.putNumber("liftMotorPower", liftMax.getAppliedOutput());
+        SmartDashboard.putString("liftMode", autoMagicMode ? "AUTOMAGIC" : "MANUAL");
+        SmartDashboard.putNumber("liftSetpoint", desiredHeight);
+        SmartDashboard.putBoolean("liftEncoderValid", encoderisvalid);
     }
 
     public void setManualMode() {
@@ -139,8 +144,15 @@ public class LiftSubsystem extends Subsystem implements PIDSource, PIDOutput {
         // liftMove needs a positive number to move up.
         // so we need to change the sign. 
         double speed = -yPos * 0.9;
-        if(speed < -0.4){
-            speed = -0.4;
+        if (Robot.pivotSubsystem.getCurrentPivotMode() != PivotMode.HAB) {
+            if(speed < -0.4){
+                speed = -0.4;
+            }
+        }
+        else{
+            if(speed < -0.8){
+                speed = -0.8;
+            } 
         }
 
         if(encoderisvalid){
@@ -151,9 +163,12 @@ public class LiftSubsystem extends Subsystem implements PIDSource, PIDOutput {
             if(currentHeight > 35 && speed > 0.2) {
                 speed = 0.2;
             } 
+            
+            if (Robot.pivotSubsystem.getCurrentPivotMode() != PivotMode.HAB) {
 
-            if(currentHeight < 6 && speed < -0.1) {
-                speed = -0.1;
+                if(currentHeight < 6 && speed < -0.1) {
+                    speed = -0.1;
+                }
             }
         }
 
@@ -284,6 +299,14 @@ public class LiftSubsystem extends Subsystem implements PIDSource, PIDOutput {
         } else {
             return Double.NaN;
         }
+    }
+
+    public void lockLiftPins() {
+        RobotMap.liftLockPinSolenoid.set(true);
+    }
+
+    public void unlockLiftPins() {
+        RobotMap.liftLockPinSolenoid.set(false);
     }
 
     @Override

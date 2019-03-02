@@ -59,17 +59,18 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
     public void periodic() {
         // Put code here to be run every loop
 
-        SmartDashboard.putBoolean("Pivot limit switch", isTopPivotLimitDepressed());
+        SmartDashboard.putBoolean("pivotLimitSwitch", isTopPivotLimitDepressed());
 
         if(checkForPivotEncoder()) {
             SmartDashboard.putNumber("pivotAngleInTics", pivotEncoder.getPosition());
         }
+        SmartDashboard.putBoolean("pivotEncoderIsValid", encoderisvalid);
         SmartDashboard.putNumber("pivotAngleInDegrees", getPivotAngle());
         SmartDashboard.putNumber("pivotDesiredAngle", desiredAngle);
-        SmartDashboard.putString("pivotAutomatic", currentPivotMode.toString());
         SmartDashboard.putBoolean("pivotEncoderIsValid", encoderisvalid);
         SmartDashboard.putNumber("Pitch", Robot.driveSubsystem.ahrs.getPitch());
         SmartDashboard.putNumber("Roll", Robot.driveSubsystem.ahrs.getRoll());
+        SmartDashboard.putString("pivotMode", currentPivotMode.toString());
 
         if(Robot.getCurrentRobotMode() == RobotMode.TELEOP || Robot.getCurrentRobotMode() == RobotMode.AUTONOMOUS){
             if(isTopPivotLimitDepressed() && !encoderisvalid){
@@ -101,6 +102,7 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
                 logger.warn("Pivot Mode Not Normal!");
             }
         }
+        SmartDashboard.putNumber("pivotMotorPower", pivotMax.getAppliedOutput());
     }
 
     private void periodicHAB() {

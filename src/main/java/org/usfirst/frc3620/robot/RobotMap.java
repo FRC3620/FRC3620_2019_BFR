@@ -76,6 +76,7 @@ import java.util.*;
     public static CANEncoder liftEncoder;
     public static DigitalInput liftLimitSwitchTop;
     public static DigitalInput liftLimitSwitchBottom;
+    public static Solenoid liftLockPinSolenoid;
 
     public static Solenoid hatchSubsystemFinger;
     public static Solenoid hatchSubsystemPusher;
@@ -240,6 +241,7 @@ import java.util.*;
             //instantiate Pneumatics here
             //doublesolenoids requires a PCM number first
             c = new Compressor(0);
+            liftLockPinSolenoid = new Solenoid(0);
         }
 
         requiredDevices.put(new CANDeviceId(CANDeviceType.PCM, 1), "TopPCM");
