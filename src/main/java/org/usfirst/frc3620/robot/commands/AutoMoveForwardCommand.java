@@ -24,13 +24,13 @@ public class AutoMoveForwardCommand extends Command implements PIDOutput, PIDSou
 
   Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 
-  static final double kP = 0.004;
+  static final double kP = 0.012; //2019: 0.004
 	
-	static final double kI = 0.00004;	
+	static final double kI = 0.0001;	//2019: 0.00004
 	
-	static final double kD = 0.015;
+	static final double kD = 0.03 ; //2019: 0.015
 	
-  static final double kF = 0;
+  static final double kF = 0; //2019: 0
 	double sideStick;
 	
   double howLongWeWantToMove = 0;

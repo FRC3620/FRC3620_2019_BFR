@@ -28,6 +28,8 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
         MANUAL, AUTOMAGIC, HAB
     }
     
+    public enum DesiredAngle{Bottom, Middle, Top}
+
     public static final double SETANGLE_BOTTOM = 80;
     public static final double SETANGLE_MIDDLE = 65;
     public static final double SETANGLE_TOP = 5;
@@ -129,7 +131,7 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
         pivotMotorPower = pivotMotorPower * adjustFactor;
         pivotMove(pivotMotorPower);
     }
-
+    
     private void periodicAutoMagicMode(){
         double currentAngle = getPivotAngle();
         // positive error is we are out too far
@@ -167,6 +169,55 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
             pivotMove(PIDpower/2); 
         }
     }
+   
+       
+        
+
+
+        public double calculatePivotAngle(DesiredAngle desiredAngle){
+            switch (desiredAngle) {
+                case Bottom:
+                    return SETANGLE_BOTTOM;
+                case Middle:
+                    return SETANGLE_MIDDLE;
+                case Top:
+                    return SETANGLE_TOP;
+                default:
+                    return SETANGLE_BOTTOM;
+               
+            }
+              
+        }
+
+        private void TellPivotAngleBottom(){
+            double currentAngle = getPivotAngle();
+            if (currentAngle == SETANGLE_BOTTOM){
+                logger.info("BottomPivot Set");
+            } else {
+                logger.info("Not Bottom");
+            }
+        }
+
+        private void TellPivotAngleMiddle(){
+            double currentAngle = getPivotAngle();
+            if (currentAngle == SETANGLE_MIDDLE){
+                logger.info("MiddlePivot Set");
+            } else {
+                logger.info("Not Middle");
+            }
+        }
+
+        
+        private void TellPivotAngleTop(){
+            double currentAngle = getPivotAngle();
+            if (currentAngle == SETANGLE_TOP){
+                logger.info("TopPivot");
+            } else {
+                logger.info("Not Top");
+            }
+        }
+
+
 
     private void periodicManualMode(){
         double yPos = Robot.oi.getClimberVerticalJoystick();
@@ -190,7 +241,7 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
             return false;
         }
         return true;
-    }
+    } 
 
     /**
      * Move the pivot, disabling if we go past the limit switch
