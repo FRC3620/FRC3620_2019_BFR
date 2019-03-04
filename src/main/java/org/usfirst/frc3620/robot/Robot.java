@@ -67,7 +67,6 @@ public class Robot extends TimedRobot {
         // set up subsystems
         // initalized drive subsystem, which control motors to move robot
         driveSubsystem = new DriveSubsystem();
-      
         intakeSubsystem = new IntakeSubsystem();
         trashSubsystem = new TrashSubsystem();
         liftSubsystem = new LiftSubsystem();
