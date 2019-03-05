@@ -23,6 +23,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
     Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
+
+    public enum PivotMode {
+        MANUAL, AUTOMAGIC, HAB
+    }
     
     public enum DesiredAngle{Bottom, Middle, Top}
 
@@ -38,7 +42,7 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
     private boolean encoderisvalid = false;
     private double desiredAngle = SETANGLE_TOP;
     private double PIDpower = 0;
-    private boolean autoMagicMode = true;
+    private PivotMode currentPivotMode = PivotMode.AUTOMAGIC;
 
     public PivotSubsystem(){
         pivotPIDContoller = new PIDController(0, 0, 0, 0, this, this);
@@ -57,15 +61,18 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
     public void periodic() {
         // Put code here to be run every loop
 
-        SmartDashboard.putBoolean("Pivot limit switch", isTopPivotLimitDepressed());
+        SmartDashboard.putBoolean("pivotLimitSwitch", isTopPivotLimitDepressed());
 
         if(checkForPivotEncoder()) {
             SmartDashboard.putNumber("pivotAngleInTics", pivotEncoder.getPosition());
         }
+        SmartDashboard.putBoolean("pivotEncoderIsValid", encoderisvalid);
         SmartDashboard.putNumber("pivotAngleInDegrees", getPivotAngle());
         SmartDashboard.putNumber("pivotDesiredAngle", desiredAngle);
-        SmartDashboard.putBoolean("pivotAutomatic", autoMagicMode);
         SmartDashboard.putBoolean("pivotEncoderIsValid", encoderisvalid);
+        SmartDashboard.putNumber("Pitch", Robot.driveSubsystem.ahrs.getPitch());
+        SmartDashboard.putNumber("Roll", Robot.driveSubsystem.ahrs.getRoll());
+        SmartDashboard.putString("pivotMode", currentPivotMode.toString());
 
         if(Robot.getCurrentRobotMode() == RobotMode.TELEOP || Robot.getCurrentRobotMode() == RobotMode.AUTONOMOUS){
             if(isTopPivotLimitDepressed() && !encoderisvalid){
@@ -77,16 +84,12 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
             double xPos = Robot.oi.getClimberHorizontalJoystick();
             double yPos = Robot.oi.getClimberVerticalJoystick();
             if (Math.abs(xPos) > 0.2 || Math.abs(yPos) > 0.2){
-                if (autoMagicMode) {
-                    logger.info ("going to manual mode");
-                }
-                autoMagicMode = false;
-                pivotPIDContoller.disable();
+                setCurrentPivotMode(PivotMode.MANUAL);
             }
 
-            if(!autoMagicMode){
+            if(currentPivotMode == PivotMode.MANUAL) {
                 periodicManualMode();
-            }else{
+            } else if(currentPivotMode == PivotMode.AUTOMAGIC) {
                 //automagic
                 if(encoderisvalid){
                     periodicAutoMagicMode();
@@ -95,8 +98,38 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
                     // we need to do some pivotMove with a negative
                     pivotMove(-0.1);
                 }
+            } else if(currentPivotMode == PivotMode.HAB) {
+                periodicHAB();
+            } else {
+                logger.warn("Pivot Mode Not Normal!");
             }
         }
+        SmartDashboard.putNumber("pivotMotorPower", pivotMax.getAppliedOutput());
+    }
+
+    private void periodicHAB() {
+        double liftMotorPower = Robot.liftSubsystem.getMaxPower();
+        //+lift power makes the lift go down
+        //-lift power makes the lift go up 
+        double pivotMotorPower = (liftMotorPower)*2/3;
+
+        //- pitch = nose down. + pitch = nose up
+        double pitch = Robot.driveSubsystem.ahrs.getPitch();
+        double adjustFactor = 1.0;
+        if(Math.abs(pitch) > 5) {
+            /*
+            If and only if the |pitch| is greater than 5, the formula 
+            below is meant to return 0.8 if the pitch is negative and 
+            1.2 if the pitch is positive, correcting for any "wobbling"
+            */
+            adjustFactor = (1.0 + (pitch/Math.abs(pitch)*0.5));
+        }
+        SmartDashboard.putNumber("HAB pivot motor power", pivotMotorPower);
+        SmartDashboard.putNumber("HAB adjust factor", adjustFactor);
+        SmartDashboard.putNumber("HAB lift motor power", liftMotorPower);
+        SmartDashboard.putNumber("HAB pitch", pitch);
+        pivotMotorPower = pivotMotorPower * adjustFactor;
+        pivotMove(pivotMotorPower);
     }
     
     private void periodicAutoMagicMode(){
@@ -253,6 +286,21 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
         }
     }
 
+    public PivotMode getCurrentPivotMode() {
+        return currentPivotMode;
+    }
+
+    public void setCurrentPivotMode(PivotMode newPivotMode) {
+        if (currentPivotMode != newPivotMode) {
+            logger.info ("Changing PivotMode from {} to {}", currentPivotMode, newPivotMode);
+        }
+        currentPivotMode = newPivotMode;
+
+        if (currentPivotMode != PivotMode.AUTOMAGIC) {
+            pivotPIDContoller.disable();          
+        }
+    }
+
     private double pivotEncoderZeroValue;
 
     public boolean checkForPivotEncoder() {
@@ -268,10 +316,10 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
     public void setDesiredAngle(double v) {
         logger.info("setting desired angle {}", v);
         desiredAngle = v;
-        if (!autoMagicMode) {
+        if (currentPivotMode != PivotMode.AUTOMAGIC) {
             logger.info ("going to automagic mode");
         }
-        autoMagicMode = true;
+        currentPivotMode = PivotMode.AUTOMAGIC;
 
         if (desiredAngle == SETANGLE_BOTTOM || desiredAngle == SETANGLE_TOP) {
             pivotPIDContoller.disable();

@@ -112,11 +112,11 @@ public class VisionSubsystem extends Subsystem implements PIDSource, PIDOutput {
     }
   
   public void turnLightSwitchOn() {
-    NightLight.set(Relay.Value.kForward);
+    NightLight.set(Relay.Value.kOn);
   }
 
   public void turnLightSwitchOff() {
-    NightLight.set(Relay.Value.kReverse);
+    NightLight.set(Relay.Value.kOff);
   }
 
   public double getFrontTargetAngle(){
