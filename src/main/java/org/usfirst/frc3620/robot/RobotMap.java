@@ -113,6 +113,7 @@ import java.util.*;
             leftsideCANEncoder = driveSubsystemMaxLeftA.getEncoder();
 
             CANSparkMax driveSubsystemMaxLeftB = new CANSparkMax(2, MotorType.kBrushless);
+            driveSubsystemMaxLeftB.setOpenLoopRampRate(.5);
             resetMaxToKnownState(driveSubsystemMaxLeftB);
             driveSubsystemMaxLeftB.setOpenLoopRampRate(.5);
 
