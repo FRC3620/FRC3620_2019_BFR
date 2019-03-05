@@ -4,24 +4,23 @@ import edu.wpi.first.wpilibj.command.Command;
 import org.slf4j.Logger;
 import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
-import org.usfirst.frc3620.misc.RobotMode;
 import org.usfirst.frc3620.robot.Robot;
-import org.usfirst.frc3620.robot.subsystems.PivotSubsystem;
 
 /**
  *
  */
-public class PivotModeToggleCommand extends Command {
+public class LockLiftPinsCommand extends Command {
 	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 	
-    public PivotModeToggleCommand() {
+    public LockLiftPinsCommand() {
         // requires(Robot.laserCannonSubsystem);
     }
 
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-    	Robot.pivotSubsystem.setCurrentPivotMode(PivotSubsystem.PivotMode.HAB);
+        EventLogging.commandMessage(logger);
+        Robot.liftSubsystem.lockLiftPins();
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -38,8 +37,8 @@ public class PivotModeToggleCommand extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
-    	EventLogging.commandMessage(logger);
-    	Robot.pivotSubsystem.setCurrentPivotMode(PivotSubsystem.PivotMode.MANUAL);
+        EventLogging.commandMessage(logger);
+        Robot.liftSubsystem.unlockLiftPins();
     }
 
     // Called when another command which requires one or more of the same
@@ -47,6 +46,6 @@ public class PivotModeToggleCommand extends Command {
     @Override
     protected void interrupted() {
     	EventLogging.commandMessage(logger);
-    	Robot.pivotSubsystem.setCurrentPivotMode(PivotSubsystem.PivotMode.MANUAL);
+        Robot.liftSubsystem.unlockLiftPins();
     }
 }

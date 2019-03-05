@@ -18,6 +18,7 @@ public class TrashSubsystem extends Subsystem {
 
     public void initDefaultCommand() {
         // Set the default command for a subsystem here. Drive command runs in background at all times
+      
     }
 
     @Override
@@ -26,13 +27,13 @@ public class TrashSubsystem extends Subsystem {
     }
 
     public void conveyorBeltLeft(double speed){
-        conveyorT.set(-speed);
-        conveyorB.set(-speed);
+        conveyorT.set(speed);
+        conveyorB.set(speed);
     }
 
     public void conveyorBeltRight(double speed){
-        conveyorT.set(speed);
-        conveyorB.set(speed);
+        conveyorT.set(-speed);
+        conveyorB.set(-speed);
     }
 
     public void conveyorBeltOff(){
