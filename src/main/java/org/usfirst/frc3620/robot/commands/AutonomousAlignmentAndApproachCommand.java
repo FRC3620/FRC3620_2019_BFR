@@ -7,6 +7,9 @@
 
 package org.usfirst.frc3620.robot.commands;
 
+import org.slf4j.Logger;
+import org.usfirst.frc3620.logger.EventLogging;
+import org.usfirst.frc3620.logger.EventLogging.Level;
 import org.usfirst.frc3620.robot.Robot;
 import org.usfirst.frc3620.robot.paths.AlignToPointD;
 
@@ -20,11 +23,15 @@ public class AutonomousAlignmentAndApproachCommand extends CommandGroup {
     30, 150, 180, 210, 330
   };
 
+  Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
+
   double desiredSetPoint = 0;
 
   public AutonomousAlignmentAndApproachCommand() {
-
-     addSequential(new VisionAlignmentCommand());
+    if(Math.abs(Robot.visionSubsystem.getFrontTargetYaw()) > 7){
+      addSequential(new VisionAlignmentCommand());
+    }
+    
     //Premonition: It's going to grab the original heading, not the one after the centering.
     double currentHeading = Robot.driveSubsystem.getRealAngle();
     interceptAngle = Robot.visionSubsystem.getFrontTargetAngle();
@@ -32,12 +39,13 @@ public class AutonomousAlignmentAndApproachCommand extends CommandGroup {
     for(double possibleSetpoint: setpoints){
       if((currentHeading + interceptAngle - possibleSetpoint < angularTolerance) || (currentHeading - interceptAngle - possibleSetpoint < angularTolerance)){
         desiredSetPoint = possibleSetpoint;
+        logger.info("Setpoint in degrees = {}", desiredSetPoint);
       }
     }
     
-                                        
-    interceptAngle = currentHeading - desiredSetPoint;
 
+    interceptAngle = currentHeading - desiredSetPoint;
+    logger.info("InterceptAngle = {}", interceptAngle);
     
    
     if(Math.abs(interceptAngle) > 10){
