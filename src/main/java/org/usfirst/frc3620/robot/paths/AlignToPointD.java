@@ -15,13 +15,12 @@ public class AlignToPointD extends AbstractPath{
     double x;
     double y;
     double r;
-    private final double d = 3;
+    private final double d = 1;
     double angle;
-    boolean leftSide;
+    
 
-    public AlignToPointD(double interceptAngle, boolean leftSideTarget){
+    public AlignToPointD(double interceptAngle){
         angle = Math.toRadians(interceptAngle);
-        leftSide = leftSideTarget;
     }
 
     public void calculateX(){
@@ -53,33 +52,22 @@ public class AlignToPointD extends AbstractPath{
         //Based on current setup in final statement of getMyWaypoints(), right of target is 1, left of target is -1
         //Therefore, if the below is < 0, then you're to the left of your real target and vice versa
         double currentHeading = Robot.driveSubsystem.getRealAngle();
-      /*  if(Robot.visionSubsystem.getFrontSecondClosestYaw() > 0){
+        if(Robot.visionSubsystem.getFrontSecondClosestYaw() > 0){
             return 1;
         } else if(Robot.visionSubsystem.getFrontSecondClosestYaw() < 0){
             return -1;   
-        } else if(Robot.visionSubsystem.getFrontSecondClosestYaw() == 0){ */
-            if(leftSide){
-                if(angle < 0){
-                    return 1;
-                } else if(angle > 0){
-                    return -1;
-                } else{
-                    return 0;
-                }
-            } else if(!leftSide){
-                if(angle < 0){
-                    return -1;
-                } else if(angle > 0){
-                    return 1;
-                } else{
-                    return 0;
-                }
-            } else{
+        } else if(Robot.visionSubsystem.getFrontSecondClosestYaw() == 0){ 
+            if(angle < 0){
+                return 1;
+            } else if(angle  > 0){
+                return -1;
+            }
+             else{
                 return 0;
             }
-      /*  } else {
+        } else {
             return 0;
-      } */
+      }
     }
 
     @Override
@@ -99,10 +87,10 @@ public class AlignToPointD extends AbstractPath{
 
     @Override
     public void execute(){
-        double currentNavXHeading = Robot.visionSubsystem.getRealAngle();
+        double currentNavXHeading = Robot.driveSubsystem.getRealAngle();
         super.execute();
         if(Math.abs(currentNavXHeading - angle) < 5 ){
-            super.end();
+            super.finishedFlag = true;
         }
 
     }

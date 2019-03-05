@@ -15,40 +15,33 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class AutonomousAlignmentAndApproachCommand extends CommandGroup {
   double interceptAngle = 0;
   double distance;
-  
+  double angularTolerance = 5;
+  double setpoints[] = new double[]{
+    30, 150, 180, 210, 330
+  };
+
+  double desiredSetPoint = 0;
+
   public AutonomousAlignmentAndApproachCommand() {
-    double leftDiff;
-    double rightDiff;
-    boolean left = false;
-    addSequential(new VisionAlignmentCommand());
+
+     addSequential(new VisionAlignmentCommand());
     //Premonition: It's going to grab the original heading, not the one after the centering.
     double currentHeading = Robot.driveSubsystem.getRealAngle();
-    if(currentHeading > 90 && currentHeading < 270){
-      leftDiff = 150 - currentHeading;
-      rightDiff = 240 - currentHeading;
-    } else if(currentHeading < 90 || currentHeading > 270){
-      leftDiff = 330 - currentHeading;
-      rightDiff = 30 - currentHeading;
-    } else {
-      leftDiff = rightDiff = 0;
-    }
+    interceptAngle = Robot.visionSubsystem.getFrontTargetAngle();
 
-    if(Math.abs(rightDiff) > Math.abs(leftDiff)){
-      interceptAngle = leftDiff;
-      left = true;
-    } else if(Math.abs(leftDiff) > Math.abs(rightDiff)){
-      interceptAngle = rightDiff;
-      left = false;
-    } else {
-      interceptAngle = 0;
+    for(double possibleSetpoint: setpoints){
+      if((currentHeading + interceptAngle - possibleSetpoint < angularTolerance) || (currentHeading - interceptAngle - possibleSetpoint < angularTolerance)){
+        desiredSetPoint = possibleSetpoint;
+      }
     }
+    
                                         
-    interceptAngle = (interceptAngle + Robot.visionSubsystem.getFrontTargetAngle())/2;
+    interceptAngle = currentHeading - desiredSetPoint;
 
     
    
     if(Math.abs(interceptAngle) > 10){
-      addSequential(new AlignToPointD(interceptAngle, left));
+      addSequential(new AlignToPointD(interceptAngle));
     }    
     addSequential(new AutoMoveForwardCommand(10,.7));
     
