@@ -46,6 +46,7 @@ public class AutoLineUpWithCargoshipCommand extends Command {
     double sideStick;
 
     boolean weAreDone = false;
+
     
     
     //PIDController pidDriveStraight = new PIDController(kPDriveStraight, kIDriveStraight, kDDriveStraight, kFDriveStraight, Robot.driveSubsystem.getAhrsPidSource(), new DriveStraightOutput());
@@ -145,7 +146,13 @@ public class AutoLineUpWithCargoshipCommand extends Command {
 
       @Override
       public double pidGet() {
-        return Robot.visionSubsystem.getRightTargetYaw();
+        if (Robot.visionSubsystem.getRightTargetPresent()){
+          return Robot.visionSubsystem.getRightTargetYaw();
+        }
+        else if(Robot.visionSubsystem.getLeftTargetPresent()){
+          return Robot.visionSubsystem.getLeftTargetYaw();
+        }
+        return 0;
       }
   
     }
