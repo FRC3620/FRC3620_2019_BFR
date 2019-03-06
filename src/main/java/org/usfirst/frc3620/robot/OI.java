@@ -186,7 +186,7 @@ public class OI {
     public double getRightVerticalJoystick() {
         //gets value from x or y axis on joysticks on gamepad. In this istance, Right
         return computeDeadband(driverJoystick.getRawAxis(XBoxConstants.AXIS_RIGHT_Y), 0.2);
-    }
+       }
 
     public double getClimberVerticalJoystick() {
         //gets value from y axis on (left)Climberjoystick on operatorJoystick. 
