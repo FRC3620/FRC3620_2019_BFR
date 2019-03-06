@@ -40,12 +40,12 @@ public class AlignToPointD extends AbstractPath{
 
     @Override
     public double getPathfinderP() {
-       return 0.010;
+       return 0.00;
     }
     //What works: 0.001 P, 0.01 D
 
     public double getPathfinderD(){
-        return 0.005;
+        return 0.000;
     }
 
     public int getLeftOrRightOfTarget(){
@@ -75,6 +75,7 @@ public class AlignToPointD extends AbstractPath{
         setDistanceAndIntercept();
         calculateX();
         calculateY();
+        logger.info("LeftOrRight = {}", getLeftOrRightOfTarget());
         System.out.println("X: " + x + " Y: " + y + " NavXangle: " + Robot.driveSubsystem.getAngle() + "R: " + r + " L or R: " + getLeftOrRightOfTarget());
         return new Waypoint[] {
             new Waypoint(0, 0, Pathfinder.d2r(0)),

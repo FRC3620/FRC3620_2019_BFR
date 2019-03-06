@@ -18,7 +18,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class AutonomousAlignmentAndApproachCommand extends CommandGroup {
   double interceptAngle = 0;
   double distance;
-  double angularTolerance = 5;
+  double angularTolerance = 10;
   double setpoints[] = new double[]{
     30, 150, 180, 210, 330
   };
@@ -29,15 +29,18 @@ public class AutonomousAlignmentAndApproachCommand extends CommandGroup {
 
   public AutonomousAlignmentAndApproachCommand() {
     if(Math.abs(Robot.visionSubsystem.getFrontTargetYaw()) > 7){
-      addSequential(new VisionAlignmentCommand());
+    //  addSequential(new VisionAlignmentCommand());
     }
     
     //Premonition: It's going to grab the original heading, not the one after the centering.
     double currentHeading = Robot.driveSubsystem.getRealAngle();
+    
     interceptAngle = Robot.visionSubsystem.getFrontTargetAngle();
+    logger.info("Current Heading = {}", currentHeading);
+    logger.info("interceptAngle = {}", interceptAngle);
 
     for(double possibleSetpoint: setpoints){
-      if((currentHeading + interceptAngle - possibleSetpoint < angularTolerance) || (currentHeading - interceptAngle - possibleSetpoint < angularTolerance)){
+      if((Math.abs(currentHeading + interceptAngle - possibleSetpoint) < angularTolerance) || (Math.abs(currentHeading - interceptAngle - possibleSetpoint) < angularTolerance)){
         desiredSetPoint = possibleSetpoint;
         logger.info("Setpoint in degrees = {}", desiredSetPoint);
       }
@@ -48,10 +51,10 @@ public class AutonomousAlignmentAndApproachCommand extends CommandGroup {
     logger.info("InterceptAngle = {}", interceptAngle);
     
    
-    if(Math.abs(interceptAngle) > 10){
+    if(Math.abs(interceptAngle) > 20){
       addSequential(new AlignToPointD(interceptAngle));
     }    
-    addSequential(new AutoMoveForwardCommand(10,.7));
+    //addSequential(new AutoMoveForwardCommand(10,.7));
     
   }
 }
