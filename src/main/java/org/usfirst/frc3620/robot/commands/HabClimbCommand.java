@@ -49,6 +49,7 @@ public class HabClimbCommand extends Command {
     protected void end() {
     	EventLogging.commandMessage(logger);
         Robot.pivotSubsystem.setCurrentPivotMode(PivotSubsystem.PivotMode.MANUAL);
+        Robot.liftSubsystem.setManualMode();
         Robot.driveSubsystem.stopDrive();
         Robot.driveSubsystem.habDrive(0);
     }
@@ -59,6 +60,7 @@ public class HabClimbCommand extends Command {
     protected void interrupted() {
     	EventLogging.commandMessage(logger);
         Robot.pivotSubsystem.setCurrentPivotMode(PivotSubsystem.PivotMode.MANUAL);
+        Robot.liftSubsystem.setManualMode();
         Robot.driveSubsystem.stopDrive();
         Robot.driveSubsystem.habDrive(0);
     }
