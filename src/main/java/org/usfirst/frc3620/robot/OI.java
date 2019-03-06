@@ -146,6 +146,14 @@ public class OI {
             SmartDashboard.putData("DriveForward", new AutoMoveForwardCommand(15,.7));
             SmartDashboard.putData("Align to Hatch Target", new AutonomousAlignmentAndApproachCommand());
             SmartDashboard.putData("LineUpWithCargoship", new AutoLineUpWithCargoshipCommand());
+            SmartDashboard.putData("LiftSetpoint Rocket 1 Cargo", new LiftMagicCommand(LiftSubsystem.LiftHeight.ROCKET1,LiftSubsystem.LiftDecider.CARGO));
+            SmartDashboard.putData("LiftSetpoint Rocket 2 Cargo", new LiftMagicCommand(LiftSubsystem.LiftHeight.ROCKET2,LiftSubsystem.LiftDecider.CARGO));
+            SmartDashboard.putData("LiftSetpoint Rocket 3 Cargo", new LiftMagicCommand(LiftSubsystem.LiftHeight.ROCKET3,LiftSubsystem.LiftDecider.CARGO));
+            SmartDashboard.putData("LiftSetpoint Cargoship Cargo", new LiftMagicCommand(LiftSubsystem.LiftHeight.ROCKET1,LiftSubsystem.LiftDecider.CARGO));
+            SmartDashboard.putData("LiftSetpoint Rocket 1 Hatch", new LiftMagicCommand(LiftSubsystem.LiftHeight.ROCKET2,LiftSubsystem.LiftDecider.HATCH));
+            SmartDashboard.putData("LiftSetpoint Rocket 2 Hatch", new LiftMagicCommand(LiftSubsystem.LiftHeight.ROCKET3,LiftSubsystem.LiftDecider.HATCH));
+            SmartDashboard.putData("LiftSetpoint Rocket 3 Hatch", new LiftMagicCommand(LiftSubsystem.LiftHeight.CARGOSHIP,LiftSubsystem.LiftDecider.HATCH));
+            SmartDashboard.putData("LiftSetpoint Cargoship Hatch", new LiftMagicCommand(LiftSubsystem.LiftHeight.CARGOSHIP,LiftSubsystem.LiftDecider.HATCH));
 
         }
 

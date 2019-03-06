@@ -10,6 +10,9 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.interfaces.Accelerometer;
 import org.slf4j.Logger;
@@ -40,6 +43,10 @@ import java.util.*;
  */
 
  public class RobotMap {
+    private static NetworkTableInstance inst = NetworkTableInstance.getDefault();
+    private static NetworkTable networkTable = inst.getTable("ChickenVision");
+    private static NetworkTableEntry missingHardwareTableEntry = networkTable.getEntry("Missing hardware");
+
     public static Encoder leftSideEncoder, rightSideEncoder;
     public static CANEncoder leftsideCANEncoder, rightsideCANEncoder;
     public static CANSparkMax driveSubsystemMaxLeftA;
@@ -264,10 +271,17 @@ import java.util.*;
         missingDeviceIds.removeAll(canDeviceFinder.getDeviceSet());
         if (missingDeviceIds.size() > 0) {
             logger.error ("missing CAN bus devices: {}", missingDeviceIds);
+            String networkOutput = "";
             for (CANDeviceId canDeviceId : missingDeviceIds) {
                 logger.info ("{} is {}", canDeviceId, requiredDevices.get(canDeviceId));
+                networkOutput = networkOutput + canDeviceId + " is " + requiredDevices.get(canDeviceId) + ", \n";
             }
+            missingHardwareTableEntry.setString(networkOutput);
+        } else {
+            missingHardwareTableEntry.setString("No missing hardware");
         }
+
+
     }
 
     static void resetMaxToKnownState (CANSparkMax x) {

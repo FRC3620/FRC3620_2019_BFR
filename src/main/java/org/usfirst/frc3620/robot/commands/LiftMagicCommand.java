@@ -14,10 +14,15 @@ import org.usfirst.frc3620.robot.Robot;
 public class LiftMagicCommand extends Command {
     Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
     LiftSubsystem.LiftHeight liftHeight;
+    LiftSubsystem.LiftDecider liftDecider;
     
-    
+    public LiftMagicCommand(LiftSubsystem.LiftHeight _liftHeight, LiftSubsystem.LiftDecider ld) {
+        liftHeight = _liftHeight;
+        liftDecider = ld;
+    }
     public LiftMagicCommand(LiftSubsystem.LiftHeight _liftHeight) {
         liftHeight = _liftHeight;
+        liftDecider = null;
         // requires(Robot.laserCannonSubsystem);
     }
 
@@ -25,9 +30,12 @@ public class LiftMagicCommand extends Command {
     @Override
     protected void initialize() {
         EventLogging.commandMessage(logger);
-        LiftSubsystem.LiftDecider liftDecider = Robot.oi.getLiftDecider();
-        double desiredLiftHeight = Robot.liftSubsystem.calculateLiftHeight(liftHeight, liftDecider);
-        logger.info("setting left height for {} {} to {}", liftHeight, liftDecider, desiredLiftHeight);
+        LiftSubsystem.LiftDecider liftDeciderThisOne = liftDecider;
+        if(liftDeciderThisOne == null) {
+        liftDeciderThisOne = Robot.oi.getLiftDecider();
+        }
+        double desiredLiftHeight = Robot.liftSubsystem.calculateLiftHeight(liftHeight, liftDeciderThisOne);
+        logger.info("setting left height for {} {} to {}", liftHeight, liftDeciderThisOne, desiredLiftHeight);
         Robot.liftSubsystem.setDoingPID(true);
         Robot.liftSubsystem.setDesiredHeight(desiredLiftHeight);
     }
