@@ -26,7 +26,7 @@ public class AutonomousAlignmentAndApproachCommand extends CommandGroup {
   Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 
   double desiredSetPoint = 0;
-
+ //PUT ON BUTTON!!!!!!!!
   public AutonomousAlignmentAndApproachCommand() {
     if(Math.abs(Robot.visionSubsystem.getFrontTargetYaw()) > 7){
     //  addSequential(new VisionAlignmentCommand());
