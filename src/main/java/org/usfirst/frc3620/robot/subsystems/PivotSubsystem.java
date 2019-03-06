@@ -31,7 +31,7 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
     public enum DesiredAngle{Bottom, Middle, Top}
 
     public static final double SETANGLE_BOTTOM = 80;
-    public static final double SETANGLE_MIDDLE = 65;
+    public static final double SETANGLE_MIDDLE = 75;
     public static final double SETANGLE_TOP = 5;
 
     private final CANSparkMax pivotMax = RobotMap.pivotSubsystemMax;
