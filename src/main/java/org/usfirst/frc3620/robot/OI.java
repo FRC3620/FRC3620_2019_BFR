@@ -96,7 +96,7 @@ public class OI {
             middlePos.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_ROCKET_MIDDLE, true));
             topPos.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_ROCKET_TOP, true));
             reverseDrive.whenPressed(new ToggleReverseCommand());
-            driveIn.whileHeld(new AutoMoveForwardCommand(10,.7));
+            driveIn.whileHeld(new AutonomousAlignmentAndApproachCommand());
             cargoShipLineUp.whileHeld(new AutoLineUpWithCargoshipCommand());
 
             SmartDashboard.putData(new HabInstrumentationCommand());
