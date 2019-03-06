@@ -51,6 +51,7 @@ public class HabClimbCommand extends Command {
         Robot.pivotSubsystem.setCurrentPivotMode(PivotSubsystem.PivotMode.MANUAL);
         Robot.driveSubsystem.stopDrive();
         Robot.driveSubsystem.habDrive(0);
+        Robot.liftSubsystem.setManualMode();
     }
 
     // Called when another command which requires one or more of the same
@@ -61,5 +62,6 @@ public class HabClimbCommand extends Command {
         Robot.pivotSubsystem.setCurrentPivotMode(PivotSubsystem.PivotMode.MANUAL);
         Robot.driveSubsystem.stopDrive();
         Robot.driveSubsystem.habDrive(0);
+        Robot.liftSubsystem.setManualMode();
     }
 }
