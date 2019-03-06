@@ -123,7 +123,7 @@ public class LiftSubsystem extends Subsystem implements PIDSource, PIDOutput {
         double currentheight = getLiftHeight();
         double error = currentheight - desiredHeight;
         if(doingPID){
-         logger.info("PIDPower: {}", PIDpower);
+        // logger.info("PIDPower: {}", PIDpower);
          liftMove(PIDpower);
           
         } else if(Math.abs(error) > 1){
