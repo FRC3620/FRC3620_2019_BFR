@@ -60,6 +60,7 @@ public class OI {
         operatorJoystick = new Joystick(1);
         magicBoardJoystick = new Joystick(2);
 
+        DPad driverDpad = new DPad(driverJoystick, 0);
         DPad operatorDPad = new DPad(operatorJoystick, 0);
 
         Robot.rumbleSubsystemDriver.setController(driverJoystick);
@@ -74,7 +75,6 @@ public class OI {
             Button conveyorR = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_B);
             Button inTakeIn = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_LEFT_BUMPER);
             Button driveIn = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_A);
-            Button cargoShipLineUp = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_Y);
 
             //operator controls 
             Button hatchExtend = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_X);
@@ -86,6 +86,10 @@ public class OI {
             Button topPos = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_LEFT_BUMPER);
             Button liftHome = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_A);
             Button lockLiftPinsButton = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_BACK);
+
+            driverDpad.right().whileHeld(new AutoLineUpWithCargoshipRightCommand());
+            driverDpad.left().whileHeld(new AutoLineUpWithCargoshipLeftCommand());
+
 
             operatorDPad.down().whenPressed(new SetPivotAngleCommand(PivotSubsystem.DesiredAngle.Bottom));
             operatorDPad.up().whenPressed(new SetPivotAngleCommand(PivotSubsystem.DesiredAngle.Top));
@@ -106,8 +110,9 @@ public class OI {
             topPos.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_CARGO_ROCKET_TOP, true));
             reverseDrive.whenPressed(new ToggleReverseCommand());
             driveIn.whileHeld(new AutoMoveForwardCommand(10,.7));
-            cargoShipLineUp.whileHeld(new AutoLineUpWithCargoshipCommand());
             lockLiftPinsButton.toggleWhenPressed(new LockLiftPinsCommand());
+
+
 
             SmartDashboard.putData(new HabInstrumentationCommand());
 
@@ -145,7 +150,7 @@ public class OI {
             SmartDashboard.putData("TapTarget", new TravelAlignPushCommand());
             SmartDashboard.putData("DriveForward", new AutoMoveForwardCommand(15,.7));
             SmartDashboard.putData("Align to Hatch Target", new AutonomousAlignmentAndApproachCommand());
-            SmartDashboard.putData("LineUpWithCargoship", new AutoLineUpWithCargoshipCommand());
+            SmartDashboard.putData("LineUpWithCargoship", new AutoLineUpWithCargoshipRightCommand());
 
         }
 

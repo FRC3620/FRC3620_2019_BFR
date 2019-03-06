@@ -20,7 +20,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class AutoLineUpWithCargoshipCommand extends Command {
+public class AutoLineUpWithCargoshipLeftCommand extends Command {
   
 	
     Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
@@ -33,12 +33,11 @@ public class AutoLineUpWithCargoshipCommand extends Command {
     
     static final double kFDriveStraight = 0;
 
-    static final double kPLineUp = .006;
+    static final double kPLineUp = .004;
    
-    static final double kILineUp = 0;	
+    static final double kILineUp = 0.0004;	
     
-    static final double kDLineUp = 0.0
-    ;
+    static final double kDLineUp = 0.015;
     
     static final double kFLineUp = 0;
 
@@ -55,7 +54,7 @@ public class AutoLineUpWithCargoshipCommand extends Command {
     Command rumbleCommand = new RumbleCommand(Robot.rumbleSubsystemDriver);
     
   
-    public AutoLineUpWithCargoshipCommand() {
+    public AutoLineUpWithCargoshipLeftCommand() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
       requires(Robot.driveSubsystem);
@@ -87,13 +86,13 @@ public class AutoLineUpWithCargoshipCommand extends Command {
     protected void execute() {
       weAreDone = false;
       logger.info("fwdStick: {}", fwdStick);
-      if(Robot.visionSubsystem.getRightTargetPresent() == false){
+      if(Robot.visionSubsystem.getLeftTargetPresent() == false){
         weAreDone = true;
         
         return;
       }
       double horizontal = Robot.oi.getRightHorizontalJoystickSquared();
-      Robot.driveSubsystem.arcadeDrive(fwdStick, horizontal);
+      Robot.driveSubsystem.arcadeDrive(-fwdStick, horizontal);
       //logger.info("sideStick: {}", sideStick);
       //logger.info("NavX heading {}", Robot.driveSubsystem.getAngle());
       //logger.info("Corrected angle {}:", Robot.driveSubsystem.getRealAngle());
@@ -108,7 +107,7 @@ public class AutoLineUpWithCargoshipCommand extends Command {
       if(weAreDone) {
         return true;
       }
-      if (Robot.visionSubsystem.getRightTargetYaw() != 0){
+      if (Robot.visionSubsystem.getLeftTargetYaw() != 0){
 
         rumbleCommand.start();
         return false;
@@ -146,10 +145,7 @@ public class AutoLineUpWithCargoshipCommand extends Command {
 
       @Override
       public double pidGet() {
-        if (Robot.visionSubsystem.getRightTargetPresent()){
-          return Robot.visionSubsystem.getRightTargetYaw();
-        }
-        else if(Robot.visionSubsystem.getLeftTargetPresent()){
+        if (Robot.visionSubsystem.getLeftTargetPresent()){
           return Robot.visionSubsystem.getLeftTargetYaw();
         }
         return 0;
