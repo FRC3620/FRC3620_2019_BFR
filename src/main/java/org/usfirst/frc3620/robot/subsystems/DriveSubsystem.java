@@ -101,11 +101,15 @@ public class DriveSubsystem extends Subsystem {
     }
 
     public int readLeftEncRaw(){
-      return  driveEncoderLeft.getRaw();
+      if(driveEncoderLeft != null){
+        return  driveEncoderLeft.getRaw();
+      } return 0;
     }
     
     public int readRightEncRaw(){
-        return  driveEncoderRight.getRaw();
+        if(driveEncoderLeft != null){
+          return  driveEncoderRight.getRaw();
+        } return 0;
       }
     
     private double getSpeedModifier() {	// TODO Tune me!!

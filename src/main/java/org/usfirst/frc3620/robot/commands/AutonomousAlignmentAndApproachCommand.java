@@ -28,31 +28,16 @@ public class AutonomousAlignmentAndApproachCommand extends CommandGroup {
   double desiredSetPoint = 0;
  //PUT ON BUTTON!!!!!!!!
   public AutonomousAlignmentAndApproachCommand() {
-    if(Math.abs(Robot.visionSubsystem.getFrontTargetYaw()) > 7){
+    
     //  addSequential(new VisionAlignmentCommand());
-    }
+  
     
     //Premonition: It's going to grab the original heading, not the one after the centering.
-    double currentHeading = Robot.driveSubsystem.getRealAngle();
     
-    interceptAngle = Robot.visionSubsystem.getFrontTargetAngle();
-    logger.info("Current Heading = {}", currentHeading);
-    logger.info("interceptAngle = {}", interceptAngle);
-
-    for(double possibleSetpoint: setpoints){
-      if((Math.abs(currentHeading + interceptAngle - possibleSetpoint) < angularTolerance) || (Math.abs(currentHeading - interceptAngle - possibleSetpoint) < angularTolerance)){
-        desiredSetPoint = possibleSetpoint;
-        logger.info("Setpoint in degrees = {}", desiredSetPoint);
-      }
-    }
-    
-
-    interceptAngle = currentHeading - desiredSetPoint;
-    logger.info("InterceptAngle = {}", interceptAngle);
     
    
     if(Math.abs(interceptAngle) > 20){
-      addSequential(new AlignToPointD(interceptAngle));
+      addSequential(new AlignToPointD());
     }    
     //addSequential(new AutoMoveForwardCommand(10,.7));
     

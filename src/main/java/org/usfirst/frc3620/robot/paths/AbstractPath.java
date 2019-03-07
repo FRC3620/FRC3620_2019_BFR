@@ -23,7 +23,7 @@ public abstract class AbstractPath extends Command {
 
 	boolean finishedFlag = false;
 	boolean debugMode = false;
-	boolean lastCompBot = true;
+	boolean lastCompBot = false;
 
 	int competitionMultiplier;
 	EncoderFollower left;
@@ -305,11 +305,9 @@ public abstract class AbstractPath extends Command {
 		// negative turn means we are pointed too far right, and need to boost on RH power
 		double leftMotorSet = outputLeft + turn;
 		double rightMotorSet = outputRight - turn;
-		if (getPathfinderReverseMode()) {
-			Robot.driveSubsystem.autoDriveTank((getPathfinderOutputMultiplier() * -rightMotorSet), (getPathfinderOutputMultiplier() * -leftMotorSet));  //TODO fix multiplier/values greater than 1
-		} else {
-			Robot.driveSubsystem.autoDriveTank((getPathfinderOutputMultiplier() * leftMotorSet), (getPathfinderOutputMultiplier() * rightMotorSet));
-		}
+		 
+		Robot.driveSubsystem.autoDriveTank((getPathfinderOutputMultiplier() * -leftMotorSet), (getPathfinderOutputMultiplier() * -rightMotorSet));
+		
 
 		// records the max output value for tuning the v_max scaler up there
 		if (leftMotorSet > maxOutput) {

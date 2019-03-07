@@ -96,14 +96,14 @@ public class OI {
             middlePos.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_ROCKET_MIDDLE, true));
             topPos.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_ROCKET_TOP, true));
             reverseDrive.whenPressed(new ToggleReverseCommand());
-            driveIn.whileHeld(new AutonomousAlignmentAndApproachCommand());
+            driveIn.whileHeld(new AlignToPointD());
             cargoShipLineUp.whileHeld(new AutoLineUpWithCargoshipCommand());
 
             SmartDashboard.putData(new HabInstrumentationCommand());
             SmartDashboard.putData("Rumble both", new RumbleCommand(Robot.rumbleSubsystemDriver, Hand.BOTH, 0.2, 60.0));
             SmartDashboard.putData("Rumble left", new RumbleCommand(Robot.rumbleSubsystemDriver, Hand.LEFT, 0.2, 3.0));
 
-            SmartDashboard.putData("AutonomousAlign from 45", new AutoAlignmentTemplate(Robot.visionSubsystem.getFrontTargetDistance(), Robot.visionSubsystem.getFrontTargetAngle()));
+            SmartDashboard.putData("AutonomousAlign from 45", new TrainingPath());
             SmartDashboard.putData("TrainingPath", new TrainingPath());
             SmartDashboard.putData("CenterOnTarget", new VisionAlignmentCommand());
             SmartDashboard.putData("TapTarget", new TravelAlignPushCommand());
