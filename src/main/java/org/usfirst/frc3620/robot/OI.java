@@ -99,7 +99,7 @@ public class OI {
             conveyorR.whileHeld(new TrashRightCommand());
             hatchExtend.toggleWhenPressed(new HatchExtendCommand());
             hatchCollect.toggleWhenPressed(new HatchCollectCommand());
-            habClimbButton.toggleWhenPressed(new HabClimbCommand());
+            habClimbButton.whenPressed(new HabClimbCommand());
             liftHome.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_CARGO_TRASHIN, true));
             middlePos.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_CARGO_ROCKET_MIDDLE, true));
             reverseDrive.whenPressed(new ToggleReverseCommand());
