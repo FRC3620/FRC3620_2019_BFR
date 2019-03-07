@@ -41,6 +41,9 @@ public class HabClimbCommand extends Command {
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
+        if (Robot.pivotSubsystem.getCurrentPivotMode() != PivotMode.HAB) {
+            return true;
+        }
         return false;
     }
 
@@ -48,7 +51,7 @@ public class HabClimbCommand extends Command {
     @Override
     protected void end() {
     	EventLogging.commandMessage(logger);
-        Robot.pivotSubsystem.setCurrentPivotMode(PivotSubsystem.PivotMode.MANUAL);
+        Robot.liftSubsystem.setManualMode();
         Robot.driveSubsystem.stopDrive();
         Robot.driveSubsystem.habDrive(0);
         Robot.liftSubsystem.setManualMode();
@@ -59,7 +62,7 @@ public class HabClimbCommand extends Command {
     @Override
     protected void interrupted() {
     	EventLogging.commandMessage(logger);
-        Robot.pivotSubsystem.setCurrentPivotMode(PivotSubsystem.PivotMode.MANUAL);
+        Robot.liftSubsystem.setManualMode();
         Robot.driveSubsystem.stopDrive();
         Robot.driveSubsystem.habDrive(0);
         Robot.liftSubsystem.setManualMode();

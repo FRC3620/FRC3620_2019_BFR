@@ -108,12 +108,16 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
     }
 
     private void periodicHAB() {
-        double liftMotorPower = Robot.liftSubsystem.getMaxPower();
         //+lift power makes the lift go down
         //-lift power makes the lift go up 
-        double pivotMotorPower = (liftMotorPower)*2/3;
+        double liftMotorPower = Robot.liftSubsystem.getMaxPower();
 
-        //- pitch = nose down. + pitch = nose up
+        //+pivotMotorPower makes the intake push down
+        //-pivotMotorPower makes the intake come up
+        double pivotMotorPower = (liftMotorPower)*(3./4.);
+
+        // - pitch = nose down.
+        // + pitch = nose up
         double pitch = Robot.driveSubsystem.ahrs.getPitch();
         double adjustFactor = 1.0;
         if(Math.abs(pitch) > 5) {
@@ -124,11 +128,12 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
             */
             adjustFactor = (1.0 + (pitch/Math.abs(pitch)*0.5));
         }
-        SmartDashboard.putNumber("HAB pivot motor power", pivotMotorPower);
-        SmartDashboard.putNumber("HAB adjust factor", adjustFactor);
         SmartDashboard.putNumber("HAB lift motor power", liftMotorPower);
         SmartDashboard.putNumber("HAB pitch", pitch);
+        SmartDashboard.putNumber("HAB pivot motor power (pre-adjust)", pivotMotorPower);
+        SmartDashboard.putNumber("HAB adjust factor", adjustFactor);
         pivotMotorPower = pivotMotorPower * adjustFactor;
+        SmartDashboard.putNumber("HAB pivot motor power (post-adjust)", pivotMotorPower);
         pivotMove(pivotMotorPower);
     }
     
@@ -143,7 +148,7 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
                     // we want to be in, but we are not there yet
                     // we need to do some pivotMove with a negative
                     //Power was halved for two neo pivot
-                    pivotMove(-0.2);
+                    pivotMove(-0.35);
                 } else {
                     pivotStop();
                 }

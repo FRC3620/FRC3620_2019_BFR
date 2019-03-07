@@ -59,7 +59,7 @@ public class LiftSubsystem extends Subsystem implements PIDSource, PIDOutput {
         liftPIDContoller = new PIDController(0, 0, 0, 0, this, this);
         setPIDSourceType(PIDSourceType.kDisplacement);
         liftPIDContoller.setInputRange(0, 55);
-        liftPIDContoller.setOutputRange(-0.3, 1.0);
+        liftPIDContoller.setOutputRange(-0.5, 1.0);
     }
 
 
