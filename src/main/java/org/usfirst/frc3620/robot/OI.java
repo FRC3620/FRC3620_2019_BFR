@@ -83,7 +83,6 @@ public class OI {
             Button trashIn = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_Y);
             Button habClimbButton = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_LEFT_BUMPER);
             Button middlePos = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_RIGHT_BUMPER);
-            Button topPos = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_LEFT_BUMPER);
             Button liftHome = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_A);
             Button lockLiftPinsButton = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_BACK);
 
@@ -100,10 +99,9 @@ public class OI {
             conveyorR.whileHeld(new TrashRightCommand());
             hatchExtend.toggleWhenPressed(new HatchExtendCommand());
             hatchCollect.toggleWhenPressed(new HatchCollectCommand());
-            habClimbButton.whenPressed(new HabClimbCommand());
+            habClimbButton.toggleWhenPressed(new HabClimbCommand());
             liftHome.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_CARGO_TRASHIN, true));
             middlePos.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_CARGO_ROCKET_MIDDLE, true));
-            topPos.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_CARGO_ROCKET_TOP, true));
             reverseDrive.whenPressed(new ToggleReverseCommand());
             driveIn.whileHeld(new AutoMoveForwardCommand(10,.7));
             cargoShipLineUp.whileHeld(new AutoLineUpWithCargoshipCommand());
