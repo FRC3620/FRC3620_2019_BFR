@@ -1,11 +1,4 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2018 FIRST. All Rights Reserved.                             */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
-
-package org.usfirst.frc3620.robot.commands;
+ackage org.usfirst.frc3620.robot.commands;
 
 import org.slf4j.Logger;
 import org.usfirst.frc3620.logger.EventLogging;
@@ -19,10 +12,12 @@ import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+/**
+ *
+ */
 
-public class AutoLineUpWithCargoshipCommand extends Command {
-  
-	
+ 
+public class SlotSelectorCommand extends Command {
     Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 
     static final double kPDriveStraight = 0.0;
@@ -40,33 +35,35 @@ public class AutoLineUpWithCargoshipCommand extends Command {
     static final double kDLineUp = 0.01;
     
     static final double kFLineUp = 0;
+
+    static final double selectionSpeed = 0.4;
     
 
     double fwdStick;
     double sideStick;
 
     int setSlot;
+    int a = 0;
 
     boolean weAreDone = false;
     
     
-    //PIDController pidDriveStraight = new PIDController(kPDriveStraight, kIDriveStraight, kDDriveStraight, kFDriveStraight, Robot.driveSubsystem.getAhrsPidSource(), new DriveStraightOutput());
-    PIDController pidLineUp = new PIDController(kPLineUp, kILineUp, kDLineUp, kFLineUp, new LineUpSource(), new LineUpOutput());
+    PIDController pidDriveStraight = new PIDController(kPDriveStraight, kIDriveStraight, kDDriveStraight, kFDriveStraight, Robot.driveSubsystem.getAhrsPidSource(), new DriveStraightOutput());
+
 
     Command rumbleCommand = new RumbleCommand(Robot.rumbleSubsystemDriver);
     
   
-    public AutoLineUpWithCargoshipCommand() {
+    public SlotSelectorCommand(int slot) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
       requires(Robot.driveSubsystem);
-  /*    pidDriveStraight.setOutputRange(-.5, .5);
+      setSlot = slot;
+      pidDriveStraight.setOutputRange(-.5, .5);
       pidDriveStraight.setInputRange(0.0f, 360.0f);
-      pidDriveStraight.setContinuous(true); */
+      pidDriveStraight.setContinuous(true);
      
-      pidLineUp.setOutputRange(-.5, .5);
-      pidLineUp.setInputRange(-90,90);
-      pidLineUp.setContinuous(false);
+    
     }
     
     
@@ -74,37 +71,40 @@ public class AutoLineUpWithCargoshipCommand extends Command {
     // Called just before this Command runs the first time
     protected void initialize() {
       logger.info("AutoLineUpWithCargoshipCommand start");
-      
-    /*    pidDriveStraight.setSetpoint(Robot.driveSubsystem.getRealAngle());
-        pidDriveStraight.reset();
-        pidDriveStraight.enable(); */
-     
-
-    
-        pidLineUp.setSetpoint(0);
-        pidLineUp.reset();
-        pidLineUp.enable();
-      
-       
+      if(Robot.visionSubsystem.getRightTargetPresent() || Robot.visionSubsystem.getLeftTargetPresent()){
+        a = 1;
+      }
+      pidDriveStraight.setSetpoint(Robot.driveSubsystem.getRealAngle());
+      pidDriveStraight.reset();
+      pidDriveStraight.enable(); 
+      if(setSlot == a){
+        weAreDone = true;
+      }
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-      weAreDone = false;
-      logger.info("fwdStick: {}", fwdStick);
-      if(Robot.visionSubsystem.getRightTargetPresent() == false){
-        weAreDone = true;
-        
-        return;
+      if(a == 0){
+        if(Robot.visionSubsystem.getRightTargetPresent() || Robot.visionSubsystem.getLeftTarget()){
+            a++;
+        } else{
+            Robot.driveSubsystem.arcadeDrive(leftjoy, rightJoy);
+        }
       }
-      double horizontal = Robot.oi.getRightHorizontalJoystickSquared();
-      Robot.driveSubsystem.arcadeDrive(fwdStick, horizontal);
-      //logger.info("sideStick: {}", sideStick);
-      //logger.info("NavX heading {}", Robot.driveSubsystem.getAngle());
-      //logger.info("Corrected angle {}:", Robot.driveSubsystem.getRealAngle());
+      if(a > 1){
+        if(!(setSlot == a)){
+            Robot.driveSubsystem.arcadeDrive(selectionSpeed, sideStick);
+          }
+      }
+      
+      
+      
+      logger.info("sideStick: {}", sideStick);
+      logger.info("NavX heading {}", Robot.driveSubsystem.getAngle());
+      logger.info("Corrected angle {}:", Robot.driveSubsystem.getRealAngle());
       
     
-      //SmartDashboard.putNumber("Fwd stick", fwdStick);
+     
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -126,8 +126,8 @@ public class AutoLineUpWithCargoshipCommand extends Command {
     protected void end() {
       logger.info("AutoLineUpWithCargoshipCommand end");
       
-    //  pidDriveStraight.disable();
-      pidLineUp.disable();
+      pidDriveStraight.disable();
+     
     }
 
     // Called when another command which requires one or more of the same
@@ -138,41 +138,26 @@ public class AutoLineUpWithCargoshipCommand extends Command {
         end();
     }
     
- /*   public class DriveStraightSource extends AverageJoePIDSource{
+    public class DriveStraightSource extends AverageJoePIDSource{
 
       @Override
       public double pidGet() {
         return 0;
       }
   
-    } */
+    } 
 
-    public class LineUpSource extends AverageJoePIDSource{
-
-      @Override
-      public double pidGet() {
-        return Robot.visionSubsystem.getRightTargetYaw();
-      }
-  
-    }
-
-  /*  public class DriveStraightOutput extends AverageJoePIDOutput{
+   
+    public class DriveStraightOutput extends AverageJoePIDOutput{
 
       @Override
       public void pidWrite(double output) {
         sideStick = output;
       }
 
-    } */
+    } 
      
-    public class LineUpOutput extends AverageJoePIDOutput{
-
-      @Override
-      public void pidWrite(double output) {
-        fwdStick = output;  
-      }
+    
 
     }
-  }
-
-  
+}
