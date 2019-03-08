@@ -13,7 +13,13 @@ public class TrainingPath extends AbstractPath{
         };
 
 
+
         
+    }
+
+    @Override
+    public double getPathfinderP(){
+        return 0.008;
     }
     
 

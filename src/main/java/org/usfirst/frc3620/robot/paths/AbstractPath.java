@@ -165,7 +165,7 @@ public abstract class AbstractPath extends Command {
 	}
 	
 	double getHeadingCorrectionFactor() {
-		return 0.8 / 80.0;
+		return 1 / 80.0;
 	}
 
 	double lastLeftEncoder = 0;
@@ -197,19 +197,19 @@ public abstract class AbstractPath extends Command {
 	
 		
 		//Robot.driveSubsystem.resetNavX();
-		startingAbsoluteHeading = Robot.driveSubsystem.getAngle();
+		startingAbsoluteHeading = Robot.driveSubsystem.getRealAngle();
 		
-		logger.info("Navx initial 1 = {}", Robot.driveSubsystem.getAngle());
+		logger.info("Navx initial 1 = {}", Robot.driveSubsystem.getRealAngle());
 		left.configurePIDVA(getPathfinderP(), getPathfinderI(), getPathfinderD(), 1 / getPathfinderV_MAX(),
 				getPathfinderA_GAIN());
-		logger.info("Navx initial 2 = {}", Robot.driveSubsystem.getAngle());
+		logger.info("Navx initial 2 = {}", Robot.driveSubsystem.getRealAngle());
 		right.configurePIDVA(getPathfinderP(), getPathfinderI(), getPathfinderD(), 1 / getPathfinderV_MAX(),
 				getPathfinderA_GAIN());
 		
 		
 		
 		logger.info("PIDVAs configured.");
-		logger.info("Navx initial 3 = {}", Robot.driveSubsystem.getAngle());
+		logger.info("Navx initial 3 = {}", Robot.driveSubsystem.getRealAngle());
 		if(lastCompBot){
 			lastLeftEncoder = encoderPosLeft = Robot.driveSubsystem.readLeftEncRaw();
 			lastRightEncoder = encoderPosRight = Robot.driveSubsystem.readRightEncRaw();
@@ -225,7 +225,7 @@ public abstract class AbstractPath extends Command {
 		logger.info("Encoders L,R initial = {}, {}", encoderPosLeft, encoderPosRight);
 
 		logger.info("Reverse mode = {}", getPathfinderReverseMode());
-		logger.info("Navx initial = {}", Robot.driveSubsystem.getAngle());
+		logger.info("Navx initial = {}", Robot.driveSubsystem.getRealAngle());
 		//CHANGED TICK PER REVOLUTION TO 1024 from 512
 	
 		if (getPathfinderReverseMode()) {
@@ -274,19 +274,21 @@ public abstract class AbstractPath extends Command {
 		double outputLeft = left.calculate(encoderPosLeft);
 		double outputRight = right.calculate(encoderPosRight);
 
-		double currentAbsoluteHeading = Robot.driveSubsystem.getAngle();
+		double currentAbsoluteHeading = Robot.driveSubsystem.getRealAngle();
 		double navx_heading = currentAbsoluteHeading - startingAbsoluteHeading;
 
 		// change desired heading to positive right
 		double desired_heading = - Pathfinder.r2d(left.getHeading()); // seems to be outputting a range of 0-360 degrees.
 																	// Hmm...
-
+		
 		// double desired_heading = Pathfinder.r2d(left.getHeading()) - 180;
 
 		// "Pathfinder.boundHalfDegrees() binds a degree angle to -180..180, preventing
 		// absurdly large turn value."
 		// positive angle difference means we are pointed too far to the right
 		double angleDifference = Pathfinder.boundHalfDegrees(navx_heading - desired_heading);
+		System.out.println("AngleDiff: " + angleDifference);
+
 		// Included example angle calculation:
 		// positive angle difference means we are pointed too far to the rigvht
 		double turn = -getHeadingCorrectionFactor() * angleDifference; // tune this to tune turn rate??
@@ -385,6 +387,8 @@ public abstract class AbstractPath extends Command {
 		@Override
 		protected void end() {
 			EventLogging.commandMessage(logger);
+			System.out.println("Final Desired: " + (- Pathfinder.r2d(left.getHeading())));
+			logger.info("End NavX Heading = {}", Robot.driveSubsystem.getRealAngle());
 			System.out.println("Max motor output: " + maxOutput);
 		}
 

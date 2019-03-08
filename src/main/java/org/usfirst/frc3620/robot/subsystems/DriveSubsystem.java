@@ -9,6 +9,7 @@ import org.usfirst.frc3620.logger.EventLogging.Level;
 import org.slf4j.Logger;
 import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
+import org.usfirst.frc3620.robot.Robot;
 import org.usfirst.frc3620.robot.RobotMap;
 import org.usfirst.frc3620.robot.commands.DriveCommand;
 
@@ -36,16 +37,20 @@ public class DriveSubsystem extends Subsystem {
     private boolean reverseModeQuestion;
     
     public double automaticHeading;
-    public boolean complainedAboutMissingAhrs;
+    public boolean complainedAboutMissingAhrs = false;
     public double initialNavXReading = 0;
+
 
     public DriveSubsystem(){
         super();               
-		ahrs = new AHRS(edu.wpi.first.wpilibj.SPI.Port.kMXP);
+        ahrs = new AHRS(edu.wpi.first.wpilibj.SPI.Port.kMXP);
+        
 		// ahrs.enableLogging(false);
        
         gotCompBot = RobotMap.amICompBot();
         
+        //initialNavXReading = Robot.driveSubsystem.getRealAngle();
+
         try{
             resetEncoders();
         } catch(NullPointerException nullPointer){
@@ -73,7 +78,7 @@ public class DriveSubsystem extends Subsystem {
        
         SmartDashboard.putNumber("rightsideEncoderInFeet", getRightSideDistance());
         SmartDashboard.putNumber("leftsideEncoderInFeet", getLeftSideDistance());
-      
+       
 
     }
 
