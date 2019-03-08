@@ -75,6 +75,7 @@ public class OI {
             Button conveyorR = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_B);
             Button inTakeIn = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_LEFT_BUMPER);
             Button driveIn = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_A);
+            Button camSwitch = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_Y);
 
             //operator controls 
             Button hatchExtend = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_X);
@@ -124,7 +125,6 @@ public class OI {
              Button pivotLevel3 = new JoystickButton(magicBoardJoystick, 4);
              Button trashLeft = new JoystickButton(magicBoardJoystick, 2);
              Button trashRight = new JoystickButton(magicBoardJoystick, 3);
-             Button camSwitch = new JoystickButton(magicBoardJoystick, 8);
 
 
              liftRocket1.whenPressed(new LiftMagicCommand(LiftSubsystem.LiftHeight.ROCKET1));

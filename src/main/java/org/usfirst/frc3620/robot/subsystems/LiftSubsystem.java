@@ -285,9 +285,9 @@ public class LiftSubsystem extends Subsystem implements PIDSource, PIDOutput {
             if (!liftPIDContoller.isEnabled()) {
                  // set the P, I, D, FF
                  //Base P: 0.04
-                double p = SmartDashboard.getNumber("pivotP", 0.06);
-                double i = SmartDashboard.getNumber("pivotI", 0.0004);
-                double d = SmartDashboard.getNumber("pivotD", 0.12);
+                double p = SmartDashboard.getNumber("pivotP", 0.06); //Practice bot 0.06
+                double i = SmartDashboard.getNumber("pivotI", 0.0004); //Practice bot 0.0004
+                double d = SmartDashboard.getNumber("pivotD", 0.12); //Practice bot 0.12
                 double f = SmartDashboard.getNumber("pivotF", 0);
     
                 logger.info("_pivotP={}", p);

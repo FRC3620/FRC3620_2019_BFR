@@ -72,6 +72,8 @@ public class AutoLineUpWithCargoshipLeftCommand extends Command {
     // Called just before this Command runs the first time
     protected void initialize() {
       logger.info("AutoLineUpWithCargoshipCommand start");
+
+      Robot.visionSubsystem.turnLightSwitchOn();
       
     /*    pidDriveStraight.setSetpoint(Robot.driveSubsystem.getRealAngle());
         pidDriveStraight.reset();
@@ -119,6 +121,7 @@ public class AutoLineUpWithCargoshipLeftCommand extends Command {
     // Called once after isFinished returns true
     protected void end() {
       logger.info("AutoLineUpWithCargoshipCommand end");
+      Robot.visionSubsystem.turnLightSwitchOff();
       
     //  pidDriveStraight.disable();
       pidLineUp.disable();
