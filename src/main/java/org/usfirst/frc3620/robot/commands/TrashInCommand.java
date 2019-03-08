@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
 import org.usfirst.frc3620.robot.Robot;
+import org.usfirst.frc3620.robot.RobotMap;
 
 /**
  *
@@ -20,7 +21,8 @@ public class TrashInCommand extends Command {
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-    	EventLogging.commandMessage(logger);
+        EventLogging.commandMessage(logger);
+        RobotMap.intakeSubsystemLowerMotor.set(0);
     }
 
     // Called repeatedly when this Command is scheduled to run

@@ -125,9 +125,11 @@ public class Robot extends TimedRobot {
         autonomousCommand = chooser.getSelected();
         // schedule the autonomous command (example)
         if (autonomousCommand != null) autonomousCommand.start();
+        visionSubsystem.turnLightSwitchOn();
     }
 
     /**
+     * 
      * This function is called periodically during autonomous
      */
     @Override
@@ -155,6 +157,7 @@ public class Robot extends TimedRobot {
             rightLineWatcher.start();
    
         driveSubsystem.clearReverseMode();    
+        visionSubsystem.turnLightSwitchOff();
 
     }
 

@@ -1,6 +1,7 @@
 package org.usfirst.frc3620.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc3620.robot.Robot;
+import org.usfirst.frc3620.robot.RobotMap;
 import org.slf4j.Logger;
 import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
@@ -25,7 +26,9 @@ public class IntakeCommand extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        Robot.intakeSubsystem.intakeIn(1);
+        RobotMap.intakeSubsystemUpperMotor.set(-0.7);
+        RobotMap.intakeSubsystemMiddleMotor.set(0.5);
+        RobotMap.intakeSubsystemLowerMotor.set(0.5);
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -38,8 +41,9 @@ public class IntakeCommand extends Command {
     @Override
     protected void end() {
         EventLogging.commandMessage(logger);
-        Robot.intakeSubsystem.intakeOff();
-        
+        RobotMap.intakeSubsystemUpperMotor.set(0);
+        RobotMap.intakeSubsystemMiddleMotor.set(0);
+        RobotMap.intakeSubsystemLowerMotor.set(0.2);
     }
 
     // Called when another command which requires one or more of the same
@@ -47,6 +51,8 @@ public class IntakeCommand extends Command {
     @Override
     protected void interrupted() {
         EventLogging.commandMessage(logger);
-        Robot.intakeSubsystem.intakeOff();
+        RobotMap.intakeSubsystemUpperMotor.set(0);
+        RobotMap.intakeSubsystemMiddleMotor.set(0);
+        RobotMap.intakeSubsystemLowerMotor.set(0.2);
     }
 }

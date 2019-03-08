@@ -76,11 +76,12 @@ public class OI {
             Button inTakeIn = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_LEFT_BUMPER);
             Button driveIn = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_A);
             Button camSwitch = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_Y);
+            Button inTakeOut = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_START);
 
             //operator controls 
             Button hatchExtend = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_X);
             Button hatchCollect = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_B);
-            Button inTakeOut = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_START);
+           
             Button trashIn = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_Y);
             Button habClimbButton = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_LEFT_BUMPER);
             Button middlePos = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_RIGHT_BUMPER);

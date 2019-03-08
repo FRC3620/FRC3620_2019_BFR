@@ -90,7 +90,7 @@ public class AutoLineUpWithCargoshipRightCommand extends Command {
       weAreDone = false;
       logger.info("fwdStick: {}", fwdStick);
       if(Robot.visionSubsystem.getRightTargetPresent() == false){
-        weAreDone = true;
+        //weAreDone = true;
         
         return;
       }
