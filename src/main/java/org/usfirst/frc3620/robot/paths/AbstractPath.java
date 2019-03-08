@@ -251,12 +251,18 @@ public abstract class AbstractPath extends Command {
 	 */
 	@Override
 	protected void execute() {
-		if (getPathfinderReverseMode()) {
-			encoderPosLeft = -1 * Robot.driveSubsystem.readRightEncRaw();
-			encoderPosRight = -1 * Robot.driveSubsystem.readLeftEncRaw();
-		} else {
+		if (lastCompBot) {
+			if(getPathfinderReverseMode()){
+				encoderPosLeft = -1 * Robot.driveSubsystem.readRightEncRaw();
+				encoderPosRight = -1 * Robot.driveSubsystem.readLeftEncRaw();
+			} else {
 			encoderPosLeft = Robot.driveSubsystem.readLeftEncRaw();
 			encoderPosRight = Robot.driveSubsystem.readRightEncRaw();
+			}
+		}
+		else {
+			encoderPosLeft = convertCANEncoderTicstoPulses(RobotMap.leftsideCANEncoder.getPosition());
+			encoderPosRight = convertCANEncoderTicstoPulses(RobotMap.rightsideCANEncoder.getPosition());
 		}
 
 		double leftEncoderDelta = lastLeftEncoder - encoderPosLeft;
