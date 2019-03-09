@@ -149,8 +149,8 @@ public class LiftSubsystem extends Subsystem implements PIDSource, PIDOutput {
         // so we need to change the sign. 
         double speed = -yPos * 0.9;
         if (Robot.pivotSubsystem.getCurrentPivotMode() != PivotMode.HAB) {
-            if(speed < -0.4){
-                speed = -0.4;
+            if(speed < -0.8){
+                speed = -0.8;
             }
         }
         else{
@@ -170,7 +170,7 @@ public class LiftSubsystem extends Subsystem implements PIDSource, PIDOutput {
             
             if (Robot.pivotSubsystem.getCurrentPivotMode() != PivotMode.HAB) {
 
-                if(currentHeight < 6 && speed < -0.1) {
+                if(currentHeight < 12 && speed < -0.1) {
                     speed = -0.1;
                 }
             }
