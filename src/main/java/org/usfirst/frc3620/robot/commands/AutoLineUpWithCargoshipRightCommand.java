@@ -33,7 +33,7 @@ public class AutoLineUpWithCargoshipRightCommand extends Command {
     
     static final double kFDriveStraight = 0;
 
-    static final double kPLineUp = .006;
+    static final double kPLineUp = .007;
    
     static final double kILineUp = 0;	
     
@@ -115,14 +115,14 @@ public class AutoLineUpWithCargoshipRightCommand extends Command {
         rumbleCommand.start();
         return false;
       } else {
-        return true;
+        return false;
       }
     }
 
     // Called once after isFinished returns true
     protected void end() {
       logger.info("AutoLineUpWithCargoshipCommand end");
-      Robot.visionSubsystem.turnLightSwitchOff();
+      
       
     //  pidDriveStraight.disable();
       pidLineUp.disable();

@@ -31,7 +31,7 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
     public enum DesiredAngle{Bottom, Middle, Top}
 
     public static final double SETANGLE_BOTTOM = 80;
-    public static final double SETANGLE_MIDDLE = 75;
+    public static final double SETANGLE_MIDDLE = 70;
     public static final double SETANGLE_TOP = 5;
 
     private final CANSparkMax pivotMax = RobotMap.pivotSubsystemMax;
@@ -114,13 +114,13 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
 
         //+pivotMotorPower makes the intake push down
         //-pivotMotorPower makes the intake come up
-        double pivotMotorPower = (liftMotorPower)*(5./8.);
+        double pivotMotorPower = (liftMotorPower)*(4./8.);
 
         // - pitch = nose down.
         // + pitch = nose up
         double pitch = Robot.driveSubsystem.ahrs.getPitch();
         double adjustFactor = 1.0;
-        if(Math.abs(pitch) > 5) {
+        if(Math.abs(pitch) > 3) {
             /*
             If and only if the |pitch| is greater than 5, the formula 
             below is meant to return 0.8 if the pitch is negative and 
@@ -234,7 +234,7 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
         // so we need to change the sign.
         double power = -yPos * 0.7;
         if(power < -0.2){
-            power = -0.2;
+            power = 0;
         }
         pivotMove(power);
     }

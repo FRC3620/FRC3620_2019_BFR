@@ -26,9 +26,9 @@ public class IntakeCommand extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        RobotMap.intakeSubsystemUpperMotor.set(-0.7);
         RobotMap.intakeSubsystemMiddleMotor.set(0.5);
         RobotMap.intakeSubsystemLowerMotor.set(0.5);
+        RobotMap.intakeSubsystemUpperMotor.set(-0.7);
     }
 
     // Make this return true when this Command no longer needs to run execute()

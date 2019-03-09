@@ -127,7 +127,6 @@ public class OI {
              Button trashLeft = new JoystickButton(magicBoardJoystick, 2);
              Button trashRight = new JoystickButton(magicBoardJoystick, 3);
 
-
              liftRocket1.whenPressed(new LiftMagicCommand(LiftSubsystem.LiftHeight.ROCKET1));
              liftRocket2.whenPressed(new LiftMagicCommand(LiftSubsystem.LiftHeight.ROCKET2));
              liftRocket3.whenPressed(new LiftMagicCommand(LiftSubsystem.LiftHeight.ROCKET3));
