@@ -26,7 +26,7 @@ public class TrashLeftCommand extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        Robot.trashSubsystem.conveyorBeltLeft(1);
+        Robot.trashSubsystem.conveyorBeltLeft(0.9);
     }
 
     // Make this return true when this Command no longer needs to run execute()
