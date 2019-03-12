@@ -15,9 +15,13 @@ import java.util.logging.StreamHandler;
 import edu.wpi.first.wpilibj.DriverStation;
 
 public class EventLogging {
+    private static boolean setupDone = false;
+    private static boolean useDriverStation = true;
 
-    // make some levels that correspond to the different SLF4J logging
-    // methods. Have the mappings to the underlying j.u.l logging levels.
+    /**
+     * make some levels that correspond to the different SLF4J logging methods.
+     * Have the mappings to the underlying j.u.l logging levels.
+     */
     public enum Level {
         TRACE(java.util.logging.Level.FINEST), //
         DEBUG(java.util.logging.Level.FINE), //
@@ -35,12 +39,10 @@ public class EventLogging {
     /**
      * Get an SLF4J logger for a class. Set the underlying j.u.l logger to the
      * desired level.
-     * 
-     * @param clazz
-     *            class for the logger
-     * @param l
-     *            Level that we want to log at
-     * @return
+     *
+     * @param clazz class for the logger
+     * @param l     {@link Level} that we want to log at
+     * @return {@link org.slf4j.Logger}
      */
     static public org.slf4j.Logger getLogger(Class<?> clazz, Level l) {
         return getLogger(clazz.getName(), l);
@@ -49,11 +51,9 @@ public class EventLogging {
     /**
      * Get an SLF4J logger for a name. Set the underlying j.u.l logger to the
      * desired level.
-     * 
-     * @param sClazz
-     *            name for the logger
-     * @param l
-     *            Level that we want to log at
+     *
+     * @param sClazz name for the logger
+     * @param l      Level that we want to log at
      * @return
      */
     static public org.slf4j.Logger getLogger(String sClazz, Level l) {
@@ -67,39 +67,39 @@ public class EventLogging {
         org.slf4j.Logger rv = org.slf4j.LoggerFactory.getLogger(sClazz);
         return rv;
     }
-    
+
     /**
-     * Log command starts and stops
-     * 
-     * @param logger
-     * 			  logger to log to.
+     * Log command starts and stops. It looks at the traceback stack to see the
+     * name of the calling method and logs that.
+     *
+     * @param logger logger to log to.
      */
-    public static void commandMessage (org.slf4j.Logger logger) {
-  	  Throwable t = new Throwable();
-  	  StackTraceElement[] stackTraceElement = t.getStackTrace();
-  	  logger.info("command {}", stackTraceElement[1].getMethodName());
+    public static void commandMessage(org.slf4j.Logger logger) {
+        Throwable t = new Throwable();
+        StackTraceElement[] stackTraceElement = t.getStackTrace();
+        logger.info("command {}", stackTraceElement[1].getMethodName());
     }
 
-    
+
     /**
      * Write a warning message to the DriverStation.
-     * 
-     * @param message
-     *            Message to log.
+     *
+     * @param message Message to log.
      */
     public static final void writeWarningToDS(String message) {
         if (DriverStation.getInstance().isDSAttached()) {
-        	DriverStation.reportWarning(message, false);
+            DriverStation.reportWarning(message, false);
         }
     }
 
     /**
-     * Create a String representation of an Exception.
-     * 
-     * @param t
-     * @return
+     * Create a String representation of an Throwable.
+     *
+     * @param t the Throwable to be printed
+     * @return a String representation of the Throwable. Very similar to what
+     * goes into a traceback.
      */
-    public static final String exceptionToString(Throwable t) {
+    public static String exceptionToString(Throwable t) {
         final StackTraceElement[] stackTrace = t.getStackTrace();
         final StringBuilder message = new StringBuilder();
         final String separator = "===\n";
@@ -129,106 +129,59 @@ public class EventLogging {
         return message.toString();
     }
 
-    private static boolean setupDone = false;
-
+    /**
+     * Set up a j.u.l logger that will start logging to a file (with a
+     * timestamped name) in the default logging directory specified in @{link
+     * LoggingMaster}. The logging to the file will not start until the system
+     * time is set.
+     */
     public static void setup() {
         setup(LoggingMaster.getLoggingDirectory());
     }
 
-	/**
-	 * Set up a j.u.l logger that will start logging to a file (with a timestamped
-	 * name). The logging to the file will not start until the system time is set.
-	 * 
-	 * @param logDirectory
-	 *            Directory to create the logging file in
-	 */
-	public static boolean useDriverStation = true;
-	public static void setup(File logDirectory) {
-		if (!setupDone) // quickly check to see if we are initialized
-		{
-			synchronized (EventLogging.class) // check slowly and carefully
-			{
-				if (!setupDone) {
-					Logger rootLogger = Logger.getLogger("");
-					// get all the existing handlers
-					Handler[] handlers = rootLogger.getHandlers();
-					// and remove them
-					for (Handler handler : handlers) {
-						rootLogger.removeHandler(handler);
-					}
-
-					// add the handlers we want
-					Handler h;
-					if (useDriverStation) {
-						h = new DriverStationLoggingHandler();
-						h.setLevel(Level.DEBUG.julLevel);
-						rootLogger.addHandler(h);
-					} else {
-						h = new ConsoleHandler();
-						h.setFormatter(new FormatterForFileHandler());
-						h.setLevel(Level.DEBUG.julLevel);
-						rootLogger.addHandler(h);
-					}
-
-					h = new MyFileHandler(logDirectory);
-					h.setFormatter(new FormatterForFileHandler());
-					h.setLevel(Level.DEBUG.julLevel);
-					rootLogger.addHandler(h);
-
-					setupDone = true;
-				}
-			}
-		}
-	}
-
-    static class MyFileHandler extends StreamHandler {
-        File logDirectory;
-        FileOutputStream fileOutputStream = null;
-
-        public MyFileHandler(File logDirectory) {
-            super();
-            this.logDirectory = logDirectory;
-        }
-
-        @Override
-        public void publish(LogRecord arg0) {
-            /*
-             * if the file is not open, see if we can open it.
-             */
-            if (fileOutputStream == null) // quick check
+    /**
+     * Set up a j.u.l logger that will start logging to a file (with a
+     * timestamped name) in the specified directory. The logging to the file
+     * will not start until the system time is set.
+     *
+     * @param logDirectory Directory to create the logging file in
+     */
+    public static void setup(File logDirectory) {
+        if (!setupDone) // quickly check to see if we are initialized
+        {
+            synchronized (EventLogging.class) // check slowly and carefully
             {
-                synchronized (this) // take some overhead for the good check
-                {
-                    if (fileOutputStream == null) // deliberate check
-                    {
-                        // we'll get a null here if the clock is not yet set
-                        String timestampString = LoggingMaster
-                                .getTimestampString();
-
-                        if (timestampString != null) {
-                            // cool, let's make a file to log to!
-                            File logFile = new File(logDirectory,
-                                    timestampString + ".log");
-                            try {
-                                fileOutputStream = new FileOutputStream(
-                                        logFile);
-                                setOutputStream(fileOutputStream);
-                            } catch (IOException ex) {
-                                ex.printStackTrace(System.err);
-                            }
-
-                        }
+                if (!setupDone) {
+                    Logger rootLogger = Logger.getLogger("");
+                    // get all the existing handlers
+                    Handler[] handlers = rootLogger.getHandlers();
+                    // and remove them
+                    for (Handler handler : handlers) {
+                        rootLogger.removeHandler(handler);
                     }
+
+                    // add the handlers we want
+                    Handler h;
+                    if (useDriverStation) {
+                        h = new DriverStationLoggingHandler();
+                        h.setLevel(Level.DEBUG.julLevel);
+                        rootLogger.addHandler(h);
+                    } else {
+                        h = new ConsoleHandler();
+                        h.setFormatter(new FormatterForFileHandler());
+                        h.setLevel(Level.DEBUG.julLevel);
+                        rootLogger.addHandler(h);
+                    }
+
+                    h = new MyFileHandler(logDirectory);
+                    h.setFormatter(new FormatterForFileHandler());
+                    h.setLevel(Level.DEBUG.julLevel);
+                    rootLogger.addHandler(h);
+
+                    setupDone = true;
                 }
             }
-
-            // only log if we have a place to log to
-            if (fileOutputStream != null) {
-                super.publish(arg0);
-                flush();
-            }
         }
-
     }
 
     static class FormatterForFileHandler extends java.util.logging.Formatter {

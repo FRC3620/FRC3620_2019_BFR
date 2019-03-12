@@ -47,6 +47,4 @@ public class DriverStationLoggingHandler extends Handler {
         }
     }
 
-
-
 }

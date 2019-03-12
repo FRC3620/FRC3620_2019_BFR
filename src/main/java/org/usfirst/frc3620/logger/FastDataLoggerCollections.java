@@ -4,6 +4,15 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * An implementation of FastDataLoggerBase that accumulates data
+ * in an ArrayList, then writes it all out when all done. This way
+ * the writing of the data will not delay processing while collecting.
+ *
+ * TODO
+ *  Having writeData() start a Thread to do the writing would be an
+ *  excellent enhancement.
+ */
 public class FastDataLoggerCollections extends FastDataLoggerBase {
     List<Object[]> data = new ArrayList<>();
     List<Double> timestamps = new ArrayList<>();

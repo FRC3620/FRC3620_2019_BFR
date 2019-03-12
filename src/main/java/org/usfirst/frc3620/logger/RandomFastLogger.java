@@ -1,7 +1,8 @@
 package org.usfirst.frc3620.logger;
 
-import org.usfirst.frc3620.logger.FastDataLoggerCollections;
-
+/**
+ * A test case for {@link FastDataLoggerCollections}.
+ */
 public class RandomFastLogger {
     public static void startRandomFastLogger(String name) {
         IFastDataLogger iFastDataLogger;

@@ -6,14 +6,29 @@ import java.util.*;
 
 public class LoggingMaster {
     private final static long SOME_TIME_AFTER_1970 = 523980000000L;
+    private final static String DEFAULT_DEFAULT_LOG_LOCATION = "/home/lvuser/logs";
 
-    private static String _timestampString = null;
-
-    private static File _logDirectory = null;
+    // needs to be volatile: see
+    // https://javarevisited.blogspot.com/2014/05/double-checked-locking-on-singleton-in-java.html
+    private static volatile String _timestampString = null;
+    private static volatile File _logDirectory = null;
     
-    private static String defaultLogLocation = "/home/lvuser/logs"; 
+    private static String defaultLogLocation = DEFAULT_DEFAULT_LOG_LOCATION;
 
-    // http://javarevisited.blogspot.com/2014/05/double-checked-locking-on-singleton-in-java.html
+    /**
+     * Get the yyyyMMdd-HHmmss string for "right now". Return a null of the
+     * system time has not been set yet.
+     * <p/>
+     * The thread-safety on this is not perfect, but's it has worked well enough
+     * for years. wpilib is not highly threaded, so we're <i>probably</i> OK.
+     *
+     * See:
+     * <a href="http://javarevisited.blogspot.com/2014/05/double-checked-locking-on-singleton-in-java.html">
+     *     http://javarevisited.blogspot.com/2014/05/double-checked-locking-on-singleton-in-java.html
+     *     </a>
+     *
+     * @return yyyyMMdd-HHmmss string, or null if system time not set.
+     */
     public static String getTimestampString() {
         if (_timestampString == null) { // do a quick check (no overhead from
                                         // synchonized)
@@ -34,11 +49,37 @@ public class LoggingMaster {
         }
         return _timestampString;
     }
-    
+
+    /**
+     * Override the default log location (the directory that we put
+     * output files into.
+     *
+     * TODO should the parameter for this be a File?
+     *
+     * @param s path of the new default log location (directory/folder)
+     */
     public static void setDefaultLogLocation (String s) {
     	defaultLogLocation = s;
     }
 
+    /**
+     * return the directory that log files should be written to. Try to put
+     * logs into an existing /logs directory of a flash drive if one is plugged
+     * into the /logsRoboRIO,
+     * otherwise use the default log location (whatever was set via
+     * {@link #setDefaultLogLocation}, or "/home/lvuser/logs" if
+     * setDefaultLogLocation was never called.
+     * <p/>
+     * The thread-safety on this is not perfect, but's it has worked well enough
+     * for years. wpilib is not highly threaded, so we're <i>probably</i> OK.
+     *
+     * See:
+     * <a href="http://javarevisited.blogspot.com/2014/05/double-checked-locking-on-singleton-in-java.html">
+     *     http://javarevisited.blogspot.com/2014/05/double-checked-locking-on-singleton-in-java.html
+     *     </a>
+     *
+     * @return directory to write logs into.
+     */
     public static File getLoggingDirectory() {
         if (_logDirectory == null) { // quick check
             synchronized (LoggingMaster.class) {
@@ -70,7 +111,13 @@ public class LoggingMaster {
         return _logDirectory;
     }
 
-    static File searchForLogDirectory(File root) {
+    /**
+     * Helper to search for existing logs directory on flash drives.
+     * @param root path to flash drive
+     * @return path to log directory if it exists on the flash drive, null
+     * if not.
+     */
+    static private File searchForLogDirectory(File root) {
         // does the root directory exist?
         if (!root.isDirectory())
             return null;

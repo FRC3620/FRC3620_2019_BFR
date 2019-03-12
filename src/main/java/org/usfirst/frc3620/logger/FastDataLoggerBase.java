@@ -6,6 +6,11 @@ import java.io.PrintWriter;
 import java.util.Timer;
 import java.util.TimerTask;
 
+/**
+ * This is an abstract cimplementation of an IFastDataLogger. The actual
+ * implementation of accumulating data and writing it out is left to
+ * extending subclasses.
+ */
 abstract public class FastDataLoggerBase extends DataLoggerBase implements IFastDataLogger {
 
 	Double maxLengthInSeconds = null;
