@@ -32,7 +32,7 @@ public class TrashInCommand extends Command {
     @Override
     protected void execute() {
         Robot.intakeSubsystem.TrashIn(1);
-        if(timer.get() > 1){
+        if(timer.get() > 3){
             finished = true;
         }
     }
