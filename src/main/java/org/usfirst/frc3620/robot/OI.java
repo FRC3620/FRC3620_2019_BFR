@@ -8,7 +8,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 <<<<<<< HEAD
 =======
 import org.usfirst.frc3620.misc.Hand;
+<<<<<<< HEAD
 >>>>>>> remotes/origin/master
+=======
+import org.usfirst.frc3620.misc.TriggerButton;
+>>>>>>> 9f9953acd6564077cae0f0bb9469951837fcd27b
 import org.usfirst.frc3620.misc.DPad;
 import org.usfirst.frc3620.misc.XBoxConstants;
 import org.usfirst.frc3620.robot.commands.*;
@@ -63,6 +67,7 @@ public class OI {
         operatorJoystick = new Joystick(1);
         magicBoardJoystick = new Joystick(2);
 
+        DPad driverDpad = new DPad(driverJoystick, 0);
         DPad operatorDPad = new DPad(operatorJoystick, 0);
 
         Robot.rumbleSubsystemDriver.setController(driverJoystick);
@@ -95,23 +100,29 @@ public class OI {
             
             //driver controls
             Button reverseDrive = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_RIGHT_BUMPER);
-            Button conveyorL = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_X);
-            Button conveyorR = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_B);
             Button inTakeIn = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_LEFT_BUMPER);
             Button driveIn = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_A);
-            Button cargoShipLineUp = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_Y);
 
             //operator controls 
             Button hatchExtend = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_X);
             Button hatchCollect = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_B);
-            Button inTakeOut = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_START);
+            Button inTakeOut = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_START);
             Button trashIn = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_Y);
             Button habClimbButton = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_LEFT_BUMPER);
             Button middlePos = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_RIGHT_BUMPER);
-            Button topPos = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_LEFT_BUMPER);
             Button liftHome = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_A);
             Button lockLiftPinsButton = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_BACK);
+            Button cargoShipInButton = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_START);
 
+            driverDpad.right().whileHeld(new AutoLineUpWithCargoshipRightCommand());
+            driverDpad.left().whileHeld(new AutoLineUpWithCargoshipLeftCommand());
+
+            Button trashLeftButton = new TriggerButton(operatorJoystick, true, 0.6);
+            trashLeftButton.whileHeld(new TrashLeftCommand());
+
+            Button trashRightButton = new TriggerButton(operatorJoystick, false, 0.6);
+            trashRightButton.whileHeld(new TrashRightCommand());
+            
             operatorDPad.down().whenPressed(new SetPivotAngleCommand(PivotSubsystem.DesiredAngle.Bottom));
             operatorDPad.up().whenPressed(new SetPivotAngleCommand(PivotSubsystem.DesiredAngle.Top));
             operatorDPad.right().whenPressed(new SetPivotAngleCommand(PivotSubsystem.DesiredAngle.Middle));
@@ -122,6 +133,7 @@ public class OI {
             inTakeIn.toggleWhenPressed(new IntakeCommand());
             inTakeOut.toggleWhenPressed(new OutTakeCommand());
             trashIn.toggleWhenPressed(new TrashInCommand());
+<<<<<<< HEAD
             conveyorL.whileHeld(new TrashLeftCommand());
             conveyorR.whileHeld(new TrashRightCommand());
 <<<<<<< HEAD
@@ -130,16 +142,19 @@ public class OI {
             hatchExtend.toggleWhenPressed(new HatchExtendCommand());
             hatchCollect.toggleWhenPressed(new HatchCollectCommand());
 =======
+=======
+>>>>>>> 9f9953acd6564077cae0f0bb9469951837fcd27b
             hatchExtend.toggleWhenPressed(new HatchExtendCommand());
             hatchCollect.toggleWhenPressed(new HatchCollectCommand());
             habClimbButton.whenPressed(new HabClimbCommand());
             liftHome.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_CARGO_TRASHIN, true));
             middlePos.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_CARGO_ROCKET_MIDDLE, true));
-            topPos.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_CARGO_ROCKET_TOP, true));
             reverseDrive.whenPressed(new ToggleReverseCommand());
             driveIn.whileHeld(new AutoMoveForwardCommand(10,.7));
-            cargoShipLineUp.whileHeld(new AutoLineUpWithCargoshipCommand());
             lockLiftPinsButton.toggleWhenPressed(new LockLiftPinsCommand());
+            cargoShipInButton.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_CARGO_CARGOSHIP, true));
+
+
 
             SmartDashboard.putData(new HabInstrumentationCommand());
 
@@ -177,15 +192,7 @@ public class OI {
             SmartDashboard.putData("TapTarget", new TravelAlignPushCommand());
             SmartDashboard.putData("DriveForward", new AutoMoveForwardCommand(15,.7));
             SmartDashboard.putData("Align to Hatch Target", new AutonomousAlignmentAndApproachCommand());
-            SmartDashboard.putData("LineUpWithCargoship", new AutoLineUpWithCargoshipCommand());
-            SmartDashboard.putData("LiftSetpoint Rocket 1 Cargo", new LiftMagicCommand(LiftSubsystem.LiftHeight.ROCKET1,LiftSubsystem.LiftDecider.CARGO));
-            SmartDashboard.putData("LiftSetpoint Rocket 2 Cargo", new LiftMagicCommand(LiftSubsystem.LiftHeight.ROCKET2,LiftSubsystem.LiftDecider.CARGO));
-            SmartDashboard.putData("LiftSetpoint Rocket 3 Cargo", new LiftMagicCommand(LiftSubsystem.LiftHeight.ROCKET3,LiftSubsystem.LiftDecider.CARGO));
-            SmartDashboard.putData("LiftSetpoint Cargoship Cargo", new LiftMagicCommand(LiftSubsystem.LiftHeight.ROCKET1,LiftSubsystem.LiftDecider.CARGO));
-            SmartDashboard.putData("LiftSetpoint Rocket 1 Hatch", new LiftMagicCommand(LiftSubsystem.LiftHeight.ROCKET2,LiftSubsystem.LiftDecider.HATCH));
-            SmartDashboard.putData("LiftSetpoint Rocket 2 Hatch", new LiftMagicCommand(LiftSubsystem.LiftHeight.ROCKET3,LiftSubsystem.LiftDecider.HATCH));
-            SmartDashboard.putData("LiftSetpoint Rocket 3 Hatch", new LiftMagicCommand(LiftSubsystem.LiftHeight.CARGOSHIP,LiftSubsystem.LiftDecider.HATCH));
-            SmartDashboard.putData("LiftSetpoint Cargoship Hatch", new LiftMagicCommand(LiftSubsystem.LiftHeight.CARGOSHIP,LiftSubsystem.LiftDecider.HATCH));
+            SmartDashboard.putData("LineUpWithCargoship", new AutoLineUpWithCargoshipRightCommand());
 
 >>>>>>> remotes/origin/master
         }

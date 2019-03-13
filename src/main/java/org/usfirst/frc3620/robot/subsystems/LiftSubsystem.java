@@ -69,7 +69,7 @@ public class LiftSubsystem extends Subsystem implements PIDSource, PIDOutput {
         liftPIDContoller = new PIDController(0, 0, 0, 0, this, this);
         setPIDSourceType(PIDSourceType.kDisplacement);
         liftPIDContoller.setInputRange(0, 55);
-        liftPIDContoller.setOutputRange(-0.3, 1.0);
+        liftPIDContoller.setOutputRange(-0.5, 1.0);
     }
 
 
@@ -154,8 +154,10 @@ public class LiftSubsystem extends Subsystem implements PIDSource, PIDOutput {
     private void periodicAutoMagicMode(){
         double currentheight = getLiftHeight();
         double error = currentheight - desiredHeight;
+        
+        
         if(doingPID){
-         logger.info("PIDPower: {}", PIDpower);
+         
          liftMove(PIDpower);
           
         } else if(Math.abs(error) > 1){
@@ -165,6 +167,7 @@ public class LiftSubsystem extends Subsystem implements PIDSource, PIDOutput {
 
             if(error < 0){
                 liftMove(+0.3);
+                
             }
         } 
         else {

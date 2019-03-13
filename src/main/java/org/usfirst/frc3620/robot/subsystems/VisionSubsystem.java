@@ -146,6 +146,10 @@ public class VisionSubsystem extends Subsystem implements PIDSource, PIDOutput {
     return 0;
   }
 
+  public boolean getFrontTargetPresent(){
+    return frontIsThereTarget.getBoolean(false);
+  }
+
   public double getFrontSecondClosestYaw(){
     if (frontSecondClosestYaw.getBoolean(false)){
       double yaw = frontSecondClosestYaw.getDouble(0);
@@ -211,6 +215,10 @@ public class VisionSubsystem extends Subsystem implements PIDSource, PIDOutput {
     }
     logger.info("No left target detected, returning distance = 0");
     return 0;
+  }
+
+  public boolean getLeftTargetPresent(){
+    return leftIsThereTarget.getBoolean(false);
   }
 
   public double getPIDOutput(){

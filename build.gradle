@@ -1,10 +1,14 @@
 plugins {
     id "java"
 <<<<<<< HEAD
+<<<<<<< HEAD
     id "edu.wpi.first.GradleRIO" version "2019.2.1"
 =======
     id "edu.wpi.first.GradleRIO" version "2019.3.2"
 >>>>>>> remotes/origin/master
+=======
+    id "edu.wpi.first.GradleRIO" version "2019.4.1"
+>>>>>>> 9f9953acd6564077cae0f0bb9469951837fcd27b
 	id "eclipse"
 	id "idea"
 }

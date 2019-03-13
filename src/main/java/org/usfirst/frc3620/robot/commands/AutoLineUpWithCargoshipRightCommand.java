@@ -20,7 +20,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class AutoLineUpWithCargoshipCommand extends Command {
+public class AutoLineUpWithCargoshipRightCommand extends Command {
   
 	
     Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
@@ -46,6 +46,7 @@ public class AutoLineUpWithCargoshipCommand extends Command {
     double sideStick;
 
     boolean weAreDone = false;
+
     
     
     //PIDController pidDriveStraight = new PIDController(kPDriveStraight, kIDriveStraight, kDDriveStraight, kFDriveStraight, Robot.driveSubsystem.getAhrsPidSource(), new DriveStraightOutput());
@@ -54,7 +55,7 @@ public class AutoLineUpWithCargoshipCommand extends Command {
     Command rumbleCommand = new RumbleCommand(Robot.rumbleSubsystemDriver);
     
   
-    public AutoLineUpWithCargoshipCommand() {
+    public AutoLineUpWithCargoshipRightCommand() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
       requires(Robot.driveSubsystem);
@@ -72,6 +73,7 @@ public class AutoLineUpWithCargoshipCommand extends Command {
     // Called just before this Command runs the first time
     protected void initialize() {
       logger.info("AutoLineUpWithCargoshipCommand start");
+      Robot.visionSubsystem.turnLightSwitchOn();
       
     /*    pidDriveStraight.setSetpoint(Robot.driveSubsystem.getRealAngle());
         pidDriveStraight.reset();
@@ -92,7 +94,7 @@ public class AutoLineUpWithCargoshipCommand extends Command {
         return;
       }
       double horizontal = Robot.oi.getRightHorizontalJoystickSquared();
-      Robot.driveSubsystem.arcadeDrive(fwdStick, horizontal);
+      Robot.driveSubsystem.arcadeDrive(-fwdStick, horizontal);
       //logger.info("sideStick: {}", sideStick);
       //logger.info("NavX heading {}", Robot.driveSubsystem.getAngle());
       //logger.info("Corrected angle {}:", Robot.driveSubsystem.getRealAngle());
@@ -145,7 +147,13 @@ public class AutoLineUpWithCargoshipCommand extends Command {
 
       @Override
       public double pidGet() {
-        return Robot.visionSubsystem.getRightTargetYaw();
+        if (Robot.visionSubsystem.getRightTargetPresent()){
+          return Robot.visionSubsystem.getRightTargetYaw();
+        }
+        else if(Robot.visionSubsystem.getLeftTargetPresent()){
+          return Robot.visionSubsystem.getLeftTargetYaw();
+        }
+        return 0;
       }
   
     }

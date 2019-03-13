@@ -127,22 +127,21 @@ import java.util.*;
         if (amICompBot() || canDeviceFinder.isDevicePresent(CANDeviceType.MAX, 1)) {
             CANSparkMax driveSubsystemMaxLeftA = new CANSparkMax(1, MotorType.kBrushless);
             resetMaxToKnownState(driveSubsystemMaxLeftA);
-            driveSubsystemMaxLeftA.setOpenLoopRampRate(.5);
+            driveSubsystemMaxLeftA.setOpenLoopRampRate(.7);
             leftsideCANEncoder = driveSubsystemMaxLeftA.getEncoder();
 
             CANSparkMax driveSubsystemMaxLeftB = new CANSparkMax(2, MotorType.kBrushless);
-            driveSubsystemMaxLeftB.setOpenLoopRampRate(.5);
             resetMaxToKnownState(driveSubsystemMaxLeftB);
-            driveSubsystemMaxLeftB.setOpenLoopRampRate(.5);
+            driveSubsystemMaxLeftB.setOpenLoopRampRate(.7);
 
             CANSparkMax driveSubsystemMaxRightA = new CANSparkMax(3, MotorType.kBrushless);
             resetMaxToKnownState(driveSubsystemMaxRightA);
-            driveSubsystemMaxRightA.setOpenLoopRampRate(.5);
+            driveSubsystemMaxRightA.setOpenLoopRampRate(.7);
             rightsideCANEncoder = driveSubsystemMaxRightA.getEncoder();
 
             CANSparkMax driveSubsystemMaxRightB = new CANSparkMax(4, MotorType.kBrushless);
             resetMaxToKnownState(driveSubsystemMaxRightB);
-            driveSubsystemMaxRightB.setOpenLoopRampRate(.5);
+            driveSubsystemMaxRightB.setOpenLoopRampRate(.7);
 
             groupLeft = new SpeedControllerGroup(driveSubsystemMaxLeftA, driveSubsystemMaxLeftB);
             groupRight = new SpeedControllerGroup(driveSubsystemMaxRightA, driveSubsystemMaxRightB);
