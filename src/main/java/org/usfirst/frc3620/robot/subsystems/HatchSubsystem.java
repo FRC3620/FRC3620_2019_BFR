@@ -37,19 +37,45 @@ public class HatchSubsystem extends Subsystem {
     // here. Call these from Commands.
 
     public void hatchOut() {
+<<<<<<< HEAD
         pusher.set(true);
     }
 
     public void hatchIn() {
         pusher.set(false);
+=======
+        if (pusher != null) {
+            pusher.set(true);
+        } else {
+            logger.info ("Can't push hatch pusher out, it's not there!");
+        }
+    }
+
+    public void hatchIn() {
+        if (pusher != null) {
+            pusher.set(false);
+        } else {
+            logger.info ("Can't pull hatch pusher in, it's not there!");
+        }
+>>>>>>> remotes/origin/master
     }
 
     public void fingerOut() {
-        finger.set(true);
+        if (finger != null) {
+            finger.set(true);
+        } else {
+            logger.info ("Can't push hatch pusher out, it's not there!");
+        }
     }
 
     public void fingerIn() {
-        finger.set(false);
+        if (finger != null) {
+            finger.set(false);
+        } else {
+            logger.info ("Can't pull hatch pusher in, it's not there!");
+        }
+        
     }
+    
 
 }

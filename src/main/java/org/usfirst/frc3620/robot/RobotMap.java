@@ -10,6 +10,11 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.*;
+import edu.wpi.first.wpilibj.interfaces.Accelerometer;
 import org.slf4j.Logger;
 import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
@@ -19,9 +24,16 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
+import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.Spark;
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.Counter;
+
+import org.usfirst.frc3620.misc.CANDeviceId;
+import org.usfirst.frc3620.misc.CANDeviceId.CANDeviceType;
+
+import java.util.*;
 
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
@@ -31,7 +43,11 @@ import edu.wpi.first.wpilibj.Counter;
  */
 
  public class RobotMap {
-    public static Encoder leftsideEncoder, rightsideEncoder;
+    private static NetworkTableInstance inst = NetworkTableInstance.getDefault();
+    private static NetworkTable networkTable = inst.getTable("ChickenVision");
+    private static NetworkTableEntry missingHardwareTableEntry = networkTable.getEntry("Missing hardware");
+
+    public static Encoder leftSideEncoder, rightSideEncoder;
     public static CANEncoder leftsideCANEncoder, rightsideCANEncoder;
     public static CANSparkMax driveSubsystemMaxLeftA;
     public static CANSparkMax driveSubsystemMaxLeftB;
@@ -40,13 +56,21 @@ import edu.wpi.first.wpilibj.Counter;
     public static CANDeviceFinder canDeviceFinder;
 
     public static DifferentialDrive driveSubsystemDifferentialDrive;
- 
+
+    public static Accelerometer accel;
+
+    public static Relay visionSubsystemNightLight;
+
     public static WPI_TalonSRX intakeSubsystemUpperMotor;
     public static WPI_TalonSRX intakeSubsystemLowerMotor;
     public static WPI_TalonSRX intakeSubsystemMiddleMotor;
 
     public static WPI_VictorSPX conveyorBeltMotorTop;
     public static WPI_VictorSPX conveyorBeltMotorBottom;
+<<<<<<< HEAD
+=======
+    public static WPI_VictorSPX habDriveMotor;
+>>>>>>> remotes/origin/master
 
     public static Counter lineSensorCounterL; 
     public static Counter lineSensorCounterR;
@@ -62,10 +86,15 @@ import edu.wpi.first.wpilibj.Counter;
     public static CANEncoder liftEncoder;
     public static DigitalInput liftLimitSwitchTop;
     public static DigitalInput liftLimitSwitchBottom;
+    public static Solenoid liftLockPinSolenoid;
 
     public static Solenoid hatchSubsystemFinger;
     public static Solenoid hatchSubsystemPusher;
+<<<<<<< HEAD
     public static Solenoid pcm0Dummy;
+=======
+    public static Compressor c;
+>>>>>>> remotes/origin/master
 
     public static Spark lightSubsystemLightPWM;
 
@@ -73,34 +102,52 @@ import edu.wpi.first.wpilibj.Counter;
     private static DigitalInput practiceBotJumper;
 
     static Logger logger = EventLogging.getLogger(RobotMap.class, Level.INFO);
+
+    private static Map<CANDeviceId, String> requiredDevices = new TreeMap<>();
     
     public static void init() {
         canDeviceFinder = new CANDeviceFinder();
-        logger.info ("CANDEVICEfinder found {}", canDeviceFinder.getDeviceList());
+        logger.info ("CANDEVICEfinder found {}", canDeviceFinder.getDeviceSet());
 
         practiceBotJumper = new DigitalInput(0);
 
-        SpeedControllerGroup groupLeft;
-        SpeedControllerGroup groupRight;
-        if(canDeviceFinder.isMAXPresent(1)) {
+<<<<<<< HEAD
+        practiceBotJumper = new DigitalInput(0);
+=======
+        accel = new BuiltInAccelerometer();
+>>>>>>> remotes/origin/master
+
+        SpeedControllerGroup groupLeft = null;
+        SpeedControllerGroup groupRight = null;
+
+        requiredDevices.put(new CANDeviceId(CANDeviceType.MAX, 1), "DriveLeftSideA");
+        requiredDevices.put(new CANDeviceId(CANDeviceType.MAX, 2), "DriveLeftSideB");
+        requiredDevices.put(new CANDeviceId(CANDeviceType.MAX, 3), "DriveRightSideA");
+        requiredDevices.put(new CANDeviceId(CANDeviceType.MAX, 4), "DriveRightSideB");
+        if (amICompBot() || canDeviceFinder.isDevicePresent(CANDeviceType.MAX, 1)) {
             CANSparkMax driveSubsystemMaxLeftA = new CANSparkMax(1, MotorType.kBrushless);
             resetMaxToKnownState(driveSubsystemMaxLeftA);
+            driveSubsystemMaxLeftA.setOpenLoopRampRate(.5);
             leftsideCANEncoder = driveSubsystemMaxLeftA.getEncoder();
 
             CANSparkMax driveSubsystemMaxLeftB = new CANSparkMax(2, MotorType.kBrushless);
+            driveSubsystemMaxLeftB.setOpenLoopRampRate(.5);
             resetMaxToKnownState(driveSubsystemMaxLeftB);
+            driveSubsystemMaxLeftB.setOpenLoopRampRate(.5);
 
             CANSparkMax driveSubsystemMaxRightA = new CANSparkMax(3, MotorType.kBrushless);
             resetMaxToKnownState(driveSubsystemMaxRightA);
+            driveSubsystemMaxRightA.setOpenLoopRampRate(.5);
             rightsideCANEncoder = driveSubsystemMaxRightA.getEncoder();
 
             CANSparkMax driveSubsystemMaxRightB = new CANSparkMax(4, MotorType.kBrushless);
             resetMaxToKnownState(driveSubsystemMaxRightB);
+            driveSubsystemMaxRightB.setOpenLoopRampRate(.5);
 
             groupLeft = new SpeedControllerGroup(driveSubsystemMaxLeftA, driveSubsystemMaxLeftB);
             groupRight = new SpeedControllerGroup(driveSubsystemMaxRightA, driveSubsystemMaxRightB);
 
-        } else {
+        } else if (canDeviceFinder.isDevicePresent(CANDeviceType.SRX, 1)) {
 
             WPI_TalonSRX driveSubsystemLeftSpeedControllerA = new WPI_TalonSRX(1);
             resetTalonToKnownState(driveSubsystemLeftSpeedControllerA);
@@ -123,10 +170,24 @@ import edu.wpi.first.wpilibj.Counter;
             resetTalonToKnownState(driveSubsystemRightSpeedControllerC);
             driveSubsystemRightSpeedControllerC.setInverted(true);
 
+            leftSideEncoder = new Encoder(6,7, true, EncodingType.k4X);
+            rightSideEncoder = new Encoder(8,9, true, EncodingType.k4X);
+
             groupLeft = new SpeedControllerGroup(driveSubsystemLeftSpeedControllerA, driveSubsystemLeftSpeedControllerB, driveSubsystemLeftSpeedControllerC);
             groupRight = new SpeedControllerGroup(driveSubsystemRightSpeedControllerA, driveSubsystemRightSpeedControllerB, driveSubsystemRightSpeedControllerC);
+        } else {
+            logger.warn ("paraplegic robot");
+        }
+
+        if (groupLeft != null) {
+            driveSubsystemDifferentialDrive = new DifferentialDrive(groupLeft, groupRight);
+            driveSubsystemDifferentialDrive.setName("DriveSubsystem", "Drive");
+            driveSubsystemDifferentialDrive.setSafetyEnabled(true);
+            driveSubsystemDifferentialDrive.setExpiration(0.1);
+            driveSubsystemDifferentialDrive.setMaxOutput(1.0);
         }
         
+<<<<<<< HEAD
         driveSubsystemDifferentialDrive = new DifferentialDrive(groupLeft, groupRight);
         driveSubsystemDifferentialDrive.setName("DriveSubsystem", "Drive");
         driveSubsystemDifferentialDrive.setSafetyEnabled(true);
@@ -136,33 +197,72 @@ import edu.wpi.first.wpilibj.Counter;
         //new code
         conveyorBeltMotorTop = new WPI_VictorSPX(7);
         resetTalonToKnownState(conveyorBeltMotorTop);
+=======
+        requiredDevices.put(new CANDeviceId(CANDeviceType.SPX, 7), "ConveyorBeltTop");
+        conveyorBeltMotorTop = new WPI_VictorSPX(7);
+        resetTalonToKnownState(conveyorBeltMotorTop);
+
+        requiredDevices.put(new CANDeviceId(CANDeviceType.SPX, 8), "ConveyorBeltBottom");
+>>>>>>> remotes/origin/master
         conveyorBeltMotorBottom = new WPI_VictorSPX(8);
         resetTalonToKnownState(conveyorBeltMotorBottom);
 
+        requiredDevices.put(new CANDeviceId(CANDeviceType.SRX, 9), "IntakeUpper");
         intakeSubsystemUpperMotor = new WPI_TalonSRX(9);
         resetTalonToKnownState(intakeSubsystemUpperMotor);
+
+        requiredDevices.put(new CANDeviceId(CANDeviceType.SRX, 10), "IntakeMiddle");
         intakeSubsystemMiddleMotor = new WPI_TalonSRX(10);
         resetTalonToKnownState(intakeSubsystemMiddleMotor);
+
+        requiredDevices.put(new CANDeviceId(CANDeviceType.SRX, 11), "IntakeLower");
         intakeSubsystemLowerMotor = new WPI_TalonSRX(11);
         resetTalonToKnownState(intakeSubsystemLowerMotor);
 
+        requiredDevices.put(new CANDeviceId(CANDeviceType.SPX, 13), "HabDrive");
+        habDriveMotor = new WPI_VictorSPX(13);
+        resetTalonToKnownState(habDriveMotor);
+        
+        visionSubsystemNightLight = new Relay(0);
+
+        // lift motor power is positive going up
+        requiredDevices.put(new CANDeviceId(CANDeviceType.MAX, 6), "IntakeLower");
         liftSubsystemMax = new CANSparkMax(6, MotorType.kBrushless);
         resetMaxToKnownState(liftSubsystemMax);
         liftSubsystemMax.setIdleMode(IdleMode.kBrake);
+
         liftEncoder = liftSubsystemMax.getEncoder();
         liftLimitSwitchTop = new DigitalInput(1);
         liftLimitSwitchBottom = new DigitalInput(2);
 
+        // pivot motor power is negitive when coming down
+        requiredDevices.put(new CANDeviceId(CANDeviceType.MAX, 5), "PivotMAX");
         pivotSubsystemMax = new CANSparkMax(5, MotorType.kBrushless);
         resetMaxToKnownState(pivotSubsystemMax);
         pivotSubsystemMax.setIdleMode(IdleMode.kBrake);
         pivotSubsystemMax.setOpenLoopRampRate(0.25);
         pivotSubsystemMax.setClosedLoopRampRate(0.25);
+<<<<<<< HEAD
         pivotEncoder = pivotSubsystemMax.getEncoder();
         pivotSubsystemMax2 = new CANSparkMax(12, MotorType.kBrushless);
         resetMaxToKnownState(pivotSubsystemMax2);
         pivotSubsystemMax2.follow(pivotSubsystemMax, true);
         pivotSubsystemMax2.setIdleMode(IdleMode.kBrake);
+=======
+
+        pivotEncoder = pivotSubsystemMax.getEncoder();
+
+        requiredDevices.put(new CANDeviceId(CANDeviceType.MAX, 12), "PivotMAX2");
+        pivotSubsystemMax2 = new CANSparkMax(12, MotorType.kBrushless);
+        resetMaxToKnownState(pivotSubsystemMax2);
+        //second pivot motor is following the first 
+        // but the inverse is set to true because of how they are mounted
+        pivotSubsystemMax2.follow(pivotSubsystemMax, true);
+        pivotSubsystemMax2.setIdleMode(IdleMode.kBrake);
+        pivotSubsystemMax2.setOpenLoopRampRate(0.25);
+        pivotSubsystemMax2.setClosedLoopRampRate(0.25);
+
+>>>>>>> remotes/origin/master
         pivotLimitSwitch = new DigitalInput(5);
         
         lightSubsystemLightPWM = new Spark(9);
@@ -179,6 +279,7 @@ import edu.wpi.first.wpilibj.Counter;
         lineSensorCounterR = new Counter(lineSensorR);
         lineSensorCounterR.setUpSourceEdge(false, true);
 
+<<<<<<< HEAD
         if (canDeviceFinder.isPCMPresent(0)) {
             //instantiate Pneumatics here
             //doublesolenoids requires a PCM number first
@@ -186,6 +287,21 @@ import edu.wpi.first.wpilibj.Counter;
             hatchSubsystemFinger = new Solenoid(1, 1);
             pcm0Dummy = new Solenoid(0, 0);
         }
+=======
+        requiredDevices.put(new CANDeviceId(CANDeviceType.PCM, 0), "BottomPCM");
+        if (amICompBot() || canDeviceFinder.isDevicePresent(CANDeviceType.PCM, 0)) {
+            //instantiate Pneumatics here
+            //doublesolenoids requires a PCM number first
+            c = new Compressor(0);
+            liftLockPinSolenoid = new Solenoid(0);
+        }
+
+        requiredDevices.put(new CANDeviceId(CANDeviceType.PCM, 1), "TopPCM");
+        if (amICompBot() || canDeviceFinder.isDevicePresent(CANDeviceType.PCM, 1)) {
+            hatchSubsystemPusher = new Solenoid(1, 0);
+            hatchSubsystemFinger = new Solenoid(1, 1);
+        }
+>>>>>>> remotes/origin/master
     }
 
     public static boolean amICompBot(){
@@ -193,6 +309,25 @@ import edu.wpi.first.wpilibj.Counter;
             return true;
         }
         return false;
+    }
+
+    public static void reportMissingDevices() {
+        Set<CANDeviceId> requiredDeviceIds = requiredDevices.keySet();
+        Set<CANDeviceId> missingDeviceIds = new TreeSet<>(requiredDeviceIds);
+        missingDeviceIds.removeAll(canDeviceFinder.getDeviceSet());
+        if (missingDeviceIds.size() > 0) {
+            logger.error ("missing CAN bus devices: {}", missingDeviceIds);
+            String networkOutput = "";
+            for (CANDeviceId canDeviceId : missingDeviceIds) {
+                logger.info ("{} is {}", canDeviceId, requiredDevices.get(canDeviceId));
+                networkOutput = networkOutput + canDeviceId + " is " + requiredDevices.get(canDeviceId) + ", \n";
+            }
+            missingHardwareTableEntry.setString(networkOutput);
+        } else {
+            missingHardwareTableEntry.setString("No missing hardware");
+        }
+
+
     }
 
     static void resetMaxToKnownState (CANSparkMax x) {

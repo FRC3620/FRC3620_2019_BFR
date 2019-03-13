@@ -19,13 +19,13 @@ public class HatchCollectCommand extends Command {
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-    	EventLogging.commandMessage(logger);
+        EventLogging.commandMessage(logger);
+        Robot.hatchSubsystem.fingerOut();
     }
 
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        Robot.hatchSubsystem.fingerOut();
     }
 
     // Make this return true when this Command no longer needs to run execute()

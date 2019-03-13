@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.buttons.Trigger;
  * 
  * Implement a 'button' that is depressed if any one of many buttons 
  * is depressed. If you want to tie a command to many buttons, this means
- * you only have one instance of the command, instead of several serveral instances,
+ * you only have one instance of the command, instead of several instances,
  * each tied to it's own button.
  */
 public class JoystickOredButtonsTrigger extends Trigger {

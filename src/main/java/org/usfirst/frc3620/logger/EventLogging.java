@@ -202,10 +202,10 @@ public class EventLogging {
                     if (fileOutputStream == null) // deliberate check
                     {
                         // we'll get a null here if the clock is not yet set
-                        String timestampString = LoggingMaster
-                                .getTimestampString();
+                        Date timestamp = LoggingMaster.getTimestamp();
 
-                        if (timestampString != null) {
+                        if (timestamp != null) {
+                            String timestampString = LoggingMaster.convertTimestampToString(timestamp);
                             // cool, let's make a file to log to!
                             File logFile = new File(logDirectory,
                                     timestampString + ".log");
