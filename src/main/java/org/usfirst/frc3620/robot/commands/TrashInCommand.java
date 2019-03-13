@@ -24,17 +24,14 @@ public class TrashInCommand extends Command {
     @Override
     protected void initialize() {
         EventLogging.commandMessage(logger);
-        timer.reset();
-        timer.start();
+       /* timer.reset();
+        timer.start(); */
     }
 
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
         Robot.intakeSubsystem.TrashIn(1);
-        if(timer.get() > 3){
-            finished = true;
-        }
     }
 
     // Make this return true when this Command no longer needs to run execute()
