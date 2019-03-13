@@ -5,14 +5,8 @@ import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-<<<<<<< HEAD
-=======
 import org.usfirst.frc3620.misc.Hand;
-<<<<<<< HEAD
->>>>>>> remotes/origin/master
-=======
 import org.usfirst.frc3620.misc.TriggerButton;
->>>>>>> 9f9953acd6564077cae0f0bb9469951837fcd27b
 import org.usfirst.frc3620.misc.DPad;
 import org.usfirst.frc3620.misc.XBoxConstants;
 import org.usfirst.frc3620.robot.commands.*;
@@ -74,28 +68,6 @@ public class OI {
         Robot.rumbleSubsystemOperator.setController(operatorJoystick);
         // map buttons to Joystick buttons here
         
-<<<<<<< HEAD
-        DPad operatorDPad = new DPad(operatorJoystick, 0);
-        operatorDPad.down().whenPressed(new SetPivotAngleCommand(PivotSubsystem.SETANGLE_BOTTOM));
-        operatorDPad.up().whenPressed(new SetPivotAngleCommand(PivotSubsystem.SETANGLE_TOP));
-        operatorDPad.right().whenPressed(new SetPivotAngleCommand(PivotSubsystem.SETANGLE_MIDDLE));
-        operatorDPad.left().whenPressed(new SetPivotAngleCommand(PivotSubsystem.SETANGLE_MIDDLE));
-
-            //Declare buttons
-            
-            //driver controls
-            Button inTakeIn = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_LEFT_STICK);
-            Button inTakeOut = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_RIGHT_STICK);
-            Button trashIn = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_START);
-            Button conveyorR = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_B);
-            Button conveyorL = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_X);
-            Button hatchExtend = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_A);
-            Button hatchCollect = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_Y);
-
-            //operator controls
-            Button positionOne = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_A);
-            Button positionTwo = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_B);
-=======
         //Declare buttons
             
             //driver controls
@@ -127,23 +99,11 @@ public class OI {
             operatorDPad.up().whenPressed(new SetPivotAngleCommand(PivotSubsystem.DesiredAngle.Top));
             operatorDPad.right().whenPressed(new SetPivotAngleCommand(PivotSubsystem.DesiredAngle.Middle));
             operatorDPad.left().whenPressed(new SetPivotAngleCommand(PivotSubsystem.DesiredAngle.Middle));
->>>>>>> remotes/origin/master
 
             //buttons run commands
             inTakeIn.toggleWhenPressed(new IntakeCommand());
             inTakeOut.toggleWhenPressed(new OutTakeCommand());
             trashIn.toggleWhenPressed(new TrashInCommand());
-<<<<<<< HEAD
-            conveyorL.whileHeld(new TrashLeftCommand());
-            conveyorR.whileHeld(new TrashRightCommand());
-<<<<<<< HEAD
-            positionOne.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_BOTTOM));
-            positionTwo.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_CARGOSHIP));
-            hatchExtend.toggleWhenPressed(new HatchExtendCommand());
-            hatchCollect.toggleWhenPressed(new HatchCollectCommand());
-=======
-=======
->>>>>>> 9f9953acd6564077cae0f0bb9469951837fcd27b
             hatchExtend.toggleWhenPressed(new HatchExtendCommand());
             hatchCollect.toggleWhenPressed(new HatchCollectCommand());
             habClimbButton.whenPressed(new HabClimbCommand());
@@ -194,7 +154,6 @@ public class OI {
             SmartDashboard.putData("Align to Hatch Target", new AutonomousAlignmentAndApproachCommand());
             SmartDashboard.putData("LineUpWithCargoship", new AutoLineUpWithCargoshipRightCommand());
 
->>>>>>> remotes/origin/master
         }
 
     public Joystick getDriverJoystick() {
@@ -203,11 +162,7 @@ public class OI {
     public Joystick getOperatorJoystick() {
         return operatorJoystick;
     }
-<<<<<<< HEAD
-
-=======
     
->>>>>>> remotes/origin/master
     public double computeDeadband (double position, double deadband) {
         if (Math.abs(position) < deadband) {
             return 0;
@@ -258,15 +213,5 @@ public class OI {
         }else{
             return LiftDecider.HATCH;
         }
-    }
-
-    public double getClimberVerticalJoystick() {
-        //gets value from y axis on (left)Climberjoystick on operatorJoystick. 
-    	return computeDeadband(operatorJoystick.getRawAxis(XBoxConstants.AXIS_LEFT_Y), 0);
-    }
-
-    public double getClimberHorizontalJoystick() {
-        //gets value from x axis on (left)Climberjoystick on operatorJoystick.
-    	return computeDeadband(operatorJoystick.getRawAxis(XBoxConstants.AXIS_LEFT_X), 0);
     }
 }

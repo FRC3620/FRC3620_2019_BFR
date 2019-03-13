@@ -42,11 +42,7 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
     private boolean encoderisvalid = false;
     private double desiredAngle = SETANGLE_TOP;
     private double PIDpower = 0;
-<<<<<<< HEAD
-    private boolean autoMagicMode = true;
-=======
     private PivotMode currentPivotMode = PivotMode.AUTOMAGIC;
->>>>>>> remotes/origin/master
 
     public PivotSubsystem(){
         pivotPIDContoller = new PIDController(0, 0, 0, 0, this, this);
@@ -73,15 +69,10 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
         SmartDashboard.putBoolean("pivotEncoderIsValid", encoderisvalid);
         SmartDashboard.putNumber("pivotAngleInDegrees", getPivotAngle());
         SmartDashboard.putNumber("pivotDesiredAngle", desiredAngle);
-<<<<<<< HEAD
-        SmartDashboard.putBoolean("pivotAutomatic", autoMagicMode);
-        SmartDashboard.putBoolean("pivotEncoderIsValid", encoderisvalid);
-=======
         SmartDashboard.putBoolean("pivotEncoderIsValid", encoderisvalid);
         SmartDashboard.putNumber("Pitch", Robot.driveSubsystem.ahrs.getPitch());
         SmartDashboard.putNumber("Roll", Robot.driveSubsystem.ahrs.getRoll());
         SmartDashboard.putString("pivotMode", currentPivotMode.toString());
->>>>>>> remotes/origin/master
 
         if(Robot.getCurrentRobotMode() == RobotMode.TELEOP || Robot.getCurrentRobotMode() == RobotMode.AUTONOMOUS){
             if(isTopPivotLimitDepressed() && !encoderisvalid){
@@ -93,26 +84,6 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
             double xPos = Robot.oi.getClimberHorizontalJoystick();
             double yPos = Robot.oi.getClimberVerticalJoystick();
             if (Math.abs(xPos) > 0.2 || Math.abs(yPos) > 0.2){
-<<<<<<< HEAD
-                if (autoMagicMode) {
-                    logger.info ("going to manual mode");
-                }
-                autoMagicMode = false;
-                pivotPIDContoller.disable();
-            }
-
-            if(!autoMagicMode){
-                periodicManualMode();
-            }else{
-                //automagic
-                if(encoderisvalid){
-                    periodicAutoMagicMode();
-                }else{
-                    // we want to be in, but we are not there yet
-                    // we need to do some pivotMove with a negative
-                    pivotMove(-0.1);
-                }
-=======
                 setCurrentPivotMode(PivotMode.MANUAL);
             }
 
@@ -131,7 +102,6 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
                 periodicHAB();
             } else {
                 logger.warn("Pivot Mode Not Normal!");
->>>>>>> remotes/origin/master
             }
         }
         SmartDashboard.putNumber("pivotMotorPower", pivotMax.getAppliedOutput());
@@ -233,45 +203,6 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
             }
         }
 
-<<<<<<< HEAD
-    private void periodicAutoMagicMode(){
-        double currentAngle = getPivotAngle();
-        // positive error is we are out too far
-        double error = currentAngle - desiredAngle;
-        SmartDashboard.putNumber("pivotError", error);
-        if (desiredAngle == SETANGLE_TOP) {
-            if(Math.abs(error) > 0) {
-                    if (error > 0) {
-                    // we want to be in, but we are not there yet
-                    // we need to do some pivotMove with a negative
-                    //Power was halved for two neo pivot
-                    pivotMove(-0.1);
-                } else {
-                    pivotStop();
-                }
-            } else{
-                pivotStop();
-            }
-        } else if (desiredAngle == SETANGLE_BOTTOM) {
-            if(Math.abs(error) > 10) {
-                // we want to be out 
-                if (error < 0) {
-                    // we want to be out, but we are not there yet
-                    // we need to do some pivotMove with a positive
-                    //Power was halved for two neo pivot
-                    pivotMove(0.1);
-                } else {
-                    pivotStop();
-                }
-            } else{
-                pivotStop();
-            }
-        }else{
-            //Power was halved for two neo pivot
-            pivotMove(PIDpower/2); 
-        }
-    }
-=======
         private void TellPivotAngleMiddle(){
             double currentAngle = getPivotAngle();
             if (currentAngle == SETANGLE_MIDDLE){
@@ -292,7 +223,6 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
         }
 
 
->>>>>>> remotes/origin/master
 
     private void periodicManualMode(){
         double yPos = Robot.oi.getClimberVerticalJoystick();
@@ -302,11 +232,7 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
         // pivotMove needs a positive number to move out to the front of
         // the robot.
         // so we need to change the sign.
-<<<<<<< HEAD
-        double power = -yPos * 1;
-=======
         double power = -yPos * 0.7;
->>>>>>> remotes/origin/master
         if(power < -0.2){
             power = -0.2;
         }
@@ -395,17 +321,10 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
     public void setDesiredAngle(double v) {
         logger.info("setting desired angle {}", v);
         desiredAngle = v;
-<<<<<<< HEAD
-        if (!autoMagicMode) {
-            logger.info ("going to automagic mode");
-        }
-        autoMagicMode = true;
-=======
         if (currentPivotMode != PivotMode.AUTOMAGIC) {
             logger.info ("going to automagic mode");
         }
         currentPivotMode = PivotMode.AUTOMAGIC;
->>>>>>> remotes/origin/master
 
         if (desiredAngle == SETANGLE_BOTTOM || desiredAngle == SETANGLE_TOP) {
             pivotPIDContoller.disable();

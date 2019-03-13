@@ -37,13 +37,6 @@ public class HatchSubsystem extends Subsystem {
     // here. Call these from Commands.
 
     public void hatchOut() {
-<<<<<<< HEAD
-        pusher.set(true);
-    }
-
-    public void hatchIn() {
-        pusher.set(false);
-=======
         if (pusher != null) {
             pusher.set(true);
         } else {
@@ -57,7 +50,6 @@ public class HatchSubsystem extends Subsystem {
         } else {
             logger.info ("Can't pull hatch pusher in, it's not there!");
         }
->>>>>>> remotes/origin/master
     }
 
     public void fingerOut() {

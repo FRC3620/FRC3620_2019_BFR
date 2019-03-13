@@ -25,15 +25,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class LiftSubsystem extends Subsystem implements PIDSource, PIDOutput {
     Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 
-<<<<<<< HEAD
-    public static final double SETPOINT_BOTTOM = 0;
-    public static final double SETPOINT_TRASHIN = 3;
-    public static final double SETPOINT_CARGOSHIP = 16;
-    public static final double SETPOINT_ROCKET_MIDDLE = 31;
-    public static final double SETPOINT_ROCKET_TOP = 59;
-
-    public static final double SETPOINT_HATCH_BOTTOM = 0;
-=======
     public enum LiftHeight{CARGOSHIP, ROCKET1, ROCKET2, ROCKET3}
     public enum LiftDecider{CARGO, HATCH}
 
@@ -45,7 +36,6 @@ public class LiftSubsystem extends Subsystem implements PIDSource, PIDOutput {
 
     public static final double SETPOINT_HATCH_BOTTOM = 0;
     public static final double SETPOINT_HATCH_CARGOSHIP = 0;
->>>>>>> remotes/origin/master
     public static final double SETPOINT_HATCH_MIDDLE = 0;
     public static final double SETPOINT_HATCH_TOP = 0;
 
@@ -101,21 +91,6 @@ public class LiftSubsystem extends Subsystem implements PIDSource, PIDOutput {
                 setManualMode();
             }
 
-<<<<<<< HEAD
-            if(encoderisvalid){
-                double currentheight = getLiftHeight();
-                double error = currentheight - desiredHeight;
-                if(Math.abs(error) > 1){
-                    if(error > 0){
-                        liftMove(-0.2);
-                    }
-
-                    if(error < 0){
-                        liftMove(+0.2);
-                    }
-                }else{
-                    liftStop();
-=======
             if(!autoMagicMode){
                 periodicManualMode();
             }else{
@@ -126,7 +101,6 @@ public class LiftSubsystem extends Subsystem implements PIDSource, PIDOutput {
                     //we want to be down, but we're not there yet
                     //we need to do some LiftMove with a negative
                     liftMove(-0.2);
->>>>>>> remotes/origin/master
                 }
             }
         }
@@ -136,12 +110,6 @@ public class LiftSubsystem extends Subsystem implements PIDSource, PIDOutput {
         SmartDashboard.putBoolean("liftEncoderValid", encoderisvalid);
     }
 
-<<<<<<< HEAD
-            }else{
-                liftMove(0);
-            }
-        }
-=======
     public void setManualMode() {
         if (autoMagicMode){
             logger.info("Switching to Manual Mode");
@@ -212,7 +180,6 @@ public class LiftSubsystem extends Subsystem implements PIDSource, PIDOutput {
         }
 
         liftMove(speed);
->>>>>>> remotes/origin/master
     }
 
     public boolean isBottomLimitDepressed(){
@@ -312,9 +279,6 @@ public class LiftSubsystem extends Subsystem implements PIDSource, PIDOutput {
     public void setDesiredHeight(double h) {
         logger.info("setting desired hieght to {}", h);
         desiredHeight = h;
-<<<<<<< HEAD
-    }
-=======
         if (!autoMagicMode){
             logger.info("going to Automagic mode");
         }
@@ -404,5 +368,4 @@ public class LiftSubsystem extends Subsystem implements PIDSource, PIDOutput {
         double pos = getLiftHeight();
         return pos;
 	}
->>>>>>> remotes/origin/master
 }

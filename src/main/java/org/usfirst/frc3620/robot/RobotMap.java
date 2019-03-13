@@ -67,10 +67,7 @@ import java.util.*;
 
     public static WPI_VictorSPX conveyorBeltMotorTop;
     public static WPI_VictorSPX conveyorBeltMotorBottom;
-<<<<<<< HEAD
-=======
     public static WPI_VictorSPX habDriveMotor;
->>>>>>> remotes/origin/master
 
     public static Counter lineSensorCounterL; 
     public static Counter lineSensorCounterR;
@@ -90,11 +87,7 @@ import java.util.*;
 
     public static Solenoid hatchSubsystemFinger;
     public static Solenoid hatchSubsystemPusher;
-<<<<<<< HEAD
-    public static Solenoid pcm0Dummy;
-=======
     public static Compressor c;
->>>>>>> remotes/origin/master
 
     public static Spark lightSubsystemLightPWM;
 
@@ -111,11 +104,7 @@ import java.util.*;
 
         practiceBotJumper = new DigitalInput(0);
 
-<<<<<<< HEAD
-        practiceBotJumper = new DigitalInput(0);
-=======
         accel = new BuiltInAccelerometer();
->>>>>>> remotes/origin/master
 
         SpeedControllerGroup groupLeft = null;
         SpeedControllerGroup groupRight = null;
@@ -186,23 +175,11 @@ import java.util.*;
             driveSubsystemDifferentialDrive.setMaxOutput(1.0);
         }
         
-<<<<<<< HEAD
-        driveSubsystemDifferentialDrive = new DifferentialDrive(groupLeft, groupRight);
-        driveSubsystemDifferentialDrive.setName("DriveSubsystem", "Drive");
-        driveSubsystemDifferentialDrive.setSafetyEnabled(true);
-        driveSubsystemDifferentialDrive.setExpiration(0.1);
-        driveSubsystemDifferentialDrive.setMaxOutput(1.0);
-
-        //new code
-        conveyorBeltMotorTop = new WPI_VictorSPX(7);
-        resetTalonToKnownState(conveyorBeltMotorTop);
-=======
         requiredDevices.put(new CANDeviceId(CANDeviceType.SPX, 7), "ConveyorBeltTop");
         conveyorBeltMotorTop = new WPI_VictorSPX(7);
         resetTalonToKnownState(conveyorBeltMotorTop);
 
         requiredDevices.put(new CANDeviceId(CANDeviceType.SPX, 8), "ConveyorBeltBottom");
->>>>>>> remotes/origin/master
         conveyorBeltMotorBottom = new WPI_VictorSPX(8);
         resetTalonToKnownState(conveyorBeltMotorBottom);
 
@@ -241,13 +218,6 @@ import java.util.*;
         pivotSubsystemMax.setIdleMode(IdleMode.kBrake);
         pivotSubsystemMax.setOpenLoopRampRate(0.25);
         pivotSubsystemMax.setClosedLoopRampRate(0.25);
-<<<<<<< HEAD
-        pivotEncoder = pivotSubsystemMax.getEncoder();
-        pivotSubsystemMax2 = new CANSparkMax(12, MotorType.kBrushless);
-        resetMaxToKnownState(pivotSubsystemMax2);
-        pivotSubsystemMax2.follow(pivotSubsystemMax, true);
-        pivotSubsystemMax2.setIdleMode(IdleMode.kBrake);
-=======
 
         pivotEncoder = pivotSubsystemMax.getEncoder();
 
@@ -261,7 +231,6 @@ import java.util.*;
         pivotSubsystemMax2.setOpenLoopRampRate(0.25);
         pivotSubsystemMax2.setClosedLoopRampRate(0.25);
 
->>>>>>> remotes/origin/master
         pivotLimitSwitch = new DigitalInput(5);
         
         lightSubsystemLightPWM = new Spark(9);
@@ -278,15 +247,6 @@ import java.util.*;
         lineSensorCounterR = new Counter(lineSensorR);
         lineSensorCounterR.setUpSourceEdge(false, true);
 
-<<<<<<< HEAD
-        if (canDeviceFinder.isPCMPresent(0)) {
-            //instantiate Pneumatics here
-            //doublesolenoids requires a PCM number first
-            hatchSubsystemPusher = new Solenoid(1, 0);
-            hatchSubsystemFinger = new Solenoid(1, 1);
-            pcm0Dummy = new Solenoid(0, 0);
-        }
-=======
         requiredDevices.put(new CANDeviceId(CANDeviceType.PCM, 0), "BottomPCM");
         if (amICompBot() || canDeviceFinder.isDevicePresent(CANDeviceType.PCM, 0)) {
             //instantiate Pneumatics here
@@ -300,7 +260,6 @@ import java.util.*;
             hatchSubsystemPusher = new Solenoid(1, 0);
             hatchSubsystemFinger = new Solenoid(1, 1);
         }
->>>>>>> remotes/origin/master
     }
 
     public static boolean amICompBot(){
