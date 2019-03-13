@@ -17,11 +17,13 @@ public class WaitJustALittle extends Command {
     Timer timer = new Timer();
     DigitalInput input;
     boolean desiredInputState;
+    boolean doingDelay = false;
 
     public WaitJustALittle(double delaySeconds) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	this.delay = delaySeconds;
+        this.delay = delaySeconds;
+        doingDelay = true;
     }
 
     public WaitJustALittle(DigitalInput inputDevice, boolean desiredState) {
@@ -29,6 +31,7 @@ public class WaitJustALittle extends Command {
         // eg. requires(chassis);
         input = inputDevice;
         desiredInputState = desiredState;
+        doingDelay = false;
     }
 
     // Called just before this Command runs the first time
@@ -45,14 +48,15 @@ public class WaitJustALittle extends Command {
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
         boolean inputState = input.get();
-    	if(timer.get() > delay) {
-    		return true;
-        }
-        
-        if(inputState == desiredInputState){
-            return true;
-        }
-
+        if(doingDelay == true){
+            if(timer.get() > delay) {
+                return true;
+            }
+        } else if(doingDelay == false){
+            if(inputState == desiredInputState){
+                return true;
+            }
+        } 
         return false;
     }
 
