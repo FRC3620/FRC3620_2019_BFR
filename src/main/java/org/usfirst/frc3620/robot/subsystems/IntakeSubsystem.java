@@ -5,7 +5,10 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import org.slf4j.Logger;
 import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
+import org.usfirst.frc3620.robot.Robot;
 import org.usfirst.frc3620.robot.RobotMap;
+import org.usfirst.frc3620.robot.commands.RumbleCommand;
+import org.usfirst.frc3620.misc.Hand;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Counter;
@@ -25,6 +28,11 @@ public class IntakeSubsystem extends Subsystem {
     private final WPI_TalonSRX intakeRollerTop = RobotMap.intakeSubsystemUpperMotor;
     private final WPI_TalonSRX intakeRollerBottom = RobotMap.intakeSubsystemLowerMotor;
     private final WPI_TalonSRX intakeRollerMiddle = RobotMap.intakeSubsystemMiddleMotor;
+
+    private final RumbleCommand rumbleCommandDriverIn = new RumbleCommand(Robot.rumbleSubsystemDriver, Hand.RIGHT, 0.4);
+    private final RumbleCommand rumbleCommandOperatorIn = new RumbleCommand(Robot.rumbleSubsystemOperator, Hand.RIGHT, 0.4);
+    private final RumbleCommand rumbleCommandDriverOut = new RumbleCommand(Robot.rumbleSubsystemDriver, Hand.LEFT, 0.4);
+    private final RumbleCommand rumbleCommandOperatorOut = new RumbleCommand(Robot.rumbleSubsystemOperator, Hand.LEFT, 0.4);
     
     Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
     
@@ -56,17 +64,28 @@ public class IntakeSubsystem extends Subsystem {
         intakeRollerTop.set(-speed);
         intakeRollerBottom.set(speed);
         intakeRollerMiddle.set(speed);
+
+        rumbleCommandOperatorIn.start();
+        rumbleCommandDriverIn.start();
     }
 
     public void intakeOut(double speed){
         intakeRollerTop.set(speed);
         intakeRollerBottom.set(-speed);
+
+        rumbleCommandDriverOut.start();
+        rumbleCommandOperatorOut.start();
     } 
 
     public void intakeOff(){
         intakeRollerTop.set(0);
         intakeRollerBottom.set(0);
         intakeRollerMiddle.set(0);
+
+        rumbleCommandDriverIn.cancel();
+        rumbleCommandDriverOut.cancel();
+        rumbleCommandOperatorIn.cancel();
+        rumbleCommandOperatorOut.cancel();
     }
     
     

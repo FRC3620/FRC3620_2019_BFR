@@ -36,7 +36,7 @@ public class LightSubsystem extends Subsystem {
     DriverStation.Alliance teamColor = DriverStation.getInstance().getAlliance();
     
     /**
-     * @see Hashmap stores the priority of lighting effects as an integer tied to the PWM power as a double
+     * Hashmap stores the priority of lighting effects as an integer tied to the PWM power as a double
      * to add a light effect, use lightsPriority.put([PRIORITY -- 0 IS HIGHEST], Color.[COLOR].value)
      * to remove a light effect, use lightsPriority.remove([PRIORITY], Color.[COLOR].value)
      * @see Check BlinkinDict.java for more info on color names

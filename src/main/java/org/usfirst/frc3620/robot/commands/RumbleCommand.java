@@ -119,9 +119,8 @@ public class RumbleCommand extends Command {
 
             //Sets the rumble and starts the timer
             subsystem.setRumble(hand, intensity);
-            if (!continuous) {
+            if (!continuous) 
                 timer.start();
-            }
         }
         else {
             subsystem.setDisabled(this.disabled);
@@ -152,11 +151,10 @@ public class RumbleCommand extends Command {
     protected void end() {
             EventLogging.commandMessage(logger);
             if (!disabled) {
-            if (subsystem == Robot.rumbleSubsystemDriver) {
+            if (subsystem == Robot.rumbleSubsystemDriver)
                 logger.info("Driver rumble finished");
-            }else{
+            else
                 logger.info("Operator rumble finished");
-            }
 
             subsystem.clearRumble();
         }
@@ -167,12 +165,10 @@ public class RumbleCommand extends Command {
     @Override
     protected void interrupted() {
         EventLogging.commandMessage(logger);
-        if (subsystem == Robot.rumbleSubsystemDriver) {
+        if (subsystem == Robot.rumbleSubsystemDriver)
             logger.info("Driver rumble interrupted");
-        }
-        else {
+        else
             logger.info("Operator rumble interrupted");
-        }
         subsystem.clearRumble();
     } 
 }
