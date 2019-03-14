@@ -13,10 +13,12 @@ public class SetLiftHeightCommand extends Command {
 	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
     
     double desiredHeight;
-    
-    public SetLiftHeightCommand(double _desiredHeight) {
+    boolean doingPID;
+
+    public SetLiftHeightCommand(double _desiredHeight, boolean pid) {
         // requires(Robot.laserCannonSubsystem);
         desiredHeight = _desiredHeight;
+        doingPID  = pid;
     }
 
     // Called just before this Command runs the first time
@@ -28,6 +30,8 @@ public class SetLiftHeightCommand extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
+        Robot.liftSubsystem.setDoingPID(doingPID);
+        logger.info("PIDTruth: {}", Robot.liftSubsystem.doingPID);
         Robot.liftSubsystem.setDesiredHeight(desiredHeight);
     }
 

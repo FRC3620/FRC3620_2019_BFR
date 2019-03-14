@@ -10,6 +10,9 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.interfaces.Accelerometer;
 import org.slf4j.Logger;
@@ -17,6 +20,11 @@ import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
 import org.usfirst.frc3620.misc.CANDeviceFinder;
 
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
+import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.Compressor;
@@ -35,7 +43,11 @@ import java.util.*;
  */
 
  public class RobotMap {
-    public static Encoder leftsideEncoder, rightsideEncoder;
+    private static NetworkTableInstance inst = NetworkTableInstance.getDefault();
+    private static NetworkTable networkTable = inst.getTable("ChickenVision");
+    private static NetworkTableEntry missingHardwareTableEntry = networkTable.getEntry("Missing hardware");
+
+    public static Encoder leftSideEncoder, rightSideEncoder;
     public static CANEncoder leftsideCANEncoder, rightsideCANEncoder;
     public static CANSparkMax driveSubsystemMaxLeftA;
     public static CANSparkMax driveSubsystemMaxLeftB;
@@ -47,12 +59,15 @@ import java.util.*;
 
     public static Accelerometer accel;
 
+    public static Relay visionSubsystemNightLight;
+
     public static WPI_TalonSRX intakeSubsystemUpperMotor;
     public static WPI_TalonSRX intakeSubsystemLowerMotor;
     public static WPI_TalonSRX intakeSubsystemMiddleMotor;
 
     public static WPI_VictorSPX conveyorBeltMotorTop;
     public static WPI_VictorSPX conveyorBeltMotorBottom;
+    public static WPI_VictorSPX habDriveMotor;
 
     public static Counter lineSensorCounterL; 
     public static Counter lineSensorCounterR;
@@ -68,6 +83,7 @@ import java.util.*;
     public static CANEncoder liftEncoder;
     public static DigitalInput liftLimitSwitchTop;
     public static DigitalInput liftLimitSwitchBottom;
+    public static Solenoid liftLockPinSolenoid;
 
     public static Solenoid hatchSubsystemFinger;
     public static Solenoid hatchSubsystemPusher;
@@ -100,17 +116,21 @@ import java.util.*;
         if (amICompBot() || canDeviceFinder.isDevicePresent(CANDeviceType.MAX, 1)) {
             CANSparkMax driveSubsystemMaxLeftA = new CANSparkMax(1, MotorType.kBrushless);
             resetMaxToKnownState(driveSubsystemMaxLeftA);
+            driveSubsystemMaxLeftA.setOpenLoopRampRate(.7);
             leftsideCANEncoder = driveSubsystemMaxLeftA.getEncoder();
 
             CANSparkMax driveSubsystemMaxLeftB = new CANSparkMax(2, MotorType.kBrushless);
             resetMaxToKnownState(driveSubsystemMaxLeftB);
+            driveSubsystemMaxLeftB.setOpenLoopRampRate(.7);
 
             CANSparkMax driveSubsystemMaxRightA = new CANSparkMax(3, MotorType.kBrushless);
             resetMaxToKnownState(driveSubsystemMaxRightA);
+            driveSubsystemMaxRightA.setOpenLoopRampRate(.7);
             rightsideCANEncoder = driveSubsystemMaxRightA.getEncoder();
 
             CANSparkMax driveSubsystemMaxRightB = new CANSparkMax(4, MotorType.kBrushless);
             resetMaxToKnownState(driveSubsystemMaxRightB);
+            driveSubsystemMaxRightB.setOpenLoopRampRate(.7);
 
             groupLeft = new SpeedControllerGroup(driveSubsystemMaxLeftA, driveSubsystemMaxLeftB);
             groupRight = new SpeedControllerGroup(driveSubsystemMaxRightA, driveSubsystemMaxRightB);
@@ -137,6 +157,9 @@ import java.util.*;
             WPI_VictorSPX  driveSubsystemRightSpeedControllerC = new WPI_VictorSPX(6);
             resetTalonToKnownState(driveSubsystemRightSpeedControllerC);
             driveSubsystemRightSpeedControllerC.setInverted(true);
+
+            leftSideEncoder = new Encoder(6,7, true, EncodingType.k4X);
+            rightSideEncoder = new Encoder(8,9, true, EncodingType.k4X);
 
             groupLeft = new SpeedControllerGroup(driveSubsystemLeftSpeedControllerA, driveSubsystemLeftSpeedControllerB, driveSubsystemLeftSpeedControllerC);
             groupRight = new SpeedControllerGroup(driveSubsystemRightSpeedControllerA, driveSubsystemRightSpeedControllerB, driveSubsystemRightSpeedControllerC);
@@ -171,6 +194,12 @@ import java.util.*;
         requiredDevices.put(new CANDeviceId(CANDeviceType.SRX, 11), "IntakeLower");
         intakeSubsystemLowerMotor = new WPI_TalonSRX(11);
         resetTalonToKnownState(intakeSubsystemLowerMotor);
+
+        requiredDevices.put(new CANDeviceId(CANDeviceType.SPX, 13), "HabDrive");
+        habDriveMotor = new WPI_VictorSPX(13);
+        resetTalonToKnownState(habDriveMotor);
+        
+        visionSubsystemNightLight = new Relay(0);
 
         // lift motor power is positive going up
         requiredDevices.put(new CANDeviceId(CANDeviceType.MAX, 6), "IntakeLower");
@@ -223,6 +252,7 @@ import java.util.*;
             //instantiate Pneumatics here
             //doublesolenoids requires a PCM number first
             c = new Compressor(0);
+            liftLockPinSolenoid = new Solenoid(0);
         }
 
         requiredDevices.put(new CANDeviceId(CANDeviceType.PCM, 1), "TopPCM");
@@ -245,10 +275,17 @@ import java.util.*;
         missingDeviceIds.removeAll(canDeviceFinder.getDeviceSet());
         if (missingDeviceIds.size() > 0) {
             logger.error ("missing CAN bus devices: {}", missingDeviceIds);
+            String networkOutput = "";
             for (CANDeviceId canDeviceId : missingDeviceIds) {
                 logger.info ("{} is {}", canDeviceId, requiredDevices.get(canDeviceId));
+                networkOutput = networkOutput + canDeviceId + " is " + requiredDevices.get(canDeviceId) + ", \n";
             }
+            missingHardwareTableEntry.setString(networkOutput);
+        } else {
+            missingHardwareTableEntry.setString("No missing hardware");
         }
+
+
     }
 
     static void resetMaxToKnownState (CANSparkMax x) {
