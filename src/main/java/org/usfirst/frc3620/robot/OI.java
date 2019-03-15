@@ -74,6 +74,7 @@ public class OI {
             Button reverseDrive = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_RIGHT_BUMPER);
             Button inTakeIn = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_LEFT_BUMPER);
             Button driveIn = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_A);
+            Button switchCamera = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_Y);
 
             //operator controls 
             Button hatchExtend = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_X);
@@ -113,6 +114,7 @@ public class OI {
             driveIn.whileHeld(new AutoMoveForwardCommand(10,.7));
             lockLiftPinsButton.toggleWhenPressed(new LockLiftPinsCommand());
             cargoShipInButton.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_CARGO_CARGOSHIP, true));
+            switchCamera.whenPressed(new SwitchCameraCommand());
 
 
 
