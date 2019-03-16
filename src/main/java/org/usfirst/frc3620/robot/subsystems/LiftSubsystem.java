@@ -76,7 +76,7 @@ public class LiftSubsystem extends Subsystem implements PIDSource, PIDOutput {
         SmartDashboard.putBoolean("liftBottomLimitSwitch", isBottomLimitDepressed());
         
         if(checkForLiftEncoder()) {
-            SmartDashboard.putNumber("LiftEncoderPosition", liftEncoder.getPosition());
+            //SmartDashboard.putNumber("LiftEncoderPosition", liftEncoder.getPosition());
         }
         SmartDashboard.putNumber("liftEncoderInInches", getLiftHeight());
         if(Robot.getCurrentRobotMode() == RobotMode.TELEOP || Robot.getCurrentRobotMode() == RobotMode.AUTONOMOUS){
