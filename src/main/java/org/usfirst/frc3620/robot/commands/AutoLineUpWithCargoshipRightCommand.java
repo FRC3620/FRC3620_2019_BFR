@@ -43,7 +43,7 @@ public class AutoLineUpWithCargoshipRightCommand extends Command {
     static final double kFLineUp = 0;
     
 
-    double fwdStick;
+    public double fwdStick;
     double sideStick;
 
     int setSlot;
@@ -94,7 +94,7 @@ public class AutoLineUpWithCargoshipRightCommand extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
       weAreDone = false;
-      logger.info("fwdStick: {}", fwdStick);
+      //logger.info("fwdStick: {}", fwdStick);
       if(Robot.visionSubsystem.getRightTargetPresent() == false){
         weAreDone = true;
         

@@ -1,4 +1,6 @@
-ackage org.usfirst.frc3620.robot.commands;
+package org.usfirst.frc3620.robot.commands;
+
+import static org.junit.Assert.assertArrayEquals;
 
 import org.slf4j.Logger;
 import org.usfirst.frc3620.logger.EventLogging;
@@ -17,7 +19,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 
  
-public class SlotSelectorCommand extends Command {
+public class SlotSelectorLeftCommand extends Command {
     Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 
     static final double kPDriveStraight = 0.0;
@@ -37,9 +39,11 @@ public class SlotSelectorCommand extends Command {
     static final double kFLineUp = 0;
 
     static final double selectionSpeed = 0.4;
+
+    static final double tolerance = 4;
     
 
-    double fwdStick;
+    
     double sideStick;
 
     int setSlot;
@@ -50,12 +54,12 @@ public class SlotSelectorCommand extends Command {
     
     PIDController pidDriveStraight = new PIDController(kPDriveStraight, kIDriveStraight, kDDriveStraight, kFDriveStraight, Robot.driveSubsystem.getAhrsPidSource(), new DriveStraightOutput());
 
-
+    Command lineUpCommand = new AutoLineUpWithCargoshipLeftCommand();
     Command rumbleCommand = new RumbleCommand(Robot.rumbleSubsystemDriver);
     
-    /* Modify to get the POV pushed and use that for lefts and rights. */
+    /* Modify to get the POV pushed and use that for lefts and Rights. */
 
-    public SlotSelectorCommand(int slot) {
+    public SlotSelectorLeftCommand(int slot) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
       requires(Robot.driveSubsystem);
@@ -72,36 +76,49 @@ public class SlotSelectorCommand extends Command {
     // Called just before this Command runs the first time
     protected void initialize() {
       logger.info("AutoLineUpWithCargoshipCommand start");
-      if(Robot.visionSubsystem.getRightTargetPresent() || Robot.visionSubsystem.getLeftTargetPresent()){
+      Robot.visionSubsystem.turnLightSwitchOn();
+      if(Robot.visionSubsystem.getLeftTargetPresent()){
         a = 1;
       }
       pidDriveStraight.setSetpoint(Robot.driveSubsystem.getRealAngle());
       pidDriveStraight.reset();
       pidDriveStraight.enable(); 
       if(setSlot == a){
-        weAreDone = true;
+        lineUpCommand.start();
       }
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+      double leftJoy = Robot.oi.getLeftVerticalJoystickSquared();
+      double rightJoy = Robot.oi.getRightHorizontalJoystickSquared(); 
       if(a == 0){
-        if(Robot.visionSubsystem.getRightTargetPresent() || Robot.visionSubsystem.getLeftTarget()){
+        if(Robot.visionSubsystem.getLeftTargetPresent()){
             a++;
         } else{
-            Robot.driveSubsystem.arcadeDrive(leftjoy, rightJoy);
+            Robot.driveSubsystem.arcadeDrive(leftJoy, rightJoy);
         }
       }
       if(a >= 1){
         if(!(setSlot == a)){
-          if(Robot.visionSubsystem.getRightTargetPresent() || getLeft()){
+          if(Robot.visionSubsystem.getLeftTargetPresent() == true){
               Robot.driveSubsystem.arcadeDrive(selectionSpeed, sideStick);
-          } else if(visionTargetAintThere){
+          } else if(Robot.visionSubsystem.getLeftTargetPresent() == false){
               a++;
           }
             
           } else if(setSlot == a){
-              Robot.driveSubsystem.arcadeDrive(fwdStick, sideStick);
+              if(Math.abs(Robot.visionSubsystem.getLeftTargetYaw()) < tolerance){
+                  weAreDone = true;
+              } else{
+                  if(lineUpCommand.isRunning() == true){
+                    //Then we're all good...
+                  }
+                  else{
+                    lineUpCommand.start();
+                  }
+              }
+              
           }
       }
       
@@ -121,7 +138,7 @@ public class SlotSelectorCommand extends Command {
       if(weAreDone) {
         return true;
       }
-      if (Robot.visionSubsystem.getRightTargetYaw() != 0){
+      if (Robot.visionSubsystem.getLeftTargetYaw() != 0){
 
         rumbleCommand.start();
         return false;
@@ -166,6 +183,3 @@ public class SlotSelectorCommand extends Command {
     } 
      
     
-
-    }
-}
