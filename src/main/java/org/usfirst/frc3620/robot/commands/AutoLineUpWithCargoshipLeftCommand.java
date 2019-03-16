@@ -48,7 +48,7 @@ public class AutoLineUpWithCargoshipLeftCommand extends Command {
 
     
     
-    //PIDController pidDriveStraight = new PIDController(kPDriveStraight, kIDriveStraight, kDDriveStraight, kFDriveStraight, Robot.driveSubsystem.getAhrsPidSource(), new DriveStraightOutput());
+    PIDController pidDriveStraight = new PIDController(kPDriveStraight, kIDriveStraight, kDDriveStraight, kFDriveStraight, Robot.driveSubsystem.getAhrsPidSource(), new DriveStraightOutput());
     PIDController pidLineUp = new PIDController(kPLineUp, kILineUp, kDLineUp, kFLineUp, new LineUpSource(), new LineUpOutput());
 
     Command rumbleCommand = new RumbleCommand(Robot.rumbleSubsystemDriver);
@@ -58,13 +58,13 @@ public class AutoLineUpWithCargoshipLeftCommand extends Command {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
       requires(Robot.driveSubsystem);
-  /*    pidDriveStraight.setOutputRange(-.5, .5);
+      pidDriveStraight.setOutputRange(-.5, .5);
       pidDriveStraight.setInputRange(0.0f, 360.0f);
-      pidDriveStraight.setContinuous(true); */
+      pidDriveStraight.setContinuous(true); 
 
-      pidLineUp.setOutputRange(-.5, .5);
+    /*  pidLineUp.setOutputRange(-.5, .5);
       pidLineUp.setInputRange(-90,90);
-      pidLineUp.setContinuous(false);
+      pidLineUp.setContinuous(false); */
     }
     
     
@@ -73,27 +73,32 @@ public class AutoLineUpWithCargoshipLeftCommand extends Command {
     protected void initialize() {
       logger.info("AutoLineUpWithCargoshipCommand start");
       Robot.visionSubsystem.turnLightSwitchOn();
-      
-    /*    pidDriveStraight.setSetpoint(Robot.driveSubsystem.getRealAngle());
+      double currentNavXHeading = Robot.driveSubsystem.getRealAngle();
+      if(currentNavXHeading > 270){
+        pidDriveStraight.setSetpoint(359);
+      } else if(currentNavXHeading < 90){
+        pidDriveStraight.setSetpoint(1);
+      } 
+        
         pidDriveStraight.reset();
-        pidDriveStraight.enable(); */
+        pidDriveStraight.enable(); 
 
-        pidLineUp.setSetpoint(0);
+       /* pidLineUp.setSetpoint(0);
         pidLineUp.reset();
-        pidLineUp.enable();
+        pidLineUp.enable(); */
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
       weAreDone = false;
       logger.info("fwdStick: {}", fwdStick);
-      if(Robot.visionSubsystem.getLeftTargetPresent() == false){
+     /* if(Robot.visionSubsystem.getLeftTargetPresent() == false){
         weAreDone = true;
         
         return;
-      }
+      } */
       double horizontal = Robot.oi.getRightHorizontalJoystickSquared();
-      Robot.driveSubsystem.arcadeDrive(-fwdStick, horizontal);
+      Robot.driveSubsystem.arcadeDrive(0, horizontal);
       //logger.info("sideStick: {}", sideStick);
       //logger.info("NavX heading {}", Robot.driveSubsystem.getAngle());
       //logger.info("Corrected angle {}:", Robot.driveSubsystem.getRealAngle());
@@ -133,14 +138,14 @@ public class AutoLineUpWithCargoshipLeftCommand extends Command {
         end();
     }
     
- /*   public class DriveStraightSource extends AverageJoePIDSource{
+    public class DriveStraightSource extends AverageJoePIDSource{
 
       @Override
       public double pidGet() {
         return 0;
       }
   
-    } */
+    } 
 
     public class LineUpSource extends AverageJoePIDSource{
 
@@ -154,14 +159,14 @@ public class AutoLineUpWithCargoshipLeftCommand extends Command {
   
     }
 
-  /*  public class DriveStraightOutput extends AverageJoePIDOutput{
+    public class DriveStraightOutput extends AverageJoePIDOutput{
 
       @Override
       public void pidWrite(double output) {
         sideStick = output;
       }
 
-    } */
+    } 
      
     public class LineUpOutput extends AverageJoePIDOutput{
 
