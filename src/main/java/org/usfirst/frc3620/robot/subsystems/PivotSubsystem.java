@@ -114,13 +114,13 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
 
         //+pivotMotorPower makes the intake push down
         //-pivotMotorPower makes the intake come up
-        double pivotMotorPower = (liftMotorPower)*(3./4.);
+        double pivotMotorPower = (liftMotorPower)*(1./2.);
 
         // - pitch = nose down.
         // + pitch = nose up
         double pitch = Robot.driveSubsystem.ahrs.getPitch();
         double adjustFactor = 1.0;
-        if(Math.abs(pitch) > 5) {
+        if(Math.abs(pitch) > 3) {
             /*
             If and only if the |pitch| is greater than 5, the formula 
             below is meant to return 0.8 if the pitch is negative and 
