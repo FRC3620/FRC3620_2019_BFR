@@ -114,7 +114,7 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
 
         //+pivotMotorPower makes the intake push down
         //-pivotMotorPower makes the intake come up
-        double pivotMotorPower = (liftMotorPower)*(4./8.);
+        double pivotMotorPower = (liftMotorPower)*(1./2.);
 
         // - pitch = nose down.
         // + pitch = nose up

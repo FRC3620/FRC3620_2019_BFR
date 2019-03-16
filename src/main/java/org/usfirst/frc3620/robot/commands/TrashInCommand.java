@@ -1,4 +1,5 @@
 package org.usfirst.frc3620.robot.commands;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 
 import org.slf4j.Logger;
@@ -12,7 +13,9 @@ import org.usfirst.frc3620.robot.RobotMap;
  */
 public class TrashInCommand extends Command {
 	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
-	
+    Timer timer = new Timer();
+    boolean finished = false;
+    
     public TrashInCommand() {
         // requires(Robot.laserCannonSubsystem);
         requires(Robot.intakeSubsystem);
@@ -34,7 +37,7 @@ public class TrashInCommand extends Command {
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        return false;
+        return finished;
     }
 
     // Called once after isFinished returns true

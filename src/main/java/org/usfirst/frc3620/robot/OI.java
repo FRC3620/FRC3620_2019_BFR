@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.usfirst.frc3620.misc.Hand;
+import org.usfirst.frc3620.misc.TriggerButton;
 import org.usfirst.frc3620.misc.DPad;
 import org.usfirst.frc3620.misc.XBoxConstants;
 import org.usfirst.frc3620.robot.commands.*;
@@ -71,17 +72,14 @@ public class OI {
             
             //driver controls
             Button reverseDrive = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_RIGHT_BUMPER);
-            Button conveyorL = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_X);
-            Button conveyorR = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_B);
             Button inTakeIn = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_LEFT_BUMPER);
             Button driveIn = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_A);
-            Button camSwitch = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_Y);
+            Button switchCamera = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_Y);
             Button inTakeOut = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_START);
 
             //operator controls 
             Button hatchExtend = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_X);
             Button hatchCollect = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_B);
-           
             Button trashIn = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_Y);
             Button habClimbButton = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_LEFT_BUMPER);
             Button middlePos = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_RIGHT_BUMPER);
@@ -92,7 +90,12 @@ public class OI {
             driverDpad.right().whileHeld(new AutoLineUpWithCargoshipRightCommand());
             driverDpad.left().whileHeld(new AutoLineUpWithCargoshipLeftCommand());
 
+            Button trashLeftButton = new TriggerButton(operatorJoystick, true, 0.6);
+            trashLeftButton.whileHeld(new TrashLeftCommand());
 
+            Button trashRightButton = new TriggerButton(operatorJoystick, false, 0.6);
+            trashRightButton.whileHeld(new TrashRightCommand());
+            
             operatorDPad.down().whenPressed(new SetPivotAngleCommand(PivotSubsystem.DesiredAngle.Bottom));
             operatorDPad.up().whenPressed(new SetPivotAngleCommand(PivotSubsystem.DesiredAngle.Top));
             operatorDPad.right().whenPressed(new SetPivotAngleCommand(PivotSubsystem.DesiredAngle.Middle));
@@ -102,8 +105,6 @@ public class OI {
             inTakeIn.toggleWhenPressed(new IntakeCommand());
             inTakeOut.toggleWhenPressed(new OutTakeCommand());
             trashIn.toggleWhenPressed(new TrashInCommand());
-            conveyorL.whileHeld(new TrashLeftCommand());
-            conveyorR.whileHeld(new TrashRightCommand());
             hatchExtend.toggleWhenPressed(new HatchExtendCommand());
             hatchCollect.toggleWhenPressed(new HatchCollectCommand());
             habClimbButton.whenPressed(new HabClimbCommand());
@@ -113,8 +114,7 @@ public class OI {
             driveIn.whileHeld(new AutoMoveForwardCommand(10,.7));
             lockLiftPinsButton.toggleWhenPressed(new LockLiftPinsCommand());
             cargoHeight.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_CARGO_CARGOSHIP, true));
-
-
+            switchCamera.whenPressed(new SwitchCameraCommand());
 
             SmartDashboard.putData(new HabInstrumentationCommand());
 
@@ -138,8 +138,7 @@ public class OI {
              pivotLevel3.whenPressed(new SetPivotAngleCommand(PivotSubsystem.DesiredAngle.Top));
              trashRight.whileHeld(new TrashRightCommand());
              trashLeft.whileHeld(new TrashLeftCommand());
-             camSwitch.whenPressed(new SwitchCameraCommand());            
-
+             
             SmartDashboard.putData("Rumble both", new RumbleCommand(Robot.rumbleSubsystemDriver, Hand.BOTH, 0.2, 60.0));
             SmartDashboard.putData("Rumble left", new RumbleCommand(Robot.rumbleSubsystemDriver, Hand.LEFT, 0.2, 3.0));
 
