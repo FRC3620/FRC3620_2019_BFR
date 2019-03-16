@@ -67,7 +67,6 @@ public class Robot extends TimedRobot {
         // set up subsystems
         // initalized drive subsystem, which control motors to move robot
         driveSubsystem = new DriveSubsystem();
-      
         intakeSubsystem = new IntakeSubsystem();
         trashSubsystem = new TrashSubsystem();
         liftSubsystem = new LiftSubsystem();
@@ -75,7 +74,7 @@ public class Robot extends TimedRobot {
         rumbleSubsystemOperator = new RumbleSubsystem();
         hatchSubsystem = new HatchSubsystem();
         pivotSubsystem = new PivotSubsystem();
-        lineSubsystem = new LineSubsystem();  
+        lineSubsystem = new LineSubsystem();
         visionSubsystem = new VisionSubsystem();
         
         // OI must be constructed after subsystems. If the OI creates Commands

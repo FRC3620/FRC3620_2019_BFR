@@ -53,7 +53,8 @@ public class SlotSelectorCommand extends Command {
 
     Command rumbleCommand = new RumbleCommand(Robot.rumbleSubsystemDriver);
     
-  
+    /* Modify to get the POV pushed and use that for lefts and rights. */
+
     public SlotSelectorCommand(int slot) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
@@ -91,9 +92,16 @@ public class SlotSelectorCommand extends Command {
             Robot.driveSubsystem.arcadeDrive(leftjoy, rightJoy);
         }
       }
-      if(a > 1){
+      if(a >= 1){
         if(!(setSlot == a)){
-            Robot.driveSubsystem.arcadeDrive(selectionSpeed, sideStick);
+          if(Robot.visionSubsystem.getRightTargetPresent() || getLeft()){
+              Robot.driveSubsystem.arcadeDrive(selectionSpeed, sideStick);
+          } else if(visionTargetAintThere){
+              a++;
+          }
+            
+          } else if(setSlot == a){
+              Robot.driveSubsystem.arcadeDrive(fwdStick, sideStick);
           }
       }
       

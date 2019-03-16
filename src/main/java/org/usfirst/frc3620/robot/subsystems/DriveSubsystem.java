@@ -1,5 +1,6 @@
 package org.usfirst.frc3620.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.kauailabs.navx.frc.AHRS;
 
 import org.slf4j.Logger;
@@ -73,8 +74,12 @@ public class DriveSubsystem extends Subsystem {
        
         SmartDashboard.putNumber("rightsideEncoderInFeet", getRightSideDistance());
         SmartDashboard.putNumber("leftsideEncoderInFeet", getLeftSideDistance());
-      
-
+        
+        SmartDashboard.putNumber("habDriveMotorPower", RobotMap.habDriveMotor.get());
+        if (RobotMap.driveSubsystemMaxLeftA != null) {
+            SmartDashboard.putNumber("leftDriveMotorPower", RobotMap.driveSubsystemMaxLeftA.get());
+            SmartDashboard.putNumber("rightDriveMotorPower", RobotMap.driveSubsystemMaxRightA.get());
+        }
     }
 
     double ticsToFeet(double tics) { 
@@ -98,6 +103,10 @@ public class DriveSubsystem extends Subsystem {
         }
         SmartDashboard.putNumber("Y diff. drive", y);
         SmartDashboard.putNumber("X diff. drive", x);
+    }
+
+    public void habDrive (double y) {
+        RobotMap.habDriveMotor.set(y);
     }
 
     public int readLeftEncRaw(){
