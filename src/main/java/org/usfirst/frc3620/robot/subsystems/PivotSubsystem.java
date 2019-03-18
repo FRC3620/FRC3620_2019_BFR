@@ -64,14 +64,13 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
         SmartDashboard.putBoolean("pivotLimitSwitch", isTopPivotLimitDepressed());
 
         if(checkForPivotEncoder()) {
-            SmartDashboard.putNumber("pivotAngleInTics", pivotEncoder.getPosition());
+            //SmartDashboard.putNumber("pivotAngleInTics", pivotEncoder.getPosition());
         }
-        SmartDashboard.putBoolean("pivotEncoderIsValid", encoderisvalid);
         SmartDashboard.putNumber("pivotAngleInDegrees", getPivotAngle());
         SmartDashboard.putNumber("pivotDesiredAngle", desiredAngle);
         SmartDashboard.putBoolean("pivotEncoderIsValid", encoderisvalid);
-        SmartDashboard.putNumber("Pitch", Robot.driveSubsystem.ahrs.getPitch());
-        SmartDashboard.putNumber("Roll", Robot.driveSubsystem.ahrs.getRoll());
+        //SmartDashboard.putNumber("Pitch", Robot.driveSubsystem.ahrs.getPitch());
+        //SmartDashboard.putNumber("Roll", Robot.driveSubsystem.ahrs.getRoll());
         SmartDashboard.putString("pivotMode", currentPivotMode.toString());
 
         if(Robot.getCurrentRobotMode() == RobotMode.TELEOP || Robot.getCurrentRobotMode() == RobotMode.AUTONOMOUS){
@@ -128,20 +127,21 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
             */
             adjustFactor = (1.0 + (pitch/Math.abs(pitch)*0.5));
         }
-        SmartDashboard.putNumber("HAB lift motor power", liftMotorPower);
+        /*SmartDashboard.putNumber("HAB lift motor power", liftMotorPower);
         SmartDashboard.putNumber("HAB pitch", pitch);
         SmartDashboard.putNumber("HAB pivot motor power (pre-adjust)", pivotMotorPower);
         SmartDashboard.putNumber("HAB adjust factor", adjustFactor);
-        pivotMotorPower = pivotMotorPower * adjustFactor;
         SmartDashboard.putNumber("HAB pivot motor power (post-adjust)", pivotMotorPower);
+        */
         pivotMove(pivotMotorPower);
+        pivotMotorPower = pivotMotorPower * adjustFactor;
     }
     
     private void periodicAutoMagicMode(){
         double currentAngle = getPivotAngle();
         // positive error is we are out too far
         double error = currentAngle - desiredAngle;
-        SmartDashboard.putNumber("pivotError", error);
+        //SmartDashboard.putNumber("pivotError", error);
         if (desiredAngle == SETANGLE_TOP) {
             if(Math.abs(error) > 0) {
                     if (error > 0) {
@@ -261,12 +261,12 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
         if(encoderisvalid && (getPivotAngle() < -5) && (power < 0 )){
             power = 0;
         }
-        SmartDashboard.putNumber("pivot power", power);
+        //SmartDashboard.putNumber("pivot power", power);
         pivotMax.set(-power);
     }
 
     public void pivotStop() {
-        SmartDashboard.putNumber("pivot power", 0);
+        //SmartDashboard.putNumber("pivot power", 0);
         pivotMax.set(0);
     }
 

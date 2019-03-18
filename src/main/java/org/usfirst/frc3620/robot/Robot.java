@@ -90,7 +90,7 @@ public class Robot extends TimedRobot {
 
           // Add commands to Autonomous Sendable Chooser
         chooser.addDefault("Autonomous Command", new AutonomousCommand());
-        SmartDashboard.putData("Auto mode", chooser);
+        //SmartDashboard.putData("Auto mode", chooser);
 
         // get data logging going
         robotDataLogger = new DataLogger();
@@ -232,10 +232,10 @@ public class Robot extends TimedRobot {
 	}
 	
 	void updateDashboard() {
-        SmartDashboard.putData("Turn off Operator Rumble", new RumbleCommand(rumbleSubsystemOperator, true));
-        SmartDashboard.putData("Turn on Operator Rumble", new RumbleCommand(rumbleSubsystemOperator, false));
-        SmartDashboard.putData("Turn off Driver Rumble", new RumbleCommand(rumbleSubsystemDriver, true));
-        SmartDashboard.putData("Turn on Driver Rumble", new RumbleCommand(rumbleSubsystemDriver, false));
+        //SmartDashboard.putData("Turn off Operator Rumble", new RumbleCommand(rumbleSubsystemOperator, true));
+        //SmartDashboard.putData("Turn on Operator Rumble", new RumbleCommand(rumbleSubsystemOperator, false));
+        //SmartDashboard.putData("Turn off Driver Rumble", new RumbleCommand(rumbleSubsystemDriver, true));
+        //SmartDashboard.putData("Turn on Driver Rumble", new RumbleCommand(rumbleSubsystemDriver, false));
 		//SmartDashboard.putNumber("driver y joystick", -Robot.m_oi.driveJoystick.getRawAxis(1));
 		//SmartDashboard.putNumber("driver x joystick", Robot.m_oi.driveJoystick.getRawAxis(4));
     }

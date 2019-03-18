@@ -118,7 +118,7 @@ public class OI {
 
 
 
-            SmartDashboard.putData(new HabInstrumentationCommand());
+            //SmartDashboard.putData(new HabInstrumentationCommand());
 
              //Magic Board Controls
              Button liftRocket1 = new JoystickButton(magicBoardJoystick,9);
@@ -144,7 +144,7 @@ public class OI {
              trashLeft.whileHeld(new TrashLeftCommand());
              camSwitch.whenPressed(new SwitchCameraCommand());            
 
-            SmartDashboard.putData("Rumble both", new RumbleCommand(Robot.rumbleSubsystemDriver, Hand.BOTH, 0.2, 60.0));
+            /*SmartDashboard.putData("Rumble both", new RumbleCommand(Robot.rumbleSubsystemDriver, Hand.BOTH, 0.2, 60.0));
             SmartDashboard.putData("Rumble left", new RumbleCommand(Robot.rumbleSubsystemDriver, Hand.LEFT, 0.2, 3.0));
 
             SmartDashboard.putData("AutonomousAlign from 45", new AutoAlignmentTemplate(Robot.visionSubsystem.getFrontTargetDistance(), Robot.visionSubsystem.getFrontTargetAngle()));
@@ -155,7 +155,7 @@ public class OI {
             SmartDashboard.putData("DriveForward", new AutoMoveForwardCommand(15,.7));
             SmartDashboard.putData("Align to Hatch Target", new AutonomousAlignmentAndApproachCommand());
             SmartDashboard.putData("LineUpWithCargoship", new AutoLineUpWithCargoshipRightCommand());
-
+            */
         }
 
     public Joystick getDriverJoystick() {
