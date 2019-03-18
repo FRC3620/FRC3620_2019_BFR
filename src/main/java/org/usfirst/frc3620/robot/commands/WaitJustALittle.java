@@ -1,8 +1,12 @@
 package org.usfirst.frc3620.robot.commands;
 
+import com.revrobotics.CANEncoder;
+
 import org.slf4j.Logger;
 import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
+import org.usfirst.frc3620.robot.Robot;
+import org.usfirst.frc3620.robot.subsystems.LiftSubsystem;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Timer;
@@ -12,12 +16,17 @@ import edu.wpi.first.wpilibj.command.Command;
  *
  */
 public class WaitJustALittle extends Command {
-	double delay;
+    double delay;
+    double desiredLiftSetpoint;
+
 	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
     Timer timer = new Timer();
     DigitalInput input;
     boolean desiredInputState;
+
+    boolean doingDigitalInput;
     boolean doingDelay = false;
+    boolean doingLiftWait = false;
 
     public WaitJustALittle(double delaySeconds) {
         // Use requires() here to declare subsystem dependencies
@@ -32,6 +41,12 @@ public class WaitJustALittle extends Command {
         input = inputDevice;
         desiredInputState = desiredState;
         doingDelay = false;
+        doingDigitalInput = true;
+    }
+
+    public WaitJustALittle(boolean gotLiftEncoder, double liftSetpoint){
+        doingLiftWait = true;
+        desiredLiftSetpoint = liftSetpoint;
     }
 
     // Called just before this Command runs the first time
@@ -47,16 +62,26 @@ public class WaitJustALittle extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        boolean inputState = input.get();
+        if(doingDigitalInput){
+            boolean inputState = input.get();
+            if(inputState == desiredInputState){
+                return true;
+            }
+        }
+       
         if(doingDelay == true){
             if(timer.get() > delay) {
                 return true;
             }
-        } else if(doingDelay == false){
-            if(inputState == desiredInputState){
-                return true;
-            }
         } 
+
+        if(doingLiftWait == true){
+            if(Math.abs(desiredLiftSetpoint - Robot.liftSubsystem.getLiftHeight()) < 1){
+                if(Robot.liftSubsystem.getLiftVelocity() == 0){
+                    return true;
+                }
+            }
+        }
         return false;
     }
 
