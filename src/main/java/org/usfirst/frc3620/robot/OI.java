@@ -136,8 +136,7 @@ public class OI {
              pivotLevel2.whenPressed(new SetPivotAngleCommand(PivotSubsystem.DesiredAngle.Middle));
              pivotLevel3.whenPressed(new SetPivotAngleCommand(PivotSubsystem.DesiredAngle.Top));
              trashRight.whileHeld(new TrashRightCommand());
-             trashLeft.whileHeld(new TrashLeftCommand());
-             camSwitch.whenPressed(new SwitchCameraCommand());            
+             trashLeft.whileHeld(new TrashLeftCommand());           
 
             /*SmartDashboard.putData("Rumble both", new RumbleCommand(Robot.rumbleSubsystemDriver, Hand.BOTH, 0.2, 60.0));
             SmartDashboard.putData("Rumble left", new RumbleCommand(Robot.rumbleSubsystemDriver, Hand.LEFT, 0.2, 3.0));
