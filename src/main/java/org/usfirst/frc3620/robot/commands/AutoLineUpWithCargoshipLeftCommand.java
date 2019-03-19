@@ -25,7 +25,7 @@ public class AutoLineUpWithCargoshipLeftCommand extends Command {
 	
     Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 
-    static final double kPDriveStraight = 0.0;
+    static final double kPDriveStraight = 0.02;
    
     static final double kIDriveStraight = 0;	
     
@@ -48,7 +48,7 @@ public class AutoLineUpWithCargoshipLeftCommand extends Command {
 
     
     
-    PIDController pidDriveStraight = new PIDController(kPDriveStraight, kIDriveStraight, kDDriveStraight, kFDriveStraight, Robot.driveSubsystem.getAhrsPidSource(), new DriveStraightOutput());
+    PIDController pidDriveStraight = new PIDController(kPDriveStraight, kIDriveStraight, kDDriveStraight, kFDriveStraight, new DriveStraightSource(), new DriveStraightOutput());
     PIDController pidLineUp = new PIDController(kPLineUp, kILineUp, kDLineUp, kFLineUp, new LineUpSource(), new LineUpOutput());
 
     Command rumbleCommand = new RumbleCommand(Robot.rumbleSubsystemDriver);
@@ -62,9 +62,9 @@ public class AutoLineUpWithCargoshipLeftCommand extends Command {
       pidDriveStraight.setInputRange(0.0f, 360.0f);
       pidDriveStraight.setContinuous(true); 
 
-    /*  pidLineUp.setOutputRange(-.5, .5);
+      pidLineUp.setOutputRange(-.5, .5);
       pidLineUp.setInputRange(-90,90);
-      pidLineUp.setContinuous(false); */
+      pidLineUp.setContinuous(false); 
     }
     
     
@@ -78,14 +78,16 @@ public class AutoLineUpWithCargoshipLeftCommand extends Command {
         pidDriveStraight.setSetpoint(359);
       } else if(currentNavXHeading < 90){
         pidDriveStraight.setSetpoint(1);
-      } 
+      } else if(currentNavXHeading > 90 && currentNavXHeading < 270){
+        pidDriveStraight.setSetpoint(180);
+      }
         
         pidDriveStraight.reset();
         pidDriveStraight.enable(); 
 
-       /* pidLineUp.setSetpoint(0);
+        pidLineUp.setSetpoint(0);
         pidLineUp.reset();
-        pidLineUp.enable(); */
+        pidLineUp.enable();
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -98,8 +100,8 @@ public class AutoLineUpWithCargoshipLeftCommand extends Command {
         return;
       } */
       double horizontal = Robot.oi.getRightHorizontalJoystickSquared();
-      Robot.driveSubsystem.arcadeDrive(0, horizontal);
-      //logger.info("sideStick: {}", sideStick);
+      Robot.driveSubsystem.arcadeDrive(0, sideStick);
+      logger.info("sideStick: {}", sideStick);
       //logger.info("NavX heading {}", Robot.driveSubsystem.getAngle());
       //logger.info("Corrected angle {}:", Robot.driveSubsystem.getRealAngle());
       
@@ -113,13 +115,14 @@ public class AutoLineUpWithCargoshipLeftCommand extends Command {
       if(weAreDone) {
         return true;
       }
-      if (Robot.visionSubsystem.getLeftTargetYaw() != 0){
+        return false;
+    /*  if (Robot.visionSubsystem.getLeftTargetYaw() != 0){
 
         rumbleCommand.start();
         return false;
       } else {
         return true;
-      }
+      } */
     }
 
     // Called once after isFinished returns true
@@ -142,7 +145,7 @@ public class AutoLineUpWithCargoshipLeftCommand extends Command {
 
       @Override
       public double pidGet() {
-        return 0;
+        return Robot.driveSubsystem.getRealAngle();
       }
   
     } 

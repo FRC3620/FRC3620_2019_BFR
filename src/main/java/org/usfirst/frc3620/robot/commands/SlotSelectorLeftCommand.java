@@ -1,6 +1,6 @@
 package org.usfirst.frc3620.robot.commands;
 
-import static org.junit.Assert.assertArrayEquals;
+
 
 import org.slf4j.Logger;
 import org.usfirst.frc3620.logger.EventLogging;
