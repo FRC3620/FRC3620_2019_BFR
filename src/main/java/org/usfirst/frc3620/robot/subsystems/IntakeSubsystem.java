@@ -53,31 +53,41 @@ public class IntakeSubsystem extends Subsystem {
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
     public void intakeIn(double speed){
-        intakeRollerTop.set(-speed);
-        intakeRollerBottom.set(speed);
-        intakeRollerMiddle.set(speed);
+        if (intakeRollerTop != null) {
+            intakeRollerTop.set(-speed);
+            intakeRollerBottom.set(speed);
+            intakeRollerMiddle.set(speed);
+        }
     }
 
     public void intakeOut(double speed){
-        intakeRollerTop.set(speed);
-        intakeRollerBottom.set(-speed);
+        if (intakeRollerTop != null) {
+            intakeRollerTop.set(speed);
+            intakeRollerBottom.set(-speed);
+        }
     } 
 
     public void intakeOff(){
-        intakeRollerTop.set(0);
-        intakeRollerBottom.set(0);
-        intakeRollerMiddle.set(0);
+        if (intakeRollerTop != null) {
+            intakeRollerTop.set(0);
+            intakeRollerBottom.set(0);
+            intakeRollerMiddle.set(0);
+        }
     }
     
     
     public void TrashIn(double speed){
-        intakeRollerTop.set(-speed);
-        intakeRollerMiddle.set(-speed);
+        if (intakeRollerTop != null) {
+            intakeRollerTop.set(-speed);
+            intakeRollerMiddle.set(-speed);
+        }
     }
 
     public void TrashOff(){
-        intakeRollerTop.set(0);
-        intakeRollerMiddle.set(0);
+        if (intakeRollerTop != null) {
+            intakeRollerTop.set(0);
+            intakeRollerMiddle.set(0);
+        }
     }
     //Line sensor code here
 

@@ -71,7 +71,7 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
         SmartDashboard.putNumber("pivotDesiredAngle", desiredAngle);
         SmartDashboard.putBoolean("pivotEncoderIsValid", encoderisvalid);
         SmartDashboard.putNumber("Pitch", Robot.driveSubsystem.ahrs.getPitch());
-        SmartDashboard.putNumber("Roll", Robot.driveSubsystem.ahrs.getRoll());
+        //SmartDashboard.putNumber("Roll", Robot.driveSubsystem.ahrs.getRoll());
         SmartDashboard.putString("pivotMode", currentPivotMode.toString());
 
         if(Robot.getCurrentRobotMode() == RobotMode.TELEOP || Robot.getCurrentRobotMode() == RobotMode.AUTONOMOUS){
@@ -104,7 +104,9 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
                 logger.warn("Pivot Mode Not Normal!");
             }
         }
-        SmartDashboard.putNumber("pivotMotorPower", pivotMax.getAppliedOutput());
+        if (pivotMax != null) {
+            SmartDashboard.putNumber("pivotMotorPower", pivotMax.getAppliedOutput());
+        }
     }
 
     private void periodicHAB() {
@@ -179,50 +181,20 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
         
 
 
-        public double calculatePivotAngle(DesiredAngle desiredAngle){
-            switch (desiredAngle) {
-                case Bottom:
-                    return SETANGLE_BOTTOM;
-                case Middle:
-                    return SETANGLE_MIDDLE;
-                case Top:
-                    return SETANGLE_TOP;
-                default:
-                    return SETANGLE_BOTTOM;
-               
-            }
-              
+    public double calculatePivotAngle(DesiredAngle desiredAngle){
+        switch (desiredAngle) {
+            case Bottom:
+                return SETANGLE_BOTTOM;
+            case Middle:
+                return SETANGLE_MIDDLE;
+            case Top:
+                return SETANGLE_TOP;
+            default:
+                return SETANGLE_BOTTOM;
+            
         }
-
-        private void TellPivotAngleBottom(){
-            double currentAngle = getPivotAngle();
-            if (currentAngle == SETANGLE_BOTTOM){
-                logger.info("BottomPivot Set");
-            } else {
-                logger.info("Not Bottom");
-            }
-        }
-
-        private void TellPivotAngleMiddle(){
-            double currentAngle = getPivotAngle();
-            if (currentAngle == SETANGLE_MIDDLE){
-                logger.info("MiddlePivot Set");
-            } else {
-                logger.info("Not Middle");
-            }
-        }
-
-        
-        private void TellPivotAngleTop(){
-            double currentAngle = getPivotAngle();
-            if (currentAngle == SETANGLE_TOP){
-                logger.info("TopPivot");
-            } else {
-                logger.info("Not Top");
-            }
-        }
-
-
+            
+    }
 
     private void periodicManualMode(){
         double yPos = Robot.oi.getClimberVerticalJoystick();
@@ -262,12 +234,16 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
             power = 0;
         }
         SmartDashboard.putNumber("pivot power", power);
-        pivotMax.set(-power);
+        if (pivotMax != null) {
+            pivotMax.set(-power);
+        }
     }
 
     public void pivotStop() {
         SmartDashboard.putNumber("pivot power", 0);
-        pivotMax.set(0);
+        if (pivotMax != null) {
+            pivotMax.set(0);
+        }
     }
 
     double ticstodegrees(double tics) { 

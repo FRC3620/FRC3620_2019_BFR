@@ -177,28 +177,34 @@ import java.util.*;
         }
         
         requiredDevices.put(new CANDeviceId(CANDeviceType.SPX, 7), "ConveyorBeltTop");
-        conveyorBeltMotorTop = new WPI_VictorSPX(7);
-        resetTalonToKnownState(conveyorBeltMotorTop);
-
         requiredDevices.put(new CANDeviceId(CANDeviceType.SPX, 8), "ConveyorBeltBottom");
-        conveyorBeltMotorBottom = new WPI_VictorSPX(8);
-        resetTalonToKnownState(conveyorBeltMotorBottom);
+        if (amICompBot() || canDeviceFinder.isDevicePresent(CANDeviceType.SPX, 7)) {
+            conveyorBeltMotorTop = new WPI_VictorSPX(7);
+            resetTalonToKnownState(conveyorBeltMotorTop);
+
+            conveyorBeltMotorBottom = new WPI_VictorSPX(8);
+            resetTalonToKnownState(conveyorBeltMotorBottom);
+        }
 
         requiredDevices.put(new CANDeviceId(CANDeviceType.SRX, 9), "IntakeUpper");
-        intakeSubsystemUpperMotor = new WPI_TalonSRX(9);
-        resetTalonToKnownState(intakeSubsystemUpperMotor);
-
         requiredDevices.put(new CANDeviceId(CANDeviceType.SRX, 10), "IntakeMiddle");
-        intakeSubsystemMiddleMotor = new WPI_TalonSRX(10);
-        resetTalonToKnownState(intakeSubsystemMiddleMotor);
-
         requiredDevices.put(new CANDeviceId(CANDeviceType.SRX, 11), "IntakeLower");
-        intakeSubsystemLowerMotor = new WPI_TalonSRX(11);
-        resetTalonToKnownState(intakeSubsystemLowerMotor);
+        if (amICompBot() || canDeviceFinder.isDevicePresent(CANDeviceType.SRX, 9)) {
+            intakeSubsystemUpperMotor = new WPI_TalonSRX(9);
+            resetTalonToKnownState(intakeSubsystemUpperMotor);
+
+            intakeSubsystemMiddleMotor = new WPI_TalonSRX(10);
+            resetTalonToKnownState(intakeSubsystemMiddleMotor);
+
+            intakeSubsystemLowerMotor = new WPI_TalonSRX(11);
+            resetTalonToKnownState(intakeSubsystemLowerMotor);
+        }
 
         requiredDevices.put(new CANDeviceId(CANDeviceType.SPX, 13), "HabDrive");
-        habDriveMotor = new WPI_VictorSPX(13);
-        resetTalonToKnownState(habDriveMotor);
+        if (amICompBot() || canDeviceFinder.isDevicePresent(CANDeviceType.SPX, 13)) {
+            habDriveMotor = new WPI_VictorSPX(13);
+            resetTalonToKnownState(habDriveMotor);
+        }
         
         visionSubsystemNightLight = new Relay(0);
 
@@ -214,23 +220,25 @@ import java.util.*;
 
         // pivot motor power is negitive when coming down
         requiredDevices.put(new CANDeviceId(CANDeviceType.MAX, 5), "PivotMAX");
-        pivotSubsystemMax = new CANSparkMax(5, MotorType.kBrushless);
-        resetMaxToKnownState(pivotSubsystemMax);
-        pivotSubsystemMax.setIdleMode(IdleMode.kBrake);
-        pivotSubsystemMax.setOpenLoopRampRate(0.25);
-        pivotSubsystemMax.setClosedLoopRampRate(0.25);
-
-        pivotEncoder = pivotSubsystemMax.getEncoder();
-
         requiredDevices.put(new CANDeviceId(CANDeviceType.MAX, 12), "PivotMAX2");
-        pivotSubsystemMax2 = new CANSparkMax(12, MotorType.kBrushless);
-        resetMaxToKnownState(pivotSubsystemMax2);
-        //second pivot motor is following the first 
-        // but the inverse is set to true because of how they are mounted
-        pivotSubsystemMax2.follow(pivotSubsystemMax, true);
-        pivotSubsystemMax2.setIdleMode(IdleMode.kBrake);
-        pivotSubsystemMax2.setOpenLoopRampRate(0.25);
-        pivotSubsystemMax2.setClosedLoopRampRate(0.25);
+        if (amICompBot() || canDeviceFinder.isDevicePresent(CANDeviceType.MAX, 5)) {
+            pivotSubsystemMax = new CANSparkMax(5, MotorType.kBrushless);
+            resetMaxToKnownState(pivotSubsystemMax);
+            pivotSubsystemMax.setIdleMode(IdleMode.kBrake);
+            pivotSubsystemMax.setOpenLoopRampRate(0.25);
+            pivotSubsystemMax.setClosedLoopRampRate(0.25);
+
+            pivotEncoder = pivotSubsystemMax.getEncoder();
+
+            pivotSubsystemMax2 = new CANSparkMax(12, MotorType.kBrushless);
+            resetMaxToKnownState(pivotSubsystemMax2);
+            //second pivot motor is following the first 
+            // but the inverse is set to true because of how they are mounted
+            pivotSubsystemMax2.follow(pivotSubsystemMax, true);
+            pivotSubsystemMax2.setIdleMode(IdleMode.kBrake);
+            pivotSubsystemMax2.setOpenLoopRampRate(0.25);
+            pivotSubsystemMax2.setClosedLoopRampRate(0.25);
+        }
 
         pivotLimitSwitch = new DigitalInput(5);
         

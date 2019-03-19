@@ -209,12 +209,16 @@ public class LiftSubsystem extends Subsystem implements PIDSource, PIDOutput {
             speed = 0;
         }
 
-        liftMax.set(-speed);
+        if (liftMax != null) {
+            liftMax.set(-speed);
+        }
     }
 
     public void liftStop(){
         //liftBrake.set(true);
-        liftMax.set(0);
+        if (liftMax != null) {
+            liftMax.set(0);
+        }
     }
 
     double ticstoinches(double tics) { 

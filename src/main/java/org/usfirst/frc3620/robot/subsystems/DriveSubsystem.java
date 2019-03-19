@@ -75,7 +75,9 @@ public class DriveSubsystem extends Subsystem {
         SmartDashboard.putNumber("rightsideEncoderInFeet", getRightSideDistance());
         SmartDashboard.putNumber("leftsideEncoderInFeet", getLeftSideDistance());
         
-        SmartDashboard.putNumber("habDriveMotorPower", RobotMap.habDriveMotor.get());
+        if (RobotMap.habDriveMotor != null) {
+            SmartDashboard.putNumber("habDriveMotorPower", RobotMap.habDriveMotor.get());
+        }
         if (RobotMap.driveSubsystemMaxLeftA != null) {
             SmartDashboard.putNumber("leftDriveMotorPower", RobotMap.driveSubsystemMaxLeftA.get());
             SmartDashboard.putNumber("rightDriveMotorPower", RobotMap.driveSubsystemMaxRightA.get());
@@ -106,7 +108,9 @@ public class DriveSubsystem extends Subsystem {
     }
 
     public void habDrive (double y) {
-        RobotMap.habDriveMotor.set(y);
+        if (RobotMap.habDriveMotor != null) {
+            RobotMap.habDriveMotor.set(y);
+        }
     }
 
     public int readLeftEncRaw(){
