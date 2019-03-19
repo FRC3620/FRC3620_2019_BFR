@@ -98,9 +98,8 @@ public class RumbleCommand extends Command {
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
+        EventLogging.commandMessage(logger);
         if (!disableChange) {
-            EventLogging.commandMessage(logger);
-            System.out.println("Rumble Init");
             //sets the defaults
             if (duration == null) {duration = durationDefault;}
             if (hand == null) {hand = handDefault;}
@@ -150,8 +149,8 @@ public class RumbleCommand extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
-            EventLogging.commandMessage(logger);
-            if (!disabled) {
+        EventLogging.commandMessage(logger);
+        if (!disabled) {
             if (subsystem == Robot.rumbleSubsystemDriver) {
                 logger.info("Driver rumble finished");
             }else{

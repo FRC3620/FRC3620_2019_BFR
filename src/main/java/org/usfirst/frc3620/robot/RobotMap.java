@@ -15,6 +15,8 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.interfaces.Accelerometer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import org.slf4j.Logger;
 import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
@@ -43,10 +45,6 @@ import java.util.*;
  */
 
  public class RobotMap {
-    private static NetworkTableInstance inst = NetworkTableInstance.getDefault();
-    private static NetworkTable networkTable = inst.getTable("ChickenVision");
-    private static NetworkTableEntry missingHardwareTableEntry = networkTable.getEntry("Missing hardware");
-
     public static Encoder leftSideEncoder, rightSideEncoder;
     public static CANEncoder leftsideCANEncoder, rightsideCANEncoder;
     public static CANSparkMax driveSubsystemMaxLeftA;
@@ -93,6 +91,9 @@ import java.util.*;
 
     // no touchee!
     private static DigitalInput practiceBotJumper;
+
+    // never access this directly. Use the amICompBot() method.
+    private static Boolean isCompetitionBot = null;
 
     static Logger logger = EventLogging.getLogger(RobotMap.class, Level.INFO);
 
@@ -263,10 +264,16 @@ import java.util.*;
     }
 
     public static boolean amICompBot(){
-        if(practiceBotJumper.get() == true){
-            return true;
+        // check the jumper just once. checking it is slow.
+        if (isCompetitionBot == null) {
+            if(practiceBotJumper.get() == true){
+                isCompetitionBot = true;
+            } else {
+                isCompetitionBot = false;
+            }
+            logger.info ("this is a {} robot chassis", isCompetitionBot ? "competition" : "practice");
         }
-        return false;
+        return isCompetitionBot;
     }
 
     public static void reportMissingDevices() {
@@ -280,12 +287,12 @@ import java.util.*;
                 logger.info ("{} is {}", canDeviceId, requiredDevices.get(canDeviceId));
                 networkOutput = networkOutput + canDeviceId + " is " + requiredDevices.get(canDeviceId) + ", \n";
             }
-            missingHardwareTableEntry.setString(networkOutput);
+            SmartDashboard.putString ("missingHardwareDetail", networkOutput);
+            SmartDashboard.putBoolean ("missingHardware", true);
         } else {
-            missingHardwareTableEntry.setString("No missing hardware");
+            SmartDashboard.putString ("missingHardwareDetail", "none");
+            SmartDashboard.putBoolean ("missingHardware", false);
         }
-
-
     }
 
     static void resetMaxToKnownState (CANSparkMax x) {

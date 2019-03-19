@@ -74,6 +74,11 @@ public class RobotDataLogger {
 			dataLogger.addDataProvider("pivotMotor2AppliedOutputPower", () -> RobotMap.pivotSubsystemMax2.getAppliedOutput());
 			dataLogger.addDataProvider("pivotMotor2Current", () -> RobotMap.pivotSubsystemMax2.getOutputCurrent());
 		}
+		if(RobotMap.conveyorBeltMotorTop != null) {
+			dataLogger.addDataProvider("trashConveyorTopOutput", () -> RobotMap.conveyorBeltMotorTop.getMotorOutputPercent());
+		}
+		dataLogger.addDataProvider("trashCurrentCommandName", () -> Robot.trashSubsystem.getCurrentCommandName());
+		dataLogger.addDataProvider("driveRealAngle", () -> Robot.driveSubsystem.getRealAngle());
 
 	}
 
