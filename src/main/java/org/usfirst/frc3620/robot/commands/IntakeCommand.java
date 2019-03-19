@@ -20,7 +20,7 @@ public class IntakeCommand extends Command {
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-    	EventLogging.commandMessage(logger);
+        EventLogging.commandMessage(logger);
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -41,9 +41,7 @@ public class IntakeCommand extends Command {
     @Override
     protected void end() {
         EventLogging.commandMessage(logger);
-        RobotMap.intakeSubsystemUpperMotor.set(0);
-        RobotMap.intakeSubsystemMiddleMotor.set(0);
-        RobotMap.intakeSubsystemLowerMotor.set(0.2);
+        Robot.intakeSubsystem.intakeOff();
     }
 
     // Called when another command which requires one or more of the same
@@ -51,8 +49,6 @@ public class IntakeCommand extends Command {
     @Override
     protected void interrupted() {
         EventLogging.commandMessage(logger);
-        RobotMap.intakeSubsystemUpperMotor.set(0);
-        RobotMap.intakeSubsystemMiddleMotor.set(0);
-        RobotMap.intakeSubsystemLowerMotor.set(0.2);
+        Robot.intakeSubsystem.intakeOff();
     }
 }

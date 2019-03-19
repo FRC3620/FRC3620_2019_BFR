@@ -25,7 +25,6 @@ public class TrashInCommand extends Command {
     @Override
     protected void initialize() {
         EventLogging.commandMessage(logger);
-        RobotMap.intakeSubsystemLowerMotor.set(0);
     }
 
     // Called repeatedly when this Command is scheduled to run
