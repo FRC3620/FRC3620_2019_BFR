@@ -76,10 +76,11 @@ public class WaitJustALittle extends Command {
         } 
 
         if(doingLiftWait == true){
-            if(Math.abs(desiredLiftSetpoint - Robot.liftSubsystem.getLiftHeight()) < 1){
-                if(Robot.liftSubsystem.getLiftVelocity() == 0){
+            if(Math.abs(desiredLiftSetpoint - Robot.liftSubsystem.getLiftHeight()) < 0.375){
+              /*  if(Robot.liftSubsystem.getLiftVelocity() == 0){
                     return true;
-                }
+                } */
+                return true;
             }
         }
         return false;
