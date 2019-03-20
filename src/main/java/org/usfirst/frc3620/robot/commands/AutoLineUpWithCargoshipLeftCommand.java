@@ -25,13 +25,13 @@ public class AutoLineUpWithCargoshipLeftCommand extends Command {
 	
     Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 
-    static final double kPDriveStraight = 0.02;
+    static final double kPDriveStraight = 0.04;
    
     static final double kIDriveStraight = 0;	
     
-    static final double kDDriveStraight = 0;
+    static final double kDDriveStraight = 0.04;
     
-    static final double kFDriveStraight = 0;
+    static final double kFDriveStraight = 0.0;
 
     static final double kPLineUp = .004;
    
@@ -58,7 +58,7 @@ public class AutoLineUpWithCargoshipLeftCommand extends Command {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
       requires(Robot.driveSubsystem);
-      pidDriveStraight.setOutputRange(-.5, .5);
+      pidDriveStraight.setOutputRange(-.7, .7);
       pidDriveStraight.setInputRange(0.0f, 360.0f);
       pidDriveStraight.setContinuous(true); 
 

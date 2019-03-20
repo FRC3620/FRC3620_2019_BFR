@@ -29,7 +29,7 @@ public class AutoLineUpWithCargoshipRightCommand extends Command {
    
     static final double kIDriveStraight = 0;	
     
-    static final double kDDriveStraight = 0;
+    static final double kDDriveStraight = 0.01;
     
     static final double kFDriveStraight = 0;
 
@@ -62,7 +62,7 @@ public class AutoLineUpWithCargoshipRightCommand extends Command {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
       requires(Robot.driveSubsystem);
-      pidDriveStraight.setOutputRange(-.5, .5);
+      pidDriveStraight.setOutputRange(-.7, .7);
       pidDriveStraight.setInputRange(0.0f, 360.0f);
       pidDriveStraight.setContinuous(true);
      
