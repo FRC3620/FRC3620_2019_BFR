@@ -95,7 +95,7 @@ public class AutoLineUpWithCargoshipRightCommand extends Command {
         return;
       }
       double horizontal = Robot.oi.getRightHorizontalJoystickSquared();
-      Robot.driveSubsystem.arcadeDrive(-fwdStick, horizontal);
+      Robot.driveSubsystem.arcadeDrive(fwdStick, horizontal);
       //logger.info("sideStick: {}", sideStick);
       //logger.info("NavX heading {}", Robot.driveSubsystem.getAngle());
       //logger.info("Corrected angle {}:", Robot.driveSubsystem.getRealAngle());
@@ -110,7 +110,7 @@ public class AutoLineUpWithCargoshipRightCommand extends Command {
       if(weAreDone) {
         return true;
       }
-      if (Robot.visionSubsystem.getRightTargetYaw() != 0){
+      if (Math.abs(Robot.visionSubsystem.getRightTargetYaw()) < 25){
 
         rumbleCommand.start();
         return false;

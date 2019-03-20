@@ -94,7 +94,7 @@ public class AutoLineUpWithCargoshipLeftCommand extends Command {
         return;
       }
       double horizontal = Robot.oi.getRightHorizontalJoystickSquared();
-      Robot.driveSubsystem.arcadeDrive(-fwdStick, horizontal);
+      Robot.driveSubsystem.arcadeDrive(fwdStick, horizontal);
       //logger.info("sideStick: {}", sideStick);
       //logger.info("NavX heading {}", Robot.driveSubsystem.getAngle());
       //logger.info("Corrected angle {}:", Robot.driveSubsystem.getRealAngle());
