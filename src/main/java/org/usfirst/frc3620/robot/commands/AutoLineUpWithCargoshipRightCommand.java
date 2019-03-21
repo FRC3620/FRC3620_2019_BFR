@@ -52,7 +52,8 @@ public class AutoLineUpWithCargoshipRightCommand extends Command {
     //PIDController pidDriveStraight = new PIDController(kPDriveStraight, kIDriveStraight, kDDriveStraight, kFDriveStraight, Robot.driveSubsystem.getAhrsPidSource(), new DriveStraightOutput());
     PIDController pidLineUp = new PIDController(kPLineUp, kILineUp, kDLineUp, kFLineUp, new LineUpSource(), new LineUpOutput());
 
-    Command rumbleCommand = new RumbleCommand(Robot.rumbleSubsystemDriver);
+    Command driverRumbleCommand = new RumbleCommand(Robot.rumbleSubsystemDriver);
+    Command operatorRumbleCommand = new RumbleCommand(Robot.rumbleSubsystemOperator);
     
   
     public AutoLineUpWithCargoshipRightCommand() {
@@ -110,11 +111,16 @@ public class AutoLineUpWithCargoshipRightCommand extends Command {
       if(weAreDone) {
         return true;
       }
-      if (Math.abs(Robot.visionSubsystem.getRightTargetYaw()) < 25){
+      if (Math.abs(Robot.visionSubsystem.getRightTargetYaw()) < 20){
 
-        rumbleCommand.start();
+        driverRumbleCommand.start();
+        operatorRumbleCommand.start();
         return false;
-      } else {
+      } 
+      else if(Math.abs(Robot.visionSubsystem.getLeftTargetYaw()) >= 20){
+        driverRumbleCommand.start();
+        return false;
+      }else {
         return false;
       }
     }
