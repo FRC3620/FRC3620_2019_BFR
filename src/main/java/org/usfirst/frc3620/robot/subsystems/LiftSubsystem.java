@@ -316,7 +316,7 @@ public class LiftSubsystem extends Subsystem implements PIDSource, PIDOutput {
 
     public double getMaxPower() {
         if (liftMax != null) {
-            return (liftMax.get());
+            return (liftMax.getAppliedOutput());
         } else {
             return Double.NaN;
         }

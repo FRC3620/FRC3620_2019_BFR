@@ -113,7 +113,7 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
 
         //+pivotMotorPower makes the intake push down
         //-pivotMotorPower makes the intake come up
-        double pivotMotorPower = (liftMotorPower)*(1./2.);
+        double pivotMotorPower = (liftMotorPower)*(0.5);
 
         // - pitch = nose down.
         // + pitch = nose up
@@ -121,20 +121,22 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
         double adjustFactor = 1.0;
         if(Math.abs(pitch) > 3) {
             /*
-            If and only if the |pitch| is greater than 5, the formula 
-            below is meant to return 0.8 if the pitch is negative and 
-            1.2 if the pitch is positive, correcting for any "wobbling"
+            If and only if the |pitch| is greater than 3, the formula 
+            below is meant to return 0.8 if the pitch is positive and 
+            1.2 if the pitch is negitive, correcting for any "wobbling"
             */
-            adjustFactor = (1.0 + (pitch/Math.abs(pitch)*0.5));
+            adjustFactor = 1.0 - ((pitch/Math.abs(pitch))*0.2);
         }
-        /*SmartDashboard.putNumber("HAB lift motor power", liftMotorPower);
+        SmartDashboard.putNumber("HAB lift motor power", liftMotorPower);
         SmartDashboard.putNumber("HAB pitch", pitch);
         SmartDashboard.putNumber("HAB pivot motor power (pre-adjust)", pivotMotorPower);
         SmartDashboard.putNumber("HAB adjust factor", adjustFactor);
-        SmartDashboard.putNumber("HAB pivot motor power (post-adjust)", pivotMotorPower);
-        */
-        pivotMove(pivotMotorPower);
+
         pivotMotorPower = pivotMotorPower * adjustFactor;
+
+        SmartDashboard.putNumber("HAB pivot motor power (post-adjust)", pivotMotorPower);
+        
+        pivotMove(pivotMotorPower);
     }
     
     private void periodicAutoMagicMode(){

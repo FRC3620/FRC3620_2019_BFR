@@ -294,6 +294,7 @@ import java.util.*;
         x.setOpenLoopRampRate(1);
         x.setClosedLoopRampRate(1);
         x.setSmartCurrentLimit(50);
+        //x.setSecondaryCurrentLimit(100, 0);
     }
 
     static void resetTalonToKnownState (BaseMotorController x) {
