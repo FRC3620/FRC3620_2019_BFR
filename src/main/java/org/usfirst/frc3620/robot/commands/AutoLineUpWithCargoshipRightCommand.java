@@ -108,7 +108,7 @@ public class AutoLineUpWithCargoshipRightCommand extends Command {
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
       // check to see if execute() thought we should be done
-      if(weAreDone) {
+      if(weAreDone == true || Robot.visionSubsystem.getRightTargetYaw() == 0) {
         return true;
       }
       if (Math.abs(Robot.visionSubsystem.getRightTargetYaw()) < 20){
