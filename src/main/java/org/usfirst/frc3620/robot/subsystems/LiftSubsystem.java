@@ -151,15 +151,11 @@ public class LiftSubsystem extends Subsystem implements PIDSource, PIDOutput {
         // liftMove needs a positive number to move up.
         // so we need to change the sign. 
         double speed = -yPos * 0.9;
+        SmartDashboard.putNumber("liftJoy", yPos);
         if (Robot.pivotSubsystem.getCurrentPivotMode() != PivotMode.HAB) {
             if(speed < -0.8){
                 speed = -0.8;
             }
-        }
-        else{
-            if(speed < -0.8){
-                speed = -0.8;
-            } 
         }
 
         if(encoderisvalid){
@@ -210,6 +206,7 @@ public class LiftSubsystem extends Subsystem implements PIDSource, PIDOutput {
         }
 
         liftMax.set(-speed);
+        SmartDashboard.putNumber("liftSet", -speed);
     }
 
     public void liftStop(){

@@ -206,6 +206,7 @@ import java.util.*;
         liftSubsystemMax = new CANSparkMax(6, MotorType.kBrushless);
         resetMaxToKnownState(liftSubsystemMax);
         liftSubsystemMax.setIdleMode(IdleMode.kBrake);
+        liftSubsystemMax.setSmartCurrentLimit(80);
 
         liftEncoder = liftSubsystemMax.getEncoder();
         liftLimitSwitchTop = new DigitalInput(1);

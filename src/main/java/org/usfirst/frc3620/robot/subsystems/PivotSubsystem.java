@@ -115,17 +115,24 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
         //-pivotMotorPower makes the intake come up
         double pivotMotorPower = (liftMotorPower)*(0.5);
 
-        // - pitch = nose down.
-        // + pitch = nose up
+        // + pitch = nose down.
+        // - pitch = nose up
         double pitch = Robot.driveSubsystem.ahrs.getPitch();
         double adjustFactor = 1.0;
         if(Math.abs(pitch) > 3) {
             /*
             If and only if the |pitch| is greater than 3, the formula 
-            below is meant to return 0.8 if the pitch is positive and 
-            1.2 if the pitch is negitive, correcting for any "wobbling"
+            below is meant to return 0.8 if the pitch is negitive and 
+            1.2 if the pitch is positive, correcting for any "wobbling"
             */
-            adjustFactor = 1.0 - ((pitch/Math.abs(pitch))*0.2);
+            if (pitch < 0) {
+                // we are nose up
+                adjustFactor = 0.6;
+            } else {
+                //we are nose down
+                adjustFactor = 1.2;
+            }
+            //adjustFactor = 1.0 + ((pitch/Math.abs(pitch))*0.2);
         }
         SmartDashboard.putNumber("HAB lift motor power", liftMotorPower);
         SmartDashboard.putNumber("HAB pitch", pitch);
