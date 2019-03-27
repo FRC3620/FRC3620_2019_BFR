@@ -63,6 +63,25 @@ public class DriveSubsystem extends Subsystem {
    
     @Override
     public void periodic() {
+
+        if(RobotMap.leftsideCANEncoder != null) {
+            SmartDashboard.putNumber("Drive.Velocity.Left", RobotMap.leftsideCANEncoder.getVelocity());
+            SmartDashboard.putNumber("Drive.Velocity.Right", RobotMap.rightsideCANEncoder.getVelocity());
+
+            SmartDashboard.putNumber("Drive.CommandedPower.Left", RobotMap.driveSubsystemMaxLeftA.get());
+            SmartDashboard.putNumber("Drive.CommandedPower.Right", RobotMap.driveSubsystemMaxRightA.get());
+
+            SmartDashboard.putNumber("Drive.ActualPower.Left", RobotMap.driveSubsystemMaxLeftA.getAppliedOutput());
+            SmartDashboard.putNumber("Drive.ActualPower.Right", RobotMap.driveSubsystemMaxRightA.getAppliedOutput());
+
+            SmartDashboard.putNumber("Drive.ActualCurrent.A.Left", RobotMap.driveSubsystemMaxLeftA.getOutputCurrent());
+            SmartDashboard.putNumber("Drive.ActualCurrent.A.Right", RobotMap.driveSubsystemMaxRightA.getOutputCurrent());
+
+            SmartDashboard.putNumber("Drive.ActualCurrent.B.Left", RobotMap.driveSubsystemMaxLeftB.getOutputCurrent());
+            SmartDashboard.putNumber("Drive.ActualCurrent.B.Right", RobotMap.driveSubsystemMaxRightB.getOutputCurrent());
+        
+        
+        }
         // Put code here to be run every loop
         if(checkForCANDriveEncoders()) {
             SmartDashboard.putNumber("leftsideEncoder", RobotMap.leftsideCANEncoder.getPosition());
