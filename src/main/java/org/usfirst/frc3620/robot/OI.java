@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import org.usfirst.frc3620.misc.Hand;
+import org.usfirst.frc3620.misc.TriggerButton;
 import org.usfirst.frc3620.misc.DPad;
 import org.usfirst.frc3620.misc.XBoxConstants;
 import org.usfirst.frc3620.robot.commands.*;
@@ -75,6 +76,8 @@ public class OI {
             Button conveyorR = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_B);
             Button inTakeIn = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_LEFT_BUMPER);
             Button driveIn = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_A);
+            TriggerButton getRumbleLeft = new TriggerButton(driverJoystick, true, 0.4);
+            TriggerButton getRumbleRight = new TriggerButton(driverJoystick, false, 0.4);
 
             //operator controls 
             Button hatchExtend = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_X);
@@ -109,6 +112,8 @@ public class OI {
             reverseDrive.whenPressed(new ToggleReverseCommand());
             driveIn.whileHeld(new AutoMoveForwardCommand(10,.7));
             lockLiftPinsButton.toggleWhenPressed(new LockLiftPinsCommand());
+            getRumbleLeft.toggleWhenPressed(new AutoCargoAlignRumbleLeft());
+            getRumbleRight.toggleWhenPressed(new AutoCargoAlignRumbleRight());
 
 
 
