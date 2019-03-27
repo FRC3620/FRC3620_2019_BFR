@@ -3,11 +3,16 @@ package org.usfirst.frc3620.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+import org.usfirst.frc3620.misc.Hand;
 import org.usfirst.frc3620.misc.TriggerButton;
 import org.usfirst.frc3620.misc.DPad;
 import org.usfirst.frc3620.misc.XBoxConstants;
 import org.usfirst.frc3620.robot.commands.*;
+import org.usfirst.frc3620.robot.paths.AlignToPointD;
+import org.usfirst.frc3620.robot.paths.AutoAlignmentTemplate;
+import org.usfirst.frc3620.robot.paths.TrainingPath;
 import org.usfirst.frc3620.robot.subsystems.LiftSubsystem;
 import org.usfirst.frc3620.robot.subsystems.PivotSubsystem;
 
@@ -67,6 +72,8 @@ public class OI {
             Button driveIn = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_A);
             Button switchCamera = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_Y);
             Button inTakeOut = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_START);
+            TriggerButton getRumbleLeft = new TriggerButton(driverJoystick, true, 0.4);
+            TriggerButton getRumbleRight = new TriggerButton(driverJoystick, false, 0.4);
 
             //operator controls 
             Button hatchExtend = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_X);
@@ -107,6 +114,26 @@ public class OI {
             cargoHeight.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_CARGO_CARGOSHIP, true));
             switchCamera.whenPressed(new SwitchCameraCommand());
             //SmartDashboard.putData(new HabInstrumentationCommand());
+            getRumbleLeft.toggleWhenPressed(new AutoCargoAlignRumbleLeft());
+            getRumbleRight.toggleWhenPressed(new AutoCargoAlignRumbleRight());
+
+
+
+            SmartDashboard.putData(new HabInstrumentationCommand());
+
+           
+
+            SmartDashboard.putData("Rumble both", new RumbleCommand(Robot.rumbleSubsystemDriver, Hand.BOTH, 0.2, 60.0));
+            SmartDashboard.putData("Rumble left", new RumbleCommand(Robot.rumbleSubsystemDriver, Hand.LEFT, 0.2, 3.0));
+
+            SmartDashboard.putData("AutonomousAlign from 45", new AutoAlignmentTemplate(Robot.visionSubsystem.getFrontTargetDistance(), Robot.visionSubsystem.getFrontTargetAngle()));
+            SmartDashboard.putData("AlignToPointD", new AlignToPointD());
+            SmartDashboard.putData("TrainingPath", new TrainingPath());
+            SmartDashboard.putData("CenterOnTarget", new VisionAlignmentCommand());
+            SmartDashboard.putData("TapTarget", new TravelAlignPushCommand());
+            SmartDashboard.putData("DriveForward", new AutoMoveForwardCommand(15,.7));
+            SmartDashboard.putData("Align to Hatch Target", new AutonomousAlignmentAndApproachCommand());
+            SmartDashboard.putData("LineUpWithCargoship", new AutoLineUpWithCargoshipRightCommand());
 
         }
 
