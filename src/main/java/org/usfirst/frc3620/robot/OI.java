@@ -117,7 +117,7 @@ public class OI {
             switchCamera.whenPressed(new SwitchCameraCommand());
 
             SmartDashboard.putData(new HabInstrumentationCommand());
-
+            SmartDashboard.putData(new DriveInstrumentationCommand());
              //Magic Board Controls
              Button liftRocket1 = new JoystickButton(magicBoardJoystick,9);
              Button liftRocket2 = new JoystickButton(magicBoardJoystick,10);

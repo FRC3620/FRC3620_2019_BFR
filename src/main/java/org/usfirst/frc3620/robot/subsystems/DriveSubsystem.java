@@ -32,8 +32,8 @@ public class DriveSubsystem extends Subsystem {
     boolean gotCompBot;
 
     private final DifferentialDrive differentialDrive = RobotMap.driveSubsystemDifferentialDrive;
-    private Encoder driveEncoderLeft = RobotMap.leftSideEncoder;
-    private Encoder driveEncoderRight = RobotMap.rightSideEncoder;
+    public Encoder driveEncoderLeft = RobotMap.leftSideEncoder;
+    public Encoder driveEncoderRight = RobotMap.rightSideEncoder;
     private boolean reverseModeQuestion;
     
     public double automaticHeading;
