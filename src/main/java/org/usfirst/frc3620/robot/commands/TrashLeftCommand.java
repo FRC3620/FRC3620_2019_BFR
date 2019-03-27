@@ -22,6 +22,22 @@ public class TrashLeftCommand extends Command {
     
     public int getLeftOrRight(){
         double currentNavXHeading = Robot.driveSubsystem.getRealAngle();
+
+        /* The purpose of the following if-else chain is to determine if you're pointing the same
+        way that you started or pointing the opposite direction. 
+        
+        If you're pointing the same direction (i.e pointed in the arc from -120 (i.e 240 with absolute) to 120) 
+        that you started in, left and right are still left and right, and thus, 
+        you should apply the same power in the same direction that you would normally.
+        
+        If you are pointing the other direction (i.e facing backwards on the arc from 120 to 240),
+        left is now right and right is now left compared to the direction you started in.
+        Therefore, make the belts go the other direction by multiplying their power by -1.
+        
+        The purpose of making the arc from -120 to 120 was that, if we are lining up to do a shot at the front of
+        the cargo ship, we will either be pointed at ~90 or ~270, so we should ensure that the directions of the shot
+        don't unduely and surprisingly change. */
+
         if(currentNavXHeading < 120 || currentNavXHeading > 240){
             return 1;
         } else if(currentNavXHeading >= 120 && currentNavXHeading <= 240){
