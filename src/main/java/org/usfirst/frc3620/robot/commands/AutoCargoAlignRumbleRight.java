@@ -68,7 +68,7 @@ public class AutoCargoAlignRumbleRight extends Command {
     // Called just before this Command runs the first time
     protected void initialize() {
       logger.info("AutoLineUpWithCargoshipCommand start");
-   
+      Robot.visionSubsystem.turnLightSwitchOn();
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -110,7 +110,7 @@ public class AutoCargoAlignRumbleRight extends Command {
     // Called once after isFinished returns true
     protected void end() {
       logger.info("AutoLineUpWithCargoshipCommand end");
-      
+      Robot.visionSubsystem.turnLightSwitchOff();
     
      
     }

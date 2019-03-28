@@ -122,6 +122,7 @@ import java.util.*;
             CANSparkMax driveSubsystemMaxLeftB = new CANSparkMax(2, MotorType.kBrushless);
             resetMaxToKnownState(driveSubsystemMaxLeftB);
             driveSubsystemMaxLeftB.setOpenLoopRampRate(.7);
+            
 
             CANSparkMax driveSubsystemMaxRightA = new CANSparkMax(3, MotorType.kBrushless);
             resetMaxToKnownState(driveSubsystemMaxRightA);
