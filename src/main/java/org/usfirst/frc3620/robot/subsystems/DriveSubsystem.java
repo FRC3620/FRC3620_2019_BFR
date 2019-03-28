@@ -80,7 +80,10 @@ public class DriveSubsystem extends Subsystem {
             SmartDashboard.putNumber("Drive.ActualCurrent.B.Left", RobotMap.driveSubsystemMaxLeftB.getOutputCurrent());
             SmartDashboard.putNumber("Drive.ActualCurrent.B.Right", RobotMap.driveSubsystemMaxRightB.getOutputCurrent());
         
-        
+            SmartDashboard.putNumber("Drive.Temp.Left.A",  RobotMap.driveSubsystemMaxLeftA.getMotorTemperature());
+            SmartDashboard.putNumber("Drive.Temp.Right.A",  RobotMap.driveSubsystemMaxRightA.getMotorTemperature());
+            SmartDashboard.putNumber("Drive.Temp.Left.B",  RobotMap.driveSubsystemMaxLeftB.getMotorTemperature());
+            SmartDashboard.putNumber("Drive.Temp.Right.B",  RobotMap.driveSubsystemMaxRightB.getMotorTemperature());
         }
         // Put code here to be run every loop
         if(checkForCANDriveEncoders()) {

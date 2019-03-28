@@ -48,7 +48,10 @@ public class DriveInstrumentationCommand extends Command {
             dataLogger.addDataProvider("Actual Current Left B", () -> RobotMap.driveSubsystemMaxLeftB.getOutputCurrent());
             dataLogger.addDataProvider("Actual Current Right B", () -> RobotMap.driveSubsystemMaxRightB.getOutputCurrent());
         
-        
+            dataLogger.addDataProvider("Temp Left A", () -> RobotMap.driveSubsystemMaxLeftA.getMotorTemperature());
+            dataLogger.addDataProvider("Temp Right  A", () -> RobotMap.driveSubsystemMaxRightA.getMotorTemperature());
+            dataLogger.addDataProvider("Temp Left B", () -> RobotMap.driveSubsystemMaxLeftB.getMotorTemperature());
+            dataLogger.addDataProvider("Temp Right B", () -> RobotMap.driveSubsystemMaxRightB.getMotorTemperature());
         }
 
         dataLogger.start();
