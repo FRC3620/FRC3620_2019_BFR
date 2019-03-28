@@ -50,6 +50,7 @@ public class Robot extends TimedRobot {
     public static DataLogger robotDataLogger;
     private static Command leftLineWatcher;
     private static Command rightLineWatcher;
+    public static DriverStation driverStation;
 
     /**
      * This function is run when the robot is first started up and should be
@@ -59,6 +60,7 @@ public class Robot extends TimedRobot {
     public void robotInit() {
 		// set up logging
         logger = EventLogging.getLogger(Robot.class, Level.INFO);
+        driverStation = driverStation.getInstance();
         
         // set up hardware
         RobotMap.init();
@@ -97,8 +99,8 @@ public class Robot extends TimedRobot {
         new RobotDataLogger(robotDataLogger, RobotMap.canDeviceFinder);
         robotDataLogger.setInterval(1.000);
         robotDataLogger.start();
-        OperatorView operatorView = new OperatorView();
-        operatorView.operatorViewInit(RobotMap.amICompBot());
+        //OperatorView operatorView = new OperatorView();
+       // operatorView.operatorViewInit(RobotMap.amICompBot());
     }
 
     /**
@@ -240,7 +242,8 @@ public class Robot extends TimedRobot {
         //SmartDashboard.putData("Turn off Driver Rumble", new RumbleCommand(rumbleSubsystemDriver, true));
         //SmartDashboard.putData("Turn on Driver Rumble", new RumbleCommand(rumbleSubsystemDriver, false));
 		//SmartDashboard.putNumber("driver y joystick", -Robot.m_oi.driveJoystick.getRawAxis(1));
-		//SmartDashboard.putNumber("driver x joystick", Robot.m_oi.driveJoystick.getRawAxis(4));
+        //SmartDashboard.putNumber("driver x joystick", Robot.m_oi.driveJoystick.getRawAxis(4));
+        SmartDashboard.putNumber("Match time", (int) driverStation.getMatchTime());
     }
     
     public static RobotMode getCurrentRobotMode(){

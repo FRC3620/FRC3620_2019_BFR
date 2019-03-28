@@ -52,7 +52,8 @@ public class AutoLineUpWithCargoshipRightCommand extends Command {
     //PIDController pidDriveStraight = new PIDController(kPDriveStraight, kIDriveStraight, kDDriveStraight, kFDriveStraight, Robot.driveSubsystem.getAhrsPidSource(), new DriveStraightOutput());
     PIDController pidLineUp = new PIDController(kPLineUp, kILineUp, kDLineUp, kFLineUp, new LineUpSource(), new LineUpOutput());
 
-    Command rumbleCommand = new RumbleCommand(Robot.rumbleSubsystemDriver);
+    Command driverRumbleCommand = new RumbleCommand(Robot.rumbleSubsystemDriver);
+    Command operatorRumbleCommand = new RumbleCommand(Robot.rumbleSubsystemOperator);
     
   
     public AutoLineUpWithCargoshipRightCommand() {
@@ -95,7 +96,7 @@ public class AutoLineUpWithCargoshipRightCommand extends Command {
         return;
       }
       double horizontal = Robot.oi.getRightHorizontalJoystickSquared();
-      Robot.driveSubsystem.arcadeDrive(-fwdStick, horizontal);
+      Robot.driveSubsystem.arcadeDrive(fwdStick, horizontal);
       //logger.info("sideStick: {}", sideStick);
       //logger.info("NavX heading {}", Robot.driveSubsystem.getAngle());
       //logger.info("Corrected angle {}:", Robot.driveSubsystem.getRealAngle());
@@ -107,14 +108,19 @@ public class AutoLineUpWithCargoshipRightCommand extends Command {
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
       // check to see if execute() thought we should be done
-      if(weAreDone) {
+      if(weAreDone == true || Robot.visionSubsystem.getRightTargetYaw() == 0) {
         return true;
       }
-      if (Robot.visionSubsystem.getRightTargetYaw() != 0){
+      if (Math.abs(Robot.visionSubsystem.getRightTargetYaw()) < 20){
 
-        rumbleCommand.start();
+        driverRumbleCommand.start();
+        operatorRumbleCommand.start();
         return false;
-      } else {
+      } 
+      else if(Math.abs(Robot.visionSubsystem.getLeftTargetYaw()) >= 20){
+        driverRumbleCommand.start();
+        return false;
+      }else {
         return false;
       }
     }

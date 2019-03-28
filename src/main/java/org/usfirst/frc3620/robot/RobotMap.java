@@ -206,6 +206,7 @@ import java.util.*;
         liftSubsystemMax = new CANSparkMax(6, MotorType.kBrushless);
         resetMaxToKnownState(liftSubsystemMax);
         liftSubsystemMax.setIdleMode(IdleMode.kBrake);
+        liftSubsystemMax.setSmartCurrentLimit(80);
 
         liftEncoder = liftSubsystemMax.getEncoder();
         liftLimitSwitchTop = new DigitalInput(1);
@@ -293,7 +294,8 @@ import java.util.*;
         x.setIdleMode(IdleMode.kCoast);
         x.setOpenLoopRampRate(1);
         x.setClosedLoopRampRate(1);
-        x.setSmartCurrentLimit(50); //TODO set back to 50
+        x.setSmartCurrentLimit(50);
+        //x.setSecondaryCurrentLimit(100, 0);
     }
 
     static void resetTalonToKnownState (BaseMotorController x) {

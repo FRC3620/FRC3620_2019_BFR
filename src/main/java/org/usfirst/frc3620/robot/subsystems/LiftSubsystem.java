@@ -30,8 +30,8 @@ public class LiftSubsystem extends Subsystem implements PIDSource, PIDOutput {
 
     public static final double SETPOINT_BOTTOM = 0;
     public static final double SETPOINT_CARGO_TRASHIN = 3.25;
-    public static final double SETPOINT_CARGO_CARGOSHIP = 16;
-    public static final double SETPOINT_CARGO_ROCKET_MIDDLE = 27.5;
+    public static final double SETPOINT_CARGO_CARGOSHIP = 18;
+    public static final double SETPOINT_CARGO_ROCKET_MIDDLE = 27.5; //TODO change to 29.5 on comp
     public static final double SETPOINT_CARGO_ROCKET_TOP = 52;
 
     public static final double SETPOINT_HATCH_BOTTOM = 0;
@@ -151,15 +151,11 @@ public class LiftSubsystem extends Subsystem implements PIDSource, PIDOutput {
         // liftMove needs a positive number to move up.
         // so we need to change the sign. 
         double speed = -yPos * 0.9;
+        SmartDashboard.putNumber("liftJoy", yPos);
         if (Robot.pivotSubsystem.getCurrentPivotMode() != PivotMode.HAB) {
             if(speed < -0.8){
                 speed = -0.8;
             }
-        }
-        else{
-            if(speed < -0.8){
-                speed = -0.8;
-            } 
         }
 
         if(encoderisvalid){
@@ -210,6 +206,7 @@ public class LiftSubsystem extends Subsystem implements PIDSource, PIDOutput {
         }
 
         liftMax.set(-speed);
+        SmartDashboard.putNumber("liftSet", -speed);
     }
 
     public void liftStop(){
@@ -316,7 +313,7 @@ public class LiftSubsystem extends Subsystem implements PIDSource, PIDOutput {
 
     public double getMaxPower() {
         if (liftMax != null) {
-            return (liftMax.get());
+            return (liftMax.getAppliedOutput());
         } else {
             return Double.NaN;
         }

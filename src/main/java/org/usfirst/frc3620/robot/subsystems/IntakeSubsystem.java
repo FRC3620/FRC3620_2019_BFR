@@ -54,8 +54,8 @@ public class IntakeSubsystem extends Subsystem {
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
     public void intakeIn(double speed){
-        intakeRollerTop.set(-speed);
-        intakeRollerBottom.set(speed);
+        intakeRollerTop.set(-(speed-0.2));
+        intakeRollerBottom.set(speed-0.2);
         intakeRollerMiddle.set(speed);
     }
 
