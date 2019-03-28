@@ -87,10 +87,10 @@ public class DriveSubsystem extends Subsystem {
         }
         // Put code here to be run every loop
         if(checkForCANDriveEncoders()) {
-            SmartDashboard.putNumber("leftsideEncoder", RobotMap.leftsideCANEncoder.getPosition());
-            SmartDashboard.putNumber("rightsideEncoder", RobotMap.rightsideCANEncoder.getPosition());
+            //SmartDashboard.putNumber("leftsideEncoder", RobotMap.leftsideCANEncoder.getPosition());
+            //SmartDashboard.putNumber("rightsideEncoder", RobotMap.rightsideCANEncoder.getPosition());
         }
-        SmartDashboard.putNumber("rightsideEncoderInFeet", getRightSideDistance());
+        /*SmartDashboard.putNumber("rightsideEncoderInFeet", getRightSideDistance());
         SmartDashboard.putNumber("leftsideEncoderInFeet", getLeftSideDistance());
         SmartDashboard.putNumber("NavX Heading", getRealAngle());
        
@@ -98,9 +98,10 @@ public class DriveSubsystem extends Subsystem {
         SmartDashboard.putNumber("leftsideEncoderInFeet", getLeftSideDistance());
         
         SmartDashboard.putNumber("habDriveMotorPower", RobotMap.habDriveMotor.get());
+        */
         if (RobotMap.driveSubsystemMaxLeftA != null) {
-            SmartDashboard.putNumber("leftDriveMotorPower", RobotMap.driveSubsystemMaxLeftA.get());
-            SmartDashboard.putNumber("rightDriveMotorPower", RobotMap.driveSubsystemMaxRightA.get());
+            //SmartDashboard.putNumber("leftDriveMotorPower", RobotMap.driveSubsystemMaxLeftA.get());
+            //SmartDashboard.putNumber("rightDriveMotorPower", RobotMap.driveSubsystemMaxRightA.get());
         }
     }
 
@@ -123,8 +124,8 @@ public class DriveSubsystem extends Subsystem {
         if (differentialDrive != null) {
             differentialDrive.arcadeDrive(y, x);
         }
-        SmartDashboard.putNumber("Y diff. drive", y);
-        SmartDashboard.putNumber("X diff. drive", x);
+        //SmartDashboard.putNumber("Y diff. drive", y);
+        //SmartDashboard.putNumber("X diff. drive", x);
     }
 
     public void habDrive (double y) {

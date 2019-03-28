@@ -36,18 +36,19 @@ public class IntakeSubsystem extends Subsystem {
     @Override
     public void periodic() {
         // Put code here to be run every loop
-        SmartDashboard.putNumber("Counter Left Sensor", lineSensorCounterL.get());
+        /*SmartDashboard.putNumber("Counter Left Sensor", lineSensorCounterL.get());
         SmartDashboard.putNumber("Counter Right Sensor", lineSensorCounterR.get());
         SmartDashboard.putBoolean("Did we see a line for Left sensor?", readLineSensorL());
         SmartDashboard.putBoolean("Did we see a line for Right sensor?", readLineSensorR());
-        //SmartDashboard.putBoolean("Direct Line Sensor Left input", readLineSensorLDirectly());
-        //SmartDashboard.putBoolean("Direct Line Sensor Right input", readLineSensorRDirectly());
-       // if(readLineSensorLDirectly()){
-      //      resetLineSensorL();
-      //  }
-        /*if(readLineSensorRDirectly()){
+        SmartDashboard.putBoolean("Direct Line Sensor Left input", readLineSensorLDirectly());
+        SmartDashboard.putBoolean("Direct Line Sensor Right input", readLineSensorRDirectly());
+        if(readLineSensorLDirectly()){
+            resetLineSensorL();
+        }
+        if(readLineSensorRDirectly()){
             resetLineSensorR();
-        }*/
+        }
+        */
     }
     
     // Put methods for controlling this subsystem
