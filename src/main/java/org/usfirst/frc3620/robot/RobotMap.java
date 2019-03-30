@@ -294,7 +294,7 @@ import java.util.*;
         x.setIdleMode(IdleMode.kCoast);
         x.setOpenLoopRampRate(1);
         x.setClosedLoopRampRate(1);
-        x.setSmartCurrentLimit(50);
+        x.setSmartCurrentLimit(65);
         //x.setSecondaryCurrentLimit(100, 0);
     }
 
