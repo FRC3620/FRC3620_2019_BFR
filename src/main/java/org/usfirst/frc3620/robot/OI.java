@@ -104,7 +104,7 @@ public class OI {
             trashIn.toggleWhenPressed(new TrashInCommand());
             conveyorL.whileHeld(new TrashLeftCommand());
             conveyorR.whileHeld(new TrashRightCommand());
-            hatchExtend.toggleWhenPressed(new HatchExtendCommand());
+            hatchExtend.toggleWhenPressed(new HatchOuttakeCommandGroup());
             hatchCollect.toggleWhenPressed(new HatchCollectCommand());
             habClimbButton.whenPressed(new HabClimbCommand());
             liftHome.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_CARGO_TRASHIN, true));

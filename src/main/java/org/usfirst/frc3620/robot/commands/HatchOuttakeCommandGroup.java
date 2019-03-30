@@ -14,6 +14,6 @@ public class HatchOuttakeCommandGroup extends CommandGroup{
         addSequential(new WaitJustALittle(1));
         addSequential(new HatchPusherInCommand());
         addSequential(new WaitJustALittle(1));
-        addSequential(new HatchFingerUpCommand());
+       // addSequential(new HatchFingerUpCommand());
     }
 }
