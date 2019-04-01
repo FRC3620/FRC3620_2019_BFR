@@ -3,20 +3,13 @@ package org.usfirst.frc3620.robot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-import org.usfirst.frc3620.misc.Hand;
 import org.usfirst.frc3620.misc.TriggerButton;
 import org.usfirst.frc3620.misc.DPad;
 import org.usfirst.frc3620.misc.XBoxConstants;
 import org.usfirst.frc3620.robot.commands.*;
 import org.usfirst.frc3620.robot.subsystems.LiftSubsystem;
 import org.usfirst.frc3620.robot.subsystems.PivotSubsystem;
-import org.usfirst.frc3620.robot.subsystems.TrashSubsystem;
-import org.usfirst.frc3620.robot.subsystems.VisionSubsystem;
-import org.usfirst.frc3620.robot.subsystems.LiftSubsystem.LiftDecider;
-
-import org.usfirst.frc3620.robot.paths.*;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -52,14 +45,12 @@ public class OI {
 
     private Joystick driverJoystick;
     private Joystick operatorJoystick;
-    private Joystick magicBoardJoystick;
 
     @SuppressWarnings("resource")
 	public OI() {
         //to interface with joysticks, no special initiallization nessessary
         driverJoystick = new Joystick(0);
         operatorJoystick = new Joystick(1);
-        magicBoardJoystick = new Joystick(2);
 
         DPad driverDpad = new DPad(driverJoystick, 0);
         DPad operatorDPad = new DPad(operatorJoystick, 0);
@@ -75,17 +66,17 @@ public class OI {
             Button inTakeIn = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_LEFT_BUMPER);
             Button driveIn = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_A);
             Button switchCamera = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_Y);
+            Button inTakeOut = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_START);
 
             //operator controls 
             Button hatchExtend = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_X);
             Button hatchCollect = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_B);
-            Button inTakeOut = new JoystickButton(driverJoystick, XBoxConstants.BUTTON_START);
             Button trashIn = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_Y);
             Button habClimbButton = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_LEFT_BUMPER);
             Button middlePos = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_RIGHT_BUMPER);
             Button liftHome = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_A);
             Button lockLiftPinsButton = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_BACK);
-            Button cargoShipInButton = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_START);
+            Button cargoHeight = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_START);
 
             driverDpad.right().whileHeld(new AutoLineUpWithCargoshipRightCommand());
             driverDpad.left().whileHeld(new AutoLineUpWithCargoshipLeftCommand());
@@ -113,49 +104,10 @@ public class OI {
             reverseDrive.whenPressed(new ToggleReverseCommand());
             driveIn.whileHeld(new AutoMoveForwardCommand(10,.7));
             lockLiftPinsButton.toggleWhenPressed(new LockLiftPinsCommand());
-            cargoShipInButton.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_CARGO_CARGOSHIP, true));
+            cargoHeight.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_CARGO_CARGOSHIP, true));
             switchCamera.whenPressed(new SwitchCameraCommand());
-
-
-
             //SmartDashboard.putData(new HabInstrumentationCommand());
 
-             //Magic Board Controls
-             Button liftRocket1 = new JoystickButton(magicBoardJoystick,9);
-             Button liftRocket2 = new JoystickButton(magicBoardJoystick,10);
-             Button liftRocket3 = new JoystickButton(magicBoardJoystick,11);
-             Button cargoShip1 = new JoystickButton(magicBoardJoystick, 7);
-             Button pivotLevel1 = new JoystickButton(magicBoardJoystick, 6);
-             Button pivotLevel2 = new JoystickButton(magicBoardJoystick, 5);
-             Button pivotLevel3 = new JoystickButton(magicBoardJoystick, 4);
-             Button trashLeft = new JoystickButton(magicBoardJoystick, 2);
-             Button trashRight = new JoystickButton(magicBoardJoystick, 3);
-             Button camSwitch = new JoystickButton(magicBoardJoystick, 8);
-
-
-             liftRocket1.whenPressed(new LiftMagicCommand(LiftSubsystem.LiftHeight.ROCKET1));
-             liftRocket2.whenPressed(new LiftMagicCommand(LiftSubsystem.LiftHeight.ROCKET2));
-             liftRocket3.whenPressed(new LiftMagicCommand(LiftSubsystem.LiftHeight.ROCKET3));
-             cargoShip1.whenPressed(new LiftMagicCommand(LiftSubsystem.LiftHeight.CARGOSHIP));
-             pivotLevel1.whenPressed(new SetPivotAngleCommand(PivotSubsystem.DesiredAngle.Bottom));
-             pivotLevel2.whenPressed(new SetPivotAngleCommand(PivotSubsystem.DesiredAngle.Middle));
-             pivotLevel3.whenPressed(new SetPivotAngleCommand(PivotSubsystem.DesiredAngle.Top));
-             trashRight.whileHeld(new TrashRightCommand());
-             trashLeft.whileHeld(new TrashLeftCommand());
-             camSwitch.whenPressed(new SwitchCameraCommand());            
-
-            /*SmartDashboard.putData("Rumble both", new RumbleCommand(Robot.rumbleSubsystemDriver, Hand.BOTH, 0.2, 60.0));
-            SmartDashboard.putData("Rumble left", new RumbleCommand(Robot.rumbleSubsystemDriver, Hand.LEFT, 0.2, 3.0));
-
-            SmartDashboard.putData("AutonomousAlign from 45", new AutoAlignmentTemplate(Robot.visionSubsystem.getFrontTargetDistance(), Robot.visionSubsystem.getFrontTargetAngle()));
-            SmartDashboard.putData("AlignToPointD", new AlignToPointD());
-            SmartDashboard.putData("TrainingPath", new TrainingPath());
-            SmartDashboard.putData("CenterOnTarget", new VisionAlignmentCommand());
-            SmartDashboard.putData("TapTarget", new TravelAlignPushCommand());
-            SmartDashboard.putData("DriveForward", new AutoMoveForwardCommand(15,.7));
-            SmartDashboard.putData("Align to Hatch Target", new AutonomousAlignmentAndApproachCommand());
-            SmartDashboard.putData("LineUpWithCargoship", new AutoLineUpWithCargoshipRightCommand());
-            */
         }
 
     public Joystick getDriverJoystick() {
@@ -209,11 +161,4 @@ public class OI {
         return computeDeadband(operatorJoystick.getRawAxis(XBoxConstants.AXIS_RIGHT_X), 0.2);
     }
 
-    public LiftSubsystem.LiftDecider getLiftDecider(){
-        if (magicBoardJoystick.getRawButton(12)){
-            return LiftDecider.CARGO;
-        }else{
-            return LiftDecider.HATCH;
-        }
-    }
 }

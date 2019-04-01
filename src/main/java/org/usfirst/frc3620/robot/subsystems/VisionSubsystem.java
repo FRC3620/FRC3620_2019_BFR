@@ -8,7 +8,6 @@
 package org.usfirst.frc3620.robot.subsystems;
 
 import org.usfirst.frc3620.robot.RobotMap;
-import org.usfirst.frc3620.robot.commands.VisionAlignmentCommand;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -24,7 +23,6 @@ import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PIDSource;
 import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.Relay;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
 
@@ -54,7 +52,6 @@ public class VisionSubsystem extends Subsystem implements PIDSource, PIDOutput {
   private NetworkTableEntry leftTargetYaw = networkTable.getEntry("tapeYaw leftCameratape");
   private NetworkTableEntry leftIsThereTarget = networkTable.getEntry("tapeDetected leftCameratape");
   private NetworkTableEntry switchCamera = networkTable.getEntry("switchCamera");
-  private NetworkTableEntry currentCamera = networkTable.getEntry("currentCamera");
   private NetworkTableEntry allCameraNames = networkTable.getEntry("allCameraNames");
   private NetworkTableEntry frontSecondClosestYaw = networkTable.getEntry("yawSecondClosest frontCameratape");
 
@@ -70,8 +67,6 @@ public class VisionSubsystem extends Subsystem implements PIDSource, PIDOutput {
   private final double kI = 0.00005;
   private final double kD = 0.000;
   private final double kF = .2;
-  
-  private final String[] cameraNames = {"frontCamera", "leftCamera", "rightCamera"};
   
   public void setCurrentCameraView(String nameCamera){
     switchCamera.setString(nameCamera);
@@ -99,12 +94,6 @@ public class VisionSubsystem extends Subsystem implements PIDSource, PIDOutput {
     // Set the default command for a subsystem here.
     // setDefaultCommand(new MySpecialCommand())
    // setDefaultCommand(new VisionAlignmentCommand());
-  }
-
-  
-
-  private void setCamera(String switchCamera){
-    
   }
 
   @Override

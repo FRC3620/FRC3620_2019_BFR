@@ -4,7 +4,6 @@ import edu.wpi.first.wpilibj.command.Command;
 import org.slf4j.Logger;
 import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
-import org.usfirst.frc3620.robot.subsystems.VisionSubsystem;
 import org.usfirst.frc3620.robot.Robot;
 /**
  *
@@ -33,7 +32,7 @@ public class SwitchCameraCommand extends Command {
         if (nextCamera >= camNames.length){
             nextCamera = 0;
         }
-        logger.info("next camera:"+camNames[nextCamera]);
+        logger.info("next camera: {}", camNames[nextCamera]);
         Robot.visionSubsystem.setCurrentCameraView(camNames[nextCamera]);
 
 

@@ -23,7 +23,7 @@ public class DriverStationLoggingHandler extends Handler {
 		} else if (level >= Level.WARNING.intValue()) {
 			DriverStation.reportWarning(s, false);
 		} else {
-			System.out.print("" + sequence + " " + s);
+			System.out.print("" + sequence + " " + s); // NOPMD
 			sequence++;
 		}
     }
@@ -39,10 +39,10 @@ public class DriverStationLoggingHandler extends Handler {
     static class DriverStationFormatter extends java.util.logging.Formatter {
         public String format(LogRecord record) {
             StringBuilder builder = new StringBuilder(1000);
-            builder.append("[").append(record.getLoggerName()).append("] ");
+            builder.append('[').append(record.getLoggerName()).append("] ");
             builder.append(record.getLevel()).append(" - ");
             builder.append(formatMessage(record));
-            builder.append("\n");
+            builder.append('\n');
             return builder.toString();
         }
     }

@@ -9,7 +9,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class DataLogger extends DataLoggerBase {
-    PrintWriter w = null;
+    PrintWriter w;
     double t0;
     double flushInterval = 2.0;
 
@@ -27,7 +27,7 @@ public class DataLogger extends DataLoggerBase {
         timer.schedule(new SlowDataLoggerTimerTask(), 0, interval);
     }
 
-    Object[] data = null;
+    Object[] data;
 
     class SlowDataLoggerTimerTask extends TimerTask {
         SimpleDateFormat format = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss.SS");

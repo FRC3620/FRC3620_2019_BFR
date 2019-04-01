@@ -9,23 +9,15 @@ package org.usfirst.frc3620.robot.commands;
 
 import org.slf4j.Logger;
 
-import org.slf4j.Logger;
 import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
 import org.usfirst.frc3620.robot.Robot;
-import org.usfirst.frc3620.robot.subsystems.VisionSubsystem;
-import org.usfirst.frc3620.robot.subsystems.DriveSubsystem;
 
 import edu.wpi.first.wpilibj.command.Command;
 
 public class VisionAlignmentCommand extends Command {
   Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 
-  private double distance;
-  private double angle;
-  private double yaw;
-  private double speed;
-  
   public VisionAlignmentCommand() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
@@ -35,6 +27,8 @@ public class VisionAlignmentCommand extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    EventLogging.commandMessage(logger);
+
     Robot.visionSubsystem.configurePID();
   }
 
@@ -42,7 +36,7 @@ public class VisionAlignmentCommand extends Command {
   @Override
   protected void execute() {
     Robot.visionSubsystem.runPID();
-    speed = Robot.visionSubsystem.getPIDOutput();
+    double speed = Robot.visionSubsystem.getPIDOutput();
     Robot.driveSubsystem.autoDriveTank(-speed,speed);
     logger.info("PID Speed: {}", speed);
   }
@@ -50,7 +44,7 @@ public class VisionAlignmentCommand extends Command {
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    /*yaw = Robot.visionSubsystem.getTargetYaw();
+    /* double yaw = Robot.visionSubsystem.getTargetYaw();
     if (yaw > 3 || yaw < -3){
       return false;
     }*/
@@ -60,6 +54,8 @@ public class VisionAlignmentCommand extends Command {
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    EventLogging.commandMessage(logger);
+
     Robot.visionSubsystem.disablePID();
     Robot.driveSubsystem.stopDrive();
   }
@@ -68,6 +64,8 @@ public class VisionAlignmentCommand extends Command {
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
+    EventLogging.commandMessage(logger);
+
     Robot.visionSubsystem.disablePID();
     Robot.driveSubsystem.stopDrive();
   }

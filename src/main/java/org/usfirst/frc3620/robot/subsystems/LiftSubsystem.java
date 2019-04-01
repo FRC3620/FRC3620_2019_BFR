@@ -30,9 +30,9 @@ public class LiftSubsystem extends Subsystem implements PIDSource, PIDOutput {
 
     public static final double SETPOINT_BOTTOM = 0;
     public static final double SETPOINT_CARGO_TRASHIN = 3.25;
-    public static final double SETPOINT_CARGO_CARGOSHIP = 16;
-    public static final double SETPOINT_CARGO_ROCKET_MIDDLE = 27.5;
-    public static final double SETPOINT_CARGO_ROCKET_TOP = 48;
+    public static final double SETPOINT_CARGO_CARGOSHIP = 18;
+    public static final double SETPOINT_CARGO_ROCKET_MIDDLE = 27.5; //TODO change to 29.5 on comp
+    public static final double SETPOINT_CARGO_ROCKET_TOP = 52;
 
     public static final double SETPOINT_HATCH_BOTTOM = 0;
     public static final double SETPOINT_HATCH_CARGOSHIP = 0;
@@ -75,9 +75,6 @@ public class LiftSubsystem extends Subsystem implements PIDSource, PIDOutput {
         SmartDashboard.putBoolean("liftTopLimitSwitch", isTopLimitDepressed());
         SmartDashboard.putBoolean("liftBottomLimitSwitch", isBottomLimitDepressed());
         
-        if(checkForLiftEncoder()) {
-            //SmartDashboard.putNumber("LiftEncoderPosition", liftEncoder.getPosition());
-        }
         SmartDashboard.putNumber("liftEncoderInInches", getLiftHeight());
         if(Robot.getCurrentRobotMode() == RobotMode.TELEOP || Robot.getCurrentRobotMode() == RobotMode.AUTONOMOUS){
             if(isBottomLimitDepressed() && !encoderisvalid){
@@ -151,15 +148,11 @@ public class LiftSubsystem extends Subsystem implements PIDSource, PIDOutput {
         // liftMove needs a positive number to move up.
         // so we need to change the sign. 
         double speed = -yPos * 0.9;
+        SmartDashboard.putNumber("liftJoy", yPos);
         if (Robot.pivotSubsystem.getCurrentPivotMode() != PivotMode.HAB) {
-            if(speed < -0.4){
-                speed = -0.4;
-            }
-        }
-        else{
             if(speed < -0.8){
                 speed = -0.8;
-            } 
+            }
         }
 
         if(encoderisvalid){
@@ -173,7 +166,7 @@ public class LiftSubsystem extends Subsystem implements PIDSource, PIDOutput {
             
             if (Robot.pivotSubsystem.getCurrentPivotMode() != PivotMode.HAB) {
 
-                if(currentHeight < 6 && speed < -0.1) {
+                if(currentHeight < 12 && speed < -0.1) {
                     speed = -0.1;
                 }
             }
@@ -210,11 +203,13 @@ public class LiftSubsystem extends Subsystem implements PIDSource, PIDOutput {
         }
 
         liftMax.set(-speed);
+        SmartDashboard.putNumber("liftSet", -speed);
     }
 
     public void liftStop(){
         //liftBrake.set(true);
         liftMax.set(0);
+        SmartDashboard.putNumber("liftSet", 0);
     }
 
     double ticstoinches(double tics) { 
@@ -288,9 +283,9 @@ public class LiftSubsystem extends Subsystem implements PIDSource, PIDOutput {
             if (!liftPIDContoller.isEnabled()) {
                  // set the P, I, D, FF
                  //Base P: 0.04
-                double p = SmartDashboard.getNumber("pivotP", 0.055);
-                double i = SmartDashboard.getNumber("pivotI", 0.0001);
-                double d = SmartDashboard.getNumber("pivotD", 0.12);
+                double p = SmartDashboard.getNumber("pivotP", 0.06); //Practice bot 0.06
+                double i = SmartDashboard.getNumber("pivotI", 0.000); //Practice bot 0.0004
+                double d = SmartDashboard.getNumber("pivotD", 0.14); //Practice bot 0.12
                 double f = SmartDashboard.getNumber("pivotF", 0);
     
                 logger.info("_pivotP={}", p);
@@ -316,7 +311,7 @@ public class LiftSubsystem extends Subsystem implements PIDSource, PIDOutput {
 
     public double getMaxPower() {
         if (liftMax != null) {
-            return (liftMax.get());
+            return (liftMax.getAppliedOutput());
         } else {
             return Double.NaN;
         }
