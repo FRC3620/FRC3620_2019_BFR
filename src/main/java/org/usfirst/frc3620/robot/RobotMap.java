@@ -195,7 +195,7 @@ import java.util.*;
         visionSubsystemNightLight = new Relay(0);
 
         // lift motor power is positive going up
-        requiredDevices.put(new CANDeviceId(CANDeviceType.MAX, 6), "IntakeLower");
+        requiredDevices.put(new CANDeviceId(CANDeviceType.MAX, 6), "LiftMax");
         liftSubsystemMax = new CANSparkMax(6, MotorType.kBrushless);
         resetMaxToKnownState(liftSubsystemMax);
         liftSubsystemMax.setSmartCurrentLimit(80);
