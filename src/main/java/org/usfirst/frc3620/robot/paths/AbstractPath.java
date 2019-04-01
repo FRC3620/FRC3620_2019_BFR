@@ -3,7 +3,6 @@ package org.usfirst.frc3620.robot.paths;
 import org.slf4j.Logger;
 import org.usfirst.frc3620.robot.Robot;
 import org.usfirst.frc3620.robot.RobotMap;
-import org.usfirst.frc3620.robot.subsystems.DriveSubsystem;
 import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
 
@@ -66,7 +65,7 @@ public abstract class AbstractPath extends Command {
 		left = new EncoderFollower(modifier.getLeftTrajectory());
 		right = new EncoderFollower(modifier.getRightTrajectory());
 
-		logger.info("setup() done in " + (System.currentTimeMillis() - t0) + "ms");
+		logger.info("setup() done in {} ms", (System.currentTimeMillis() - t0));
 	}
 	abstract Waypoint[] getMyWaypoints();
 
@@ -381,7 +380,6 @@ public abstract class AbstractPath extends Command {
 		@Override
 		protected void end() {
 			EventLogging.commandMessage(logger);
-			System.out.println("Max motor output: " + maxOutput);
 		}
 
 		// Called when another command which requires one or more of the same

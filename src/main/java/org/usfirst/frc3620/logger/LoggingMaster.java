@@ -67,7 +67,7 @@ public class LoggingMaster {
                     }
                     String logMessage = String.format("Log directory is %s\n",
                             _logDirectory);
-                    System.out.print(logMessage);
+                    System.out.print(logMessage); // NOPMD
                 }
             }
         }

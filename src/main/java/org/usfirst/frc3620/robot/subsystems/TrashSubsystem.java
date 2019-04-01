@@ -4,7 +4,6 @@ import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import org.usfirst.frc3620.robot.RobotMap;
 
-import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
@@ -12,7 +11,6 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class TrashSubsystem extends Subsystem {
 
-    Preferences speedPreferences = Preferences.getInstance();
     private final WPI_VictorSPX conveyorT = RobotMap.conveyorBeltMotorTop;
     private final WPI_VictorSPX conveyorB = RobotMap.conveyorBeltMotorBottom;
 

@@ -1,15 +1,11 @@
 package org.usfirst.frc3620.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.kauailabs.navx.frc.AHRS;
 
 import org.slf4j.Logger;
 import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
 
-import org.slf4j.Logger;
-import org.usfirst.frc3620.logger.EventLogging;
-import org.usfirst.frc3620.logger.EventLogging.Level;
 import org.usfirst.frc3620.robot.RobotMap;
 import org.usfirst.frc3620.robot.commands.DriveCommand;
 
@@ -26,7 +22,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class DriveSubsystem extends Subsystem {
     Logger logger = EventLogging.getLogger(getClass(), Level.INFO);    
 
-    public AHRS ahrs = null /* will set in the constructor */;
+    public AHRS ahrs /* will set in the constructor */;
 
     PIDSourceType pidSourceType = PIDSourceType.kDisplacement;
     boolean gotCompBot;
@@ -86,11 +82,12 @@ public class DriveSubsystem extends Subsystem {
             SmartDashboard.putNumber("Drive.Temp.Right.B",  RobotMap.driveSubsystemMaxRightB.getMotorTemperature());
         }
         // Put code here to be run every loop
+        /*
         if(checkForCANDriveEncoders()) {
-            //SmartDashboard.putNumber("leftsideEncoder", RobotMap.leftsideCANEncoder.getPosition());
-            //SmartDashboard.putNumber("rightsideEncoder", RobotMap.rightsideCANEncoder.getPosition());
+            SmartDashboard.putNumber("leftsideEncoder", RobotMap.leftsideCANEncoder.getPosition());
+            SmartDashboard.putNumber("rightsideEncoder", RobotMap.rightsideCANEncoder.getPosition());
         }
-        /*SmartDashboard.putNumber("rightsideEncoderInFeet", getRightSideDistance());
+        SmartDashboard.putNumber("rightsideEncoderInFeet", getRightSideDistance());
         SmartDashboard.putNumber("leftsideEncoderInFeet", getLeftSideDistance());
         SmartDashboard.putNumber("NavX Heading", getRealAngle());
        
@@ -98,14 +95,14 @@ public class DriveSubsystem extends Subsystem {
         SmartDashboard.putNumber("leftsideEncoderInFeet", getLeftSideDistance());
         
         SmartDashboard.putNumber("habDriveMotorPower", RobotMap.habDriveMotor.get());
-        */
         if (RobotMap.driveSubsystemMaxLeftA != null) {
             //SmartDashboard.putNumber("leftDriveMotorPower", RobotMap.driveSubsystemMaxLeftA.get());
             //SmartDashboard.putNumber("rightDriveMotorPower", RobotMap.driveSubsystemMaxRightA.get());
         }
+        */
     }
 
-    double ticsToFeet(double tics) { 
+    double canEncoderTicsToFeet(double tics) {
             // turning the encoder readings from tics to feet
             double inches = tics / 0.583;
             double feet = inches / 12;
@@ -114,10 +111,10 @@ public class DriveSubsystem extends Subsystem {
 
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
+
     /**
      * drive the robot. positive Y is forward, positive X is to the right
      */
-
     public void arcadeDrive (double y, double x) {
         //sends values to motor
         //!!! Make sure robot is in open area, drive carefully
@@ -142,7 +139,6 @@ public class DriveSubsystem extends Subsystem {
     
     private double getSpeedModifier() {	// TODO Tune me!!
 		return 1.0;
-		
 	}
 
     public void autoDriveTank(double left, double right) {
@@ -207,7 +203,7 @@ public class DriveSubsystem extends Subsystem {
 	public double changeAutomaticHeading(double changeAngle) {
 		automaticHeading = automaticHeading + changeAngle;
 		automaticHeading = normalizeAngle(automaticHeading);
-		logger.info("Changing auto heading to" +  automaticHeading);
+		logger.info("Changing auto heading to {}", automaticHeading);
 		return automaticHeading;
 	}
 	
@@ -262,7 +258,7 @@ public class DriveSubsystem extends Subsystem {
         if(checkForCANDriveEncoders()) {
             double tics = RobotMap.leftsideCANEncoder.getPosition();
             double howfarwehavemoved = tics - leftEncoderZeroValue;
-            double feet = ticsToFeet(howfarwehavemoved);
+            double feet = canEncoderTicsToFeet(howfarwehavemoved);
             return feet;
         } else {
             return(0);
@@ -273,7 +269,7 @@ public class DriveSubsystem extends Subsystem {
         if(checkForCANDriveEncoders()) {
             double tics = RobotMap.rightsideCANEncoder.getPosition();
             double howfarwehavemoved = tics - rightEncoderZeroValue;
-            double feet = ticsToFeet(-howfarwehavemoved);
+            double feet = canEncoderTicsToFeet(-howfarwehavemoved);
             return feet;
         } else  {
             return(0);

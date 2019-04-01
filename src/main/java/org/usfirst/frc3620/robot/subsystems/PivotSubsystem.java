@@ -63,9 +63,6 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
 
         SmartDashboard.putBoolean("pivotLimitSwitch", isTopPivotLimitDepressed());
 
-        if(checkForPivotEncoder()) {
-            //SmartDashboard.putNumber("pivotAngleInTics", pivotEncoder.getPosition());
-        }
         SmartDashboard.putNumber("pivotAngleInDegrees", getPivotAngle());
         SmartDashboard.putNumber("pivotDesiredAngle", desiredAngle);
         SmartDashboard.putBoolean("pivotEncoderIsValid", encoderisvalid);
@@ -183,55 +180,21 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
             pivotMove(PIDpower/2); 
         }
     }
-   
-       
-        
 
+    public double calculatePivotAngle(DesiredAngle desiredAngle){
+        switch (desiredAngle) {
+            case Bottom:
+                return SETANGLE_BOTTOM;
+            case Middle:
+                return SETANGLE_MIDDLE;
+            case Top:
+                return SETANGLE_TOP;
+            default:
+                return SETANGLE_BOTTOM;
 
-        public double calculatePivotAngle(DesiredAngle desiredAngle){
-            switch (desiredAngle) {
-                case Bottom:
-                    return SETANGLE_BOTTOM;
-                case Middle:
-                    return SETANGLE_MIDDLE;
-                case Top:
-                    return SETANGLE_TOP;
-                default:
-                    return SETANGLE_BOTTOM;
-               
-            }
-              
         }
 
-        private void TellPivotAngleBottom(){
-            double currentAngle = getPivotAngle();
-            if (currentAngle == SETANGLE_BOTTOM){
-                logger.info("BottomPivot Set");
-            } else {
-                logger.info("Not Bottom");
-            }
-        }
-
-        private void TellPivotAngleMiddle(){
-            double currentAngle = getPivotAngle();
-            if (currentAngle == SETANGLE_MIDDLE){
-                logger.info("MiddlePivot Set");
-            } else {
-                logger.info("Not Middle");
-            }
-        }
-
-        
-        private void TellPivotAngleTop(){
-            double currentAngle = getPivotAngle();
-            if (currentAngle == SETANGLE_TOP){
-                logger.info("TopPivot");
-            } else {
-                logger.info("Not Top");
-            }
-        }
-
-
+    }
 
     private void periodicManualMode(){
         double yPos = Robot.oi.getClimberVerticalJoystick();

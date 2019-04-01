@@ -91,7 +91,7 @@ public class CANDeviceFinder {
         void report() {
             for (int id: idsPresent) {
                 int deviceId = extractDeviceId(id);
-                deviceSet.add(new CANDeviceId(canDeviceType, deviceId));
+                deviceSet.add(new CANDeviceId(canDeviceType, deviceId));//NOPMD
             }
         }
     }
@@ -187,7 +187,7 @@ public class CANDeviceFinder {
         try {
             Thread.sleep(200);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            e.printStackTrace(); // NOPMD
         }
 
         for (CanFinder finder: finders) {
@@ -205,7 +205,7 @@ public class CANDeviceFinder {
             CANDeviceType canDeviceType = canDeviceId.getDeviceType();
             Set<Integer> deviceNumberSet = byDeviceType.get(canDeviceType);
             if (deviceNumberSet == null) {
-                deviceNumberSet = new TreeSet<>();
+                deviceNumberSet = new TreeSet<>();//NOPMD
                 byDeviceType.put(canDeviceType, deviceNumberSet);
             }
             deviceNumberSet.add(canDeviceId.getDeviceNumber());

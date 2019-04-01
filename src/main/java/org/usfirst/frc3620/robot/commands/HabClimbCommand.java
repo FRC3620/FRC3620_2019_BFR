@@ -4,9 +4,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import org.slf4j.Logger;
 import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
-import org.usfirst.frc3620.misc.RobotMode;
 import org.usfirst.frc3620.robot.Robot;
-import org.usfirst.frc3620.robot.subsystems.DriveSubsystem;
 import org.usfirst.frc3620.robot.subsystems.PivotSubsystem;
 import org.usfirst.frc3620.robot.subsystems.PivotSubsystem.PivotMode;
 

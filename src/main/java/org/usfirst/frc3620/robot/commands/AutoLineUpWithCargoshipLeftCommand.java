@@ -13,12 +13,9 @@ import org.usfirst.frc3620.logger.EventLogging.Level;
 import org.usfirst.frc3620.misc.AverageJoePIDOutput;
 import org.usfirst.frc3620.misc.AverageJoePIDSource;
 import org.usfirst.frc3620.robot.Robot;
-import org.usfirst.frc3620.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.PIDController;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class AutoLineUpWithCargoshipLeftCommand extends Command {
   
