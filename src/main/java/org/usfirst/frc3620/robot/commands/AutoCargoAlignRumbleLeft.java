@@ -60,7 +60,6 @@ public class AutoCargoAlignRumbleLeft extends Command {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
       requires(Robot.driveSubsystem);
-  
     }
     
     
@@ -73,13 +72,6 @@ public class AutoCargoAlignRumbleLeft extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-      weAreDone = false;
-      
-      if(Robot.visionSubsystem.getRightTargetPresent() == false){
-        weAreDone = true;
-        
-        return;
-      }
       double horizontal = Robot.oi.getRightHorizontalJoystickSquared();
       double vertical = Robot.oi.getLeftVerticalJoystickSquared();
       Robot.driveSubsystem.arcadeDrive(-vertical, horizontal);
@@ -94,19 +86,20 @@ public class AutoCargoAlignRumbleLeft extends Command {
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
       // check to see if execute() thought we should be done
-      if(weAreDone) {
+     /* if(weAreDone) {
         return true;
-      }
-      if (Math.abs(Robot.visionSubsystem.getLeftTargetYaw()) < 20){
-
-        driverRumbleCommand.start();
-        operatorRumbleCommand.start();
+      } */
+      if(Robot.visionSubsystem.getLeftTargetYaw() == 0){
+        //And yes... I do want the command to keep running until
+        // the driver clicks it off.
         return false;
-      } else {
-        return true;
       }
+      else if (Math.abs(Robot.visionSubsystem.getLeftTargetYaw()) < 20){
+        driverRumbleCommand.start();
+        operatorRumbleCommand.start(); 
+      }
+      return false;
     }
-
     // Called once after isFinished returns true
     protected void end() {
       logger.info("AutoLineUpWithCargoshipCommand end");
