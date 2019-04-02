@@ -73,13 +73,6 @@ public class AutoCargoAlignRumbleRight extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-      weAreDone = false;
-      
-      if(Robot.visionSubsystem.getRightTargetPresent() == false){
-        weAreDone = true;
-        
-        return;
-      }
       double horizontal = Robot.oi.getRightHorizontalJoystickSquared();
       double vertical = Robot.oi.getLeftVerticalJoystickSquared();
       Robot.driveSubsystem.arcadeDrive(-vertical, horizontal);
@@ -94,16 +87,16 @@ public class AutoCargoAlignRumbleRight extends Command {
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
       // check to see if execute() thought we should be done
-      if(weAreDone) {
-        return true;
+      if(Robot.visionSubsystem.getRightTargetYaw() == 0){
+        return false;
       }
-      if (Math.abs(Robot.visionSubsystem.getRightTargetYaw()) < 20){
+     else if (Math.abs(Robot.visionSubsystem.getRightTargetYaw()) < 20){
 
         driverRumbleCommand.start();
         operatorRumbleCommand.start();
         return false;
       } else {
-        return true;
+        return false;
       }
     }
 
