@@ -1,7 +1,5 @@
 package org.usfirst.frc3620.logger;
 
-import org.usfirst.frc3620.logger.FastDataLoggerCollections;
-
 import java.util.Date;
 
 public class RandomFastLogger {

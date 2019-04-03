@@ -4,9 +4,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import org.slf4j.Logger;
 import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
-import org.usfirst.frc3620.misc.RobotMode;
 import org.usfirst.frc3620.robot.Robot;
-import org.usfirst.frc3620.robot.subsystems.DriveSubsystem;
 import org.usfirst.frc3620.robot.subsystems.PivotSubsystem;
 import org.usfirst.frc3620.robot.subsystems.PivotSubsystem.PivotMode;
 
@@ -14,7 +12,8 @@ import org.usfirst.frc3620.robot.subsystems.PivotSubsystem.PivotMode;
  *
  */
 public class HabClimbCommand extends Command {
-	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
+    Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
+    HabInstrumentationCommand habPrintCommand = new HabInstrumentationCommand();
 	
     public HabClimbCommand() {
         requires(Robot.driveSubsystem);
@@ -26,6 +25,7 @@ public class HabClimbCommand extends Command {
     protected void initialize() {
         Robot.pivotSubsystem.setCurrentPivotMode(PivotSubsystem.PivotMode.HAB);
         Robot.liftSubsystem.setManualMode();
+        habPrintCommand.start();
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -55,6 +55,7 @@ public class HabClimbCommand extends Command {
         Robot.driveSubsystem.stopDrive();
         Robot.driveSubsystem.habDrive(0);
         Robot.liftSubsystem.setManualMode();
+        habPrintCommand.cancel();
     }
 
     // Called when another command which requires one or more of the same
@@ -66,5 +67,6 @@ public class HabClimbCommand extends Command {
         Robot.driveSubsystem.stopDrive();
         Robot.driveSubsystem.habDrive(0);
         Robot.liftSubsystem.setManualMode();
+        habPrintCommand.cancel();
     }
 }

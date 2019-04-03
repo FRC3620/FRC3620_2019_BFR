@@ -7,7 +7,7 @@ import org.slf4j.Logger;
 import org.usfirst.frc3620.logger.EventLogging.Level;
 
 abstract public class DataLoggerBase implements IDataLogger {
-	boolean started = false;
+	boolean started /* = false */;
 
 	List<NamedDataProvider> namedDataProviders = new ArrayList<>();
 

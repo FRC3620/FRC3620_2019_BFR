@@ -13,12 +13,9 @@ import org.usfirst.frc3620.logger.EventLogging.Level;
 import org.usfirst.frc3620.misc.AverageJoePIDOutput;
 import org.usfirst.frc3620.misc.AverageJoePIDSource;
 import org.usfirst.frc3620.robot.Robot;
-import org.usfirst.frc3620.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.PIDController;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class AutoLineUpWithCargoshipLeftCommand extends Command {
   
@@ -51,7 +48,8 @@ public class AutoLineUpWithCargoshipLeftCommand extends Command {
     PIDController pidDriveStraight = new PIDController(kPDriveStraight, kIDriveStraight, kDDriveStraight, kFDriveStraight, new DriveStraightSource(), new DriveStraightOutput());
     PIDController pidLineUp = new PIDController(kPLineUp, kILineUp, kDLineUp, kFLineUp, new LineUpSource(), new LineUpOutput());
 
-    Command rumbleCommand = new RumbleCommand(Robot.rumbleSubsystemDriver);
+    Command driverRumbleCommand = new RumbleCommand(Robot.rumbleSubsystemDriver);
+    Command operatorRumbleCommand = new RumbleCommand(Robot.rumbleSubsystemOperator);
     
   
     public AutoLineUpWithCargoshipLeftCommand() {
@@ -72,6 +70,7 @@ public class AutoLineUpWithCargoshipLeftCommand extends Command {
     // Called just before this Command runs the first time
     protected void initialize() {
       logger.info("AutoLineUpWithCargoshipCommand start");
+
       Robot.visionSubsystem.turnLightSwitchOn();
       double currentNavXHeading = Robot.driveSubsystem.getRealAngle();
       if(currentNavXHeading > 270){
@@ -115,19 +114,24 @@ public class AutoLineUpWithCargoshipLeftCommand extends Command {
       if(weAreDone) {
         return true;
       }
+      if(Math.abs(Robot.visionSubsystem.getLeftTargetYaw()) < 20){
+        driverRumbleCommand.start();
+        operatorRumbleCommand.start();
         return false;
-    /*  if (Robot.visionSubsystem.getLeftTargetYaw() != 0){
-
-        rumbleCommand.start();
+      } else if(Math.abs(Robot.visionSubsystem.getLeftTargetYaw()) >= 20){
+        driverRumbleCommand.start();
         return false;
-      } else {
+      }
+        else {
         return true;
-      } */
+      } 
     }
+    
 
     // Called once after isFinished returns true
     protected void end() {
       logger.info("AutoLineUpWithCargoshipCommand end");
+      Robot.visionSubsystem.turnLightSwitchOff();
       
     //  pidDriveStraight.disable();
       pidLineUp.disable();

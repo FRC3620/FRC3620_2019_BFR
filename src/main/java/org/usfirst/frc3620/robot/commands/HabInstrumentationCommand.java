@@ -36,6 +36,7 @@ public class HabInstrumentationCommand extends Command {
             dataLogger.addDataProvider("liftHeight", () -> Robot.liftSubsystem.getLiftHeight());
         }
         if (RobotMap.liftSubsystemMax != null) {
+            dataLogger.addDataProvider("liftMotorRequestedOutput", () -> RobotMap.liftSubsystemMax.get());
             dataLogger.addDataProvider("liftMotorAppliedOutput", () -> RobotMap.liftSubsystemMax.getAppliedOutput());
             dataLogger.addDataProvider("liftMotorCurrent", () -> RobotMap.liftSubsystemMax.getOutputCurrent());
         }
@@ -51,18 +52,10 @@ public class HabInstrumentationCommand extends Command {
             dataLogger.addDataProvider("pivotMotor2Current", () -> RobotMap.pivotSubsystemMax2.getOutputCurrent());
         }
 
-        dataLogger.addDataProvider("RIO X", () -> RobotMap.accel.getX());
-        dataLogger.addDataProvider("RIO Y", () -> RobotMap.accel.getY());
-        dataLogger.addDataProvider("RIO Z", () -> RobotMap.accel.getZ());
-
         if(Robot.driveSubsystem.ahrs!=null) {
             dataLogger.addDataProvider("NAV pitch", () -> Robot.driveSubsystem.ahrs.getPitch());
             dataLogger.addDataProvider("NAV roll", () -> Robot.driveSubsystem.ahrs.getRoll());
             dataLogger.addDataProvider("NAV angle", () -> Robot.driveSubsystem.ahrs.getAngle());
-
-            dataLogger.addDataProvider("NAV x acc", () -> Robot.driveSubsystem.ahrs.getRawAccelX());
-            dataLogger.addDataProvider("NAV y acc", () -> Robot.driveSubsystem.ahrs.getRawAccelY());
-            dataLogger.addDataProvider("NAV z acc", () -> Robot.driveSubsystem.ahrs.getRawAccelZ());
         }
 
         dataLogger.start();

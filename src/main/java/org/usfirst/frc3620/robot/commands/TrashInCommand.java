@@ -24,8 +24,6 @@ public class TrashInCommand extends Command {
     @Override
     protected void initialize() {
         EventLogging.commandMessage(logger);
-       /* timer.reset();
-        timer.start(); */
     }
 
     // Called repeatedly when this Command is scheduled to run

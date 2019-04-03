@@ -101,13 +101,12 @@ public class EventLogging {
      */
     public static final String exceptionToString(Throwable t) {
         final StackTraceElement[] stackTrace = t.getStackTrace();
-        final StringBuilder message = new StringBuilder();
+        final StringBuilder message = new StringBuilder(1000);
         final String separator = "===\n";
         final Throwable cause = t.getCause();
 
-        message.append("Exception of type ").append(t.getClass().getName())
-                .append('\n');
-        message.append("Message: ").append(t.getMessage()).append('\n');
+        message.append("Exception of type ").append(t.getClass().getName());
+        message.append("\nMessage: ").append(t.getMessage()).append('\n');
         message.append(separator);
         message.append("   ").append(stackTrace[0]).append('\n');
 
@@ -117,13 +116,13 @@ public class EventLogging {
 
         if (cause != null) {
             final StackTraceElement[] causeTrace = cause.getStackTrace();
-            message.append(" \t\t").append("Caused by ")
-                    .append(cause.getClass().getName()).append('\n');
-            message.append(" \t\t").append("Because: ")
-                    .append(cause.getMessage()).append('\n');
-            message.append(" \t\t   ").append(causeTrace[0]).append('\n');
-            message.append(" \t\t \t").append(causeTrace[2]).append('\n');
-            message.append(" \t\t \t").append(causeTrace[3]);
+            message.append(" \t\tCaused by ")
+                    .append(cause.getClass().getName());
+            message.append("\n\t\tBecause: ")
+                    .append(cause.getMessage());
+            message.append("\n\t\t   ").append(causeTrace[0]);
+            message.append("\n\t\t\t").append(causeTrace[2]);
+            message.append("\n\t\t\t").append(causeTrace[3]);
         }
 
         return message.toString();
@@ -243,12 +242,12 @@ public class EventLogging {
             // DateFormat objects are not thread-safe....
             synchronized (df) {
                 builder.append(df.format(new Date(record.getMillis())))
-                        .append(" ");
+                        .append(' ');
             }
-            builder.append("[").append(record.getLoggerName()).append("] ");
+            builder.append('[').append(record.getLoggerName()).append("] ");
             builder.append(record.getLevel()).append(" - ");
             builder.append(formatMessage(record));
-            builder.append("\n");
+            builder.append('\n');
             return builder.toString();
         }
 

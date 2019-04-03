@@ -10,8 +10,6 @@ import org.usfirst.frc3620.misc.ColorTimers;
 
 import java.util.HashMap;
 import java.util.ArrayList;
-import java.util.Map;
-import java.io.Console;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.Timer;
@@ -32,7 +30,7 @@ public class LightSubsystem extends Subsystem {
     Boolean afterInitialized = false;
     ColorTimers colorToRemove = null;
 
-    ArrayList<ColorTimers> colorTimers = new ArrayList<ColorTimers>();
+    ArrayList<ColorTimers> colorTimers = new ArrayList<>();
     DriverStation.Alliance teamColor = DriverStation.getInstance().getAlliance();
     
     /**
@@ -41,7 +39,7 @@ public class LightSubsystem extends Subsystem {
      * to remove a light effect, use lightsPriority.remove([PRIORITY], Color.[COLOR].value)
      * @see Check BlinkinDict.java for more info on color names
      */
-    HashMap<Integer, Double> lightsPriority = new HashMap<Integer, Double>();
+    HashMap<Integer, Double> lightsPriority = new HashMap<>();
     
     private final SpeedController lightPWM = RobotMap.lightSubsystemLightPWM;
 

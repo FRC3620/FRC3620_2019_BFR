@@ -11,7 +11,6 @@ import org.usfirst.frc3620.logger.DataLogger;
 import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
 import org.usfirst.frc3620.misc.RobotMode;
-import org.usfirst.frc3620.misc.OperatorView;
 import org.usfirst.frc3620.robot.commands.*;
 import org.usfirst.frc3620.robot.subsystems.*;
 
@@ -43,13 +42,11 @@ public class Robot extends TimedRobot {
     public static RumbleSubsystem rumbleSubsystemOperator;
     public static HatchSubsystem hatchSubsystem;
     public static PivotSubsystem pivotSubsystem;
-    public static LineSubsystem lineSubsystem;
     public static VisionSubsystem visionSubsystem;
 
     // data logging
     public static DataLogger robotDataLogger;
-    private static Command leftLineWatcher;
-    private static Command rightLineWatcher;
+    public static DriverStation driverStation;
 
     /**
      * This function is run when the robot is first started up and should be
@@ -59,6 +56,7 @@ public class Robot extends TimedRobot {
     public void robotInit() {
 		// set up logging
         logger = EventLogging.getLogger(Robot.class, Level.INFO);
+        driverStation = driverStation.getInstance();
         
         // set up hardware
         RobotMap.init();
@@ -74,7 +72,6 @@ public class Robot extends TimedRobot {
         rumbleSubsystemOperator = new RumbleSubsystem();
         hatchSubsystem = new HatchSubsystem();
         pivotSubsystem = new PivotSubsystem();
-        lineSubsystem = new LineSubsystem();
         visionSubsystem = new VisionSubsystem();
         
         // OI must be constructed after subsystems. If the OI creates Commands
@@ -83,22 +80,17 @@ public class Robot extends TimedRobot {
         // pointers. Bad news. Don't move it.
         oi = new OI();
 
-        leftLineWatcher = new LineDetectionCommand(LineSensor.LEFT_SENSOR);
-        leftLineWatcher.start(); 
-        rightLineWatcher = new LineDetectionCommand(LineSensor.RIGHT_SENSOR);
-        rightLineWatcher.start();
-
           // Add commands to Autonomous Sendable Chooser
         chooser.addDefault("Autonomous Command", new AutonomousCommand());
-        SmartDashboard.putData("Auto mode", chooser);
+        //SmartDashboard.putData("Auto mode", chooser);
 
         // get data logging going
         robotDataLogger = new DataLogger();
         new RobotDataLogger(robotDataLogger, RobotMap.canDeviceFinder);
         robotDataLogger.setInterval(1.000);
         robotDataLogger.start();
-        OperatorView operatorView = new OperatorView();
-        operatorView.operatorViewInit(RobotMap.amICompBot());
+        //OperatorView operatorView = new OperatorView();
+       // operatorView.operatorViewInit(RobotMap.amICompBot());
     }
 
     /**
@@ -125,9 +117,11 @@ public class Robot extends TimedRobot {
         autonomousCommand = chooser.getSelected();
         // schedule the autonomous command (example)
         if (autonomousCommand != null) autonomousCommand.start();
+        visionSubsystem.turnLightSwitchOn();
     }
 
     /**
+     * 
      * This function is called periodically during autonomous
      */
     @Override
@@ -148,13 +142,8 @@ public class Robot extends TimedRobot {
         processRobotModeChange(RobotMode.TELEOP);
         logMatchInfo();
 
-        if(leftLineWatcher != null)
-            leftLineWatcher.start();
-
-        if(rightLineWatcher != null)
-            rightLineWatcher.start();
-   
-        driveSubsystem.clearReverseMode();    
+        driveSubsystem.clearReverseMode();
+        visionSubsystem.turnLightSwitchOff();
 
     }
 
@@ -197,12 +186,6 @@ public class Robot extends TimedRobot {
 	void processRobotModeChange(RobotMode newMode) {
 		logger.info("Switching from {} to {}", currentRobotMode, newMode);
 		
-		if (currentRobotMode == RobotMode.INIT) {
-			// RobotMap.checkTheCANBus();
-		}
-        
-     
-        
 		previousRobotMode = currentRobotMode;
 		currentRobotMode = newMode;
 
@@ -232,12 +215,13 @@ public class Robot extends TimedRobot {
 	}
 	
 	void updateDashboard() {
-        SmartDashboard.putData("Turn off Operator Rumble", new RumbleCommand(rumbleSubsystemOperator, true));
-        SmartDashboard.putData("Turn on Operator Rumble", new RumbleCommand(rumbleSubsystemOperator, false));
-        SmartDashboard.putData("Turn off Driver Rumble", new RumbleCommand(rumbleSubsystemDriver, true));
-        SmartDashboard.putData("Turn on Driver Rumble", new RumbleCommand(rumbleSubsystemDriver, false));
+        //SmartDashboard.putData("Turn off Operator Rumble", new RumbleCommand(rumbleSubsystemOperator, true));
+        //SmartDashboard.putData("Turn on Operator Rumble", new RumbleCommand(rumbleSubsystemOperator, false));
+        //SmartDashboard.putData("Turn off Driver Rumble", new RumbleCommand(rumbleSubsystemDriver, true));
+        //SmartDashboard.putData("Turn on Driver Rumble", new RumbleCommand(rumbleSubsystemDriver, false));
 		//SmartDashboard.putNumber("driver y joystick", -Robot.m_oi.driveJoystick.getRawAxis(1));
-		//SmartDashboard.putNumber("driver x joystick", Robot.m_oi.driveJoystick.getRawAxis(4));
+        //SmartDashboard.putNumber("driver x joystick", Robot.m_oi.driveJoystick.getRawAxis(4));
+        SmartDashboard.putNumber("Match time", (int) driverStation.getMatchTime());
     }
     
     public static RobotMode getCurrentRobotMode(){

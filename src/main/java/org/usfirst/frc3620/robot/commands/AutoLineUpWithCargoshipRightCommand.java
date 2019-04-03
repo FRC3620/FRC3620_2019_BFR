@@ -13,12 +13,10 @@ import org.usfirst.frc3620.logger.EventLogging.Level;
 import org.usfirst.frc3620.misc.AverageJoePIDOutput;
 import org.usfirst.frc3620.misc.AverageJoePIDSource;
 import org.usfirst.frc3620.robot.Robot;
-import org.usfirst.frc3620.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.PIDController;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 
 public class AutoLineUpWithCargoshipRightCommand extends Command {
   
@@ -33,7 +31,7 @@ public class AutoLineUpWithCargoshipRightCommand extends Command {
     
     static final double kFDriveStraight = 0;
 
-    static final double kPLineUp = .006;
+    static final double kPLineUp = .007;
    
     static final double kILineUp = 0;	
     
@@ -55,7 +53,8 @@ public class AutoLineUpWithCargoshipRightCommand extends Command {
     PIDController pidDriveStraight = new PIDController(kPDriveStraight, kIDriveStraight, kDDriveStraight, kFDriveStraight, new DriveStraightSource(), new DriveStraightOutput());
     PIDController pidLineUp = new PIDController(kPLineUp, kILineUp, kDLineUp, kFLineUp, new LineUpSource(), new LineUpOutput());
 
-    Command rumbleCommand = new RumbleCommand(Robot.rumbleSubsystemDriver);
+    Command driverRumbleCommand = new RumbleCommand(Robot.rumbleSubsystemDriver);
+    Command operatorRumbleCommand = new RumbleCommand(Robot.rumbleSubsystemOperator);
     
   
     public AutoLineUpWithCargoshipRightCommand() {
@@ -76,6 +75,7 @@ public class AutoLineUpWithCargoshipRightCommand extends Command {
     // Called just before this Command runs the first time
     protected void initialize() {
       logger.info("AutoLineUpWithCargoshipCommand start");
+
       Robot.visionSubsystem.turnLightSwitchOn();
       
       double currentNavXHeading = Robot.driveSubsystem.getRealAngle();
@@ -102,7 +102,7 @@ public class AutoLineUpWithCargoshipRightCommand extends Command {
       weAreDone = false;
       //logger.info("fwdStick: {}", fwdStick);
       if(Robot.visionSubsystem.getRightTargetPresent() == false){
-        weAreDone = true;
+        //weAreDone = true;
         
         return;
       }
@@ -119,15 +119,20 @@ public class AutoLineUpWithCargoshipRightCommand extends Command {
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
       // check to see if execute() thought we should be done
-      if(weAreDone) {
+      if(weAreDone == true || Robot.visionSubsystem.getRightTargetYaw() == 0) {
         return true;
       }
-      if (Robot.visionSubsystem.getRightTargetYaw() != 0){
+      if (Math.abs(Robot.visionSubsystem.getRightTargetYaw()) < 20){
 
-        rumbleCommand.start();
+        driverRumbleCommand.start();
+        operatorRumbleCommand.start();
         return false;
-      } else {
-        return true;
+      } 
+      else if(Math.abs(Robot.visionSubsystem.getLeftTargetYaw()) >= 20){
+        driverRumbleCommand.start();
+        return false;
+      }else {
+        return false;
       }
     }
 

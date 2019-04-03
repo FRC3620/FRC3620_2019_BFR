@@ -10,7 +10,6 @@ import org.usfirst.frc3620.robot.RobotMap;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Counter;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /**
  *
  */
@@ -36,25 +35,26 @@ public class IntakeSubsystem extends Subsystem {
     @Override
     public void periodic() {
         // Put code here to be run every loop
-        SmartDashboard.putNumber("Counter Left Sensor", lineSensorCounterL.get());
+        /*SmartDashboard.putNumber("Counter Left Sensor", lineSensorCounterL.get());
         SmartDashboard.putNumber("Counter Right Sensor", lineSensorCounterR.get());
         SmartDashboard.putBoolean("Did we see a line for Left sensor?", readLineSensorL());
         SmartDashboard.putBoolean("Did we see a line for Right sensor?", readLineSensorR());
-        //SmartDashboard.putBoolean("Direct Line Sensor Left input", readLineSensorLDirectly());
-        //SmartDashboard.putBoolean("Direct Line Sensor Right input", readLineSensorRDirectly());
-       // if(readLineSensorLDirectly()){
-      //      resetLineSensorL();
-      //  }
-        /*if(readLineSensorRDirectly()){
+        SmartDashboard.putBoolean("Direct Line Sensor Left input", readLineSensorLDirectly());
+        SmartDashboard.putBoolean("Direct Line Sensor Right input", readLineSensorRDirectly());
+        if(readLineSensorLDirectly()){
+            resetLineSensorL();
+        }
+        if(readLineSensorRDirectly()){
             resetLineSensorR();
-        }*/
+        }
+        */
     }
     
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
     public void intakeIn(double speed){
-        intakeRollerTop.set(-speed);
-        intakeRollerBottom.set(speed);
+        intakeRollerTop.set(-(speed-0.2));
+        intakeRollerBottom.set(speed-0.2);
         intakeRollerMiddle.set(speed);
     }
 
