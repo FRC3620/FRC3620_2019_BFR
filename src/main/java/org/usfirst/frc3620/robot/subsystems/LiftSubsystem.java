@@ -31,7 +31,7 @@ public class LiftSubsystem extends Subsystem implements PIDSource, PIDOutput {
     public static final double SETPOINT_BOTTOM = 0;
     public static final double SETPOINT_CARGO_TRASHIN = 3.25;
     public static final double SETPOINT_CARGO_CARGOSHIP = 18;
-    public static final double SETPOINT_CARGO_ROCKET_MIDDLE = 27.5; //TODO change to 29.5 on comp
+    public static final double SETPOINT_CARGO_ROCKET_MIDDLE = 25; //TODO change to 29.5 on comp
     public static final double SETPOINT_CARGO_ROCKET_TOP = 50;
 
     public static final double SETPOINT_HATCH_BOTTOM = 0;
@@ -284,7 +284,7 @@ public class LiftSubsystem extends Subsystem implements PIDSource, PIDOutput {
                  // set the P, I, D, FF
                  //Base P: 0.04
                 double p = SmartDashboard.getNumber("pivotP", 0.06); //Practice bot 0.06
-                double i = SmartDashboard.getNumber("pivotI", 0.000); //Practice bot 0.0004
+                double i = SmartDashboard.getNumber("pivotI", 0.0003); //Practice bot 0.0004
                 double d = SmartDashboard.getNumber("pivotD", 0.14); //Practice bot 0.12
                 double f = SmartDashboard.getNumber("pivotF", 0);
     
