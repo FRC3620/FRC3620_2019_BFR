@@ -74,6 +74,7 @@ public class OI {
             Button trashIn = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_Y);
             Button habClimbButton = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_LEFT_BUMPER);
             Button middlePos = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_RIGHT_BUMPER);
+            Button topPos = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_RIGHT_STICK);
             Button liftHome = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_A);
             Button lockLiftPinsButton = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_BACK);
             Button cargoHeight = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_START);
@@ -106,6 +107,7 @@ public class OI {
             lockLiftPinsButton.toggleWhenPressed(new LockLiftPinsCommand());
             cargoHeight.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_CARGO_CARGOSHIP, true));
             switchCamera.whenPressed(new SwitchCameraCommand());
+            topPos.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_CARGO_ROCKET_TOP, true));
             //SmartDashboard.putData(new HabInstrumentationCommand());
 
         }
