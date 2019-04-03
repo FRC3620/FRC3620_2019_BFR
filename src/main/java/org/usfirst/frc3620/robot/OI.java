@@ -103,7 +103,7 @@ public class OI {
             inTakeIn.toggleWhenPressed(new IntakeCommand());
             inTakeOut.toggleWhenPressed(new OutTakeCommand());
             trashIn.toggleWhenPressed(new TrashInCommand());
-            hatchExtend.toggleWhenPressed(new HatchExtendCommand());
+            hatchExtend.toggleWhenPressed(new HatchOuttakeCommandGroup());
             hatchCollect.toggleWhenPressed(new HatchCollectCommand());
             habClimbButton.whenPressed(new HabClimbCommand());
             liftHome.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_CARGO_TRASHIN, true));
