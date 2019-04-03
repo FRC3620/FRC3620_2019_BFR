@@ -31,7 +31,7 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
     public enum DesiredAngle{Bottom, Middle, Top}
 
     public static final double SETANGLE_BOTTOM = 80;
-    public static final double SETANGLE_MIDDLE = 70;
+    public static final double SETANGLE_MIDDLE = 63; //TODO set back to 70 for comp
     public static final double SETANGLE_TOP = 5;
 
     private final CANSparkMax pivotMax = RobotMap.pivotSubsystemMax;
@@ -48,7 +48,7 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
         pivotPIDContoller = new PIDController(0, 0, 0, 0, this, this);
         setPIDSourceType(PIDSourceType.kDisplacement);
         pivotPIDContoller.setInputRange(0, 100);
-        pivotPIDContoller.setOutputRange(-0.3, 0.2);
+        pivotPIDContoller.setOutputRange(-1, 1);
     }
 
     @Override
@@ -304,9 +304,9 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
             pivotPIDContoller.setSetpoint(desiredAngle);
             if (!pivotPIDContoller.isEnabled()) {
                 // set the P, I, D, FF
-                double p = SmartDashboard.getNumber("pivotP", 0.01);
+                double p = SmartDashboard.getNumber("pivotP", 0.03);
                 double i = SmartDashboard.getNumber("pivotI", 0);
-                double d = SmartDashboard.getNumber("pivotD", 0);
+                double d = SmartDashboard.getNumber("pivotD", 0.05);
                 double f = SmartDashboard.getNumber("pivotF", 0);
 
                 logger.info("_pivotP={}", p);
