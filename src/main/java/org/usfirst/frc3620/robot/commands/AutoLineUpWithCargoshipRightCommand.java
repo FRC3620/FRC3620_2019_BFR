@@ -27,7 +27,7 @@ public class AutoLineUpWithCargoshipRightCommand extends Command {
    
     static final double kIDriveStraight = 0;	
     
-    static final double kDDriveStraight = 0.01;
+    static final double kDDriveStraight = 0.02;
     
     static final double kFDriveStraight = 0;
 

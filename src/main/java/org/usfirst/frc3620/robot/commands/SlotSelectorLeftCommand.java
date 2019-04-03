@@ -109,7 +109,7 @@ public class SlotSelectorLeftCommand extends Command {
             
           } else if(setSlot == a){
               if(Math.abs(Robot.visionSubsystem.getLeftTargetYaw()) < tolerance){
-                  weAreDone = true;
+                  System.out.println("We're lined up!");
               } else{
                   if(lineUpCommand.isRunning() == true){
                     //Then we're all good...
@@ -121,30 +121,23 @@ public class SlotSelectorLeftCommand extends Command {
               
           }
       }
-      
-      
-      
-      logger.info("sideStick: {}", sideStick);
-      logger.info("NavX heading {}", Robot.driveSubsystem.getAngle());
-      logger.info("Corrected angle {}:", Robot.driveSubsystem.getRealAngle());
-      
-    
-     
+
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
       // check to see if execute() thought we should be done
-      if(weAreDone) {
+     /* if(weAreDone) {
         return true;
-      }
-      if (Robot.visionSubsystem.getLeftTargetYaw() != 0){
+      } */
+      /* if (Robot.visionSubsystem.getLeftTargetYaw() != 0){
 
         rumbleCommand.start();
         return false;
       } else {
         return true;
-      }
+      } */
+      return false;
     }
 
     // Called once after isFinished returns true

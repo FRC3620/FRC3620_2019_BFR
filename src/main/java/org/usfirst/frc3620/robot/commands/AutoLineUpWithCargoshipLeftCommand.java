@@ -22,11 +22,11 @@ public class AutoLineUpWithCargoshipLeftCommand extends Command {
 	
     Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 
-    static final double kPDriveStraight = 0.04;
+    static final double kPDriveStraight = 0.02;
    
     static final double kIDriveStraight = 0;	
     
-    static final double kDDriveStraight = 0.04;
+    static final double kDDriveStraight = 0.02;
     
     static final double kFDriveStraight = 0.0;
 
@@ -73,11 +73,11 @@ public class AutoLineUpWithCargoshipLeftCommand extends Command {
 
       Robot.visionSubsystem.turnLightSwitchOn();
       double currentNavXHeading = Robot.driveSubsystem.getRealAngle();
-      if(currentNavXHeading > 270){
-        pidDriveStraight.setSetpoint(359);
-      } else if(currentNavXHeading < 90){
+      if(currentNavXHeading > 270 || currentNavXHeading < 90){
+        pidDriveStraight.setSetpoint(0);
+      } /* else if(currentNavXHeading < 90){
         pidDriveStraight.setSetpoint(1);
-      } else if(currentNavXHeading > 90 && currentNavXHeading < 270){
+      } */ else if(currentNavXHeading > 90 && currentNavXHeading < 270){
         pidDriveStraight.setSetpoint(180);
       }
         
@@ -99,7 +99,7 @@ public class AutoLineUpWithCargoshipLeftCommand extends Command {
         return;
       } */
       double horizontal = Robot.oi.getRightHorizontalJoystickSquared();
-      Robot.driveSubsystem.arcadeDrive(0, sideStick);
+      Robot.driveSubsystem.arcadeDrive(fwdStick, sideStick);
       logger.info("sideStick: {}", sideStick);
       //logger.info("NavX heading {}", Robot.driveSubsystem.getAngle());
       //logger.info("Corrected angle {}:", Robot.driveSubsystem.getRealAngle());
@@ -114,7 +114,11 @@ public class AutoLineUpWithCargoshipLeftCommand extends Command {
       if(weAreDone) {
         return true;
       }
-      if(Math.abs(Robot.visionSubsystem.getLeftTargetYaw()) < 20){
+      //VVV Change at some point.
+      if(Robot.visionSubsystem.getLeftTargetYaw() == 0){
+        return false;
+      }
+      else if(Math.abs(Robot.visionSubsystem.getLeftTargetYaw()) < 20){
         driverRumbleCommand.start();
         operatorRumbleCommand.start();
         return false;
