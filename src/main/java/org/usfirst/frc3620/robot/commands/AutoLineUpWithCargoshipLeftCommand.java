@@ -115,8 +115,8 @@ public class AutoLineUpWithCargoshipLeftCommand extends Command {
         return true;
       }
       //VVV Change at some point.
-      if(Robot.visionSubsystem.getLeftTargetYaw() == 0){
-        return false;
+      if(Robot.visionSubsystem.getLeftTargetPresent() == false){
+        return true;
       }
       else if(Math.abs(Robot.visionSubsystem.getLeftTargetYaw()) < 20){
         driverRumbleCommand.start();

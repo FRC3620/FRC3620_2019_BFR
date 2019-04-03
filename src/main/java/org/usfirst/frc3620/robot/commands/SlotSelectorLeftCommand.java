@@ -90,6 +90,7 @@ public class SlotSelectorLeftCommand extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+      logger.info("a = {}", a);
       double leftJoy = Robot.oi.getLeftVerticalJoystickSquared();
       double rightJoy = Robot.oi.getRightHorizontalJoystickSquared(); 
       if(a == 0){
@@ -108,8 +109,10 @@ public class SlotSelectorLeftCommand extends Command {
           }
             
           } else if(setSlot == a){
-              if(Math.abs(Robot.visionSubsystem.getLeftTargetYaw()) < tolerance){
+              if(Math.abs(Robot.visionSubsystem.getLeftTargetYaw()) < tolerance && Robot.visionSubsystem.getLeftTargetPresent()){
                   System.out.println("We're lined up!");
+              } else if(Robot.visionSubsystem.getLeftTargetPresent() == false){
+                  Robot.driveSubsystem.arcadeDrive(selectionSpeed, sideStick);
               } else{
                   if(lineUpCommand.isRunning() == true){
                     //Then we're all good...
@@ -142,7 +145,6 @@ public class SlotSelectorLeftCommand extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-      logger.info("AutoLineUpWithCargoshipCommand end");
       
       pidDriveStraight.disable();
      
