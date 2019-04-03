@@ -97,7 +97,7 @@ public class SlotSelectorLeftCommand extends Command {
         if(Robot.visionSubsystem.getLeftTargetPresent()){
             a++;
         } else{
-            Robot.driveSubsystem.arcadeDrive(leftJoy, rightJoy);
+            Robot.driveSubsystem.arcadeDrive(-leftJoy, rightJoy);
         }
       }
       if(a >= 1){
