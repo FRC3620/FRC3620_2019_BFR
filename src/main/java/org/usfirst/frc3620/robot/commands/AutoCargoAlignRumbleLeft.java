@@ -10,15 +10,8 @@ package org.usfirst.frc3620.robot.commands;
 import org.slf4j.Logger;
 import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
-import org.usfirst.frc3620.misc.AverageJoePIDOutput;
-import org.usfirst.frc3620.misc.AverageJoePIDSource;
 import org.usfirst.frc3620.robot.Robot;
-import org.usfirst.frc3620.robot.RobotMap;
-
-import edu.wpi.first.wpilibj.PIDController;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class AutoCargoAlignRumbleLeft extends Command {
   
@@ -60,6 +53,7 @@ public class AutoCargoAlignRumbleLeft extends Command {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
       requires(Robot.driveSubsystem);
+  
     }
     
     
@@ -86,20 +80,18 @@ public class AutoCargoAlignRumbleLeft extends Command {
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
       // check to see if execute() thought we should be done
-     /* if(weAreDone) {
-        return true;
-      } */
       if(Robot.visionSubsystem.getLeftTargetYaw() == 0){
-        //And yes... I do want the command to keep running until
-        // the driver clicks it off.
         return false;
       }
       else if (Math.abs(Robot.visionSubsystem.getLeftTargetYaw()) < 20){
         driverRumbleCommand.start();
-        operatorRumbleCommand.start(); 
+        operatorRumbleCommand.start();
+        return false;
+      } else {
+        return false;
       }
-      return false;
     }
+
     // Called once after isFinished returns true
     protected void end() {
       logger.info("AutoLineUpWithCargoshipCommand end");
