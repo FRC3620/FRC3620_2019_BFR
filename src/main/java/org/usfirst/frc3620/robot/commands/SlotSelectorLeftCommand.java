@@ -75,7 +75,7 @@ public class SlotSelectorLeftCommand extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-      logger.info("AutoLineUpWithCargoshipCommand start");
+      
       Robot.visionSubsystem.turnLightSwitchOn();
       if(Robot.visionSubsystem.getLeftTargetPresent()){
         a = 1;
