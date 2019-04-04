@@ -150,7 +150,7 @@ public class VisionSubsystem extends Subsystem implements PIDSource, PIDOutput {
 
   public double getRightTargetYaw(){
     if (rightIsThereTarget.getBoolean(false)){
-      double yaw = rightTargetYaw.getDouble(0);
+      double yaw = -rightTargetYaw.getDouble(0);
       return yaw;
     }
     logger.info("No right target detected, returning yaw = 0");
@@ -181,7 +181,7 @@ public class VisionSubsystem extends Subsystem implements PIDSource, PIDOutput {
 
   public double getLeftTargetYaw(){
     if (leftIsThereTarget.getBoolean(false)){
-      double yaw = -leftTargetYaw.getDouble(0);
+      double yaw = leftTargetYaw.getDouble(0);
       return yaw;
     }
     logger.info("No left target detected, returning yaw = 0");
