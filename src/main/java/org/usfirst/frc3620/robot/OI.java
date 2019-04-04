@@ -85,8 +85,8 @@ public class OI {
             Button lockLiftPinsButton = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_BACK);
             Button cargoHeight = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_START);
 
-            driverDpad.right().whileHeld(new AutoLineUpWithCargoshipRightCommand());
-            driverDpad.left().whileHeld(new AutoLineUpWithCargoshipLeftCommand());
+            driverDpad.right().toggleWhenPressed(new SlotSelectorRightCommand(2));
+            driverDpad.left().toggleWhenPressed(new SlotSelectorLeftCommand(2));
 
             Button trashLeftButton = new TriggerButton(operatorJoystick, true, 0.6);
             trashLeftButton.whileHeld(new TrashLeftCommand());
@@ -127,7 +127,6 @@ public class OI {
             SmartDashboard.putData("Rumble left", new RumbleCommand(Robot.rumbleSubsystemDriver, Hand.LEFT, 0.2, 3.0));
 
             SmartDashboard.putData("AutonomousAlign from 45", new AutoAlignmentTemplate(Robot.visionSubsystem.getFrontTargetDistance(), Robot.visionSubsystem.getFrontTargetAngle()));
-            SmartDashboard.putData("AlignToPointD", new AlignToPointD());
             SmartDashboard.putData("TrainingPath", new TrainingPath());
             SmartDashboard.putData("CenterOnTarget", new VisionAlignmentCommand());
             SmartDashboard.putData("TapTarget", new TravelAlignPushCommand());

@@ -23,11 +23,11 @@ public class AutoLineUpWithCargoshipRightCommand extends Command {
 	
     Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 
-    static final double kPDriveStraight = 0.0;
+    static final double kPDriveStraight = 0.02;
    
     static final double kIDriveStraight = 0;	
     
-    static final double kDDriveStraight = 0;
+    static final double kDDriveStraight = 0.02;
     
     static final double kFDriveStraight = 0;
 
@@ -39,15 +39,18 @@ public class AutoLineUpWithCargoshipRightCommand extends Command {
     ;
     
     static final double kFLineUp = 0;
+    
 
-    double fwdStick;
+    public double fwdStick;
     double sideStick;
+
+    int setSlot;
 
     boolean weAreDone = false;
 
     
     
-    //PIDController pidDriveStraight = new PIDController(kPDriveStraight, kIDriveStraight, kDDriveStraight, kFDriveStraight, Robot.driveSubsystem.getAhrsPidSource(), new DriveStraightOutput());
+    PIDController pidDriveStraight = new PIDController(kPDriveStraight, kIDriveStraight, kDDriveStraight, kFDriveStraight, new DriveStraightSource(), new DriveStraightOutput());
     PIDController pidLineUp = new PIDController(kPLineUp, kILineUp, kDLineUp, kFLineUp, new LineUpSource(), new LineUpOutput());
 
     Command driverRumbleCommand = new RumbleCommand(Robot.rumbleSubsystemDriver);
@@ -58,10 +61,10 @@ public class AutoLineUpWithCargoshipRightCommand extends Command {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
       requires(Robot.driveSubsystem);
-  /*    pidDriveStraight.setOutputRange(-.5, .5);
+      pidDriveStraight.setOutputRange(-.7, .7);
       pidDriveStraight.setInputRange(0.0f, 360.0f);
-      pidDriveStraight.setContinuous(true); */
-
+      pidDriveStraight.setContinuous(true);
+     
       pidLineUp.setOutputRange(-.5, .5);
       pidLineUp.setInputRange(-90,90);
       pidLineUp.setContinuous(false);
@@ -75,27 +78,37 @@ public class AutoLineUpWithCargoshipRightCommand extends Command {
 
       Robot.visionSubsystem.turnLightSwitchOn();
       
-    /*    pidDriveStraight.setSetpoint(Robot.driveSubsystem.getRealAngle());
+      double currentNavXHeading = Robot.driveSubsystem.getRealAngle();
+      if(currentNavXHeading > 270){
+        pidDriveStraight.setSetpoint(359);
+      } else if(currentNavXHeading < 90){
+        pidDriveStraight.setSetpoint(1);
+      } else if(currentNavXHeading > 90 && currentNavXHeading < 270){
+        pidDriveStraight.setSetpoint(180);
+      }
+     
         pidDriveStraight.reset();
-        pidDriveStraight.enable(); */
-
+        pidDriveStraight.enable();
+    
         pidLineUp.setSetpoint(0);
         pidLineUp.reset();
         pidLineUp.enable();
+      
+       
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
       weAreDone = false;
-      logger.info("fwdStick: {}", fwdStick);
+      //logger.info("fwdStick: {}", fwdStick);
       if(Robot.visionSubsystem.getRightTargetPresent() == false){
         //weAreDone = true;
         
         return;
       }
       double horizontal = Robot.oi.getRightHorizontalJoystickSquared();
-      Robot.driveSubsystem.arcadeDrive(fwdStick, horizontal);
-      //logger.info("sideStick: {}", sideStick);
+      Robot.driveSubsystem.arcadeDrive(-fwdStick, sideStick);
+      logger.info("sideStick: {}", sideStick);
       //logger.info("NavX heading {}", Robot.driveSubsystem.getAngle());
       //logger.info("Corrected angle {}:", Robot.driveSubsystem.getRealAngle());
       
@@ -127,8 +140,7 @@ public class AutoLineUpWithCargoshipRightCommand extends Command {
     protected void end() {
       logger.info("AutoLineUpWithCargoshipCommand end");
       
-      
-    //  pidDriveStraight.disable();
+      pidDriveStraight.disable();
       pidLineUp.disable();
     }
 
@@ -140,14 +152,14 @@ public class AutoLineUpWithCargoshipRightCommand extends Command {
         end();
     }
     
- /*   public class DriveStraightSource extends AverageJoePIDSource{
+    public class DriveStraightSource extends AverageJoePIDSource{
 
       @Override
       public double pidGet() {
-        return 0;
+        return Robot.driveSubsystem.getRealAngle();
       }
   
-    } */
+    }
 
     public class LineUpSource extends AverageJoePIDSource{
 
@@ -164,14 +176,14 @@ public class AutoLineUpWithCargoshipRightCommand extends Command {
   
     }
 
-  /*  public class DriveStraightOutput extends AverageJoePIDOutput{
+    public class DriveStraightOutput extends AverageJoePIDOutput{
 
       @Override
       public void pidWrite(double output) {
         sideStick = output;
       }
 
-    } */
+    } 
      
     public class LineUpOutput extends AverageJoePIDOutput{
 
