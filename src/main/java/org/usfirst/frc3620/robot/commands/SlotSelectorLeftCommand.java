@@ -21,6 +21,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  
 public class SlotSelectorLeftCommand extends Command {
     Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
+    Timer timer = new Timer();  //Never gets old...
 
     static final double kPDriveStraight = 0.0;
    
@@ -75,7 +76,7 @@ public class SlotSelectorLeftCommand extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-      
+      timer.reset();
       Robot.visionSubsystem.turnLightSwitchOn();
       if(Robot.visionSubsystem.getLeftTargetPresent()){
         a = 1;
@@ -96,6 +97,7 @@ public class SlotSelectorLeftCommand extends Command {
       if(a == 0){
         if(Robot.visionSubsystem.getLeftTargetPresent()){
             a++;
+            timer.start();
         } else{
             Robot.driveSubsystem.arcadeDrive(-leftJoy, rightJoy);
         }
@@ -103,16 +105,19 @@ public class SlotSelectorLeftCommand extends Command {
       if(a >= 1){
         if(!(setSlot == a)){
           if(Robot.visionSubsystem.getLeftTargetPresent() == true){
-              Robot.driveSubsystem.arcadeDrive(selectionSpeed, sideStick);
+              Robot.driveSubsystem.arcadeDrive(-leftJoy, sideStick);
           } else if(Robot.visionSubsystem.getLeftTargetPresent() == false){
-              a++;
+              if(timer.get() > 1){
+                timer.reset();
+                a++;
+              }
           }
             
           } else if(setSlot == a){
               if(Math.abs(Robot.visionSubsystem.getLeftTargetYaw()) < tolerance && Robot.visionSubsystem.getLeftTargetPresent()){
                   System.out.println("We're lined up!");
               } else if(Robot.visionSubsystem.getLeftTargetPresent() == false){
-                  Robot.driveSubsystem.arcadeDrive(selectionSpeed, sideStick);
+                  Robot.driveSubsystem.arcadeDrive(-leftJoy, sideStick);
               } else{
                   if(lineUpCommand.isRunning() == true){
                     //Then we're all good...
