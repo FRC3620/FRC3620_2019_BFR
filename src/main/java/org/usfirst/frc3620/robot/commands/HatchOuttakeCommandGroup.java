@@ -1,9 +1,5 @@
 package org.usfirst.frc3620.robot.commands;
 
-import org.usfirst.frc3620.robot.Robot;
-import org.usfirst.frc3620.robot.RobotMap;
-import org.usfirst.frc3620.robot.subsystems.HatchSubsystem;
-
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 public class HatchOuttakeCommandGroup extends CommandGroup{
