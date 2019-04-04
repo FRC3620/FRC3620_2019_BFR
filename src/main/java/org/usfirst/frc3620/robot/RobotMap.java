@@ -20,15 +20,8 @@ import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
 import org.usfirst.frc3620.misc.CANDeviceFinder;
 
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.Solenoid;
-import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.Spark;
-import edu.wpi.first.wpilibj.Compressor;
-import edu.wpi.first.wpilibj.Counter;
 
 import org.usfirst.frc3620.misc.CANDeviceId;
 import org.usfirst.frc3620.misc.CANDeviceId.CANDeviceType;
@@ -114,23 +107,23 @@ import java.util.*;
         requiredDevices.put(new CANDeviceId(CANDeviceType.MAX, 3), "DriveRightSideA");
         requiredDevices.put(new CANDeviceId(CANDeviceType.MAX, 4), "DriveRightSideB");
         if (amICompBot() || canDeviceFinder.isDevicePresent(CANDeviceType.MAX, 1)) {
-            CANSparkMax driveSubsystemMaxLeftA = new CANSparkMax(1, MotorType.kBrushless);
+            driveSubsystemMaxLeftA = new CANSparkMax(1, MotorType.kBrushless);
             resetMaxToKnownState(driveSubsystemMaxLeftA);
-            driveSubsystemMaxLeftA.setOpenLoopRampRate(.7);
+            fixupDriveMax(driveSubsystemMaxLeftA);
             leftsideCANEncoder = driveSubsystemMaxLeftA.getEncoder();
 
-            CANSparkMax driveSubsystemMaxLeftB = new CANSparkMax(2, MotorType.kBrushless);
+            driveSubsystemMaxLeftB = new CANSparkMax(2, MotorType.kBrushless);
             resetMaxToKnownState(driveSubsystemMaxLeftB);
-            driveSubsystemMaxLeftB.setOpenLoopRampRate(.7);
+            fixupDriveMax(driveSubsystemMaxLeftB);
 
-            CANSparkMax driveSubsystemMaxRightA = new CANSparkMax(3, MotorType.kBrushless);
+            driveSubsystemMaxRightA = new CANSparkMax(3, MotorType.kBrushless);
             resetMaxToKnownState(driveSubsystemMaxRightA);
-            driveSubsystemMaxRightA.setOpenLoopRampRate(.7);
+            fixupDriveMax(driveSubsystemMaxRightA);
             rightsideCANEncoder = driveSubsystemMaxRightA.getEncoder();
 
-            CANSparkMax driveSubsystemMaxRightB = new CANSparkMax(4, MotorType.kBrushless);
+            driveSubsystemMaxRightB = new CANSparkMax(4, MotorType.kBrushless);
             resetMaxToKnownState(driveSubsystemMaxRightB);
-            driveSubsystemMaxRightB.setOpenLoopRampRate(.7);
+            fixupDriveMax(driveSubsystemMaxRightB);
 
             groupLeft = new SpeedControllerGroup(driveSubsystemMaxLeftA, driveSubsystemMaxLeftB);
             groupRight = new SpeedControllerGroup(driveSubsystemMaxRightA, driveSubsystemMaxRightB);
@@ -202,10 +195,9 @@ import java.util.*;
         visionSubsystemNightLight = new Relay(0);
 
         // lift motor power is positive going up
-        requiredDevices.put(new CANDeviceId(CANDeviceType.MAX, 6), "IntakeLower");
+        requiredDevices.put(new CANDeviceId(CANDeviceType.MAX, 6), "LiftMax");
         liftSubsystemMax = new CANSparkMax(6, MotorType.kBrushless);
         resetMaxToKnownState(liftSubsystemMax);
-        liftSubsystemMax.setIdleMode(IdleMode.kBrake);
         liftSubsystemMax.setSmartCurrentLimit(80);
 
         liftEncoder = liftSubsystemMax.getEncoder();
@@ -216,7 +208,6 @@ import java.util.*;
         requiredDevices.put(new CANDeviceId(CANDeviceType.MAX, 5), "PivotMAX");
         pivotSubsystemMax = new CANSparkMax(5, MotorType.kBrushless);
         resetMaxToKnownState(pivotSubsystemMax);
-        pivotSubsystemMax.setIdleMode(IdleMode.kBrake);
         pivotSubsystemMax.setOpenLoopRampRate(0.25);
         pivotSubsystemMax.setClosedLoopRampRate(0.25);
 
@@ -228,7 +219,6 @@ import java.util.*;
         //second pivot motor is following the first 
         // but the inverse is set to true because of how they are mounted
         pivotSubsystemMax2.follow(pivotSubsystemMax, true);
-        pivotSubsystemMax2.setIdleMode(IdleMode.kBrake);
         pivotSubsystemMax2.setOpenLoopRampRate(0.25);
         pivotSubsystemMax2.setClosedLoopRampRate(0.25);
 
@@ -276,12 +266,15 @@ import java.util.*;
         missingDeviceIds.removeAll(canDeviceFinder.getDeviceSet());
         if (missingDeviceIds.size() > 0) {
             logger.error ("missing CAN bus devices: {}", missingDeviceIds);
-            String networkOutput = "";
+            StringBuilder networkOutput = new StringBuilder();
             for (CANDeviceId canDeviceId : missingDeviceIds) {
                 logger.info ("{} is {}", canDeviceId, requiredDevices.get(canDeviceId));
-                networkOutput = networkOutput + canDeviceId + " is " + requiredDevices.get(canDeviceId) + ", \n";
+                networkOutput.append (canDeviceId.toString());
+                networkOutput.append (" is ");
+                networkOutput.append (requiredDevices.get(canDeviceId));
+                networkOutput.append (", \n");
             }
-            missingHardwareTableEntry.setString(networkOutput);
+            missingHardwareTableEntry.setString(networkOutput.toString());
         } else {
             missingHardwareTableEntry.setString("No missing hardware");
         }
@@ -291,11 +284,17 @@ import java.util.*;
 
     static void resetMaxToKnownState (CANSparkMax x) {
 		x.setInverted(false);
-        x.setIdleMode(IdleMode.kCoast);
+        x.setIdleMode(IdleMode.kBrake);
         x.setOpenLoopRampRate(1);
         x.setClosedLoopRampRate(1);
         x.setSmartCurrentLimit(50);
         //x.setSecondaryCurrentLimit(100, 0);
+    }
+
+    static void fixupDriveMax (CANSparkMax x) {
+        x.setOpenLoopRampRate(0.7);
+        x.setIdleMode(IdleMode.kCoast);
+        x.setSmartCurrentLimit(65);
     }
 
     static void resetTalonToKnownState (BaseMotorController x) {

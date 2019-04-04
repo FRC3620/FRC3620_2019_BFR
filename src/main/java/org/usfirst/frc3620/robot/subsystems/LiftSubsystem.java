@@ -75,9 +75,6 @@ public class LiftSubsystem extends Subsystem implements PIDSource, PIDOutput {
         SmartDashboard.putBoolean("liftTopLimitSwitch", isTopLimitDepressed());
         SmartDashboard.putBoolean("liftBottomLimitSwitch", isBottomLimitDepressed());
         
-        if(checkForLiftEncoder()) {
-            //SmartDashboard.putNumber("LiftEncoderPosition", liftEncoder.getPosition());
-        }
         SmartDashboard.putNumber("liftEncoderInInches", getLiftHeight());
         if(Robot.getCurrentRobotMode() == RobotMode.TELEOP || Robot.getCurrentRobotMode() == RobotMode.AUTONOMOUS){
             if(isBottomLimitDepressed() && !encoderisvalid){
@@ -212,6 +209,7 @@ public class LiftSubsystem extends Subsystem implements PIDSource, PIDOutput {
     public void liftStop(){
         //liftBrake.set(true);
         liftMax.set(0);
+        SmartDashboard.putNumber("liftSet", 0);
     }
 
     double ticstoinches(double tics) { 

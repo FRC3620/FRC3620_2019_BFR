@@ -47,16 +47,16 @@ public class WaitJustALittle extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        boolean inputState = input.get();
+      //  boolean inputState = input.get();
         if(doingDelay == true){
             if(timer.get() > delay) {
                 return true;
             }
-        } else if(doingDelay == false){
+        } /*else if(doingDelay == false){
             if(inputState == desiredInputState){
                 return true;
             }
-        } 
+        } */
         return false;
     }
 

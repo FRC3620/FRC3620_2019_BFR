@@ -31,7 +31,6 @@ abstract public class FastDataLoggerBase extends DataLoggerBase implements IFast
 
 		timer = new Timer();
 		long interval = Math.max(1, Math.round(intervalInSeconds * 1000));
-		System.out.println("fastlogger interval = " + interval);
 		timer.schedule(new FastLoggerTimerTask(), 0, interval);
 	}
 
@@ -71,7 +70,7 @@ abstract public class FastDataLoggerBase extends DataLoggerBase implements IFast
 
 				isDone = true;
 			} catch (IOException e) {
-				e.printStackTrace();
+				e.printStackTrace(); // NOPMD
 			}
 		} else {
 			logger.warn("no output file yet!");

@@ -23,19 +23,12 @@ public class RobotDataLogger {
 
 		// do not log extra stuff
 		if (canDeviceFinder.isDevicePresent(CANDeviceId.CANDeviceType.PDP, 0)) {
-		 	dataLogger.addDataProvider("pdp.totalCurrent", () -> f2(powerDistributionPanel.getTotalCurrent()));
+			dataLogger.addDataProvider("pdp.totalCurrent", () -> f2(powerDistributionPanel.getTotalCurrent()));
 			dataLogger.addDataProvider("pdp.totalPower", () -> f2(powerDistributionPanel.getTotalPower()));
 			dataLogger.addDataProvider("pdp.totalEnergy", () -> f2(powerDistributionPanel.getTotalEnergy()));
+		}
 			
 			// this needs work!
-
-	/*		robotDataLogger.addDataProvider("drive.l0.pdpcurrent", () -> f2(powerDistributionPanel.getCurrent(13)));
-			robotDataLogger.addDataProvider("drive.l1.pdpcurrent", () -> f2(powerDistributionPanel.getCurrent(14)));
-			robotDataLogger.addDataProvider("drive.l2.pdpcurrent", () -> f2(powerDistributionPanel.getCurrent(15)));
-			robotDataLogger.addDataProvider("drive.r3.pdpcurrent", () -> f2(powerDistributionPanel.getCurrent(2)));
-			robotDataLogger.addDataProvider("drive.r4.pdpcurrent", () -> f2(powerDistributionPanel.getCurrent(1)));
-			robotDataLogger.addDataProvider("drive.r5.pdpcurrent", () -> f2(powerDistributionPanel.getCurrent(0))); */
-		}
 
 		if (RobotMap.driveSubsystemMaxLeftA != null) {
 			dataLogger.addDataProvider("drive.l1.appliedOutput", () -> f2(RobotMap.driveSubsystemMaxLeftA.getAppliedOutput()));
@@ -57,23 +50,30 @@ public class RobotDataLogger {
 					() -> f2(RobotMap.driveSubsystemMaxRightB.getOutputCurrent()));
 		}
 		if (Robot.liftSubsystem.checkForLiftEncoder()) {
-			dataLogger.addDataProvider("liftHeight", () -> Robot.liftSubsystem.getLiftHeight());
+			dataLogger.addDataProvider("liftHeight", () -> f2(Robot.liftSubsystem.getLiftHeight()));
 		}
 		if (RobotMap.liftSubsystemMax != null) {
-			dataLogger.addDataProvider("liftMotorAppliedOutput", () -> RobotMap.liftSubsystemMax.getAppliedOutput());
-			dataLogger.addDataProvider("liftMotorCurrent", () -> RobotMap.liftSubsystemMax.getOutputCurrent());
+			dataLogger.addDataProvider("liftMotorAppliedOutput", () -> f2(RobotMap.liftSubsystemMax.getAppliedOutput()));
+			dataLogger.addDataProvider("liftMotorCurrent", () -> f2(RobotMap.liftSubsystemMax.getOutputCurrent()));
 		}
 		if (Robot.pivotSubsystem.checkForPivotEncoder()) {
-			dataLogger.addDataProvider("pivotAngle", () -> Robot.pivotSubsystem.getPivotAngle());
+			dataLogger.addDataProvider("pivotAngle", () -> f2(Robot.pivotSubsystem.getPivotAngle()));
 		}
 		if (RobotMap.pivotSubsystemMax != null) {
-			dataLogger.addDataProvider("pivotMotorAppliedOutput", () -> RobotMap.pivotSubsystemMax.getAppliedOutput());
-			dataLogger.addDataProvider("pivotMotorCurrent", () -> RobotMap.pivotSubsystemMax.getOutputCurrent());
+			dataLogger.addDataProvider("pivotMotorAppliedOutput", () -> f2(RobotMap.pivotSubsystemMax.getAppliedOutput()));
+			dataLogger.addDataProvider("pivotMotorCurrent", () -> f2(RobotMap.pivotSubsystemMax.getOutputCurrent()));
 		}
 		if (RobotMap.pivotSubsystemMax2 != null) {
-			dataLogger.addDataProvider("pivotMotor2AppliedOutputPower", () -> RobotMap.pivotSubsystemMax2.getAppliedOutput());
-			dataLogger.addDataProvider("pivotMotor2Current", () -> RobotMap.pivotSubsystemMax2.getOutputCurrent());
+			dataLogger.addDataProvider("pivotMotor2AppliedOutputPower", () -> f2(RobotMap.pivotSubsystemMax2.getAppliedOutput()));
+			dataLogger.addDataProvider("pivotMotor2Current", () -> f2(RobotMap.pivotSubsystemMax2.getOutputCurrent()));
 		}
+
+		if(Robot.driveSubsystem.ahrs!=null) {
+			dataLogger.addDataProvider("navxPitch", () -> f2(Robot.driveSubsystem.ahrs.getPitch()));
+			dataLogger.addDataProvider("navxRoll", () -> f2(Robot.driveSubsystem.ahrs.getRoll()));
+			dataLogger.addDataProvider("navxAngle", () -> f2(Robot.driveSubsystem.ahrs.getAngle()));
+		}
+
 
 	}
 

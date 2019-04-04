@@ -66,7 +66,6 @@ public class AlignToPointD extends AbstractPath{
         setDistanceAndIntercept();
         calculateX();
         calculateY();
-        System.out.println("X: " + x + " Y: " + y + " NavXangle: " + Robot.driveSubsystem.getAngle() + "R: " + r + " L or R: " + getLeftOrRightOfTarget());
         return new Waypoint[] {
             new Waypoint(0, 0, Pathfinder.d2r(0)),
             new Waypoint(y, getLeftOrRightOfTarget()*x, -angle*getLeftOrRightOfTarget()),

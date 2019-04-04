@@ -11,7 +11,6 @@ import org.usfirst.frc3620.logger.DataLogger;
 import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
 import org.usfirst.frc3620.misc.RobotMode;
-import org.usfirst.frc3620.misc.OperatorView;
 import org.usfirst.frc3620.robot.commands.*;
 import org.usfirst.frc3620.robot.subsystems.*;
 
@@ -43,13 +42,10 @@ public class Robot extends TimedRobot {
     public static RumbleSubsystem rumbleSubsystemOperator;
     public static HatchSubsystem hatchSubsystem;
     public static PivotSubsystem pivotSubsystem;
-    public static LineSubsystem lineSubsystem;
     public static VisionSubsystem visionSubsystem;
 
     // data logging
     public static DataLogger robotDataLogger;
-    private static Command leftLineWatcher;
-    private static Command rightLineWatcher;
     public static DriverStation driverStation;
 
     /**
@@ -76,7 +72,6 @@ public class Robot extends TimedRobot {
         rumbleSubsystemOperator = new RumbleSubsystem();
         hatchSubsystem = new HatchSubsystem();
         pivotSubsystem = new PivotSubsystem();
-        lineSubsystem = new LineSubsystem();
         visionSubsystem = new VisionSubsystem();
         
         // OI must be constructed after subsystems. If the OI creates Commands
@@ -84,11 +79,6 @@ public class Robot extends TimedRobot {
         // constructed yet. Thus, their requires() statements may grab null
         // pointers. Bad news. Don't move it.
         oi = new OI();
-
-        leftLineWatcher = new LineDetectionCommand(LineSensor.LEFT_SENSOR);
-        leftLineWatcher.start(); 
-        rightLineWatcher = new LineDetectionCommand(LineSensor.RIGHT_SENSOR);
-        rightLineWatcher.start();
 
           // Add commands to Autonomous Sendable Chooser
         chooser.addDefault("Autonomous Command", new AutonomousCommand());
@@ -152,13 +142,7 @@ public class Robot extends TimedRobot {
         processRobotModeChange(RobotMode.TELEOP);
         logMatchInfo();
 
-        if(leftLineWatcher != null)
-            leftLineWatcher.start();
-
-        if(rightLineWatcher != null)
-            rightLineWatcher.start();
-   
-        driveSubsystem.clearReverseMode();    
+        driveSubsystem.clearReverseMode();
         visionSubsystem.turnLightSwitchOff();
 
     }
@@ -202,12 +186,6 @@ public class Robot extends TimedRobot {
 	void processRobotModeChange(RobotMode newMode) {
 		logger.info("Switching from {} to {}", currentRobotMode, newMode);
 		
-		if (currentRobotMode == RobotMode.INIT) {
-			// RobotMap.checkTheCANBus();
-		}
-        
-     
-        
 		previousRobotMode = currentRobotMode;
 		currentRobotMode = newMode;
 

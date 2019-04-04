@@ -100,7 +100,7 @@ public class RumbleCommand extends Command {
     protected void initialize() {
         if (!disableChange) {
             EventLogging.commandMessage(logger);
-            System.out.println("Rumble Init");
+
             //sets the defaults
             if (duration == null) {duration = durationDefault;}
             if (hand == null) {hand = handDefault;}

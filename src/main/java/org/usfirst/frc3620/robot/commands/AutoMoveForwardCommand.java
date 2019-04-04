@@ -24,11 +24,11 @@ public class AutoMoveForwardCommand extends Command implements PIDOutput, PIDSou
 
   Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 
-  static final double kP = 0.004; //2019: 0.004
+  static final double kP = 0.01; //2019: 0.004
 	
-	static final double kI = 0.0004;	//2019: 0.00004
+	static final double kI = 0.000;	//2019: 0.00004
 	
-  static final double kD = 0.015 ; //2019: 0.015
+  static final double kD = 0.0 ; //2019: 0.015
 	
   static final double kF = 0; //2019: 0
 	double sideStick;
@@ -74,6 +74,7 @@ public class AutoMoveForwardCommand extends Command implements PIDOutput, PIDSou
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+
     double vertical = Robot.oi.getLeftVerticalJoystickSquared();
     logger.info("turnValue: {}", sideStick);
     Robot.driveSubsystem.arcadeDrive(-vertical, -sideStick);

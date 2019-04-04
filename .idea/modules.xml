@@ -3,6 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/FRC3620_2019_BFR.iml" filepath="$PROJECT_DIR$/FRC3620_2019_BFR.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/FRC3620_2019_BFR.main.iml" filepath="$PROJECT_DIR$/.idea/modules/FRC3620_2019_BFR.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/FRC3620_2019_BFR.test.iml" filepath="$PROJECT_DIR$/.idea/modules/FRC3620_2019_BFR.test.iml" />
     </modules>
   </component>
 </project>
