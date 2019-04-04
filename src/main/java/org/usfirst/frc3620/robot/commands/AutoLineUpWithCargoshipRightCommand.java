@@ -126,7 +126,7 @@ public class AutoLineUpWithCargoshipRightCommand extends Command {
     // Called once after isFinished returns true
     protected void end() {
       logger.info("AutoLineUpWithCargoshipCommand end");
-      
+      Robot.visionSubsystem.turnLightSwitchOff();
       
     //  pidDriveStraight.disable();
       pidLineUp.disable();
