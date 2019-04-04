@@ -82,10 +82,10 @@ public class OI {
             driverDpad.right().whileHeld(new AutoLineUpWithCargoshipRightCommand());
             driverDpad.left().whileHeld(new AutoLineUpWithCargoshipLeftCommand());
 
-            Button trashLeftButton = new TriggerButton(operatorJoystick, true, 0.6);
+            Button trashLeftButton = new TriggerButton(operatorJoystick, true, 0.2);
             trashLeftButton.whileHeld(new TrashLeftCommand());
 
-            Button trashRightButton = new TriggerButton(operatorJoystick, false, 0.6);
+            Button trashRightButton = new TriggerButton(operatorJoystick, false, 0.2);
             trashRightButton.whileHeld(new TrashRightCommand());
             
             operatorDPad.down().whenPressed(new SetPivotAngleCommand(PivotSubsystem.DesiredAngle.Bottom));
@@ -161,6 +161,14 @@ public class OI {
     public double getLiftManualHorizontalJoystick(){
         //gets value from  axis on (right)LiftJoystick on operatorJoystick.
         return computeDeadband(operatorJoystick.getRawAxis(XBoxConstants.AXIS_RIGHT_X), 0.2);
+    }
+
+    public double getLeftOperatorTrigger(){
+        return computeDeadband(operatorJoystick.getRawAxis(XBoxConstants.AXIS_LEFT_TRIGGER),0.2);
+    }
+
+    public double getRightOperatorTrigger(){
+        return computeDeadband(operatorJoystick.getRawAxis(XBoxConstants.AXIS_RIGHT_TRIGGER), 0.2);
     }
 
 }
