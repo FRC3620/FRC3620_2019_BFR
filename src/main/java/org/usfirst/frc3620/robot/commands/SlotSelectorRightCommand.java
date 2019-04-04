@@ -46,7 +46,7 @@ public class SlotSelectorRightCommand extends Command {
     
     double sideStick;
 
-    int setSlot;
+    public int setSlot;
     int a = 0;
 
     boolean weAreDone = false;

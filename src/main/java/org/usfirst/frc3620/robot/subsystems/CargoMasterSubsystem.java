@@ -3,6 +3,8 @@ package org.usfirst.frc3620.robot.subsystems;
 import org.slf4j.Logger;
 import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
+import org.usfirst.frc3620.robot.commands.SlotSelectorLeftCommand;
+import org.usfirst.frc3620.robot.commands.SlotSelectorRightCommand;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 
@@ -14,10 +16,11 @@ public class CargoMasterSubsystem extends Subsystem {
     
     public int slotSelectSlot;
 
-    boolean runSlotSelectionLeft = false;
-    boolean runSlotSelectionRight = false;
+    public boolean runSlotSelectionLeft = false;
+    public boolean runSlotSelectionRight = false;
 
     SlotSelectorLeftCommand slotSelectorLeft;
+    SlotSelectorRightCommand slotSelectorRight;
     
     @Override
     public void initDefaultCommand() {
@@ -27,7 +30,27 @@ public class CargoMasterSubsystem extends Subsystem {
 
     @Override
     public void periodic() {
-        if()
+        if(runSlotSelectionLeft == true){
+            if(slotSelectorLeft.isRunning()){
+                if(slotSelectSlot == slotSelectorLeft.setSlot){
+                    slotSelectorLeft.close();
+                    slotSelectorLeft = new SlotSelectorLeftCommand(slotSelectSlot);
+                    slotSelectorLeft.start();
+                }
+            } else {
+                slotSelectorLeft.start();
+            }
+        } else if(runSlotSelectionRight == true){
+            if(slotSelectorRight.isRunning()){
+                if(slotSelectSlot == slotSelectorRight.setSlot){
+                    slotSelectorRight.close();
+                    slotSelectorRight = new SlotSelectorRightCommand(slotSelectSlot);
+                    slotSelectorRight.start();
+                }
+            } else {
+                slotSelectorRight.start();
+            }
+        }
     }
 
     // Put methods for controlling this subsystem
