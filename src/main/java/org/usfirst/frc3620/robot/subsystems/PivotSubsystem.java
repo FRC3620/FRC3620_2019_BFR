@@ -41,7 +41,7 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
     private final PIDController pivotPIDContoller;
 
     private boolean encoderisvalid = false;
-    private double desiredAngle = SETANGLE_TOP;
+    public double desiredAngle = SETANGLE_TOP;
     private double PIDpower = 0;
     private PivotMode currentPivotMode = PivotMode.AUTOMAGIC;
 

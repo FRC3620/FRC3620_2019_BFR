@@ -23,6 +23,7 @@ import org.usfirst.frc3620.robot.subsystems.*;
  */
 public class Robot extends TimedRobot {
 
+    Command setPivotAngle;
     Command autonomousCommand;
     SendableChooser<Command> chooser = new SendableChooser<>();
 
@@ -73,6 +74,8 @@ public class Robot extends TimedRobot {
         hatchSubsystem = new HatchSubsystem();
         pivotSubsystem = new PivotSubsystem();
         visionSubsystem = new VisionSubsystem();
+
+        setPivotAngle = new SetPivotAngleCommand(PivotSubsystem.DesiredAngle.Top);
         
         // OI must be constructed after subsystems. If the OI creates Commands
         //(which it very likely will), subsystems are not guaranteed to be
@@ -126,6 +129,18 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void autonomousPeriodic() {
+        if((liftSubsystem.getLiftHeight() > 30 && pivotSubsystem.desiredAngle != pivotSubsystem.SETANGLE_BOTTOM)&& pivotSubsystem.desiredAngle != pivotSubsystem.SETANGLE_CLIMB){
+            if(setPivotAngle.isRunning() == false){
+                setPivotAngle = new SetPivotAngleCommand(PivotSubsystem.DesiredAngle.Bottom);
+                setPivotAngle.start();
+            }
+        } else if((liftSubsystem.getLiftHeight() <= 30 && pivotSubsystem.desiredAngle != pivotSubsystem.SETANGLE_TOP) && pivotSubsystem.desiredAngle != pivotSubsystem.SETANGLE_CLIMB){
+            if(setPivotAngle.isRunning() == false){
+                setPivotAngle = new SetPivotAngleCommand(PivotSubsystem.DesiredAngle.Top);
+                setPivotAngle.start();
+            }
+        }
+
     	beginPeriodic();
         Scheduler.getInstance().run();
         endPeriodic();
@@ -152,6 +167,19 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void teleopPeriodic() {
+        if((liftSubsystem.getLiftHeight() > 30 && pivotSubsystem.desiredAngle != pivotSubsystem.SETANGLE_BOTTOM)&& pivotSubsystem.desiredAngle != pivotSubsystem.SETANGLE_CLIMB){
+            if(setPivotAngle.isRunning() == false){
+                setPivotAngle = new SetPivotAngleCommand(PivotSubsystem.DesiredAngle.Bottom);
+                setPivotAngle.start();
+            }
+        } else if((liftSubsystem.getLiftHeight() <= 30 && pivotSubsystem.desiredAngle != pivotSubsystem.SETANGLE_TOP) && pivotSubsystem.desiredAngle != pivotSubsystem.SETANGLE_CLIMB){
+            if(setPivotAngle.isRunning() == false){
+                setPivotAngle = new SetPivotAngleCommand(PivotSubsystem.DesiredAngle.Top);
+                setPivotAngle.start();
+            }
+        }
+            
+        
     	beginPeriodic();
         Scheduler.getInstance().run();
         endPeriodic();
