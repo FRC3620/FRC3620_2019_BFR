@@ -81,6 +81,7 @@ public class OI {
             Button trashIn = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_Y);
             Button habClimbButton = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_LEFT_BUMPER);
             Button middlePos = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_RIGHT_BUMPER);
+            Button topPos = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_RIGHT_STICK);
             Button liftHome = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_A);
             Button lockLiftPinsButton = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_BACK);
             Button cargoHeight = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_START);
@@ -88,10 +89,10 @@ public class OI {
             driverDpad.right().whileHeld(new AutoLineUpWithCargoshipRightCommand());
             driverDpad.left().whileHeld(new AutoLineUpWithCargoshipLeftCommand());
 
-            Button trashLeftButton = new TriggerButton(operatorJoystick, true, 0.6);
+            Button trashLeftButton = new TriggerButton(operatorJoystick, true, 0.2);
             trashLeftButton.whileHeld(new TrashLeftCommand());
 
-            Button trashRightButton = new TriggerButton(operatorJoystick, false, 0.6);
+            Button trashRightButton = new TriggerButton(operatorJoystick, false, 0.2);
             trashRightButton.whileHeld(new TrashRightCommand());
             
             operatorDPad.down().whenPressed(new SetPivotAngleCommand(PivotSubsystem.DesiredAngle.Bottom));
@@ -113,6 +114,7 @@ public class OI {
             lockLiftPinsButton.toggleWhenPressed(new AutoGetReadyToClimbCommandGroup());
             cargoHeight.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_CARGO_CARGOSHIP, true));
             switchCamera.whenPressed(new SwitchCameraCommand());
+            topPos.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_CARGO_ROCKET_TOP, true));
             //SmartDashboard.putData(new HabInstrumentationCommand());
             getRumbleLeft.toggleWhenPressed(new AutoCargoAlignRumbleLeft());
             getRumbleRight.toggleWhenPressed(new AutoCargoAlignRumbleRight());
@@ -186,6 +188,14 @@ public class OI {
     public double getLiftManualHorizontalJoystick(){
         //gets value from  axis on (right)LiftJoystick on operatorJoystick.
         return computeDeadband(operatorJoystick.getRawAxis(XBoxConstants.AXIS_RIGHT_X), 0.2);
+    }
+
+    public double getLeftOperatorTrigger(){
+        return computeDeadband(operatorJoystick.getRawAxis(XBoxConstants.AXIS_LEFT_TRIGGER),0.2);
+    }
+
+    public double getRightOperatorTrigger(){
+        return computeDeadband(operatorJoystick.getRawAxis(XBoxConstants.AXIS_RIGHT_TRIGGER), 0.2);
     }
 
 }

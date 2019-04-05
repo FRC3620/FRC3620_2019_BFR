@@ -198,6 +198,7 @@ import java.util.*;
         requiredDevices.put(new CANDeviceId(CANDeviceType.MAX, 6), "LiftMax");
         liftSubsystemMax = new CANSparkMax(6, MotorType.kBrushless);
         resetMaxToKnownState(liftSubsystemMax);
+        liftSubsystemMax.setOpenLoopRampRate(0.1);
         liftSubsystemMax.setSmartCurrentLimit(80);
 
         liftEncoder = liftSubsystemMax.getEncoder();
@@ -292,7 +293,7 @@ import java.util.*;
     }
 
     static void fixupDriveMax (CANSparkMax x) {
-        x.setOpenLoopRampRate(0.7);
+        x.setOpenLoopRampRate(0.4);
         x.setIdleMode(IdleMode.kCoast);
         x.setSmartCurrentLimit(65);
     }
