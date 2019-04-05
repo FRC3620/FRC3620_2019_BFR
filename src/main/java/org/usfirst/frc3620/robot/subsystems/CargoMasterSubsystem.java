@@ -19,8 +19,8 @@ public class CargoMasterSubsystem extends Subsystem {
     public boolean runSlotSelectionLeft = false;
     public boolean runSlotSelectionRight = false;
 
-    SlotSelectorLeftCommand slotSelectorLeft;
-    SlotSelectorRightCommand slotSelectorRight;
+    SlotSelectorLeftCommand slotSelectorLeft = new SlotSelectorLeftCommand(1);
+    SlotSelectorRightCommand slotSelectorRight = new SlotSelectorRightCommand(1);
     
     @Override
     public void initDefaultCommand() {
@@ -50,17 +50,13 @@ public class CargoMasterSubsystem extends Subsystem {
             } else {
                 slotSelectorRight.start();
             }
-        } else if((runSlotSelectionLeft == true && runSlotSelectionRight == true) || (runSlotSelectionLeft == false && runSlotSelectionRight == false)){
+        }
+         if(runSlotSelectionLeft == false){
             if(slotSelectorLeft.isRunning()){
                 slotSelectorLeft.close();
             } 
-            if(slotSelectorRight.isRunning()){
-                slotSelectorRight.close();
-            }
-        } else{
-            if(slotSelectorLeft.isRunning()){
-                slotSelectorLeft.close();
-            } 
+        } 
+         if(runSlotSelectionRight == false){
             if(slotSelectorRight.isRunning()){
                 slotSelectorRight.close();
             }

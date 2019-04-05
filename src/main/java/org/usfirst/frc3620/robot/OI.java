@@ -86,8 +86,8 @@ public class OI {
             Button cargoHeight = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_START);
 
             driverDpad.up().whenPressed(new ChangeSlotSelectionLevelCommand(true));
-            driverDpad.right().toggleWhenPressed(new ChangeSlotSelectionSideCommand(true));
-            driverDpad.left().toggleWhenPressed(new ChangeSlotSelectionSideCommand(false));
+            driverDpad.right().toggleWhenPressed(new ChangeSlotSelectionSideCommand(false));
+            driverDpad.left().toggleWhenPressed(new ChangeSlotSelectionSideCommand(true));
             driverDpad.down().whenPressed(new ChangeSlotSelectionLevelCommand(false));
 
             Button trashLeftButton = new TriggerButton(operatorJoystick, true, 0.6);

@@ -53,6 +53,7 @@ public class ChangeSlotSelectionSideCommand extends Command {
         EventLogging.commandMessage(logger);
         Robot.cargoMaster.runSlotSelectionLeft = false;
         Robot.cargoMaster.runSlotSelectionRight = false;
+        Robot.cargoMaster.slotSelectSlot = 1;
     }
 
     // Called when another command which requires one or more of the same
@@ -60,5 +61,8 @@ public class ChangeSlotSelectionSideCommand extends Command {
     @Override
     protected void interrupted() {
         EventLogging.commandMessage(logger);
+        Robot.cargoMaster.runSlotSelectionLeft = false;
+        Robot.cargoMaster.runSlotSelectionRight = false;
+        Robot.cargoMaster.slotSelectSlot = 1;
     }
 }
