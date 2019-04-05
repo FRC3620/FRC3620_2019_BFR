@@ -134,12 +134,7 @@ public class Robot extends TimedRobot {
                 setPivotAngle = new SetPivotAngleCommand(PivotSubsystem.DesiredAngle.Bottom);
                 setPivotAngle.start();
             }
-        } else if((liftSubsystem.getLiftHeight() <= 30 && pivotSubsystem.desiredAngle != pivotSubsystem.SETANGLE_TOP) && pivotSubsystem.desiredAngle != pivotSubsystem.SETANGLE_CLIMB){
-            if(setPivotAngle.isRunning() == false){
-                setPivotAngle = new SetPivotAngleCommand(PivotSubsystem.DesiredAngle.Top);
-                setPivotAngle.start();
-            }
-        }
+        } 
 
     	beginPeriodic();
         Scheduler.getInstance().run();
@@ -172,12 +167,8 @@ public class Robot extends TimedRobot {
                 setPivotAngle = new SetPivotAngleCommand(PivotSubsystem.DesiredAngle.Bottom);
                 setPivotAngle.start();
             }
-        } else if((liftSubsystem.getLiftHeight() <= 30 && pivotSubsystem.desiredAngle != pivotSubsystem.SETANGLE_TOP) && pivotSubsystem.desiredAngle != pivotSubsystem.SETANGLE_CLIMB){
-            if(setPivotAngle.isRunning() == false){
-                setPivotAngle = new SetPivotAngleCommand(PivotSubsystem.DesiredAngle.Top);
-                setPivotAngle.start();
-            }
-        }
+        } 
+        
             
         
     	beginPeriodic();
