@@ -110,7 +110,7 @@ public class OI {
             middlePos.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_CARGO_ROCKET_MIDDLE, true));
             reverseDrive.whenPressed(new ToggleReverseCommand());
             driveIn.whileHeld(new AutoMoveForwardCommand(10,.7));
-            lockLiftPinsButton.toggleWhenPressed(new LockLiftPinsCommand());
+            lockLiftPinsButton.toggleWhenPressed(new AutoGetReadyToClimbCommandGroup());
             cargoHeight.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_CARGO_CARGOSHIP, true));
             switchCamera.whenPressed(new SwitchCameraCommand());
             //SmartDashboard.putData(new HabInstrumentationCommand());
