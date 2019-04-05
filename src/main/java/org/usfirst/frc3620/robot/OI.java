@@ -85,8 +85,10 @@ public class OI {
             Button lockLiftPinsButton = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_BACK);
             Button cargoHeight = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_START);
 
-            driverDpad.right().toggleWhenPressed(new SlotSelectorRightCommand(2));
-            driverDpad.left().toggleWhenPressed(new SlotSelectorLeftCommand(2));
+            driverDpad.up().whenPressed(new ChangeSlotSelectionLevelCommand(true));
+            driverDpad.right().toggleWhenPressed(new ChangeSlotSelectionSideCommand(true));
+            driverDpad.left().toggleWhenPressed(new ChangeSlotSelectionSideCommand(false));
+            driverDpad.down().whenPressed(new ChangeSlotSelectionLevelCommand(false));
 
             Button trashLeftButton = new TriggerButton(operatorJoystick, true, 0.6);
             trashLeftButton.whileHeld(new TrashLeftCommand());

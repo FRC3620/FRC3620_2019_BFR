@@ -50,9 +50,22 @@ public class CargoMasterSubsystem extends Subsystem {
             } else {
                 slotSelectorRight.start();
             }
+        } else if((runSlotSelectionLeft == true && runSlotSelectionRight == true) || (runSlotSelectionLeft == false && runSlotSelectionRight == false)){
+            if(slotSelectorLeft.isRunning()){
+                slotSelectorLeft.close();
+            } 
+            if(slotSelectorRight.isRunning()){
+                slotSelectorRight.close();
+            }
+        } else{
+            if(slotSelectorLeft.isRunning()){
+                slotSelectorLeft.close();
+            } 
+            if(slotSelectorRight.isRunning()){
+                slotSelectorRight.close();
+            }
         }
     }
-
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 
