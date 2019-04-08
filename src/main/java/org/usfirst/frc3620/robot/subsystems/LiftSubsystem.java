@@ -46,7 +46,7 @@ public class LiftSubsystem extends Subsystem implements PIDSource, PIDOutput {
     private final PIDController liftPIDContoller;
 
     private boolean encoderisvalid = false;
-    private double desiredHeight = 0;
+    public double desiredHeight = 0;
     private boolean autoMagicMode = true;
     private double PIDpower = 0;
 

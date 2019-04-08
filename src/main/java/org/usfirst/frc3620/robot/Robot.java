@@ -129,7 +129,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void autonomousPeriodic() {
-        if((liftSubsystem.getLiftHeight() > 30 && pivotSubsystem.desiredAngle != pivotSubsystem.SETANGLE_BOTTOM)&& pivotSubsystem.desiredAngle != pivotSubsystem.SETANGLE_CLIMB){
+        if((liftSubsystem.desiredHeight > 40 && pivotSubsystem.desiredAngle != pivotSubsystem.SETANGLE_BOTTOM)&& pivotSubsystem.desiredAngle != pivotSubsystem.SETANGLE_CLIMB){
             if(setPivotAngle.isRunning() == false){
                 setPivotAngle = new SetPivotAngleCommand(PivotSubsystem.DesiredAngle.Bottom);
                 setPivotAngle.start();
@@ -162,7 +162,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void teleopPeriodic() {
-        if((liftSubsystem.getLiftHeight() > 30 && pivotSubsystem.desiredAngle != pivotSubsystem.SETANGLE_BOTTOM)&& pivotSubsystem.desiredAngle != pivotSubsystem.SETANGLE_CLIMB){
+        if((liftSubsystem.desiredHeight > 40 && pivotSubsystem.desiredAngle != pivotSubsystem.SETANGLE_BOTTOM)&& pivotSubsystem.desiredAngle != pivotSubsystem.SETANGLE_CLIMB){
             if(setPivotAngle.isRunning() == false){
                 setPivotAngle = new SetPivotAngleCommand(PivotSubsystem.DesiredAngle.Bottom);
                 setPivotAngle.start();
