@@ -23,6 +23,7 @@ import org.usfirst.frc3620.robot.subsystems.*;
  */
 public class Robot extends TimedRobot {
 
+    Command setPivotAngle;
     Command autonomousCommand;
     SendableChooser<Command> chooser = new SendableChooser<>();
 
@@ -73,6 +74,8 @@ public class Robot extends TimedRobot {
         hatchSubsystem = new HatchSubsystem();
         pivotSubsystem = new PivotSubsystem();
         visionSubsystem = new VisionSubsystem();
+
+        setPivotAngle = new SetPivotAngleCommand(PivotSubsystem.DesiredAngle.Top);
         
         // OI must be constructed after subsystems. If the OI creates Commands
         //(which it very likely will), subsystems are not guaranteed to be
@@ -152,7 +155,7 @@ public class Robot extends TimedRobot {
      */
     @Override
     public void teleopPeriodic() {
-    	beginPeriodic();
+        beginPeriodic();
         Scheduler.getInstance().run();
         endPeriodic();
     }

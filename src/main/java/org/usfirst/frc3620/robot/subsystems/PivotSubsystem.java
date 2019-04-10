@@ -28,10 +28,11 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
         MANUAL, AUTOMAGIC, HAB
     }
     
-    public enum DesiredAngle{Bottom, Middle, Top}
+    public enum DesiredAngle{Bottom, Middle, Climb, Top}
 
     public static final double SETANGLE_BOTTOM = 80;
     public static final double SETANGLE_MIDDLE = 70;
+    public static final double SETANGLE_CLIMB = 27;
     public static final double SETANGLE_TOP = 5;
 
     private final CANSparkMax pivotMax = RobotMap.pivotSubsystemMax;
@@ -40,7 +41,7 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
     private final PIDController pivotPIDContoller;
 
     private boolean encoderisvalid = false;
-    private double desiredAngle = SETANGLE_TOP;
+    public double desiredAngle = SETANGLE_TOP;
     private double PIDpower = 0;
     private PivotMode currentPivotMode = PivotMode.AUTOMAGIC;
 
@@ -48,7 +49,7 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
         pivotPIDContoller = new PIDController(0, 0, 0, 0, this, this);
         setPIDSourceType(PIDSourceType.kDisplacement);
         pivotPIDContoller.setInputRange(0, 100);
-        pivotPIDContoller.setOutputRange(-0.3, 0.2);
+        pivotPIDContoller.setOutputRange(-1, 1);
     }
 
     @Override
@@ -187,6 +188,8 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
                 return SETANGLE_BOTTOM;
             case Middle:
                 return SETANGLE_MIDDLE;
+            case Climb:
+                return SETANGLE_CLIMB;
             case Top:
                 return SETANGLE_TOP;
             default:
@@ -304,9 +307,9 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
             pivotPIDContoller.setSetpoint(desiredAngle);
             if (!pivotPIDContoller.isEnabled()) {
                 // set the P, I, D, FF
-                double p = SmartDashboard.getNumber("pivotP", 0.01);
+                double p = SmartDashboard.getNumber("pivotP", 0.03);
                 double i = SmartDashboard.getNumber("pivotI", 0);
-                double d = SmartDashboard.getNumber("pivotD", 0);
+                double d = SmartDashboard.getNumber("pivotD", 0.05);
                 double f = SmartDashboard.getNumber("pivotF", 0);
 
                 logger.info("_pivotP={}", p);
