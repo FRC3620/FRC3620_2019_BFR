@@ -293,7 +293,7 @@ import java.util.*;
     }
 
     static void fixupDriveMax (CANSparkMax x) {
-        x.setOpenLoopRampRate(0.4);
+        x.setOpenLoopRampRate(0.6);
         x.setIdleMode(IdleMode.kCoast);
         x.setSmartCurrentLimit(65);
     }

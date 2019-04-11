@@ -32,7 +32,7 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
 
     public static final double SETANGLE_BOTTOM = 80;
     public static final double SETANGLE_MIDDLE = 70;
-    public static final double SETANGLE_CLIMB = 27;
+    public static final double SETANGLE_CLIMB = 30;
     public static final double SETANGLE_TOP = 5;
 
     private final CANSparkMax pivotMax = RobotMap.pivotSubsystemMax;

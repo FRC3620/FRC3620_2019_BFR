@@ -30,9 +30,9 @@ public class AutoLineUpWithCargoshipLeftCommand extends Command {
     
     static final double kFDriveStraight = 0;
 
-    static final double kPLineUp = .004;
+    static final double kPLineUp = .01;
    
-    static final double kILineUp = 0.0004;	
+    static final double kILineUp = 0.0001;	
     
     static final double kDLineUp = 0.015;
     
