@@ -81,7 +81,6 @@ public class OI {
             Button trashIn = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_Y);
             Button habClimbButton = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_LEFT_BUMPER);
             Button middlePos = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_RIGHT_BUMPER);
-            Button topPos = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_RIGHT_STICK);
             Button liftHome = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_A);
             Button lockLiftPinsButton = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_BACK);
             Button cargoHeight = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_START);
@@ -97,7 +96,7 @@ public class OI {
             
             operatorDPad.down().whenPressed(new SetPivotAngleCommand(PivotSubsystem.DesiredAngle.Bottom));
             operatorDPad.up().whenPressed(new SetPivotAngleCommand(PivotSubsystem.DesiredAngle.Top));
-            operatorDPad.right().whenPressed(new SetPivotAngleCommand(PivotSubsystem.DesiredAngle.Middle));
+            operatorDPad.right().whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_CARGO_ROCKET_TOP, true));
             operatorDPad.left().whenPressed(new SetPivotAngleCommand(PivotSubsystem.DesiredAngle.Middle));
 
             //buttons run commands
@@ -114,7 +113,6 @@ public class OI {
             lockLiftPinsButton.toggleWhenPressed(new AutoGetReadyToClimbCommandGroup());
             cargoHeight.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_CARGO_CARGOSHIP, true));
             switchCamera.whenPressed(new SwitchCameraCommand());
-            topPos.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_CARGO_ROCKET_TOP, true));
             //SmartDashboard.putData(new HabInstrumentationCommand());
             getRumbleLeft.toggleWhenPressed(new AutoCargoAlignRumbleLeft());
             getRumbleRight.toggleWhenPressed(new AutoCargoAlignRumbleRight());

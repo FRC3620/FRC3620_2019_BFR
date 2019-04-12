@@ -125,7 +125,7 @@ public class PivotSubsystem extends Subsystem implements PIDSource, PIDOutput {
             */
             if (pitch < 0) {
                 // we are nose up
-                adjustFactor = 0.6;
+                adjustFactor = 0.5;
             } else {
                 //we are nose down
                 adjustFactor = 1.2;
