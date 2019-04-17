@@ -78,6 +78,7 @@ import java.util.*;
     public static DigitalInput liftLimitSwitchBottom;
     public static Solenoid liftLockPinSolenoid;
 
+    public static CANSparkMax hatchSubsystemMax;
     public static Solenoid hatchSubsystemFinger;
     public static Solenoid hatchSubsystemPusher;
     public static Compressor c;
@@ -224,7 +225,11 @@ import java.util.*;
         pivotSubsystemMax2.setClosedLoopRampRate(0.25);
 
         pivotLimitSwitch = new DigitalInput(5);
-        
+
+        requiredDevices.put(new CANDeviceId(CANDeviceType.MAX, 14), "HatchGrabberMAX");
+        hatchSubsystemMax = new CANSparkMax(14, MotorType.kBrushless);
+        resetMaxToKnownState(hatchSubsystemMax);
+
         lightSubsystemLightPWM = new Spark(9);
         lightSubsystemLightPWM.setName("LightSubsystem", "LightPWM");
         lightSubsystemLightPWM.setInverted(false);

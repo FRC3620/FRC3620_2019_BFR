@@ -1,6 +1,6 @@
 package org.usfirst.frc3620.robot.subsystems;
 
-
+import com.revrobotics.CANSparkMax;
 
 import org.slf4j.Logger;
 import org.usfirst.frc3620.logger.EventLogging;
@@ -10,7 +10,6 @@ import org.usfirst.frc3620.robot.RobotMap;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
-
 /**
  *
  */
@@ -19,6 +18,7 @@ public class HatchSubsystem extends Subsystem {
     
     private Solenoid finger = RobotMap.hatchSubsystemFinger;
     private Solenoid pusher = RobotMap.hatchSubsystemPusher;
+    private CANSparkMax Grabber = RobotMap.hatchSubsystemMax;
 
     @Override
     public void initDefaultCommand() {
@@ -64,8 +64,13 @@ public class HatchSubsystem extends Subsystem {
         } else {
             logger.info ("Can't pull hatch pusher in, it's not there!");
         }
-        
     }
     
+    public void Grab(double speed) {
+        Grabber.set(speed);
+    }
 
+    public void release(){
+        Grabber.set(0);
+    }
 }

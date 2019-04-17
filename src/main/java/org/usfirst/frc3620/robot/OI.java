@@ -1,6 +1,7 @@
 package org.usfirst.frc3620.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -76,8 +77,9 @@ public class OI {
             TriggerButton getRumbleRight = new TriggerButton(driverJoystick, false, 0.4);
 
             //operator controls 
-            Button hatchExtend = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_X);
-            Button hatchCollect = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_B);
+            //Button hatchExtend = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_X);
+            //Button hatchCollect = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_B);
+            Button grabHatch = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_B);
             Button trashIn = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_Y);
             Button habClimbButton = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_LEFT_BUMPER);
             Button middlePos = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_RIGHT_BUMPER);
@@ -104,8 +106,8 @@ public class OI {
             inTakeIn.toggleWhenPressed(new IntakeCommand());
             inTakeOut.toggleWhenPressed(new OutTakeCommand());
             trashIn.toggleWhenPressed(new TrashInCommand());
-            hatchExtend.toggleWhenPressed(new HatchExtendCommand());
-            hatchCollect.toggleWhenPressed(new HatchCollectCommand());
+            //hatchExtend.toggleWhenPressed(new HatchExtendCommand());
+            //hatchCollect.toggleWhenPressed(new HatchCollectCommand());
             habClimbButton.whenPressed(new HabClimbCommand());
             liftHome.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_CARGO_TRASHIN, true));
             middlePos.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_CARGO_ROCKET_MIDDLE, true));
@@ -118,7 +120,7 @@ public class OI {
             //SmartDashboard.putData(new HabInstrumentationCommand());
             getRumbleLeft.toggleWhenPressed(new AutoCargoAlignRumbleLeft());
             getRumbleRight.toggleWhenPressed(new AutoCargoAlignRumbleRight());
-
+            grabHatch.toggleWhenPressed(new GrabbingHatch());
 
 
             SmartDashboard.putData(new HabInstrumentationCommand());
