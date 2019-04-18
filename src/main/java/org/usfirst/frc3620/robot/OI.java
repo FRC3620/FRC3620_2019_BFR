@@ -1,7 +1,6 @@
 package org.usfirst.frc3620.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -79,7 +78,7 @@ public class OI {
             //operator controls 
             //Button hatchExtend = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_X);
             //Button hatchCollect = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_B);
-            Button grabHatch = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_B);
+            Button placeHatch = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_B);
             Button trashIn = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_Y);
             Button habClimbButton = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_LEFT_BUMPER);
             Button middlePos = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_RIGHT_BUMPER);
@@ -120,7 +119,7 @@ public class OI {
             //SmartDashboard.putData(new HabInstrumentationCommand());
             getRumbleLeft.toggleWhenPressed(new AutoCargoAlignRumbleLeft());
             getRumbleRight.toggleWhenPressed(new AutoCargoAlignRumbleRight());
-            grabHatch.toggleWhenPressed(new GrabbingHatch());
+            placeHatch.whileHeld(new HatchPlacer());
 
 
             SmartDashboard.putData(new HabInstrumentationCommand());

@@ -9,11 +9,12 @@ import org.usfirst.frc3620.robot.Robot;
 /**
  *
  */
-public class GrabbingHatch extends Command {
+public class HatchPlacer extends Command {
 	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 	
-    public GrabbingHatch() {
+    public HatchPlacer() {
         // requires(Robot.laserCannonSubsystem);
+        requires(Robot.hatchSubsystem);
     }
 
     // Called just before this Command runs the first time
@@ -25,7 +26,7 @@ public class GrabbingHatch extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        Robot.hatchSubsystem.Grab(0.2);
+        Robot.hatchSubsystem.release(0.3);
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -38,7 +39,7 @@ public class GrabbingHatch extends Command {
     @Override
     protected void end() {
         EventLogging.commandMessage(logger);
-        Robot.hatchSubsystem.release();
+        Robot.hatchSubsystem.grab(0.3);
     }
 
     // Called when another command which requires one or more of the same
@@ -46,6 +47,6 @@ public class GrabbingHatch extends Command {
     @Override
     protected void interrupted() {
         EventLogging.commandMessage(logger);
-        Robot.hatchSubsystem.release();
+        Robot.hatchSubsystem.grab(0.3);
     }
 }
