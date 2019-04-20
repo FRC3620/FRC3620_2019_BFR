@@ -7,7 +7,6 @@ import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
 import org.usfirst.frc3620.robot.RobotMap;
 
-import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
@@ -20,7 +19,6 @@ public class HatchSubsystem extends Subsystem {
     private Solenoid finger = RobotMap.hatchSubsystemFinger;
     private Solenoid pusher = RobotMap.hatchSubsystemPusher;
     private CANSparkMax grabber = RobotMap.hatchSubsystemMax;
-    private Servo pivot = RobotMap.hatchSubsystemServo;
 
     @Override
     public void initDefaultCommand() {
