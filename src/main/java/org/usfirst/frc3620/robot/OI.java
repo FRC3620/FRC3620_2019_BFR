@@ -76,7 +76,7 @@ public class OI {
             TriggerButton getRumbleRight = new TriggerButton(driverJoystick, false, 0.4);
 
             //operator controls 
-            //Button hatchExtend = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_X);
+            Button hatchExtend = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_X);
             Button hatchCollect = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_B);
             Button placeHatch = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_X);
             Button trashIn = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_Y);
@@ -105,10 +105,10 @@ public class OI {
             inTakeIn.toggleWhenPressed(new IntakeCommand());
             inTakeOut.toggleWhenPressed(new OutTakeCommand());
             trashIn.toggleWhenPressed(new TrashInCommand());
-            //hatchExtend.toggleWhenPressed(new HatchExtendCommand());
-            hatchCollect.toggleWhenPressed(new HatchCollectCommand());
+            hatchExtend.whileHeld(new HatchGrabCommand());
+            hatchCollect.whileHeld(new HatchPlacer());
             habClimbButton.whenPressed(new HabClimbCommand());
-            liftHome.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_CARGO_TRASHIN, true));
+            liftHome.toggleWhenPressed(new HatchCollectCommand());
             middlePos.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_CARGO_ROCKET_MIDDLE, true));
             reverseDrive.whenPressed(new ToggleReverseCommand());
             driveIn.whileHeld(new AutoMoveForwardCommand(10,.7));

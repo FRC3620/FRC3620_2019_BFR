@@ -5,9 +5,11 @@ import com.revrobotics.CANSparkMax;
 import org.slf4j.Logger;
 import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
+import org.usfirst.frc3620.robot.Robot;
 import org.usfirst.frc3620.robot.RobotMap;
 
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
@@ -18,7 +20,7 @@ public class HatchSubsystem extends Subsystem {
     
     private Solenoid finger = RobotMap.hatchSubsystemFinger;
     private Solenoid pusher = RobotMap.hatchSubsystemPusher;
-    private CANSparkMax grabber = RobotMap.hatchSubsystemMax;
+    private Spark grabber = RobotMap.hatchSubsystemMax;
 
     @Override
     public void initDefaultCommand() {
@@ -29,6 +31,7 @@ public class HatchSubsystem extends Subsystem {
     @Override
     public void periodic() {
         // Put code here to be run every loop
+        
     }
 
     // Put methods for controlling this subsystem
@@ -67,10 +70,10 @@ public class HatchSubsystem extends Subsystem {
     }
     
     public void grab(double speed) {
-        grabber.set(speed);
+        grabber.set(-speed);
     }
 
     public void release(double speed){
-        grabber.set(-speed);
+        grabber.set(speed);
     }
 }

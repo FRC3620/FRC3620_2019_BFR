@@ -26,7 +26,7 @@ public class HatchPlacer extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        Robot.hatchSubsystem.release(0.3);
+        Robot.hatchSubsystem.release(0.75);
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -39,7 +39,7 @@ public class HatchPlacer extends Command {
     @Override
     protected void end() {
         EventLogging.commandMessage(logger);
-        Robot.hatchSubsystem.grab(0.3);
+        Robot.hatchSubsystem.grab(0);
     }
 
     // Called when another command which requires one or more of the same
@@ -47,6 +47,6 @@ public class HatchPlacer extends Command {
     @Override
     protected void interrupted() {
         EventLogging.commandMessage(logger);
-        Robot.hatchSubsystem.grab(0.3);
+        Robot.hatchSubsystem.grab(0);
     }
 }
