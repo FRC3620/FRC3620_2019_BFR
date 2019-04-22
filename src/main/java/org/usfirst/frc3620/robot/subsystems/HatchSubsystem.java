@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.usfirst.frc3620.logger.EventLogging;
 import org.usfirst.frc3620.logger.EventLogging.Level;
 import org.usfirst.frc3620.robot.RobotMap;
+import org.usfirst.frc3620.robot.commands.HatchHoldingVoltageCommand;
 
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -24,6 +25,7 @@ public class HatchSubsystem extends Subsystem {
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
         // setDefaultCommand(...);
+        setDefaultCommand(new HatchHoldingVoltageCommand());
     }
 
     @Override
@@ -66,11 +68,15 @@ public class HatchSubsystem extends Subsystem {
         }
     }
     
+    public boolean getFingerState(){
+        return finger.get();
+    }
+
     public void grab(double speed) {
-        grabber.set(speed);
+        grabber.set(-speed);
     }
 
     public void release(double speed){
-        grabber.set(-speed);
+        grabber.set(speed);
     }
 }
