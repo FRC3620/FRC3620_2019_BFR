@@ -77,7 +77,7 @@ public class OI {
 
             //operator controls 
             //Button hatchExtend = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_X);
-            Button hatchCollect = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_B);
+            Button hatchGrab = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_B);
             Button placeHatch = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_X);
             Button trashIn = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_Y);
             Button habClimbButton = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_LEFT_BUMPER);
@@ -106,7 +106,7 @@ public class OI {
             inTakeOut.toggleWhenPressed(new OutTakeCommand());
             trashIn.toggleWhenPressed(new TrashInCommand());
             //hatchExtend.toggleWhenPressed(new HatchExtendCommand());
-            hatchCollect.toggleWhenPressed(new HatchCollectCommand());
+            hatchGrab.whileHeld(new HatchGrabberIntakeCommand());
             habClimbButton.whenPressed(new HabClimbCommand());
             liftHome.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_CARGO_TRASHIN, true));
             middlePos.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_CARGO_ROCKET_MIDDLE, true));
