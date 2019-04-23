@@ -77,8 +77,10 @@ public class LiftSubsystem extends Subsystem implements PIDSource, PIDOutput {
 
         SmartDashboard.putNumber("liftEncoderInInches", getLiftHeight());
 
-        if(Robot.hatchSubsystem.getFingerState() == false && getLiftHeight() > 1){
-            Robot.hatchSubsystem.fingerOut();
+        double liftPower = liftMax.getAppliedOutput();
+
+        if(Robot.hatchSubsystem.getFingerState() && liftPower != 0){
+            Robot.hatchSubsystem.fingerIn();
         }
 
         if(Robot.getCurrentRobotMode() == RobotMode.TELEOP || Robot.getCurrentRobotMode() == RobotMode.AUTONOMOUS){

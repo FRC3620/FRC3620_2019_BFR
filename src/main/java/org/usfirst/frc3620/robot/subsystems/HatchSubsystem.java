@@ -10,6 +10,7 @@ import org.usfirst.frc3620.robot.commands.HatchHoldingVoltageCommand;
 
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
@@ -31,6 +32,7 @@ public class HatchSubsystem extends Subsystem {
     @Override
     public void periodic() {
         // Put code here to be run every loop
+        SmartDashboard.putBoolean("FingerState", getFingerState());
     }
 
     // Put methods for controlling this subsystem
@@ -73,10 +75,10 @@ public class HatchSubsystem extends Subsystem {
     }
 
     public void grab(double speed) {
-        grabber.set(-speed);
+        grabber.set(speed);
     }
 
     public void release(double speed){
-        grabber.set(speed);
+        grabber.set(-speed);
     }
 }

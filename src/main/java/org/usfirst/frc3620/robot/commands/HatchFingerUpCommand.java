@@ -20,24 +20,26 @@ public class HatchFingerUpCommand extends Command {
     @Override
     protected void initialize() {
         EventLogging.commandMessage(logger);
-        Robot.hatchSubsystem.fingerIn();
+        Robot.hatchSubsystem.fingerOut();
     }
 
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
+        
     }
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        return true;
+        return false;
     }
 
     // Called once after isFinished returns true
     @Override
     protected void end() {
         EventLogging.commandMessage(logger);
+        Robot.hatchSubsystem.fingerIn();
         
     }
 
@@ -46,6 +48,6 @@ public class HatchFingerUpCommand extends Command {
     @Override
     protected void interrupted() {
         EventLogging.commandMessage(logger);
-        
+        Robot.hatchSubsystem.fingerIn();
     }
 }

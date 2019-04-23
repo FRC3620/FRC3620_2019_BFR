@@ -26,7 +26,7 @@ public class HatchGrabberIntakeCommand extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        Robot.hatchSubsystem.grab(0.5);
+        Robot.hatchSubsystem.grab(0.90);
     }
 
     // Make this return true when this Command no longer needs to run execute()

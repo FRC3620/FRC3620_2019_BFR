@@ -229,7 +229,6 @@ import java.util.*;
         requiredDevices.put(new CANDeviceId(CANDeviceType.MAX, 14), "HatchGrabberMAX");
         hatchSubsystemMax = new CANSparkMax(14, MotorType.kBrushless);
         resetMaxToKnownState(hatchSubsystemMax);
-        hatchSubsystemMax.setIdleMode(IdleMode.kCoast);
 
         lightSubsystemLightPWM = new Spark(9);
         lightSubsystemLightPWM.setName("LightSubsystem", "LightPWM");

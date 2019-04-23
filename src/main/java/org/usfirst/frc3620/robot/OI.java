@@ -98,8 +98,8 @@ public class OI {
             
             operatorDPad.down().whenPressed(new SetPivotAngleCommand(PivotSubsystem.DesiredAngle.Bottom));
             operatorDPad.up().whenPressed(new SetPivotAngleCommand(PivotSubsystem.DesiredAngle.Top));
-            operatorDPad.right().whenPressed(new SetPivotAngleCommand(PivotSubsystem.DesiredAngle.Middle));
             operatorDPad.left().whenPressed(new SetPivotAngleCommand(PivotSubsystem.DesiredAngle.Middle));
+            operatorDPad.right().toggleWhenPressed(new HatchFingerUpCommand());
 
             //buttons run commands
             inTakeIn.toggleWhenPressed(new IntakeCommand());
