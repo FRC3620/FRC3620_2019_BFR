@@ -20,6 +20,7 @@ public class HatchSubsystem extends Subsystem {
     Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
     
     private final DigitalInput hatchLimit = RobotMap.hatchLimitSwitch;
+    private final DigitalInput hatchHoldLimit = RobotMap.hatchHoldLimitSwitch;
     private Solenoid hatchSolenoid = RobotMap.hatchSubsystemFlipper;
     private CANSparkMax grabber = RobotMap.hatchSubsystemMax;
 
@@ -28,6 +29,13 @@ public class HatchSubsystem extends Subsystem {
         // Set the default command for a subsystem here.
         // setDefaultCommand(...);
         setDefaultCommand(new HatchHoldingVoltageCommand());
+    }
+
+    public boolean isHatchHoldLimitThere(){
+        if(hatchHoldLimit == null){
+            return false;
+        }
+        return true;
     }
 
     @Override
@@ -41,6 +49,13 @@ public class HatchSubsystem extends Subsystem {
 
     public boolean isHatchLimitDepressed(){
         if(hatchLimit.get() == true){
+            return false; 
+        }
+        return true;
+    }
+
+    public boolean isHatchHoldLimitDepressed(){
+        if(hatchHoldLimit.get() == true){
             return false; 
         }
         return true;

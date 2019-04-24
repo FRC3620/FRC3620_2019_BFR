@@ -82,6 +82,7 @@ import java.util.*;
     public static Solenoid hatchSubsystemFlipper;
     public static Compressor c;
     public static DigitalInput hatchLimitSwitch;
+    public static DigitalInput hatchHoldLimitSwitch;
 
     public static Spark lightSubsystemLightPWM;
 
@@ -231,6 +232,7 @@ import java.util.*;
         resetMaxToKnownState(hatchSubsystemMax);
 
         hatchLimitSwitch = new DigitalInput(6);
+        hatchHoldLimitSwitch = new DigitalInput(7);
 
         lightSubsystemLightPWM = new Spark(9);
         lightSubsystemLightPWM.setName("LightSubsystem", "LightPWM");

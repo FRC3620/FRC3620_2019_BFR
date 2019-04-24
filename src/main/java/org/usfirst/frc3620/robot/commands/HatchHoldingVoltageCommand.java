@@ -26,6 +26,15 @@ public class HatchHoldingVoltageCommand extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
+        if(Robot.hatchSubsystem.isHatchHoldLimitThere() == true){
+            if(Robot.hatchSubsystem.isHatchHoldLimitDepressed()){
+                Robot.hatchSubsystem.grab(0);
+                return;
+            }else{
+                Robot.hatchSubsystem.grab(0.08);
+                return;
+            }
+        }
         Robot.hatchSubsystem.grab(0.08);
     }
 
