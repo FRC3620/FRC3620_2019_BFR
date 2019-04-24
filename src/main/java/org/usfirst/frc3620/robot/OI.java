@@ -78,7 +78,7 @@ public class OI {
             //operator controls 
             //Button hatchExtend = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_X);
             Button hatchGrab = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_B);
-            Button placeHatch = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_X);
+            Button hatchPlace = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_X);
             Button trashIn = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_Y);
             Button habClimbButton = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_LEFT_BUMPER);
             Button middlePos = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_RIGHT_BUMPER);
@@ -99,7 +99,7 @@ public class OI {
             operatorDPad.down().whenPressed(new SetPivotAngleCommand(PivotSubsystem.DesiredAngle.Bottom));
             operatorDPad.up().whenPressed(new SetPivotAngleCommand(PivotSubsystem.DesiredAngle.Top));
             operatorDPad.left().whenPressed(new SetPivotAngleCommand(PivotSubsystem.DesiredAngle.Middle));
-            operatorDPad.right().toggleWhenPressed(new HatchFingerUpCommand());
+            operatorDPad.right().toggleWhenPressed(new HatchMechMoveCommand());
 
             //buttons run commands
             inTakeIn.toggleWhenPressed(new IntakeCommand());
@@ -119,7 +119,7 @@ public class OI {
             //SmartDashboard.putData(new HabInstrumentationCommand());
             getRumbleLeft.toggleWhenPressed(new AutoCargoAlignRumbleLeft());
             getRumbleRight.toggleWhenPressed(new AutoCargoAlignRumbleRight());
-            placeHatch.whileHeld(new HatchPlacer());
+            hatchPlace.whileHeld(new HatchPlacer());
 
 
             SmartDashboard.putData(new HabInstrumentationCommand());

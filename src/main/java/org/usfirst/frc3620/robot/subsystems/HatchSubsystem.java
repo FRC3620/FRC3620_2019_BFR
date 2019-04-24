@@ -8,6 +8,7 @@ import org.usfirst.frc3620.logger.EventLogging.Level;
 import org.usfirst.frc3620.robot.RobotMap;
 import org.usfirst.frc3620.robot.commands.HatchHoldingVoltageCommand;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -18,8 +19,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class HatchSubsystem extends Subsystem {
     Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
     
-    private Solenoid finger = RobotMap.hatchSubsystemFinger;
-    private Solenoid pusher = RobotMap.hatchSubsystemPusher;
+    private final DigitalInput hatchLimit = RobotMap.hatchLimitSwitch;
+    private Solenoid hatchSolenoid = RobotMap.hatchSubsystemFinger;
     private CANSparkMax grabber = RobotMap.hatchSubsystemMax;
 
     @Override
@@ -32,46 +33,37 @@ public class HatchSubsystem extends Subsystem {
     @Override
     public void periodic() {
         // Put code here to be run every loop
-        SmartDashboard.putBoolean("FingerState", getFingerState());
+        SmartDashboard.putBoolean("HatchSolenoidState", getHatchSolenoidState());
     }
 
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 
+    public boolean isHatchLimitDepressed(){
+        if(hatchLimit.get() == true){
+            return false; 
+        }
+        return true;
+    }
+
     public void hatchOut() {
-        if (pusher != null) {
-            pusher.set(true);
+        if (hatchSolenoid != null) {
+            hatchSolenoid.set(false);
         } else {
-            logger.info ("Can't push hatch pusher out, it's not there!");
+            logger.info ("Can't push hatch mech out, it's not there!");
         }
     }
 
     public void hatchIn() {
-        if (pusher != null) {
-            pusher.set(false);
+        if (hatchSolenoid != null) {
+            hatchSolenoid.set(true);
         } else {
-            logger.info ("Can't pull hatch pusher in, it's not there!");
-        }
-    }
-
-    public void fingerOut() {
-        if (finger != null) {
-            finger.set(true);
-        } else {
-            logger.info ("Can't push hatch pusher out, it's not there!");
-        }
-    }
-
-    public void fingerIn() {
-        if (finger != null) {
-            finger.set(false);
-        } else {
-            logger.info ("Can't pull hatch pusher in, it's not there!");
+            logger.info ("Can't pull hatch mech in, it's not there!");
         }
     }
     
-    public boolean getFingerState(){
-        return finger.get();
+    public boolean getHatchSolenoidState(){
+        return hatchSolenoid.get();
     }
 
     public void grab(double speed) {

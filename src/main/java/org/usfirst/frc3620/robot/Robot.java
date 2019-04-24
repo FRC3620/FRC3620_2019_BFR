@@ -147,8 +147,7 @@ public class Robot extends TimedRobot {
 
         driveSubsystem.clearReverseMode();
         visionSubsystem.turnLightSwitchOff();
-        hatchSubsystem.fingerIn();
-
+        hatchSubsystem.hatchOut();
     }
 
     /**

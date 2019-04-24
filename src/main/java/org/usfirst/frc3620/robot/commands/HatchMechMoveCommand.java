@@ -9,10 +9,10 @@ import org.usfirst.frc3620.robot.Robot;
 /**
  *
  */
-public class HatchFingerUpCommand extends Command {
+public class HatchMechMoveCommand extends Command {
 	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 	
-    public HatchFingerUpCommand() {
+    public HatchMechMoveCommand() {
         // requires(Robot.laserCannonSubsystem);
     }
 
@@ -20,7 +20,7 @@ public class HatchFingerUpCommand extends Command {
     @Override
     protected void initialize() {
         EventLogging.commandMessage(logger);
-        Robot.hatchSubsystem.fingerOut();
+        Robot.hatchSubsystem.hatchIn();
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -39,7 +39,7 @@ public class HatchFingerUpCommand extends Command {
     @Override
     protected void end() {
         EventLogging.commandMessage(logger);
-        Robot.hatchSubsystem.fingerIn();
+        Robot.hatchSubsystem.hatchOut();
         
     }
 
@@ -48,6 +48,6 @@ public class HatchFingerUpCommand extends Command {
     @Override
     protected void interrupted() {
         EventLogging.commandMessage(logger);
-        Robot.hatchSubsystem.fingerIn();
+        Robot.hatchSubsystem.hatchOut();
     }
 }

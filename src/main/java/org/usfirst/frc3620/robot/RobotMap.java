@@ -82,6 +82,7 @@ import java.util.*;
     public static Solenoid hatchSubsystemFinger;
     public static Solenoid hatchSubsystemPusher;
     public static Compressor c;
+    public static DigitalInput hatchLimitSwitch;
 
     public static Spark lightSubsystemLightPWM;
 
@@ -229,6 +230,8 @@ import java.util.*;
         requiredDevices.put(new CANDeviceId(CANDeviceType.MAX, 14), "HatchGrabberMAX");
         hatchSubsystemMax = new CANSparkMax(14, MotorType.kBrushless);
         resetMaxToKnownState(hatchSubsystemMax);
+
+        hatchLimitSwitch = new DigitalInput(6);
 
         lightSubsystemLightPWM = new Spark(9);
         lightSubsystemLightPWM.setName("LightSubsystem", "LightPWM");

@@ -79,8 +79,8 @@ public class LiftSubsystem extends Subsystem implements PIDSource, PIDOutput {
 
         double liftPower = liftMax.getAppliedOutput();
 
-        if(Robot.hatchSubsystem.getFingerState() && liftPower != 0){
-            Robot.hatchSubsystem.fingerIn();
+        if(Robot.hatchSubsystem.isHatchLimitDepressed() && liftPower != 0){
+            Robot.hatchSubsystem.hatchIn();
         }
 
         if(Robot.getCurrentRobotMode() == RobotMode.TELEOP || Robot.getCurrentRobotMode() == RobotMode.AUTONOMOUS){
