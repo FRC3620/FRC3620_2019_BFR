@@ -20,7 +20,7 @@ public class HatchSubsystem extends Subsystem {
     Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
     
     private final DigitalInput hatchLimit = RobotMap.hatchLimitSwitch;
-    private Solenoid hatchSolenoid = RobotMap.hatchSubsystemFinger;
+    private Solenoid hatchSolenoid = RobotMap.hatchSubsystemFlipper;
     private CANSparkMax grabber = RobotMap.hatchSubsystemMax;
 
     @Override

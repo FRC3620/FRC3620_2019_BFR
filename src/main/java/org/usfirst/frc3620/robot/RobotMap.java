@@ -79,8 +79,7 @@ import java.util.*;
     public static Solenoid liftLockPinSolenoid;
 
     public static CANSparkMax hatchSubsystemMax;
-    public static Solenoid hatchSubsystemFinger;
-    public static Solenoid hatchSubsystemPusher;
+    public static Solenoid hatchSubsystemFlipper;
     public static Compressor c;
     public static DigitalInput hatchLimitSwitch;
 
@@ -257,8 +256,7 @@ import java.util.*;
 
         requiredDevices.put(new CANDeviceId(CANDeviceType.PCM, 1), "TopPCM");
         if (amICompBot() || canDeviceFinder.isDevicePresent(CANDeviceType.PCM, 1)) {
-            hatchSubsystemPusher = new Solenoid(1, 0);
-            hatchSubsystemFinger = new Solenoid(1, 1);
+            hatchSubsystemFlipper = new Solenoid(1, 1);
         }
     }
 
