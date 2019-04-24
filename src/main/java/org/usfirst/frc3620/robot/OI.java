@@ -76,8 +76,9 @@ public class OI {
             TriggerButton getRumbleRight = new TriggerButton(driverJoystick, false, 0.4);
 
             //operator controls 
-            Button hatchExtend = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_X);
-            Button hatchCollect = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_B);
+            //Button hatchExtend = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_X);
+            Button hatchGrab = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_B);
+            Button hatchPlace = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_X);
             Button trashIn = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_Y);
             Button habClimbButton = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_LEFT_BUMPER);
             Button middlePos = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_RIGHT_BUMPER);
@@ -96,15 +97,14 @@ public class OI {
             
             operatorDPad.down().whenPressed(new SetPivotAngleCommand(PivotSubsystem.DesiredAngle.Bottom));
             operatorDPad.up().whenPressed(new SetPivotAngleCommand(PivotSubsystem.DesiredAngle.Top));
-            operatorDPad.right().whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_CARGO_ROCKET_TOP, true));
             operatorDPad.left().whenPressed(new SetPivotAngleCommand(PivotSubsystem.DesiredAngle.Middle));
+            operatorDPad.right().toggleWhenPressed(new HatchMechMoveCommand());
 
             //buttons run commands
             inTakeIn.toggleWhenPressed(new IntakeCommand());
             inTakeOut.toggleWhenPressed(new OutTakeCommand());
             trashIn.toggleWhenPressed(new TrashInCommand());
-            hatchExtend.toggleWhenPressed(new HatchExtendCommand());
-            hatchCollect.toggleWhenPressed(new HatchCollectCommand());
+            hatchGrab.whileHeld(new HatchGrabberIntakeCommand());
             habClimbButton.whenPressed(new HabClimbCommand());
             liftHome.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_CARGO_TRASHIN, true));
             middlePos.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_CARGO_ROCKET_MIDDLE, true));
@@ -116,7 +116,7 @@ public class OI {
             //SmartDashboard.putData(new HabInstrumentationCommand());
             getRumbleLeft.toggleWhenPressed(new AutoCargoAlignRumbleLeft());
             getRumbleRight.toggleWhenPressed(new AutoCargoAlignRumbleRight());
-
+            hatchPlace.whileHeld(new HatchPlacer());
 
 
             SmartDashboard.putData(new HabInstrumentationCommand());

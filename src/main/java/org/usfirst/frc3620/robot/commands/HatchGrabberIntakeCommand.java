@@ -9,36 +9,36 @@ import org.usfirst.frc3620.robot.Robot;
 /**
  *
  */
-public class HatchFingerUpCommand extends Command {
+public class HatchGrabberIntakeCommand extends Command {
 	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 	
-    public HatchFingerUpCommand() {
+    public HatchGrabberIntakeCommand() {
         // requires(Robot.laserCannonSubsystem);
+        requires(Robot.hatchSubsystem);
     }
 
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-        EventLogging.commandMessage(logger);
-        Robot.hatchSubsystem.fingerIn();
+    	EventLogging.commandMessage(logger);
     }
 
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
+        Robot.hatchSubsystem.grab(0.90);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        return true;
+        return false;
     }
 
     // Called once after isFinished returns true
     @Override
     protected void end() {
         EventLogging.commandMessage(logger);
-        
     }
 
     // Called when another command which requires one or more of the same
@@ -46,6 +46,5 @@ public class HatchFingerUpCommand extends Command {
     @Override
     protected void interrupted() {
         EventLogging.commandMessage(logger);
-        
     }
 }

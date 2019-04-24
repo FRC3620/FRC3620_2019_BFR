@@ -9,35 +9,35 @@ import org.usfirst.frc3620.robot.Robot;
 /**
  *
  */
-public class HatchPusherOutCommand extends Command {
+public class HatchPlacer extends Command {
 	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 	
-    public HatchPusherOutCommand() {
+    public HatchPlacer() {
         // requires(Robot.laserCannonSubsystem);
+        requires(Robot.hatchSubsystem);
     }
 
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-        EventLogging.commandMessage(logger);
-        Robot.hatchSubsystem.hatchOut();
+    	EventLogging.commandMessage(logger);
     }
 
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
+        Robot.hatchSubsystem.release(0.90);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        return true;
+        return false;
     }
 
     // Called once after isFinished returns true
     @Override
     protected void end() {
-        EventLogging.commandMessage(logger);
         
     }
 
@@ -45,7 +45,6 @@ public class HatchPusherOutCommand extends Command {
     // subsystems is scheduled to run or when cancelled by whileHeld
     @Override
     protected void interrupted() {
-        EventLogging.commandMessage(logger);
        
     }
 }
