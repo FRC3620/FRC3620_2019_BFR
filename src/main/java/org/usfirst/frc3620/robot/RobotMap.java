@@ -248,10 +248,10 @@ import java.util.*;
         lineSensorCounterR = new Counter(lineSensorR);
         lineSensorCounterR.setUpSourceEdge(false, true);
 
-        requiredDevices.put(new CANDeviceId(CANDeviceType.PCM, 0), "BottomPCM");
+        requiredDevices.put(new CANDeviceId(CANDeviceType.PCM, 0), "PCM");
         if (amICompBot() || canDeviceFinder.isDevicePresent(CANDeviceType.PCM, 0)) {
             //instantiate Pneumatics here
-            //doublesolenoids requires a PCM number first
+            //solenoids requires a PCM number first
             c = new Compressor(0);
             liftLockPinSolenoid = new Solenoid(0);
             hatchSubsystemFlipper = new Solenoid(1);
