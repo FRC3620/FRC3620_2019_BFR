@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class AutoGetReadyToClimbCommandGroup extends CommandGroup{
     public AutoGetReadyToClimbCommandGroup(){
         addSequential(new SetPivotAngleCommand(PivotSubsystem.DesiredAngle.Climb));
-        addSequential(new SetLiftHeightCommand(35, true));
+        addSequential(new SetLiftHeightCommand(36, true));
         addSequential(new LockLiftPinsCommand());
     }
 }
