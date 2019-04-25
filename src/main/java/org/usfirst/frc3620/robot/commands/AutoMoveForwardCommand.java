@@ -26,9 +26,9 @@ public class AutoMoveForwardCommand extends Command implements PIDOutput, PIDSou
 
   static final double kP = 0.01; //2019: 0.01    0.03  WORKS WELL: 0.01
 	
-	static final double kI = 0.0000002;	//2019: 0.0000030   0.0000020
+	static final double kI = 0.000003;	//2019: 0.0000030   0.0000020
 	
-  static final double kD = 0.004; //2019: 0.0075    0.3         0.03   0.0045
+  static final double kD = 0.0075; //2019: 0.0075    0.3         0.03   0.0045
 	
   static final double kF = 0; //2019: 0
 	double sideStick;
