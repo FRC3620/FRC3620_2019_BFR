@@ -42,6 +42,7 @@ public class HatchSubsystem extends Subsystem {
     public void periodic() {
         // Put code here to be run every loop
         SmartDashboard.putBoolean("HatchSolenoidState", getHatchSolenoidState());
+        SmartDashboard.putBoolean("HatchThereLimit", isHatchLimitDepressed());
     }
 
     // Put methods for controlling this subsystem
@@ -61,7 +62,7 @@ public class HatchSubsystem extends Subsystem {
         return true;
     }
 
-    public void hatchOut() {
+    public void hatchOut() { //moves hatch mech up
         if (hatchSolenoid != null) {
             hatchSolenoid.set(false);
         } else {
@@ -69,7 +70,7 @@ public class HatchSubsystem extends Subsystem {
         }
     }
 
-    public void hatchIn() {
+    public void hatchIn() { //moves hatch mech down
         if (hatchSolenoid != null) {
             hatchSolenoid.set(true);
         } else {
