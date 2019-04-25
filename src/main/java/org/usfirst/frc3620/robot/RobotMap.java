@@ -230,7 +230,8 @@ import java.util.*;
         requiredDevices.put(new CANDeviceId(CANDeviceType.MAX, 14), "HatchGrabberMAX");
         hatchSubsystemMax = new CANSparkMax(14, MotorType.kBrushless);
         resetMaxToKnownState(hatchSubsystemMax);
-
+        hatchSubsystemMax.setOpenLoopRampRate(0.5);
+        
         hatchLimitSwitch = new DigitalInput(6);
         hatchHoldLimitSwitch = new DigitalInput(7);
 
