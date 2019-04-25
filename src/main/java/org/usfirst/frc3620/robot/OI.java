@@ -85,6 +85,7 @@ public class OI {
             Button liftHome = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_A);
             Button lockLiftPinsButton = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_BACK);
             Button cargoHeight = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_START);
+            Button topPos = new JoystickButton(operatorJoystick, XBoxConstants.BUTTON_RIGHT_STICK);
 
             driverDpad.right().whileHeld(new AutoLineUpWithCargoshipRightCommand());
             driverDpad.left().whileHeld(new AutoLineUpWithCargoshipLeftCommand());
@@ -98,7 +99,7 @@ public class OI {
             operatorDPad.down().whenPressed(new SetPivotAngleCommand(PivotSubsystem.DesiredAngle.Bottom));
             operatorDPad.up().whenPressed(new SetPivotAngleCommand(PivotSubsystem.DesiredAngle.Top));
             operatorDPad.left().whenPressed(new SetPivotAngleCommand(PivotSubsystem.DesiredAngle.Middle));
-            operatorDPad.right().toggleWhenPressed(new HatchMechMoveCommand());
+            operatorDPad.right().whenPressed(new HatchMechMoveCommand());
 
             //buttons run commands
             inTakeIn.toggleWhenPressed(new IntakeCommand());
@@ -117,6 +118,7 @@ public class OI {
             getRumbleLeft.toggleWhenPressed(new AutoCargoAlignRumbleLeft());
             getRumbleRight.toggleWhenPressed(new AutoCargoAlignRumbleRight());
             hatchPlace.whileHeld(new HatchPlacer());
+            topPos.whenPressed(new SetLiftHeightCommand(LiftSubsystem.SETPOINT_CARGO_ROCKET_TOP, true));
 
 
             SmartDashboard.putData(new HabInstrumentationCommand());
