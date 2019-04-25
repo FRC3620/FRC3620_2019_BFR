@@ -31,11 +31,11 @@ public class HatchHoldingVoltageCommand extends Command {
                 Robot.hatchSubsystem.grab(0);
                 return;
             }else{
-                Robot.hatchSubsystem.grab(0.08);
+                Robot.hatchSubsystem.grab(0.12);
                 return;
             }
         }
-        Robot.hatchSubsystem.grab(0.08);
+        Robot.hatchSubsystem.grab(0.12);
     }
 
     // Make this return true when this Command no longer needs to run execute()
