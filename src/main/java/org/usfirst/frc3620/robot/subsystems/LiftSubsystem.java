@@ -208,7 +208,7 @@ public class LiftSubsystem extends Subsystem implements PIDSource, PIDOutput {
 
         if(isTopLimitDepressed() == true && speed > 0){
             speed = 0;
-        }
+        } 
 
         liftMax.set(-speed);
         SmartDashboard.putNumber("liftSet", -speed);
