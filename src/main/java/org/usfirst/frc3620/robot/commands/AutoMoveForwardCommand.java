@@ -24,11 +24,11 @@ public class AutoMoveForwardCommand extends Command implements PIDOutput, PIDSou
 
   Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 
-  static final double kP = 0.01; //2019: 0.004    0.03  WORKS WELL: 0.01
+  static final double kP = 0.01; //2019: 0.01    0.03  WORKS WELL: 0.01
 	
-	static final double kI = 0.000;	//2019: 0.00004
+	static final double kI = 0.000003;	//2019: 0.0000030   0.0000020
 	
-  static final double kD = 0.03; //2019: 0.015    0.3              0.03
+  static final double kD = 0.0075; //2019: 0.0075    0.3         0.03   0.0045
 	
   static final double kF = 0; //2019: 0
 	double sideStick;
@@ -49,7 +49,7 @@ public class AutoMoveForwardCommand extends Command implements PIDOutput, PIDSou
     pidDriveStraight.setOutputRange(-.5, .5);
     pidDriveStraight.setInputRange(-150, 150);
     pidDriveStraight.setContinuous(false);
-    pidDriveStraight.setAbsoluteTolerance(10);
+    pidDriveStraight.setAbsoluteTolerance(0);
     howFastToMove = howFast;
     howLongWeWantToMove = howLongInSeconds;
 

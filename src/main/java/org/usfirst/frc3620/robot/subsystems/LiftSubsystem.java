@@ -31,8 +31,8 @@ public class LiftSubsystem extends Subsystem implements PIDSource, PIDOutput {
     public static final double SETPOINT_BOTTOM = 0;
     public static final double SETPOINT_CARGO_TRASHIN = 3.25;
     public static final double SETPOINT_CARGO_CARGOSHIP = 18;
-    public static final double SETPOINT_CARGO_ROCKET_MIDDLE = 26; //TODO change to 29.5 on comp
-    public static final double SETPOINT_CARGO_ROCKET_TOP = 50;
+    public static final double SETPOINT_CARGO_ROCKET_MIDDLE = 26.75; //TODO change to 29.5 on comp
+    public static final double SETPOINT_CARGO_ROCKET_TOP = 53; //Start of State: 50
 
     public static final double SETPOINT_HATCH_BOTTOM = 0;
     public static final double SETPOINT_HATCH_CARGOSHIP = 0;
@@ -76,6 +76,12 @@ public class LiftSubsystem extends Subsystem implements PIDSource, PIDOutput {
         SmartDashboard.putBoolean("liftBottomLimitSwitch", isBottomLimitDepressed());
 
         SmartDashboard.putNumber("liftEncoderInInches", getLiftHeight());
+
+        double liftPower = liftMax.getAppliedOutput();
+
+        if(Robot.hatchSubsystem.isHatchLimitDepressed() && liftPower != 0){
+            Robot.hatchSubsystem.hatchIn();
+        }
 
         if(Robot.getCurrentRobotMode() == RobotMode.TELEOP || Robot.getCurrentRobotMode() == RobotMode.AUTONOMOUS){
             
@@ -202,7 +208,7 @@ public class LiftSubsystem extends Subsystem implements PIDSource, PIDOutput {
 
         if(isTopLimitDepressed() == true && speed > 0){
             speed = 0;
-        }
+        } 
 
         liftMax.set(-speed);
         SmartDashboard.putNumber("liftSet", -speed);
@@ -286,8 +292,8 @@ public class LiftSubsystem extends Subsystem implements PIDSource, PIDOutput {
                  // set the P, I, D, FF
                  //Base P: 0.04
                 double p = SmartDashboard.getNumber("pivotP", 0.15); //Practice bot 0.06
-                double i = SmartDashboard.getNumber("pivotI", 0.0003); //Practice bot 0.0003
-                double d = SmartDashboard.getNumber("pivotD", 0.14); //Practice bot 0.14
+                double i = SmartDashboard.getNumber("pivotI", 0.0001); //Practice bot 0.0003
+                double d = SmartDashboard.getNumber("pivotD", 0.15); //Practice bot 0.14
                 double f = SmartDashboard.getNumber("pivotF", 0);
     
                 logger.info("_pivotP={}", p);

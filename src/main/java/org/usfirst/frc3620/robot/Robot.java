@@ -120,7 +120,6 @@ public class Robot extends TimedRobot {
         autonomousCommand = chooser.getSelected();
         // schedule the autonomous command (example)
         if (autonomousCommand != null) autonomousCommand.start();
-        visionSubsystem.turnLightSwitchOn();
     }
 
     /**
@@ -146,8 +145,7 @@ public class Robot extends TimedRobot {
         logMatchInfo();
 
         driveSubsystem.clearReverseMode();
-        visionSubsystem.turnLightSwitchOff();
-
+        hatchSubsystem.hatchOut();
     }
 
     /**

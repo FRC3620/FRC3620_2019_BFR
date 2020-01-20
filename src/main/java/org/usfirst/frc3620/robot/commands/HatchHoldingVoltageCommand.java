@@ -9,29 +9,39 @@ import org.usfirst.frc3620.robot.Robot;
 /**
  *
  */
-public class HatchFingerDownCommand extends Command {
+public class HatchHoldingVoltageCommand extends Command {
 	Logger logger = EventLogging.getLogger(getClass(), Level.INFO);
 	
-    public HatchFingerDownCommand() {
+    public HatchHoldingVoltageCommand() {
         // requires(Robot.laserCannonSubsystem);
+        requires(Robot.hatchSubsystem);
     }
 
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-        EventLogging.commandMessage(logger);
-        Robot.hatchSubsystem.fingerOut();
+    	EventLogging.commandMessage(logger);
     }
 
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
+        if(Robot.hatchSubsystem.isHatchHoldLimitThere() == true){
+            if(Robot.hatchSubsystem.isHatchHoldLimitDepressed()){
+                Robot.hatchSubsystem.grab(0);
+                return;
+            }else{
+                Robot.hatchSubsystem.grab(0.12);
+                return;
+            }
+        }
+        Robot.hatchSubsystem.grab(0.12);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     @Override
     protected boolean isFinished() {
-        return true;
+        return false;
     }
 
     // Called once after isFinished returns true
